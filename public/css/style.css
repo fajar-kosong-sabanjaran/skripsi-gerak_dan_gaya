@@ -1,0 +1,2882 @@
+/* =========================================================
+   RESET & DASAR
+========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  display: flex;
+  color: #333;
+}
+
+/* =========================================================
+   SIDEBAR & MENU
+========================================================= */
+.sidebar {
+  width: 260px;
+  background-color: #f95c50;
+  /* Tambahkan gradasi halus agar tidak flat */
+  background-image: linear-gradient(180deg, #f95c50 0%, #e84a3e 100%);
+  color: #fff;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 16px 14px;
+  /* Bayangan lebih lembut dan luas */
+  box-shadow: 4px 0 15px rgba(0,0,0,0.1); 
+  z-index: 100; /* Pastikan di atas konten lain */
+}
+
+.sidebar h2 {
+  padding: 14px 16px;
+  font-size: 18px;
+  background-color: #e44a3f;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.menu-item {
+  margin-top: 10px;
+  border-radius: 12px; /* Sedikit lebih bulat */
+  cursor: pointer;
+  padding: 12px 14px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Latar belakang semi-transparan putih */
+  background: rgba(255, 255, 255, 0.15); 
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Border halus */
+  transition: all 0.3s ease; /* Transisi lebih halus */
+  backdrop-filter: blur(5px); /* Efek kaca buram */
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(5px); /* Geser sedikit ke kanan saat hover */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-item.active {
+  background: #ffffff;
+  color: #f95c50;
+  border-color: #fff;
+  /* Tambahkan shadow agar terlihat melayang */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15); 
+  font-weight: 700; /* Teks lebih tebal */
+}
+
+/* panah */
+.menu-item.has-toggle::after {
+  content: "›";
+  font-size: 16px;
+  opacity: 0.9;
+  transition: transform 0.2s ease;
+}
+
+/* panah diputar kalau open */
+.menu-item.has-toggle.active::after {
+  transform: rotate(90deg);
+}
+
+/* SUBMENU (lapisan oranye di dalam sidebar) */
+.submenu {
+  background-color: #ff7b70;
+  display: none;
+  flex-direction: column;
+  margin: 6px 4px 6px 8px;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  border: 1px solid #ffd3cc;
+}
+
+.submenu.open {
+  display: flex;
+}
+
+.submenu a {
+  display: block;
+  padding: 10px 35px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.submenu a:hover,
+.submenu a.active {
+  background-color: #ff9b91;
+}
+
+/* =========================================================
+   KONTEN UTAMA & BOX
+========================================================= */
+.main-content {
+  margin-left: 260px;
+  padding: 40px; /* Tambah padding biar lega */
+  flex-grow: 1;
+  background-color: #fdfdfd; /* Background halaman sedikit abu-abu sangat muda */
+}
+
+.container {
+  /* Hapus border dan background container utama agar lebih clean */
+  background: transparent; 
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.container h1 {
+  color: #333;
+  font-size: 28px; /* Lebih besar */
+  text-align: left; /* Rata kiri lebih modern */
+  margin-bottom: 25px;
+  font-weight: 800;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* Garis bawah pada judul */
+.container h1::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 4px;
+  background: #f95c50;
+  border-radius: 2px;
+}
+
+.inner-box {
+  background-color: #ffe7e3; /* Warna favorit Anda */
+  border: 1px solid #ffbfb7;
+  border-radius: 15px; /* Lebih membulat */
+  padding: 25px; /* Padding lebih lega */
+  margin-bottom: 30px;
+  
+  /* Efek agar tidak flat: */
+  box-shadow: 0 8px 20px rgba(249, 92, 80, 0.08); 
+  transition: transform 0.3s ease;
+}
+
+.inner-box:hover {
+  transform: translateY(-3px); /* Naik sedikit saat di-hover */
+  box-shadow: 0 12px 25px rgba(249, 92, 80, 0.12);
+}
+
+.inner-box h3 {
+  background-color: #f95c50;
+  color: white;
+  /* Header judul dibuat menempel rapi di atas */
+  margin: -25px -25px 20px -25px; 
+  padding: 12px 25px;
+  border-radius: 14px 14px 0 0; /* Mengikuti lengkungan box */
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.inner-box ul {
+  margin: 10px 0 0 25px;
+    font-size: 15px;
+    line-height: 1.8; /* Teks lebih enak dibaca */
+    color: #4a4a4a;
+}
+
+.inner-box p {
+  line-height: 1.8; /* Teks lebih enak dibaca */
+  color: #4a4a4a;
+  font-size: 15px;
+}
+
+/* Gambar / Video */
+.content-image, .content-image2, .content-image3, .content-image4, .content-video {
+  border: 1px solid #ffd3cc;
+  border-radius: 6px;
+  padding: 2px;
+  display: block;
+  margin: 10px auto;
+}
+
+/* Lalu atur lebar masing-masing */
+.content-image { max-width: 20%; }
+.content-image2 { max-width: 50%; }
+.content-image3 { max-width: 40%; }
+.content-image4 { max-width: 40%; }
+
+/* PERBAIKAN: Optimasi Video untuk Mencegah Freeze */
+.content-video { 
+  width: 50%; 
+  height: auto;
+  
+  /* Memisahkan layer video agar tidak bentrok dengan notifikasi/popup */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.gaya-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 850px;
+}
+
+.gaya-video-item {
+  flex: 1;
+  text-align: center;
+  max-width: 48%;
+}
+
+.gaya-video-item video {
+  width: 100%;
+  height: auto;
+  border: 2px solid #ffd3cc;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  display: block;
+}
+
+.video-label {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* @media (max-width: 600px) {
+  .gaya-video-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gaya-video-item {
+    max-width: 90%;
+    margin-bottom: 20px;
+  }
+} */
+
+.image-caption {
+  font-size: 12px !important;       
+  font-style: italic;
+  text-align: center;
+  color: #666;
+  margin-top: 6px;
+}
+
+.image-source {
+  font-size: 10px;      
+  text-align: center;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* =========================================================
+   NAVIGASI BAWAH MATERI
+========================================================= */
+.bottom-nav {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.nav-btn {
+  display: inline-block;
+  padding: 12px 24px; /* Lebih besar */
+  border-radius: 50px; /* Tombol bulat kapsul */
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Shadow tombol */
+}
+
+.nav-btn.next {
+  background: linear-gradient(90deg, #f95c50, #ff7b70); /* Gradasi oranye */
+  color: #fff;
+  border: none;
+}
+
+.nav-btn.next:hover {
+  background: linear-gradient(90deg, #e44a3f, #f95c50);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(249, 92, 80, 0.4); /* Glow effect */
+}
+
+/* Tombol Prev (Putih) */
+.nav-btn.prev {
+  background: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+}
+
+.nav-btn.prev:hover {
+  background: #f8f8f8;
+  color: #333;
+  transform: translateY(-3px);
+  border-color: #bbb;
+}
+
+/* =========================================================
+   LATIHAN DRAG & DROP
+========================================================= */
+.drag-instruction {
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.drag-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.drop-column {
+  flex: 1;
+  min-width: 220px;
+}
+
+.drop-header {
+  background-color: #f95c50;
+  color: #fff;
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 6px 6px 0 0;
+  font-size: 14px;
+}
+
+.drop-zone {
+  min-height: 140px;
+  border: 2px dashed #f95c50;
+  border-radius: 0 0 6px 6px;
+  padding: 8px;
+  background-color: #ffe7e3;
+}
+
+/* Kumpulan kartu awal */
+.card-pool-title {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.card-pool {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+/* Kartu drag */
+.card-item {
+  background-color: #fff;
+  border: 2px solid #ffbfb7;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  cursor: grab;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card-item:active {
+  cursor: grabbing;
+}
+
+/* Highlight drop */
+.drop-zone.over,
+.card-pool.over {
+  background-color: #ffdcd5;
+  border-color: #e44a3f;
+}
+
+/* Feedback jawaban */
+.card-item.correct {
+  border-color: #16a34a;
+  background-color: #dcfce7;
+}
+
+.card-item.incorrect {
+  border-color: #dc2626;
+  background-color: #fee2e2;
+}
+
+.feedback {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.feedback.good {
+  color: #16a34a;
+}
+
+.feedback.try {
+  color: #b45309;
+}
+
+/* Tombol cek */
+.btn-check {
+  margin-top: 12px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: none;
+  background-color: #f95c50;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-check:hover {
+  background-color: #e44a3f;
+}
+
+/* POPUP / MODAL UMUM */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff3f0;
+  border-radius: 8px;
+  border: 1px solid #ffd3cc;
+  padding: 18px 22px;
+  min-width: 260px;
+  max-width: 320px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.modal-content h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #e44a3f;
+}
+
+/* =========================================================
+   ANIMASI GERAK MOBIL (PERPINDAHAN & JARAK)
+========================================================= */
+.anim-wrapper {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  padding: 20px 24px 26px;
+  margin: 10px auto 0;
+}
+
+.anim-wrapper h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #e44a3f;
+  font-size: 20px;
+}
+
+.anim-desc {
+  font-size: 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.anim-scene {
+  position: relative;
+  margin: 10px auto 18px;
+  width: 100%;
+  max-width: 840px;
+  height: 180px;
+  padding: 10px 20px 0;
+}
+
+.anim-road {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  height: 40px;
+  background: #444;
+  border-radius: 20px;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+}
+
+.anim-road::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  height: 4px;
+  background-image: linear-gradient(to right, #fff 50%, transparent 50%);
+  background-size: 20px 4px;
+}
+
+.anim-point {
+  position: absolute;
+  bottom: 80px;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.ikon-titik {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: transparent;
+  display: block;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.label-titik {
+  font-size: 12px;
+  background: #fff3f0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ffbfb7;
+  color: #333;
+  line-height: 1.1;
+}
+
+.anim-building {
+  width: 40px;
+  height: 45px;
+  background: #ffbfb7;
+  border-radius: 4px;
+  margin: 0 auto 4px;
+  position: relative;
+}
+
+.anim-building::before,
+.anim-building::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 10px;
+  background: #fff;
+  border-radius: 2px;
+  top: 8px;
+}
+
+.anim-building::before { left: 6px; }
+.anim-building::after  { right: 6px; }
+
+.anim-car {
+  position: absolute;
+  bottom: 48px;
+  width: 50px;       /* ubah nilai ini untuk memperbesar/memperkecil */
+  height: auto;
+  display: block;
+  transform: translateX(-50%); /* agar posisi center sesuai perhitungan left */
+  pointer-events: none;
+  transition: left 0.04s linear; /* membuat gerakan lebih halus */
+  z-index: 20;
+}
+
+.anim-car::before,
+.anim-car::after {
+  display: none !important;
+}
+
+.anim-label-dist {
+  position: absolute;
+  bottom: 20px;
+  transform: translateX(-50%);
+  font-size: 12px;
+  background: #fff3f0;
+  border-radius: 999px;
+  padding: 2px 8px;
+  border: 1px solid #ffbfb7;
+}
+
+.anim-panel {
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffe7e3;
+  border: 1px solid #ffbfb7;
+  font-size: 14px;
+}
+
+.anim-panel-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.anim-info-segmen {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.anim-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.anim-btn {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  background: #f95c50;
+  color: #fff;
+}
+
+.anim-btn.secondary {
+  background: #6b7280;
+}
+
+.anim-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Popup hasil animasi */
+.anim-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  /* saran pa andi - bisa di gunakan atau tidak */
+  /* justify-content: flex-end;  */
+  z-index: 50;
+}
+
+.anim-modal-content {
+  background: #fff3f0;
+  border-radius: 10px;
+  border: 1px solid #ffd3cc;
+  padding: 18px 22px;
+  min-width: 260px;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.anim-modal-content h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #e44a3f;
+}
+
+.anim-modal-content p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* =========================================================
+   KUIS TABEL KELAJUAN vs KECEPATAN
+========================================================= */
+.quiz-wrapper {
+  margin-top: 10px;
+}
+
+.quiz-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffe7e3;
+}
+
+.quiz-table th,
+.quiz-table td {
+  border: 1px solid #ffbfb7;
+  padding: 8px 10px;
+}
+
+.quiz-table th {
+  background: #ffd3cc;
+  text-align: center;
+}
+
+.quiz-table td:nth-child(1),
+.quiz-table td:nth-child(3),
+.quiz-table td:nth-child(4) {
+  text-align: center;
+}
+
+.quiz-table tr:nth-child(even) td {
+  background: #fff3f0;
+}
+
+/* checkbox styling */
+.quiz-table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.rumus-quiz mjx-container {
+  font-size: 160%;
+}
+
+
+/* tombol kuis */
+.quiz-buttons {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.quiz-feedback {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.quiz-feedback.good {
+  color: #15803d;
+}
+
+.quiz-feedback.try {
+  color: #b45309;
+}
+
+/* ===== LATIHAN ADI - Perpindahan dan Jarak Tempuh ===== */
+
+.gambar-latihan {
+  max-width: 60%;
+  border: 1px solid #ffbfb7;
+  border-radius: 6px;
+  margin: 10px auto;
+  display: block;
+}
+
+.keterangan-gambar {
+  font-size: 12px !important;
+  text-align: center;
+  color: #555;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.baris-soal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.baris-soal label {
+  font-size: 15px;
+  color: #333;
+}
+
+.isian-sedang,
+.isian-pendek {
+  width: 180px;
+  padding: 6px 10px;
+  border: 1px solid #ffd1cb;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.satuan-meter {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.aksi-latihan {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Styling Tombol Unduh */
+.tombol-unduh {
+  background-color: #5D9CEC; /* Warna Biru */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Jarak ikon dan teks */
+}
+
+.tombol-unduh:hover {
+  background-color: #4A89DC;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tombol-cek {
+  padding: 8px 16px;
+  background: #f95c50;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.tombol-cek:hover {
+  background: #e44a3f;
+  transform: translateY(-2px);
+}
+
+.tombol-reset {
+  padding: 8px 16px;
+  background: #6b7280;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.tombol-reset:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+}
+
+.umpan-balik {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #155e75;
+}
+
+/* ===== MODAL POPUP LATIHAN  ===== */
+#latihan-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#latihan-modal .latihan-modal-konten {
+  width: 90%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.latihan-modal-judul {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4a4a4a;
+  margin-bottom: 10px;
+}
+
+.latihan-modal-ringkasan {
+  margin-bottom: 10px;
+}
+
+.pesan-feedback {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.txt-sukses { color: #059669; font-weight: 600; }
+.txt-gagal  { color: #dc2626; font-weight: 600; }
+.txt-belum  { color: #d97706; font-weight: 600; }
+.txt-sep    { color: #9ca3af; }
+
+.latihan-modal-detail {
+  display: none;
+}
+
+.latihan-modal-tombol {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.latihan-modal-tutup,
+.latihan-modal-ulang {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: opacity 0.2s;
+}
+
+.latihan-modal-tutup {
+  background: #4b5563;
+  color: #fff;
+}
+
+.latihan-modal-ulang {
+  background: #e44a3f;
+  color: #fff;
+}
+
+.latihan-modal-tutup:hover,
+.latihan-modal-ulang:hover {
+  opacity: 0.9;
+}
+
+/* Animasi jarak tempuh dan perpindahan */
+.explain-box {
+  background: #fffbeb;
+  border-left: 6px solid #f59e0b;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #78350f;
+}
+
+.explain-title {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.explain-result {
+  background: #fef3c7;
+  border: 1px dashed #f59e0b;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  color: #78350f;
+}
+
+.explain-box p {
+  margin: 6px 0;
+  color: #7f1d1d;
+}
+
+#quiz-feedback {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* File kelajuan dan kecepatan */
+/* Untuk Rumus - Rumus */
+/* --- LAYOUT CONTAINER --- */
+.rumus-container-kelajuandankecepatan {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  
+  /* TRIK UTAMA: 
+     Mouse tidak akan mendeteksi container ini (area kosong/gap diabaikan).
+     Sehingga saat mouse di celah, status tetap dianggap "di luar". */
+  pointer-events: none; 
+}
+
+/* --- BASE STYLE KARTU --- */
+.rumus-card-kelajuandankecepatan {
+  flex: 1;
+  min-width: 120px;
+  max-width: 160px;
+  padding: 10px 5px;
+  text-align: center;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  /* Default Style (Abu-abu / Mati) untuk Jarak, Waktu, Perpindahan */
+  background-color: #f8f9fa;
+  border: 2px solid #e9ecef;
+  color: #adb5bd;
+
+  /* TRIK: Aktifkan kembali mouse hanya pada kartu */
+  pointer-events: auto; 
+}
+
+/* Judul & Rumus */
+.rumus-card-kelajuandankecepatan .judul-rumus {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.rumus-card-kelajuandankecepatan .math-expr {
+  font-size: 1.1em;
+  padding: 2px;
+  color: #333;
+}
+
+
+/* --- LOGIKA INTERAKSI (REVISI) --- */
+
+/* 1. KONDISI DEFAULT (Tidak ada mouse, atau mouse di area kosong/gap) 
+   Kelajuan & Kecepatan MENYALA (Orange), sisanya Abu-abu */
+.rumus-card-kelajuandankecepatan.kelajuan,
+.rumus-card-kelajuandankecepatan.kecepatan {
+  background-color: #fff8f0;
+  border-color: #e38b2d;
+  color: #d37a1e;
+  opacity: 1;
+  transform: none;
+}
+
+/* 2. SAAT SALAH SATU KARTU DISENTUH
+   Jika container mendeteksi hover (artinya salah satu kartu disentuh karena pointer-events:auto),
+   maka PAKSA Kelajuan/Kecepatan jadi Abu-abu dulu. 
+   Nanti aturan no 3 akan menyalakan kartu yang sedang ditunjuk. */
+.rumus-container-kelajuandankecepatan:hover .rumus-card-kelajuandankecepatan.kelajuan,
+.rumus-container-kelajuandankecepatan:hover .rumus-card-kelajuandankecepatan.kecepatan {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  color: #adb5bd;
+  opacity: 0.6;
+}
+
+/* 3. SAAT KARTU SPESIFIK DIPILIH (HOVER)
+   Ini akan menimpa aturan abu-abu di atas */
+
+/* -> Hover Orange (Untuk dirinya sendiri: Kelajuan & Kecepatan) */
+.rumus-card-kelajuandankecepatan.kelajuan:hover,
+.rumus-card-kelajuandankecepatan.kecepatan:hover {
+  background-color: #fff8f0 !important;
+  border-color: #e38b2d !important;
+  color: #d37a1e !important;
+  opacity: 1 !important;
+  transform: translateY(-5px);
+}
+
+/* -> Hover Ungu (Jarak & Perpindahan) */
+.rumus-card-kelajuandankecepatan.jarak:hover,
+.rumus-card-kelajuandankecepatan.perpindahan:hover {
+  background-color: #f8f0fc;
+  border-color: #b97bd8;
+  color: #a060c0;
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+/* -> Hover Hijau (Waktu) */
+.rumus-card-kelajuandankecepatan.waktu:hover {
+  background-color: #f4f8e8;
+  border-color: #b5c94c;
+  color: #9ab030;
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+
+/* ini masuk contoh dan latihan di bagian kelajuan dan kecepatan */
+.penyelesaian-dua-kolom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.penyelesaian {
+  background: #fffbeb;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.penyelesaian:first-child {
+  border-left: 6px solid #f59e0b;
+}
+
+.penyelesaian:last-child {
+  border-left: 6px solid #84cc16;
+}
+
+.rumus-besar mjx-container {
+  font-size: 125%;
+  text-align: left !important;
+}
+
+.isian-ayo {
+  width: 56px;
+  padding: 4px 6px;
+  text-align: center;
+  font-size: 14px;
+  border: 2px solid #fca5a5;
+  border-radius: 6px;
+  background: #fffdf7;
+}
+
+.penyelesaian p {
+  line-height: 1.9;
+}
+
+.baris-rumus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.pecahan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pecahan .garis {
+  width: 56px;
+  height: 2px;
+  background: #000;
+  margin: 3px 0;
+}
+
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.popup.show {
+  display: flex;
+}
+
+.popup-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px 26px;
+  width: 92%;
+  max-width: 560px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.popup-box h3 {
+  color: #e44a3f;
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.hasil-ringkas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.hasil-benar {
+  color: #166534;
+}
+
+.hasil-salah {
+  color: #991b1b;
+}
+
+.pemisah {
+  color: #374151;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ================= INPUT AYO BERLATIH ================= */
+
+.isian-ayo {
+  border: 2px solid #374151;
+  border-radius: 6px;
+  padding: 4px 6px;
+  width: 60px;
+  text-align: center;
+  color: #111827;
+  background: #ffffff;
+}
+
+.isian-ayo::placeholder {
+  color: #9ca3af;
+}
+
+/* BENAR */
+.isian-ayo.benar {
+  border-color: #16a34a;
+  background: #ecfdf5;
+  color: #166534;
+}
+
+/* SALAH */
+.isian-ayo.salah {
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+/* ================= TOMBOL ================= */
+
+.btn-cek {
+  background: #f95c50;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-reset {
+  background: #6b7280;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-cek:hover {
+  background: #e44a3f;
+}
+
+.btn-reset:hover {
+  background: #4b5563;
+}
+
+.latihan-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.hasil-belum {
+  color: #92400e;
+}
+
+/* Resultan Gaya */
+.container-soal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.box-soal {
+    background-color: #ffffff;
+    color: #333333;
+    padding: 20px;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 280px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.judul-soal {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: block;
+    color: #d9534f;
+}
+
+.figure-soal {
+    margin: 15px 0;
+    border: 1px solid #ffd3cc;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fafafa;
+    text-align: center;
+}
+
+.gambar-soal {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+}
+
+.caption-soal {
+    margin-top: 10px;
+    color: #666666;
+    line-height: 1.4;
+    font-size: 12px !important; 
+}
+
+.box-jawaban {
+    background-color: #f8f9fa;
+    border: 2px dashed #cccccc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: auto;
+    font-size: 0.95em;
+}
+
+.label-penyelesaian {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Resultan Gaya - Latihan */
+.input-jawaban {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.btn-cek-resultan {
+  margin-top: 10px;
+  padding: 8px 14px;
+  background-color: #f95c50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cek-resultan:hover {
+  background-color: #e44a3f;
+}
+
+.feedback.benar {
+  color: green;
+}
+
+.feedback.salah {
+  color: red;
+}
+
+ */
+.note-box {
+    background-color: #fff9c4; 
+    border-left: 5px solid #fbc02d;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.tombol-opsi.dipilih {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+  color: #0d47a1;
+}
+
+/* Pengertian Gaya */
+.kotak-kuis-gaya {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.teks-soal {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.grup-opsi {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tombol-opsi {
+    padding: 8px 12px;
+    background-color: white;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #555;
+}
+
+.tombol-opsi:hover {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.tombol-opsi.jawaban-benar {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    cursor: default;
+}
+
+.tombol-opsi.jawaban-salah {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+    cursor: default;
+}
+
+.teks-respon {
+    margin-top: 5px;
+    min-height: 0;
+}
+
+/* Macam - Macam Gaya */
+.jg-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.jg-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.jg-card h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+.jg-img-box {
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border: 2px dashed #cccccc;
+}
+
+.jg-img-box video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.jg-video-caption {
+    text-align: center;
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-style: italic;
+    font-size: 12px !important; 
+}
+
+.jg-card p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.jg-card ul {
+    padding-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.jg-card ul li {
+    margin-bottom: 5px;
+}
+
+
+
+
+/* INI MERUPAKAN FILE HUKUM NEWTON */
+.note-box {
+    background-color: #fff9c4; 
+    border-left: 5px solid #fbc02d;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+
+
+
+
+
+
+/* INI CSS UNTUK PETUNJUK PENGERJAAN */
+/* ============================================================
+   STYLE KHUSUS HALAMAN PETUNJUK PENGERJAAN
+   ============================================================ */
+
+/* Setting Body Khusus Halaman Ini */
+body.body-petunjuk {
+    min-height: 100vh;
+    background: #ffe4e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Wrapper Utama */
+.petunjuk-wrapper {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 25px 30px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: relative;
+    width: 100%;
+}
+
+/* Background panel luar */
+.petunjuk-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 28px;
+    background: #1e293b; 
+    z-index: -1;
+}
+
+.petunjuk-header {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.icon-circle {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    background: #f95c50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 36px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+    font-weight: bold;
+}
+
+.petunjuk-header h1 {
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: #333;
+    font-weight: 700;
+}
+
+.divider {
+    margin: 18px 0 16px;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(to right, #f95c50, #ffbfb7);
+    border-radius: 999px;
+}
+
+.petunjuk-content {
+    font-size: 15px;
+    color: #333;
+}
+
+.petunjuk-content ol {
+    margin-left: 22px;
+    line-height: 1.7;
+}
+
+.petunjuk-content li + li {
+    margin-top: 4px;
+}
+
+.info-box {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fff3f0;
+    border: 1px solid #ffd3cc;
+    font-size: 14px;
+}
+
+.info-box b {
+    color: #f95c50;
+}
+
+.petunjuk-actions {
+    margin-top: 22px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Tombol */
+.btn {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+.btn-back {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.btn-back:hover {
+    background: #fee2e2;
+}
+
+.btn-start {
+    background: #f95c50;
+    color: #fff;
+    border: 1px solid #f97362;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-start:hover {
+    background: #e44a3f;
+}
+
+
+
+
+/* INI MERUPAKAN FILE KUIS 1 */
+.body-kuis-fullscreen {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.kuis-container-full {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.kuis-sidebar {
+    width: 260px;
+    background: #fff;
+    border-right: 1px solid #e4e6eb;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.kuis-sidebar-header {
+    padding: 20px;
+    background: #f95c50;
+    color: white;
+    text-align: center;
+}
+
+.kuis-sidebar-header h3 {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.kuis-sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.kuis-sidebar-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #65676b;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.kuis-nomor-soal-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.kuis-btn-num {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 2px solid #e4e6eb;
+    background: #fff;
+    color: #65676b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.kuis-btn-num:hover {
+    border-color: #f95c50;
+    color: #f95c50;
+    transform: translateY(-2px);
+}
+
+.kuis-btn-num.current {
+    background: #f95c50;
+    color: white;
+    border-color: #f95c50;
+    box-shadow: 0 4px 10px rgba(249, 92, 80, 0.3);
+}
+
+.kuis-btn-num.answered {
+    background: #2ecc71;
+    color: white;
+    border-color: #2ecc71;
+}
+
+.kuis-legend {
+    border-top: 1px solid #e4e6eb;
+    padding-top: 20px;
+}
+
+.kuis-legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #65676b;
+    margin-bottom: 8px;
+}
+
+.kuis-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #e4e6eb;
+}
+
+.kuis-dot-white {
+    background: #fff;
+}
+
+.kuis-dot-orange {
+    background: #f95c50;
+    border-color: #f95c50;
+}
+
+.kuis-dot-green {
+    background: #2ecc71;
+    border-color: #2ecc71;
+}
+
+.kuis-main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffe7e3;
+    overflow-y: auto;
+}
+
+.kuis-top-header {
+    background: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e4e6eb;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.kuis-timer-box {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f95c50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff0ee;
+    padding: 8px 20px;
+    border-radius: 50px;
+}
+
+.kuis-btn-finish {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.kuis-btn-finish:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+.kuis-question-wrapper {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.kuis-question-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 900px;
+}
+
+.kuis-question-number {
+    font-size: 18px;
+    color: #f95c50;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.kuis-question-text {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #1c1e21;
+    margin-bottom: 30px;
+}
+
+.kuis-options-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.kuis-option-label {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border: 2px solid #e4e6eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.kuis-option-label input[type="radio"] {
+    display: none;
+}
+
+.kuis-option-text {
+    font-size: 16px;
+    color: #444;
+    flex: 1;
+}
+
+.kuis-radio-indicator {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #d0d2d6;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.kuis-radio-indicator::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #f95c50;
+    border-radius: 50%;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.kuis-option-label:hover {
+    border-color: #f95c50;
+    background: #fff5f4;
+    transform: translateX(5px);
+}
+
+.kuis-option-label input[type="radio"]:checked + .kuis-radio-indicator {
+    border-color: #f95c50;
+}
+
+.kuis-option-label input[type="radio"]:checked + .kuis-radio-indicator::after {
+    opacity: 1;
+}
+
+.kuis-option-label:has(input[type="radio"]:checked) {
+    border-color: #f95c50;
+    background: #fff0ee;
+    box-shadow: 0 4px 10px rgba(249, 92, 80, 0.15);
+}
+
+.kuis-nav-actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid #f0f2f5;
+}
+
+.kuis-btn-nav {
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    background: #e4e6eb;
+    color: #1c1e21;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.kuis-btn-nav:hover {
+    background: #d0d2d6;
+}
+
+.kuis-btn-nav.next {
+    background: #f95c50;
+    color: white;
+}
+
+.kuis-btn-nav.next:hover {
+    background: #e44a3f;
+    box-shadow: 0 4px 15px rgba(249, 92, 80, 0.3);
+}
+
+.kuis-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.kuis-modal-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: popUp 0.4s ease;
+}
+
+@keyframes popUp {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.kuis-modal-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
+}
+
+.kuis-modal-box h3 {
+    font-size: 24px;
+    color: #1c1e21;
+    margin-bottom: 15px;
+}
+
+.kuis-result-message {
+    font-size: 16px;
+    color: #65676b;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    background: #f7f8fa;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.kuis-btn-modal-ok {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: #f95c50;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.kuis-btn-modal-ok:hover {
+    background: #e44a3f;
+}
+
+
+
+
+/* ============================================================
+   STYLE KHUSUS KUIS 2 (GAYA)
+   ============================================================ */
+
+.body-kuis2-fullscreen {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+.kuis2-container-full {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* --- SIDEBAR --- */
+.kuis2-sidebar {
+    width: 260px;
+    background: #fff;
+    border-right: 1px solid #e4e6eb;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.kuis2-sidebar-header {
+    padding: 20px;
+    background: #f95c50;
+    color: white;
+    text-align: center;
+}
+
+.kuis2-sidebar-header h3 {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.kuis2-sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.kuis2-sidebar-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #65676b;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* --- GRID NOMOR SOAL --- */
+.kuis2-nomor-soal-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.kuis2-btn-num {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 2px solid #e4e6eb;
+    background: #fff;
+    color: #65676b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.kuis2-btn-num:hover {
+    border-color: #f95c50;
+    color: #f95c50;
+    transform: translateY(-2px);
+}
+
+.kuis2-btn-num.current {
+    background: #f95c50;
+    color: white;
+    border-color: #f95c50;
+    box-shadow: 0 4px 10px rgba(249, 92, 80, 0.3);
+}
+
+.kuis2-btn-num.answered {
+    background: #2ecc71;
+    color: white;
+    border-color: #2ecc71;
+}
+
+/* --- LEGEND (KETERANGAN WARNA) --- */
+.kuis2-legend {
+    border-top: 1px solid #e4e6eb;
+    padding-top: 20px;
+}
+
+.kuis2-legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #65676b;
+    margin-bottom: 8px;
+}
+
+.kuis2-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #e4e6eb;
+}
+
+.kuis2-dot-white {
+    background: #fff;
+}
+
+.kuis2-dot-orange {
+    background: #f95c50;
+    border-color: #f95c50;
+}
+
+.kuis2-dot-green {
+    background: #2ecc71;
+    border-color: #2ecc71;
+}
+
+/* --- MAIN AREA (KANAN) --- */
+.kuis2-main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffe7e3;
+    overflow-y: auto;
+}
+
+.kuis2-top-header {
+    background: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e4e6eb;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+/* --- TIMER & TOMBOL SELESAI --- */
+.kuis2-timer-box {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f95c50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff0ee;
+    padding: 8px 20px;
+    border-radius: 50px;
+}
+
+.kuis2-btn-finish {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    font-family: inherit;
+}
+
+.kuis2-btn-finish:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+/* --- CONTAINER SOAL --- */
+.kuis2-question-wrapper {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.kuis2-question-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 900px;
+}
+
+.kuis2-question-number {
+    font-size: 18px;
+    color: #f95c50;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.kuis2-question-text {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #1c1e21;
+    margin-bottom: 30px;
+}
+
+/* --- OPSI JAWABAN (RADIO BUTTON) --- */
+.kuis2-options-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.kuis2-option-label {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border: 2px solid #e4e6eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.kuis2-option-label input[type="radio"] {
+    display: none;
+}
+
+.kuis2-option-text {
+    font-size: 16px;
+    color: #444;
+    flex: 1;
+}
+
+.kuis2-radio-indicator {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #d0d2d6;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.kuis2-radio-indicator::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #f95c50;
+    border-radius: 50%;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+/* Hover & Checked States */
+.kuis2-option-label:hover {
+    border-color: #f95c50;
+    background: #fff5f4;
+    transform: translateX(5px);
+}
+
+.kuis2-option-label input[type="radio"]:checked + .kuis2-radio-indicator {
+    border-color: #f95c50;
+}
+
+.kuis2-option-label input[type="radio"]:checked + .kuis2-radio-indicator::after {
+    opacity: 1;
+}
+
+.kuis2-option-label:has(input[type="radio"]:checked) {
+    border-color: #f95c50;
+    background: #fff0ee;
+    box-shadow: 0 4px 10px rgba(249, 92, 80, 0.15);
+}
+
+/* --- TOMBOL NAVIGASI BAWAH (PREV/NEXT) --- */
+.kuis2-nav-actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid #f0f2f5;
+}
+
+.kuis2-btn-nav {
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    background: #e4e6eb;
+    color: #1c1e21;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+}
+
+.kuis2-btn-nav:hover {
+    background: #d0d2d6;
+}
+
+.kuis2-btn-nav.next {
+    background: #f95c50;
+    color: white;
+}
+
+.kuis2-btn-nav.next:hover {
+    background: #e44a3f;
+    box-shadow: 0 4px 15px rgba(249, 92, 80, 0.3);
+}
+
+/* --- MODAL / POPUP CUSTOM (Jika tidak menggunakan SweetAlert) --- */
+.kuis2-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.kuis2-modal-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: popUp 0.4s ease;
+}
+
+@keyframes popUp {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.kuis2-modal-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+.kuis2-modal-box h3 {
+    font-size: 24px;
+    color: #1c1e21;
+    margin-bottom: 15px;
+}
+
+.kuis2-result-message {
+    font-size: 16px;
+    color: #65676b;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    background: #f7f8fa;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.kuis2-btn-modal-ok {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: #f95c50;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+}
+
+.kuis2-btn-modal-ok:hover {
+    background: #e44a3f;
+}
+
+/* --- CSS PETUNJUK PENGERJAAN --- */
+.kotak-instruksi {
+  background-color: #fff8e1;
+  border-left: 5px solid #ffc107;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  color: #4a4a4a;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.kotak-instruksi i {
+  color: #ffa000;
+  margin-right: 5px;
+}
+
+.kotak-instruksi ul {
+  margin-top: 0px;
+  margin-left: 20px;
+  padding-left: 0;
+}
+
+.kotak-instruksi li {
+  margin-bottom: 2px;
+}
+
+
+/* ============================================================
+   STYLE KHUSUS EVALUASI AKHIR (GERAK DAN GAYA)
+   ============================================================ */
+
+/* --- BODY & CONTAINER --- */
+.body-evaluasi-fullscreen {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+.evaluasi-container-full {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* --- SIDEBAR (KIRI) --- */
+.evaluasi-sidebar {
+  width: 260px;
+  background: #fff;
+  border-right: 1px solid #e4e6eb;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.evaluasi-sidebar-header {
+  padding: 20px;
+  /* MENGGUNAKAN ORANGE TUA/VIBRANT */
+  background: #ff6b01; 
+  color: white;
+  text-align: center;
+}
+
+.evaluasi-sidebar-header h3 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.evaluasi-sidebar-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.evaluasi-sidebar-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #65676b;
+  margin-bottom: 15px;
+  display: block;
+}
+
+/* --- GRID NOMOR SOAL --- */
+.evaluasi-nomor-soal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.evaluasi-btn-num {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 2px solid #e4e6eb;
+  background: #fff;
+  color: #65676b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.evaluasi-btn-num:hover {
+  border-color: #ff6b01;
+  color: #ff6b01;
+  transform: translateY(-2px);
+}
+
+.evaluasi-btn-num.current {
+  background: #ff6b01; /* Orange Tua */
+  color: white;
+  border-color: #ff6b01;
+  box-shadow: 0 4px 10px rgba(255, 107, 1, 0.3);
+}
+
+.evaluasi-btn-num.answered {
+  background: #2ecc71; /* Hijau tetap untuk yang sudah dijawab */
+  color: white;
+  border-color: #2ecc71;
+}
+
+/* --- LEGEND (KETERANGAN WARNA) --- */
+.evaluasi-legend {
+  border-top: 1px solid #e4e6eb;
+  padding-top: 20px;
+}
+
+.evaluasi-legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #65676b;
+  margin-bottom: 8px;
+}
+
+.evaluasi-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #e4e6eb;
+}
+
+.evaluasi-dot-white {
+  background: #fff;
+}
+
+.evaluasi-dot-orange {
+  background: #ff6b01; /* Orange Tua */
+  border-color: #ff6b01;
+}
+
+.evaluasi-dot-green {
+  background: #2ecc71;
+  border-color: #2ecc71;
+}
+
+/* --- MAIN AREA (KANAN) --- */
+.evaluasi-main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #ffe7e3;
+  overflow-y: auto;
+}
+
+.evaluasi-top-header {
+  background: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e4e6eb;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+/* --- TIMER & TOMBOL SELESAI --- */
+.evaluasi-timer-box {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff6b01; /* Orange Tua */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff5e6; /* Background Orange Sangat Muda */
+  padding: 8px 20px;
+  border-radius: 50px;
+}
+
+.evaluasi-btn-finish {
+  background: #2ecc71;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+  font-family: inherit;
+}
+
+.evaluasi-btn-finish:hover {
+  background: #27ae60;
+  transform: translateY(-2px);
+}
+
+/* --- CONTAINER SOAL --- */
+.evaluasi-question-wrapper {
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.evaluasi-question-box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 900px;
+}
+
+.evaluasi-question-number {
+  font-size: 18px;
+  color: #ff6b01; /* Orange Tua */
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.evaluasi-question-text {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #1c1e21;
+  margin-bottom: 30px;
+}
+
+/* --- OPSI JAWABAN (RADIO BUTTON) --- */
+.evaluasi-options-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.evaluasi-option-label {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border: 2px solid #e4e6eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.evaluasi-option-label input[type="radio"] {
+  display: none;
+}
+
+.evaluasi-option-text {
+  font-size: 16px;
+  color: #444;
+  flex: 1;
+}
+
+.evaluasi-radio-indicator {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #d0d2d6;
+  border-radius: 50%;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.evaluasi-radio-indicator::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #ff6b01; /* Orange Tua */
+  border-radius: 50%;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+/* Hover & Checked States */
+.evaluasi-option-label:hover {
+  border-color: #ff6b01;
+  background: #fff5e6; /* Orange Muda */
+  transform: translateX(5px);
+}
+
+.evaluasi-option-label input[type="radio"]:checked + .evaluasi-radio-indicator {
+  border-color: #ff6b01;
+}
+
+.evaluasi-option-label input[type="radio"]:checked + .evaluasi-radio-indicator::after {
+  opacity: 1;
+}
+
+.evaluasi-option-label:has(input[type="radio"]:checked) {
+  border-color: #ff6b01;
+  background: #fff5e6;
+  box-shadow: 0 4px 10px rgba(255, 107, 1, 0.15);
+}
+
+/* --- TOMBOL NAVIGASI BAWAH (PREV/NEXT) --- */
+.evaluasi-nav-actions {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.evaluasi-btn-nav {
+  padding: 12px 30px;
+  border-radius: 50px;
+  border: none;
+  background: #e4e6eb;
+  color: #1c1e21;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: inherit;
+}
+
+.evaluasi-btn-nav:hover {
+  background: #d0d2d6;
+}
+
+.evaluasi-btn-nav.next {
+  background: #ff6b01; /* Orange Tua */
+  color: white;
+}
+
+.evaluasi-btn-nav.next:hover {
+  background: #e65100; /* Darker Orange */
+  box-shadow: 0 4px 15px rgba(255, 107, 1, 0.3);
+}
+
+/* --- MODAL / POPUP CUSTOM (Jika tidak menggunakan SweetAlert) --- */
+.evaluasi-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.evaluasi-modal-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  animation: popUp 0.4s ease;
+}
+
+.evaluasi-modal-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: bounce 1s infinite alternate;
+}
+
+.evaluasi-modal-box h3 {
+  font-size: 24px;
+  color: #1c1e21;
+  margin-bottom: 15px;
+}
+
+.evaluasi-btn-modal-ok {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #ff6b01; /* Orange Tua */
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: inherit;
+}
+
+.evaluasi-btn-modal-ok:hover {
+  background: #e65100;
+}
