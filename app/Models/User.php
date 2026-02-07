@@ -23,7 +23,7 @@ class User extends Authenticatable
         'password',
         'peran',
         'nomor_induk',
-        'kelas_id',
+        'kelas_id', // Pastikan kolom ini ada di fillable
     ];
 
     /**
@@ -47,5 +47,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relasi: Satu User (Siswa) memiliki satu Kelas (Belongs To)
+     * Menghubungkan kolom 'kelas_id' di tabel users ke id di tabel kelas
+     */
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 }
