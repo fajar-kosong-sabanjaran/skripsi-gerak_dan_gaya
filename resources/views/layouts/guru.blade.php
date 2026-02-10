@@ -28,10 +28,11 @@
       <span><i class="fas fa-chalkboard"></i> Data Kelas</span>
     </a>
 
-    <div class="menu-item has-toggle" data-target="nilai">
+    {{-- <div class="menu-item has-toggle" data-target="nilai">
       <span><i class="fas fa-chart-bar"></i> Rekap Nilai</span>
-    </div>
-    <div class="submenu" id="nilai">
+    </div> --}}
+
+    {{-- <div class="submenu" id="nilai">
       <a href="{{ url('guru/nilai/kuis1') }}" class="{{ request()->is('guru/nilai/kuis1') ? 'active' : '' }}">
           Nilai Kuis 1 (Gerak)
       </a>
@@ -41,15 +42,16 @@
       <a href="{{ url('guru/nilai/evaluasi') }}" class="{{ request()->is('guru/nilai/evaluasi') ? 'active' : '' }}">
           Nilai Evaluasi Akhir
       </a>
-    </div>
+    </div> --}}
 
-    <div class="menu-item has-toggle" data-target="preview">
+    {{-- <div class="menu-item has-toggle" data-target="preview">
       <span><i class="fas fa-book-open"></i> Preview Materi</span>
     </div>
     <div class="submenu" id="preview">
       <a href="{{ url('siswa/gerak/pengantargerak') }}" target="_blank">Lihat Materi Gerak</a>
       <a href="{{ url('siswa/gaya/pengantargaya') }}" target="_blank">Lihat Materi Gaya</a>
-    </div>
+    </div> --}}
+    
   </div>
 
   <div class="content-area" role="main">

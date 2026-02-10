@@ -6,90 +6,153 @@
     <title>Daftar - Gerak & Gaya</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Menggunakan style yang sama agar konsisten */
-        :root { --primary: #f95c50; --primary-dark: #e44a3f; --bg-light: #fffcfb; --text: #333; }
+        :root { 
+            --primary: #f95c50; 
+            --primary-dark: #e44a3f; 
+            --bg-light: #fffcfb; 
+            --text: #333; 
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
-        body { background-color: var(--bg-light); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        body { 
+            background-color: #fff; 
+            height: 100vh; 
+            width: 100vw;
+            overflow: hidden; /* Mencegah scroll bar ganda */
+        }
 
         .auth-container {
-            background: #fff; width: 900px; max-width: 100%; display: flex;
-            border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden;
-            height: 600px; 
+            width: 100%;
+            height: 100%;
+            display: flex;
+            background: #fff;
+            box-shadow: none;
+            border-radius: 0;
         }
 
+        /* --- BAGIAN KIRI (Gambar & Pesan) --- */
         .auth-left {
-            flex: 1; background: linear-gradient(135deg, var(--primary), #ff9b91);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 40px; color: white; text-align: center; position: relative; overflow: hidden;
+            width: 45%; 
+            background: linear-gradient(135deg, var(--primary), #ff9b91);
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+            padding: 60px; 
+            color: white; 
+            text-align: center; 
+            position: relative; 
+            overflow: hidden;
         }
 
-        .auth-left h2 { font-size: 32px; margin-bottom: 10px; font-weight: 700; z-index: 2; }
-        .auth-left p { font-size: 14px; opacity: 0.9; line-height: 1.6; max-width: 80%; z-index: 2; }
+        .auth-left h2 { font-size: 38px; margin-bottom: 15px; font-weight: 700; z-index: 2; }
+        .auth-left p { font-size: 16px; opacity: 0.95; line-height: 1.6; max-width: 90%; z-index: 2; }
 
-        .floating-icon { position: absolute; font-size: 80px; opacity: 0.15; animation: float 6s infinite ease-in-out; }
-        .icon-1 { top: 15%; left: 15%; }
-        .icon-2 { bottom: 20%; right: 10%; animation-delay: 2s; }
+        .floating-icon { position: absolute; font-size: 120px; opacity: 0.15; animation: float 6s infinite ease-in-out; }
+        .icon-1 { top: 10%; left: 10%; }
+        .icon-2 { bottom: 15%; right: 10%; animation-delay: 2s; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .auth-right { flex: 1.2; padding: 40px 50px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+        /* --- BAGIAN KANAN (Formulir) --- */
+        .auth-right { 
+            flex: 1; 
+            padding: 40px 80px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            overflow-y: auto; 
+            background-color: #fff;
+        }
 
-        .auth-header { margin-bottom: 25px; text-align: center; }
-        .auth-header h3 { font-size: 24px; color: var(--text); font-weight: 700; }
-        .auth-header p { color: #888; font-size: 13px; margin-top: 5px; }
+        .auth-header { margin-bottom: 30px; }
+        .auth-header h3 { font-size: 28px; color: var(--text); font-weight: 700; margin-bottom: 5px;}
+        .auth-header p { color: #888; font-size: 14px; }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #555; margin-bottom: 8px; }
         
         .form-control {
-            width: 100%; padding: 12px 15px; border: 2px solid #eee; border-radius: 12px;
+            width: 100%; padding: 14px 18px; border: 2px solid #f0f0f0; border-radius: 12px;
             font-size: 14px; transition: 0.3s; outline: none; background: #fafafa;
-            padding-right: 45px; /* Ruang untuk ikon mata */
         }
         .form-control:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(249, 92, 80, 0.1); }
 
-        .row { display: flex; gap: 15px; }
+        /* Dropdown Style */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+
+        .row { display: flex; gap: 20px; }
         .col { flex: 1; }
 
         .btn-primary {
-            width: 100%; padding: 14px; background: var(--primary); color: white; border: none;
+            width: 100%; padding: 16px; background: var(--primary); color: white; border: none;
             border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(249, 92, 80, 0.15);
         }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 15px 25px rgba(249, 92, 80, 0.25); }
 
-        .footer-link { text-align: center; margin-top: 20px; font-size: 13px; color: #666; }
-        .footer-link a { color: var(--primary); text-decoration: none; font-weight: 700; }
-
-        /* === STYLE ICON MATA === */
-        .input-group {
-            position: relative;
-            width: 100%;
+        /* --- LINK FOOTER (Masuk & Kembali) --- */
+        .footer-link { text-align: center; margin-top: 25px; font-size: 14px; color: #666; }
+        
+        /* Link 'Masuk di sini' - Warna Primer */
+        .footer-link a { 
+            color: var(--primary); 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: 0.2s;
         }
+        .footer-link a:hover { text-decoration: underline; color: var(--primary-dark); }
+
+        /* Link 'Kembali ke beranda' - Warna Abu-abu ke Primer */
+        .back-home {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .back-home a {
+            color: #888; /* Warna awal abu-abu agar tidak terlalu mencolok */
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px; /* Jarak ikon dan teks */
+            transition: all 0.3s ease;
+        }
+        .back-home a:hover {
+            color: var(--primary); /* Berubah jadi warna tema saat hover */
+            transform: translateX(-5px); /* Efek geser ke kiri */
+        }
+
+        /* Input Password Group */
+        .input-group { position: relative; width: 100%; }
+        .form-control.password-input { padding-right: 45px; }
         
         .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #aaa;
-            font-size: 16px;
-            transition: 0.3s;
-            z-index: 10;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: #aaa; font-size: 18px; transition: 0.3s; z-index: 10;
         }
-        
-        .toggle-password:hover {
-            color: var(--primary);
+        .toggle-password:hover { color: var(--primary); }
+
+        .error-box {
+            background-color: #fff5f5; color: #e74c3c; padding: 15px; 
+            border-radius: 10px; margin-bottom: 25px; font-size: 13px; 
+            border-left: 5px solid #e74c3c;
         }
 
-        @media (max-width: 768px) {
-            .auth-container { flex-direction: column; height: auto; }
-            .auth-left { display: none; }
-            .auth-right { padding: 40px 30px; }
+        @media (max-width: 900px) {
+            .auth-container { flex-direction: column; overflow-y: auto; }
+            .auth-left { display: none; } 
+            .auth-right { width: 100%; padding: 40px 25px; flex: none; min-height: 100vh; }
         }
     </style>
 </head>
@@ -107,11 +170,11 @@
         <div class="auth-right">
             <div class="auth-header">
                 <h3>Buat Akun Baru</h3>
-                <p>Isi data diri Kamu dengan benar.</p>
+                <p>Silakan lengkapi data diri Kamu di bawah ini.</p>
             </div>
 
             @if ($errors->any())
-                <div style="background-color: #ffe6e6; color: #d63031; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; border: 1px solid #fab1a0;">
+                <div class="error-box">
                     <ul style="margin-left: 20px;">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -125,7 +188,7 @@
                 
                 <div class="form-group">
                     <label>Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" value="{{ old('nama_lengkap') }}" required>
+                    <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" value="{{ old('nama_lengkap') }}" required autofocus>
                 </div>
 
                 <div class="form-group">
@@ -133,11 +196,27 @@
                     <input type="email" name="email" class="form-control" placeholder="nama@email.com" value="{{ old('email') }}" required>
                 </div>
 
+                <div class="form-group">
+                    <label>Kelas</label>
+                    <select name="kelas_id" class="form-control" required>
+                        <option value="">-- Pilih Kelas Kamu --</option>
+                        @if(isset($data_kelas))
+                            @foreach($data_kelas as $kelas)
+                                <option value="{{ $kelas->id }}" {{ old('kelas_id') == $kelas->id ? 'selected' : '' }}>
+                                    {{ $kelas->nama }}
+                                </option>
+                            @endforeach
+                        @else
+                            <option value="" disabled>Data kelas tidak ditemukan</option>
+                        @endif
+                    </select>
+                </div>
+
                 <div class="row">
                     <div class="col form-group">
                         <label>Kata Sandi</label>
                         <div class="input-group">
-                            <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required>
+                            <input type="password" name="password" id="password" class="form-control password-input" placeholder="••••••••" required>
                             <i class="fa-regular fa-eye toggle-password" id="icon-pass" onclick="toggleVisibility('password', 'icon-pass')"></i>
                         </div>
                     </div>
@@ -145,7 +224,7 @@
                     <div class="col form-group">
                         <label>Konfirmasi Sandi</label>
                         <div class="input-group">
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="••••••••" required>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control password-input" placeholder="••••••••" required>
                             <i class="fa-regular fa-eye toggle-password" id="icon-confirm" onclick="toggleVisibility('password_confirmation', 'icon-confirm')"></i>
                         </div>
                     </div>
@@ -159,6 +238,13 @@
             <div class="footer-link">
                 Sudah punya akun? <a href="{{ route('login') }}">Masuk di sini</a>
             </div>
+
+            <div class="back-home">
+                <a href="{{ route('home') }}">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke beranda
+                </a>
+            </div>
+
         </div>
     </div>
 
@@ -169,12 +255,10 @@
             
             if (input.type === "password") {
                 input.type = "text";
-                // Ubah ikon jadi mata dicoret (slash)
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
             } else {
                 input.type = "password";
-                // Kembalikan ikon jadi mata biasa
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
             }
