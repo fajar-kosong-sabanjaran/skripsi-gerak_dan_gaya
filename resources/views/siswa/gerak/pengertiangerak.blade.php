@@ -2,7 +2,6 @@
 
 @section('content')
 
-<!-- KONTEN -->
 <div class="main-content">
   <div class="container">
     <h1>PENGERTIAN GERAK</h1>
@@ -14,9 +13,9 @@
         Ketika sebuah benda mengalami pergeseran atau berpindah kedudukan, berarti benda tersebut sedang bergerak.
         Gerak merupakan salah satu fenomena alam yang dapat kita amati setiap waktu di sekitar kita.
         Suatu benda dikatakan bergerak apabila posisinya berubah terhadap titik acuan, baik bergerak menjauh maupun mendekat darinya.
-        <p>
+      </p>
+      <p>
           Perhatikan video berikut untuk memahami contoh peristiwa gerak:
-        </p>
       </p>
 
       <p>
@@ -105,7 +104,8 @@
         <ul>
           <li>Klik dan tahan (drag) kartu pernyataan yang ada di bawah.</li>
           <li>Geser kartu tersebut lalu lepaskan ke dalam kotak kategori yang sesuai.</li>
-          <li>Jika sudah yakin, tekan tombol Cek Jawaban untuk melihat hasilnya.</li>
+          <li>Jika sudah yakin, tekan tombol Cek Jawaban.</li>
+          <li>Jawaban Benar akan berwarna <b style="color: #16a34a;">Hijau</b>, jawaban Salah akan berwarna <b style="color: #dc2626;">Merah</b>.</li>
         </ul>
       </div>
 
@@ -143,25 +143,23 @@
         </div>
       </div>
 
-      <button type="button" class="btn-check" id="btn-check">Cek Jawaban</button>
-      <p id="feedback" class="feedback"></p>
+      <div class="quiz-action-container">
+          <button type="button" class="btn-check" id="btn-check">Cek Jawaban</button>
+          <button type="button" class="btn-reset hidden" id="btn-retry-pengertiangerak">Coba Lagi</button>
+      </div>
+
     </div>
 
   </div>
 
-  <!-- NAVIGASI BAWAH MATERI -->
   <div class="bottom-nav">
     <a href="{{ url('siswa/gerak/pengantargerak') }}" class="nav-btn prev">« Materi Sebelumnya</a>
-    <a href="{{ url('siswa/gerak/jaraktempuhdanperpindahan') }}" class="nav-btn next">Materi Selanjutnya »</a>
-  </div>
-</div>
-
-<!-- MODAL HASIL -->
-<div id="result-modal" class="modal">
-  <div class="modal-content">
-    <h4>Hasil Latihan</h4>
-    <p id="modal-text"></p>
-    <button type="button" id="close-modal" class="btn-check">Tutup</button>
+    
+    <a href="{{ url('siswa/gerak/jaraktempuhdanperpindahan') }}" 
+       id="btn-next-materi"
+       class="nav-btn next locked">
+       Materi Selanjutnya »
+    </a>
   </div>
 </div>
 

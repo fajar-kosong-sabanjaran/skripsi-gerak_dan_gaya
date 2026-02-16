@@ -43,7 +43,7 @@
       
       <header class="kuis-top-header">
         <div class="kuis-timer-box">
-          <i class="fas fa-stopwatch"></i> Sisa Waktu: <span id="timer">01:00</span>
+          <i class="fas fa-stopwatch"></i> Sisa Waktu: <span id="timer">30:00</span>
         </div>
         <button class="kuis-btn-finish" id="finishBtn">
           Selesaikan Kuis ✓
@@ -71,7 +71,8 @@
   </div>
 
   <script>
-    window.PENGERTIAN_PAGE = "{{ url('siswa/gerak/pengantargerak') }}"; 
+    // [REVISI] Link disamakan dengan file petunjuk (pengertiangerak)
+    window.PENGERTIAN_PAGE = "{{ url('siswa/gerak/pengertiangerak') }}"; 
     window.GAYA_PAGE = "{{ url('siswa/gaya/pengantargaya') }}"; 
   </script>
 

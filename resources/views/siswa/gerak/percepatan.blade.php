@@ -11,6 +11,8 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="main-content">
   <div class="container">
     <h1>PERCEPATAN</h1>
@@ -236,7 +238,8 @@
 
   <div class="bottom-nav">
     <a href="{{ url('siswa/gerak/kelajuandankecepatan') }}" class="nav-btn prev">« Materi Sebelumnya</a>
-    <a href="{{ url('siswa/gerak/petunjukpengerjaan') }}" class="nav-btn next">Ke Kuis 1 »</a>
+    
+    <a href="{{ url('siswa/gerak/petunjukpengerjaan') }}" id="btn-next-materi" class="nav-btn next locked">Ke Kuis 1 »</a>
   </div>
 
 </div>

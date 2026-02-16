@@ -174,7 +174,12 @@
 
   <div class="bottom-nav">
     <a href="{{ url('siswa/gerak/pengertiangerak') }}" class="nav-btn prev">« Materi Sebelumnya</a>
-    <a href="{{ url('siswa/gerak/kelajuandankecepatan') }}" class="nav-btn next">Materi Selanjutnya »</a>
+    
+    <a href="{{ url('siswa/gerak/kelajuandankecepatan') }}" 
+       id="btn-next-materi" 
+       class="nav-btn next locked">
+       Materi Selanjutnya »
+    </a>
   </div>
 
 </div>

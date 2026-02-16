@@ -272,9 +272,9 @@
         <div class="nav-links">
             
             @auth
-                <a href="{{ url('siswa/gerak/pengantargerak') }}">yap</a>
+                {{-- <a href="{{ url('siswa/gerak/pengantargerak') }}">yap</a>
                 <a href="{{ url('siswa/gaya/pengantargaya') }}">yap</a>
-                <a href="{{ url('siswa/gerak/kuis1') }}">yap</a>
+                <a href="{{ url('siswa/gerak/kuis1') }}">yap</a> --}}
             @else
                 {{-- <a href="javascript:void(0);" onclick="showLoginAlert()">yap</a>
                 <a href="javascript:void(0);" onclick="showLoginAlert()">yap</a>

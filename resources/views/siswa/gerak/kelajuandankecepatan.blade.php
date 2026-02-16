@@ -4,6 +4,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="main-content">
   <div class="container">
     <h1>KELAJUAN DAN KECEPATAN</h1>
@@ -474,7 +476,8 @@
 
   <div class="bottom-nav">
     <a href="{{ url('siswa/gerak/jaraktempuhdanperpindahan') }}" class="nav-btn prev">« Materi Sebelumnya</a>
-    <a href="{{ url('siswa/gerak/percepatan') }}" class="nav-btn next">Materi Selanjutnya »</a>
+    
+    <a href="{{ url('siswa/gerak/percepatan') }}" id="btn-next-materi" class="nav-btn next locked">Materi Selanjutnya »</a>
   </div>
 </div>
 
