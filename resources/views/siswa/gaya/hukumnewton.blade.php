@@ -226,7 +226,8 @@
 
   <div class="bottom-nav">
     <a href="{{ url('siswa/gaya/macam-macamgaya') }}" class="nav-btn prev">« Materi Sebelumnya</a>
-    <a href="{{ url('siswa/gaya/petunjukpengerjaan') }}" class="nav-btn next">Ke Kuis 2 »</a>
+    
+    <a href="{{ url('siswa/gaya/petunjukpengerjaan') }}" id="btn-next-materi" class="nav-btn next locked">Ke Kuis 2 »</a>
   </div>
 
 </div>

@@ -1,11 +1,11 @@
-/* INI MERUPAKAN FILE PENGANTAR GERAK dan SISWA BLADE (LOGIKA GLOBAL) */
+// INI MERUPAKAN FILE PENGANTAR GERAK dan SISWA BLADE */
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK */
+    // FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK */
     function checkAllLocks() {
-        /* 1. Cek Kelulusan Materi Pengertian Gerak */
+        // 1. Cek Kelulusan Materi Pengertian Gerak */
         if (localStorage.getItem('pengertiangerak_completed') === 'true') {
-            /* Buka Link di Sidebar */
+            // Buka Link di Sidebar */
             const navJarak = document.getElementById('nav-jarak');
             if (navJarak) {
                 navJarak.classList.remove('locked');
@@ -13,25 +13,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
 
-            /* Buka Tombol Next di dalam halaman Pengertian Gerak */
+            // Buka Tombol Next di dalam halaman Pengertian Gerak */
             const btnNext = document.getElementById("btn-next-materi");
             if (btnNext) {
                 btnNext.classList.remove('locked');
             }
         }
-
-        /* Di masa depan, Anda bisa menambah logika untuk materi lain di sini */
-        /* Contoh: if (localStorage.getItem('jarak_completed') === 'true') { ... } */
     }
 
-    /* Jalankan pengecekan gembok saat halaman pertama kali dimuat */
+    // Jalankan pengecekan gembok saat halaman pertama kali dimuat */
     checkAllLocks();
 
-    /* SIDEBAR TOGGLE */
+    // SIDEBAR TOGGLE */
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     toggleItems.forEach(item => {
         item.addEventListener("click", () => {
-            /* Jangan buka submenu jika header menu-item tersebut masih terkunci */
+            // Jangan buka submenu jika header menu-item tersebut masih terkunci */
             if (item.classList.contains('locked')) return;
 
             const targetId = item.dataset.target;
@@ -49,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    /* AUTO OPEN SIDEBAR BERDASARKAN URL */
+    // AUTO OPEN SIDEBAR BERDASARKAN URL */
     const path = window.location.pathname;
     if (path.includes("/siswa/gerak")) {
         const submenu = document.getElementById("gerak");
@@ -64,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (header) header.classList.add("active");
     }
 
-    /* LOCKED MENU ALERT (SWEETALERT GLOBAL) */
+    // LOCKED MENU ALERT (SWEETALERT GLOBAL) */
     const body = document.querySelector('body');
     body.addEventListener('click', function(e) {
         const lockedItem = e.target.closest('.locked');
@@ -80,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    /* USER DROPDOWN */
+    // USER DROPDOWN */
     window.toggleDropdown = function() {
         var dropdown = document.getElementById("dropdownMenu");
         if (dropdown) dropdown.classList.toggle("show");
@@ -96,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    /* LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP) */
+    // LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP) */
     const cards = document.querySelectorAll(".card-item");
     if (cards.length > 0) {
         const zones = document.querySelectorAll(".drop-zone, #card-pool");
@@ -107,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let draggedId = null;
         const STORAGE_KEY = 'pengertiangerak_completed';
 
-        /* EVENT DRAG & DROP */
+        // EVENT DRAG & DROP */
         cards.forEach(card => {
             card.addEventListener("dragstart", function (e) {
                 draggedId = this.id;
@@ -140,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        /* LOGIKA TOMBOL CEK JAWABAN */
+        // LOGIKA TOMBOL CEK JAWABAN */
         if(btnCheck) {
             btnCheck.addEventListener("click", function () {
                 let benar = 0;
@@ -161,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (benar === total) {
-                    /* Simpan status ke memori browser */
+                    // Simpan status ke memori browser */
                     localStorage.setItem(STORAGE_KEY, 'true');
 
                     Swal.fire({
@@ -171,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         confirmButtonText: 'Lanjut',
                         confirmButtonColor: '#2ecc71'
                     }).then(() => {
-                        /* Jalankan fungsi buka gembok secara instan tanpa reload */
+                        // Jalankan fungsi buka gembok secara instan tanpa reload */
                         checkAllLocks();
                     });
 
@@ -189,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        /* LOGIKA TOMBOL COBA LAGI */
+        // LOGIKA TOMBOL COBA LAGI */
         if(btnRetry) {
             btnRetry.addEventListener("click", function() {
                 cards.forEach(card => {
@@ -207,9 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // INI MERUPAKAN FILE JARAK TEMPUH DAN PERPINDAHAN
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* =========================================
-     0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
-     ========================================= */
+  // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK */
   function checkAllLocks() {
       // Deteksi URL saat ini agar tombol Next yang dibuka tidak salah alamat
       const path = window.location.pathname;
@@ -284,9 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAllLocks();
 
 
-  /* =========================================
-     1. LOGIKA ANIMASI GERAK MOBIL
-     ========================================= */
+  // 1. LOGIKA ANIMASI GERAK MOBIL */
   const posA = 0;
   const posB = 4;   // A → B = 4 km
   const posC = 10;  // B → C = 6 km → total A → C = 10 km
@@ -437,9 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =========================================
-     2. LOGIKA KUIS REFLEKSI (POP-UP)
-     ========================================= */
+  // 2. LOGIKA KUIS REFLEKSI (POP-UP) */
   const quizModal = document.getElementById("quiz-modal");
   const quizQuestion = document.getElementById("quiz-question");
   const quizInput = document.getElementById("quiz-input");
@@ -545,9 +536,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =========================================
-     3. LOGIKA LATIHAN SOAL (ADI DI SIRKUIT)
-     ========================================= */
+  // 3. LOGIKA LATIHAN SOAL (ADI DI SIRKUIT) */
   
   // Buat modal latihan secara dinamis jika belum ada (antisipasi)
   if (!document.getElementById("latihan-modal")) {
@@ -624,9 +613,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Logic Tombol Cek
-  // =========================================
   // LOGIKA TOMBOL CEK & MODAL
-  // =========================================
   if (btnCekAdi) {
       btnCekAdi.addEventListener("click", () => {
         let benarCount = 0;
@@ -660,14 +647,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // --- 1. Validasi Setiap Soal ---
+        // 1. Validasi Setiap Soal
         validateInput(inputs.soal1, "A", false);   
         validateInput(inputs.soal2, "A", false);   
         validateInput(inputs.soal3, 110, true);    
         validateInput(inputs.soal4, 550, true);    
         validateInput(inputs.soal5, 0, true);      
 
-        // --- 2. CEK APAKAH SEMUA BENAR ---
+        // 2. CEK APAKAH SEMUA BENAR
         if (benarCount === 5) {
             
             // Simpan status ke memori browser
@@ -691,7 +678,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             
             // Jika belum benar semua, munculkan Pop-up Hasil Latihan
-            
             // Sembunyikan list detail lama
             modalDetail.innerHTML = ""; 
             modalDetail.style.display = "none"; 
@@ -714,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // --- Logic Tombol Reset & Controls ---
+  // Logic Tombol Reset & Controls
   if (btnResetAdi) btnResetAdi.addEventListener("click", resetAllAdi);
   
   if (modalTutup) modalTutup.addEventListener("click", () => modalLatihan.style.display = "none");
@@ -731,9 +717,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  /* =========================================
-     4. LOGIKA UNDUH PDF
-     ========================================= */
+  // 4. LOGIKA UNDUH PDF */
   
   const btnUnduhAdi = document.getElementById("unduh-adi");
 
@@ -787,7 +771,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const margin = 20;
         let yPos = 0;
 
-        // --- 1. HEADER (Orange) ---
+        // 1. HEADER (Orange)
         doc.setFillColor(249, 92, 80);
         doc.rect(0, 0, pageWidth, 40, 'F');
         doc.setTextColor(255, 255, 255);
@@ -800,7 +784,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         yPos = 55;
 
-        // --- 2. INFO IDENTITAS (REVISI: KECIL & MIRING) ---
+        // 2. INFO IDENTITAS (REVISI: KECIL & MIRING)
         doc.setTextColor(80, 80, 80); // Abu agak tua
         doc.setFontSize(9);           // Ukuran lebih kecil
         doc.setFont("helvetica", "italic"); // Gaya Miring
@@ -809,7 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
         doc.text(`Tanggal Pengerjaan: ${tgl}`, margin, yPos);
         yPos += 10;
 
-        // --- 3. CERITA SOAL (REVISI: UKURAN LEBIH BESAR) ---
+        // 3. CERITA SOAL (REVISI: UKURAN LEBIH BESAR)
         doc.setFont("helvetica", "normal"); // Kembalikan ke normal (tidak miring)
         doc.setFontSize(12);                // Ukuran font diperbesar (Standar baca nyaman)
         doc.setTextColor(0, 0, 0);          // Hitam pekat
@@ -823,7 +807,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update yPos berdasarkan tinggi teks cerita
         yPos += (splitCerita.length * 6) + 5; 
 
-        // --- 4. GAMBAR (Di Bawah Cerita) ---
+        // 4. GAMBAR (Di Bawah Cerita)
         const imgElement = document.querySelector('.gambar-latihan');
         if (imgElement) {
           try {
@@ -841,7 +825,7 @@ document.addEventListener("DOMContentLoaded", () => {
           } catch (e) { console.log(e); }
         }
 
-        // --- 5. VALIDASI & LIST JAWABAN ---
+        // 5. VALIDASI & LIST JAWABAN
         const rawAnswers = [
           { q: "1. Di mana posisi awal Adi saat mulai mengemudi?", el: document.getElementById("soal1"), key: "A", isNum: false, unit: "" },
           { q: "2. Di titik mana Adi mengakhiri putarannya?", el: document.getElementById("soal2"), key: "A", isNum: false, unit: "" },
@@ -908,7 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
            yPos += 16;
         });
 
-        // --- 6. RINGKASAN SKOR ---
+        // 6. RINGKASAN SKOR
         yPos += 5;
         doc.setFont("helvetica", "bold");
         doc.setTextColor(0, 0, 0);
@@ -920,7 +904,7 @@ document.addEventListener("DOMContentLoaded", () => {
         doc.roundedRect(margin, yPos - 5, pageWidth - (margin * 2), 10, 1, 1, 'S'); 
         doc.text(summaryText, pageWidth / 2, yPos + 2, { align: "center" });
 
-        // --- 7. FOOTER ---
+        // 7. FOOTER
         yPos += 15;
         doc.setFontSize(9);
         doc.setTextColor(150, 150, 150);
@@ -994,14 +978,12 @@ window.cobaLagiLatihan = function() {
 };
 
 
-/* ========================================================
-   MAIN LOGIC (DOM CONTENT LOADED)
-   ======================================================== */
+/*MAIN LOGIC (DOM CONTENT LOADED)*/
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* =========================================
+  /*
      0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (SISTEM PENGUNCIAN)
-     ========================================= */
+     */
   function checkAllLocks() {
       // 1. Cek Kelulusan Materi Sebelumnya (Jarak Tempuh)
       // Jika sudah lulus Jarak Tempuh, pastikan menu Kelajuan (sidebar) terbuka
@@ -1038,9 +1020,7 @@ document.addEventListener("DOMContentLoaded", function () {
   checkAllLocks();
 
 
-  /* ========================================================
-     1. LOGIKA KUIS KELAJUAN vs KECEPATAN
-     ======================================================== */
+  // 1. LOGIKA KUIS KELAJUAN vs KECEPATAN */
   const checks = document.querySelectorAll(".quiz-check");
   const btnCekQuiz = document.getElementById("btn-cek-quiz");
   const btnResetQuiz = document.getElementById("btn-reset-quiz");
@@ -1117,9 +1097,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ========================================================
-     2. LOGIKA LATIHAN SOAL ISIAN (UPDATED: BUKA KUNCI JIKA BENAR)
-     ======================================================== */
+  // 2. LOGIKA LATIHAN SOAL ISIAN (UPDATED: BUKA KUNCI JIKA BENAR) */
   const btnCekLatihan = document.getElementById("btn-cek-latihan");
   const btnResetLatihan = document.getElementById("btn-reset-latihan");
 
@@ -1147,7 +1125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // --- CEK APAKAH SEMUA JAWABAN BENAR ---
+      // CEK APAKAH SEMUA JAWABAN BENAR
       if (benar === kunciLatihan.length) {
           // 1. Simpan Status Lulus ke Memori Browser
           localStorage.setItem('kelajuan_completed', 'true');
@@ -1193,9 +1171,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ========================================================
-     3. LOGIKA UNDUH PDF
-     ======================================================== */
+  // 3. LOGIKA UNDUH PDF */
   const btnUnduhLatihan = document.getElementById("btn-unduh-latihan");
 
   // Helper Kompresi Gambar
@@ -1240,7 +1216,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const pageHeight = doc.internal.pageSize.getHeight();
         let yPos = 0;
 
-        // --- 1. HEADER ---
+        // 1. HEADER
         doc.setFillColor(249, 92, 80);
         doc.rect(0, 0, pageWidth, 40, 'F');
         doc.setTextColor(255, 255, 255);
@@ -1253,7 +1229,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         yPos = 55;
 
-        // --- 2. INFO IDENTITAS ---
+        // 2. INFO IDENTITAS
         doc.setTextColor(80, 80, 80);
         doc.setFontSize(9);
         doc.setFont("helvetica", "italic");
@@ -1261,7 +1237,7 @@ document.addEventListener("DOMContentLoaded", function () {
         doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
         yPos += 10;
 
-        // --- 3. SOAL CERITA ---
+        // 3. SOAL CERITA
         doc.setFont("helvetica", "normal");
         doc.setFontSize(11);
         doc.setTextColor(0, 0, 0);
@@ -1270,7 +1246,7 @@ document.addEventListener("DOMContentLoaded", function () {
         doc.text(splitCerita, 20, yPos);
         yPos += (splitCerita.length * 5) + 5;
 
-        // --- 4. GAMBAR ---
+        // 4. GAMBAR
         const images = document.querySelectorAll('.content-image2');
         const imgElement = images[images.length - 1]; // Ambil gambar terakhir di halaman
         if (imgElement) {
@@ -1285,7 +1261,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } catch (e) {}
         }
 
-        // --- 5. LOGIKA GAMBAR KOTAK JAWABAN (HELPER) ---
+        // 5. LOGIKA GAMBAR KOTAK JAWABAN (HELPER)
         
         let countBenar = 0, countSalah = 0, countKosong = 0;
 
@@ -1329,7 +1305,7 @@ document.addEventListener("DOMContentLoaded", function () {
           doc.setTextColor(0, 0, 0); 
         };
 
-        // --- 6. LAYOUT DUA KOLOM (KELAJUAN & KECEPATAN) ---
+        // 6. LAYOUT DUA KOLOM (KELAJUAN & KECEPATAN)
         // Kita akan menggambar secara manual menggunakan koordinat
         // Kolom Kiri: X = 20, Kolom Kanan: X = 115
         
@@ -1423,7 +1399,7 @@ document.addEventListener("DOMContentLoaded", function () {
         doc.text("m/s", colRight + 50, rightY + 5);
 
         
-        // --- 7. RINGKASAN SKOR ---
+        // 7. RINGKASAN SKOR
         // Cari posisi Y paling bawah antara kolom kiri atau kanan
         yPos = Math.max(leftY, rightY) + 25; 
 
@@ -1459,11 +1435,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-/* ========================================================
-   FILE: PERCEPATAN (LOGIKA LATIHAN & UNDUH PDF - REVISI LOCK SYSTEM)
-   ======================================================== */
+// FILE: PERCEPATAN (LOGIKA LATIHAN & UNDUH PDF - REVISI LOCK SYSTEM) */
 
-// --- 1. HELPER GLOBAL: KOMPRESI GAMBAR ---
+// 1. HELPER GLOBAL: KOMPRESI GAMBAR
 const getCompressedImage = (el) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -1492,9 +1466,7 @@ const getCompressedImage = (el) => {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* =========================================
-     0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (SISTEM PENGUNCIAN)
-     ========================================= */
+  // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (SISTEM PENGUNCIAN) */
   function checkAllLocks() {
       // 1. Cek Kelulusan Materi Sebelumnya (Kelajuan & Kecepatan)
       // Jika sudah lulus materi sebelumnya, pastikan menu Percepatan di sidebar terbuka
@@ -1531,9 +1503,7 @@ document.addEventListener("DOMContentLoaded", function () {
   checkAllLocks();
 
 
-  /* ========================================================
-     BAGIAN A: LOGIKA LATIHAN SOAL (INTERAKSI WEBSITE)
-     ======================================================== */
+  // BAGIAN A: LOGIKA LATIHAN SOAL (INTERAKSI WEBSITE) */
   
   const btnCek = document.getElementById("btn-cek-percepatan");
   const btnReset = document.getElementById("btn-reset-percepatan");
@@ -1588,7 +1558,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // --- LOGIKA BARU: JIKA BENAR SEMUA, BUKA KUNCI ---
+      // LOGIKA BARU: JIKA BENAR SEMUA, BUKA KUNCI
       if (benar === kunciPercepatan.length) {
           // 1. Simpan Status Lulus ke Memori Browser
           localStorage.setItem('percepatan_completed', 'true');
@@ -1640,9 +1610,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ========================================================
-     BAGIAN B: LOGIKA UNDUH PDF (LAYOUT KHUSUS PERCEPATAN)
-     ======================================================== */
+  // BAGIAN B: LOGIKA UNDUH PDF (LAYOUT KHUSUS PERCEPATAN) */
   
   const btnUnduhPercepatan = document.getElementById("btn-unduh-percepatan");
 
@@ -1661,7 +1629,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const pageWidth = doc.internal.pageSize.getWidth();
         let yPos = 0;
 
-        // --- 1. HEADER (Orange Theme) ---
+        // 1. HEADER (Orange Theme)
         doc.setFillColor(249, 92, 80);
         doc.rect(0, 0, pageWidth, 40, 'F');
         doc.setTextColor(255, 255, 255);
@@ -1674,7 +1642,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         yPos = 55;
 
-        // --- 2. IDENTITAS & TANGGAL ---
+        // 2. IDENTITAS & TANGGAL
         doc.setTextColor(80, 80, 80);
         doc.setFontSize(9);
         doc.setFont("helvetica", "italic");
@@ -1682,7 +1650,7 @@ document.addEventListener("DOMContentLoaded", function () {
         doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
         yPos += 10;
 
-        // --- 3. SOAL CERITA ---
+        // 3. SOAL CERITA
         doc.setFont("helvetica", "normal");
         doc.setFontSize(11);
         doc.setTextColor(0, 0, 0);
@@ -1691,7 +1659,7 @@ document.addEventListener("DOMContentLoaded", function () {
         doc.text(splitCerita, 20, yPos);
         yPos += (splitCerita.length * 6) + 5;
 
-        // --- 4. GAMBAR ILUSTRASI ---
+        // 4. GAMBAR ILUSTRASI
         const images = document.querySelectorAll('.content-image2');
         // Mengambil gambar terakhir di halaman (asumsi gambar latihan ada di bawah)
         const imgElement = images[images.length - 1]; 
@@ -1708,7 +1676,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } catch (e) { console.log(e); }
         }
 
-        // --- 5. LOGIKA GAMBAR KOTAK (VALIDASI) ---
+        // 5. LOGIKA GAMBAR KOTAK (VALIDASI)
         let countBenar = 0, countSalah = 0, countKosong = 0;
 
         const drawBox = (id, x, y, w = 15, h = 7) => {
@@ -1735,7 +1703,7 @@ document.addEventListener("DOMContentLoaded", function () {
           doc.setTextColor(0, 0, 0); // Reset warna hitam
         };
 
-        // --- 6. LAYOUT JAWABAN (MANUAL DRAWING) ---
+        // 6. LAYOUT JAWABAN (MANUAL DRAWING)
         let leftX = 20;
         doc.setFontSize(11);
         doc.setFont("helvetica", "normal");
@@ -1781,7 +1749,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         yPos += 25; // Spasi ke footer
 
-        // --- 7. RINGKASAN & FOOTER ---
+        // 7. RINGKASAN & FOOTER
         const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
         
         doc.setDrawColor(0, 0, 0); doc.setFillColor(255, 255, 255);
@@ -1815,91 +1783,215 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// INI MERUPAKAN FILE PENGERTIAN GAYA
-/* =========================================
-   LOGIKA KUIS PILIHAN GANDA (GAYA)
-   ========================================= */
-function cekJawaban(tombol, status) {
-  // 1. Ambil elemen induk (grup tombol)
-  const grupTombol = tombol.parentElement;
-  const semuaTombol = grupTombol.querySelectorAll('.tombol-opsi');
-  const respon = grupTombol.nextElementSibling; // Elemen <p> untuk pesan respon
+// FILE: SCRIPT KHUSUS MODUL GAYA (Fokus: Locking System & Progres Kuis Kilat) */
 
-  // 2. Matikan semua tombol di soal ini agar tidak bisa diklik lagi
-  semuaTombol.forEach(btn => {
-    btn.disabled = true;
-    btn.style.pointerEvents = "none"; // Hilangkan efek kursor
-  });
+document.addEventListener("DOMContentLoaded", function () {
 
-  // 3. Cek apakah jawaban Benar atau Salah
-  if (status === 'benar') {
-    // Jika Benar
-    tombol.classList.add('jawaban-benar');
-    respon.innerHTML = "✅ Benar! Bagus sekali."; 
-    respon.style.color = "#28a745"; // Warna hijau
-  } else {
-    // Jika Salah
-    tombol.classList.add('jawaban-salah');
-    respon.innerHTML = "❌ Kurang tepat. Jawaban yang benar ditandai hijau.";
-    respon.style.color = "#dc3545"; // Warna merah
+    const path = window.location.pathname;
     
-    // Fitur Tambahan: Otomatis beritahu mana yang benar
-    semuaTombol.forEach(btn => {
-      // Cek onclick attribute untuk mencari yang 'benar'
-      if (btn.getAttribute('onclick').includes("'benar'")) {
-        btn.classList.add('jawaban-benar'); 
+    // Variabel pelacak progres kuis kilat di halaman Pengertian Gaya
+    let answeredCount = 0;
+    const totalQuestions = 4; 
+
+    // 1. SISTEM PENGUNCIAN (LOCKING SYSTEM) */
+    function checkAllLocks() {
+        // A. Logika Halaman: Pengantar Gaya
+        // Tombol terbuka jika siswa sudah Lulus Kuis 1 (Gerak)
+        if (localStorage.getItem('kuis1_completed') === 'true') {
+            if (path.includes('pengantargaya')) {
+                const btnNext = document.getElementById("btn-next-materi");
+                if (btnNext) btnNext.classList.remove('locked');
+            }
+        }
+
+        // B. Logika Halaman: Pengertian Gaya
+        // Tombol terbuka jika kuis kilat di halaman ini sudah diselesaikan sebelumnya
+        if (localStorage.getItem('pengertiangaya_completed') === 'true') {
+            if (path.includes('pengertiangaya')) {
+                const btnNext = document.getElementById("btn-next-materi");
+                if (btnNext) btnNext.classList.remove('locked');
+            }
+        }
+    }
+
+    // Jalankan pengecekan gembok saat halaman dimuat
+    checkAllLocks();
+
+    // 2. LOGIKA KUIS PILIHAN GANDA (KUIS KILAT GAYA) */
+    window.cekJawaban = function(tombol, status) {
+        // 1. Ambil elemen induk (grup tombol)
+        const grupTombol = tombol.parentElement;
+        const semuaTombol = grupTombol.querySelectorAll('.tombol-opsi');
+        const respon = grupTombol.nextElementSibling; // Elemen <p> untuk pesan respon
+
+        // Cegah klik ganda pada soal yang sama untuk penghitungan progres
+        if (grupTombol.getAttribute('data-answered') === 'true') return;
+
+        // 2. Matikan semua tombol di soal ini agar tidak bisa diklik lagi
+        semuaTombol.forEach(btn => {
+            btn.disabled = true;
+            btn.style.pointerEvents = "none"; // Hilangkan efek kursor
+        });
+
+        // Tandai soal sudah dijawab dan tambah progres
+        grupTombol.setAttribute('data-answered', 'true');
+        answeredCount++;
+
+        // 3. Cek apakah jawaban Benar atau Salah
+        if (status === 'benar') {
+            // Jika Benar
+            tombol.classList.add('jawaban-benar');
+            respon.innerHTML = "✅ Benar! Bagus sekali."; 
+            respon.style.color = "#28a745"; // Warna hijau
+        } else {
+            // Jika Salah
+            tombol.classList.add('jawaban-salah');
+            respon.innerHTML = "❌ Kurang tepat. Jawaban yang benar ditandai hijau.";
+            respon.style.color = "#dc3545"; // Warna merah
+            
+            // Otomatis tunjukkan mana jawaban yang benar
+            semuaTombol.forEach(btn => {
+                if (btn.getAttribute('onclick').includes("'benar'")) {
+                    btn.classList.add('jawaban-benar'); 
+                }
+            });
+        }
+
+        // 4. Cek Progres: Jika semua soal (4 soal) sudah dijawab, buka tombol Selanjutnya
+        if (answeredCount === totalQuestions) {
+            // Simpan status lulus materi ke memori browser
+            localStorage.setItem('pengertiangaya_completed', 'true');
+            
+            const btnNext = document.getElementById("btn-next-materi");
+            if (btnNext) {
+                btnNext.classList.remove('locked');
+                
+                // Berikan feedback menggunakan SweetAlert2
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: 'Materi Selesai!',
+                        text: 'Hebat! Kamu telah mencoba semua soal. Tombol materi selanjutnya telah terbuka.',
+                        icon: 'success',
+                        confirmButtonText: 'Lanjut',
+                        confirmButtonColor: '#2ecc71'
+                    });
+                }
+            }
+        }
+    };
+
+});
+
+
+
+
+
+
+// ini file RESULTAN GAYA
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT
+  // Jika siswa sebelumnya sudah lulus materi ini, langsung buka tombolnya.
+  if (localStorage.getItem('resultangaya_completed') === 'true') {
+      const btnNext = document.getElementById("btn-next-materi");
+      if (btnNext) {
+          btnNext.classList.remove('locked');
       }
-    });
   }
-}
 
-
-
-
-// INI MERUPAKAN FILE RESULTAN GAYA
-/* =========================================
-   LOGIKA LATIHAN RESULTAN GAYA
-   ========================================= */
-function cekJawabanResultan(no) {
-  const kunciJawaban = {
-    1: 40,
-    2: 0
+  // 2. VARIABEL PELACAK STATUS JAWABAN (Soal 1 & 2)
+  let statusResultan = {
+      1: false,
+      2: false
   };
 
-  const inputEl = document.getElementById("jawaban" + no);
-  const feedbackEl = document.getElementById("feedback" + no);
+  // 3. FUNGSI CEK JAWABAN
+  window.cekJawabanResultan = function(no) {
+      const kunciJawaban = {
+          1: 40, // Jawaban Latihan 1: 15 + 25
+          2: 0   // Jawaban Latihan 2: 35 + (-35)
+      };
 
-  if (!inputEl || !feedbackEl) return; // Defensive check
+      const inputEl = document.getElementById("jawaban" + no);
+      const feedbackEl = document.getElementById("feedback" + no);
 
-  const nilaiInput = inputEl.value.trim();
+      // Defensive check
+      if (!inputEl || !feedbackEl) return;
 
-  if (nilaiInput === "") {
-    feedbackEl.textContent = "⚠️ Masukkan jawaban terlebih dahulu.";
-    feedbackEl.className = "feedback salah";
-    // Gunakan warna oranye/kuning dari style CSS jika ada, atau biarkan class mengatur
-    feedbackEl.style.color = "#d97706"; 
-    return;
-  }
+      const nilaiInput = inputEl.value.trim();
 
-  if (Number(nilaiInput) === kunciJawaban[no]) {
-    feedbackEl.textContent = "✅ Jawaban benar!";
-    feedbackEl.className = "feedback benar";
-    feedbackEl.style.color = "green";
-  } else {
-    feedbackEl.textContent = "❌ Jawaban salah, coba lagi.";
-    feedbackEl.className = "feedback salah";
-    feedbackEl.style.color = "red";
-  }
-}
+      // Cek jika kosong
+      if (nilaiInput === "") {
+          feedbackEl.textContent = "⚠️ Masukkan jawaban terlebih dahulu.";
+          feedbackEl.className = "feedback salah";
+          feedbackEl.style.color = "#d97706"; 
+          return;
+      }
+
+      // Validasi Benar/Salah
+      if (Number(nilaiInput) === kunciJawaban[no]) {
+          // JIKA BENAR
+          feedbackEl.textContent = "✅ Jawaban benar!";
+          feedbackEl.className = "feedback benar";
+          feedbackEl.style.color = "green";
+
+          // Tandai soal nomor ini sudah benar
+          statusResultan[no] = true;
+
+          // --- LOGIKA BUKA GEMBOK ---
+          // Cek apakah Soal 1 DAN Soal 2 sudah benar semua?
+          if (statusResultan[1] && statusResultan[2]) {
+              
+              // 1. Simpan status lulus ke memori browser
+              localStorage.setItem('resultangaya_completed', 'true');
+              
+              // 2. Buka Tombol "Materi Selanjutnya"
+              const btnNext = document.getElementById("btn-next-materi");
+              if (btnNext) {
+                  btnNext.classList.remove('locked');
+                  
+                  // 3. Tampilkan Notifikasi Sukses
+                  if (typeof Swal !== 'undefined') {
+                      Swal.fire({
+                          title: 'Luar Biasa!',
+                          text: 'Semua jawaban benar! Materi selanjutnya telah terbuka.',
+                          icon: 'success',
+                          confirmButtonText: 'Lanjut',
+                          confirmButtonColor: '#2ecc71'
+                      });
+                  }
+              }
+          }
+
+      } else {
+          // JIKA SALAH
+          feedbackEl.textContent = "❌ Jawaban salah, coba lagi.";
+          feedbackEl.className = "feedback salah";
+          feedbackEl.style.color = "red";
+          
+          // Tandai soal ini belum benar
+          statusResultan[no] = false;
+      }
+  };
+
+});
 
 
 
 
 // INI MERUPAKAN FILE MACAM - MACAM GAYA 
-// ==========================================
 // LOGIKA DRAG & DROP HALAMAN MACAM-MACAM GAYA
-// ==========================================
 document.addEventListener("DOMContentLoaded", function() {
+
+  // --- 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT ---
+  // Jika siswa sebelumnya sudah lulus materi ini, pastikan tombol terbuka
+  if (localStorage.getItem('macamgaya_completed') === 'true') {
+      const btnNext = document.getElementById("btn-next-materi");
+      if (btnNext) {
+          btnNext.classList.remove('locked');
+      }
+  }
   
   const containerMacam = document.getElementById("drag-container-macam");
   const poolMacam = document.getElementById("card-pool-macam");
@@ -1978,13 +2070,39 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const salah = total - benar;
 
-        // Tampilkan Popup
+        // Tampilkan Popup Hasil (Modal Bawaan)
         if(modalText && modal) {
             modalText.innerHTML = `
               <span class="hasil-benar">✔ Benar : ${benar}</span><br>
               <span class="hasil-salah">✖ Salah : ${salah}</span>
             `;
             modal.style.display = "flex";
+        }
+
+        // --- LOGIKA SISTEM PENGUNCIAN ---
+        // Jika Benar Semua (4), buka gembok & simpan status
+        if (benar === total) {
+            
+            // Simpan ke localStorage
+            localStorage.setItem('macamgaya_completed', 'true');
+            
+            const btnNext = document.getElementById("btn-next-materi");
+            if (btnNext) {
+                btnNext.classList.remove('locked');
+
+                // Tampilkan Notifikasi Sukses (SweetAlert) setelah jeda sebentar
+                setTimeout(() => {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: 'Luar Biasa!',
+                            text: 'Semua jawaban benar! Materi selanjutnya (Hukum Newton) telah terbuka.',
+                            icon: 'success',
+                            confirmButtonText: 'Lanjut',
+                            confirmButtonColor: '#2ecc71'
+                        });
+                    }
+                }, 1000);
+            }
         }
       });
 
@@ -2006,15 +2124,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-// INI MERUPAKAN FILE RESULTAN GAYA
 
 
 // INI MERUPAKAN FILE HUKUM NEWTON
-// ==========================================
 // LOGIKA HALAMAN HUKUM NEWTON
-// ==========================================
 document.addEventListener("DOMContentLoaded", function() {
   
+  // --- 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT ---
+  // Jika siswa sebelumnya sudah lulus materi ini, pastikan tombol terbuka
+  if (localStorage.getItem('hukumnewton_completed') === 'true') {
+      const btnNext = document.getElementById("btn-next-materi");
+      if (btnNext) {
+          btnNext.classList.remove('locked');
+      }
+  }
+
   const btnCekNewton = document.getElementById("btn-cek-newton");
   const btnResetNewton = document.getElementById("btn-reset-newton");
   const btnTutupNewton = document.getElementById("btn-tutup-newton");
@@ -2022,7 +2146,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Pastikan kita berada di halaman Hukum Newton (tombol cek ada)
   if (btnCekNewton) {
 
-    // --- 1. Logika Klik Pilihan Ganda ---
+    // 2. Logika Klik Pilihan Ganda
     document.querySelectorAll(".grup-opsi .tombol-opsi").forEach(btn => {
       btn.addEventListener("click", () => {
         // Ambil grup induknya
@@ -2039,13 +2163,15 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // --- 2. Logika Cek Jawaban (Hanya Pilihan Ganda) ---
+    // 3. Logika Cek Jawaban (Hanya Pilihan Ganda)
     btnCekNewton.addEventListener("click", () => {
       let benar = 0;
       let salah = 0;
+      let totalSoal = 0; // Hitung jumlah soal dinamis
 
       // Cek setiap grup soal
       document.querySelectorAll(".grup-opsi").forEach(grup => {
+        totalSoal++;
         const jawabanSiswa = grup.dataset.jawaban;
         const kunci = grup.dataset.kunci;
 
@@ -2053,7 +2179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         grup.querySelectorAll(".tombol-opsi").forEach(b => b.classList.remove("jawaban-benar", "jawaban-salah"));
 
         if (!jawabanSiswa) {
-          salah++; // Belum diisi dianggap salah/belum selesai
+          salah++; // Belum diisi dianggap salah
         } else if (jawabanSiswa === kunci) {
           benar++;
           // Beri warna hijau pada pilihan siswa
@@ -2061,13 +2187,16 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
           salah++;
           // Beri warna merah pada pilihan siswa yang salah
-          grup.querySelector(`[data-pilihan="${jawabanSiswa}"]`).classList.add("jawaban-salah");
+          const btnSalah = grup.querySelector(`[data-pilihan="${jawabanSiswa}"]`);
+          if (btnSalah) btnSalah.classList.add("jawaban-salah");
+          
           // Opsional: Tunjukkan jawaban yang benar
-          grup.querySelector(`[data-pilihan="${kunci}"]`).classList.add("jawaban-benar");
+          const btnKunci = grup.querySelector(`[data-pilihan="${kunci}"]`);
+          if (btnKunci) btnKunci.classList.add("jawaban-benar");
         }
       });
 
-      // --- 3. Tampilkan Popup Hasil ---
+      // 4. Tampilkan Popup Hasil (Modal Bawaan)
       const popupText = document.getElementById("popup-newton-text");
       const popupBox = document.getElementById("popup-newton");
 
@@ -2079,9 +2208,36 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
         popupBox.classList.add("show");
       }
+
+      // --- LOGIKA SISTEM PENGUNCIAN ---
+      // Jika Benar Semua (sesuai jumlah soal), buka gembok
+      if (benar === totalSoal) {
+          
+          // Simpan status lulus ke memori browser
+          localStorage.setItem('hukumnewton_completed', 'true');
+          
+          // Buka Tombol Navigasi
+          const btnNext = document.getElementById("btn-next-materi");
+          if (btnNext) {
+              btnNext.classList.remove('locked');
+
+              // Tampilkan Notifikasi SweetAlert setelah jeda sebentar
+              setTimeout(() => {
+                  if (typeof Swal !== 'undefined') {
+                      Swal.fire({
+                          title: 'Hebat!',
+                          text: 'Kamu menguasai Hukum Newton! Silakan lanjut ke Kuis 2.',
+                          icon: 'success',
+                          confirmButtonText: 'Lanjut',
+                          confirmButtonColor: '#2ecc71'
+                      });
+                  }
+              }, 1500); // Muncul setelah 1.5 detik agar tidak menumpuk dengan popup hasil
+          }
+      }
     });
 
-    // --- 4. Logika Reset / Coba Lagi ---
+    // 5. Logika Reset / Coba Lagi
     btnResetNewton.addEventListener("click", () => {
       // Reset Pilihan Ganda: Hapus dataset jawaban dan kelas styling
       document.querySelectorAll(".grup-opsi").forEach(grup => {
@@ -2094,7 +2250,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (popupBox) popupBox.classList.remove("show");
     });
 
-    // --- 5. Logika Tutup Popup ---
+    // 6. Logika Tutup Popup
     if (btnTutupNewton) {
       btnTutupNewton.addEventListener("click", () => {
         const popupBox = document.getElementById("popup-newton");
@@ -2114,7 +2270,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Cek apakah halaman ini adalah halaman kuis fullscreen
   if (document.querySelector('.body-kuis-fullscreen')) {
     
-    // --- 1. DATA SOAL ---
+    // 1. DATA SOAL
     const questions = [
       {
         q: "Suatu benda dikatakan bergerak apabila …",
@@ -2208,12 +2364,12 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ];
 
-    // --- 2. STATE (VARIABLE) ---
+    // 2. STATE (VARIABLE)
     let currentIndex = 0;
     const userAnswers = new Array(questions.length).fill(null);
     let lastResultTuntas = false;
 
-    // --- 3. DOM ELEMENTS ---
+    // 3. DOM ELEMENTS
     const navSoal = document.getElementById("navSoal");
     const questionNumber = document.getElementById("questionNumber");
     const questionText = document.getElementById("questionText");
@@ -2223,7 +2379,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishBtn = document.getElementById("finishBtn");
     const timerEl = document.getElementById("timer");
 
-    // --- 4. FUNGSI RENDER NAVIGASI ---
+    // 4. FUNGSI RENDER NAVIGASI
     function renderNav() {
       navSoal.innerHTML = "";
       questions.forEach((_, i) => {
@@ -2247,7 +2403,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 5. FUNGSI LOAD SOAL ---
+    // 5. FUNGSI LOAD SOAL
     function loadQuestion() {
       const q = questions[currentIndex];
       questionNumber.textContent = "Nomor " + (currentIndex + 1);
@@ -2280,7 +2436,7 @@ document.addEventListener("DOMContentLoaded", function () {
       nextBtn.style.opacity = currentIndex === questions.length - 1 ? "0.5" : "1";
     }
 
-    // --- 6. EVENT LISTENER: PILIH JAWABAN ---
+    // 6. EVENT LISTENER: PILIH JAWABAN
     optionsList.addEventListener("change", function (e) {
       if (e.target.name === "option") {
         userAnswers[currentIndex] = Number(e.target.value);
@@ -2288,7 +2444,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // --- 7. NAVIGASI (PREV/NEXT) ---
+    // 7. NAVIGASI (PREV/NEXT)
     prevBtn.addEventListener("click", () => {
       if (currentIndex > 0) {
         currentIndex--;
@@ -2303,7 +2459,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // --- 8. FUNGSI TAMPILKAN HASIL (SWEETALERT2) ---
+    // 8. FUNGSI TAMPILKAN HASIL (SWEETALERT2)
     function showSweetAlertResult(tuntas, score, total) {
       lastResultTuntas = tuntas;
       
@@ -2326,7 +2482,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (result.isConfirmed) {
           if (lastResultTuntas) {
             
-            // --- [REVISI] LOCKING SYSTEM ---
+            // [REVISI] LOCKING SYSTEM
             // Simpan status kelulusan ke memori browser agar materi selanjutnya (Gaya) terbuka
             localStorage.setItem('kuis1_completed', 'true');
 
@@ -2341,7 +2497,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 9. TOMBOL SELESAI (VALIDASI & KONFIRMASI) ---
+    // 9. TOMBOL SELESAI (VALIDASI & KONFIRMASI)
     finishBtn.addEventListener("click", () => {
       // Cek apakah ada jawaban kosong
       if (userAnswers.includes(null)) {
@@ -2381,7 +2537,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // --- 10. TIMER ---
+    // 10. TIMER
     // [PERMINTAAN PENGGUNA]: Biarkan durasi 2 menit (2 * 60)
     let timeLeft = 2 * 60; 
     
@@ -2417,7 +2573,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }, 1000);
 
-    // --- 11. INITIALIZE ---
+    // 11. INITIALIZE
     renderNav();
     loadQuestion();
   }
@@ -2437,7 +2593,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Jika elemen ini ada, berarti kita sedang di halaman Kuis 2
   if (halamanKuis2) {
     
-    // --- 2. DATA SOAL ---
+    // 2. DATA SOAL
     const questions = [
       { q: "Berdasarkan materi yang telah dipelajari, pengertian gaya adalah...", options: ["Energi yang dimiliki benda agar tetap panas", "Tarikan atau dorongan yang diberikan pada suatu benda", "Sifat benda yang menyebabkannya selalu ingin diam", "Massa benda yang menyebabkan benda jatuh ke bawah"], answer: 1 }, 
       { q: "Seorang pengrajin gerabah menekan sekepal tanah liat hingga menjadi sebuah vas bunga yang cantik. Peristiwa ini merupakan bukti nyata bahwa gaya dapat...", options: ["Mengubah arah gerak benda", "Mengubah bentuk benda", "Mengubah massa benda", "Mengubah benda diam menjadi bergerak"], answer: 1 }, 
@@ -2451,12 +2607,12 @@ document.addEventListener("DOMContentLoaded", function () {
       { q: "Saat kamu sedang mendayung perahu di danau, kamu menggerakkan dayung dengan cara mendorong air ke arah belakang (aksi). Akibatnya, perahu akan bergerak maju ke depan (reaksi). Hal ini membuktikan bahwa...", options: ["Gaya gesek air lebih kecil daripada gaya otot tangan", "Gaya gravitasi membantu perahu tetap terapung di permukaan air", "Air memberikan gaya balasan kepada dayung yang besarnya sama namun berlawanan arah", "Resultan gaya pada perahu harus selalu bernilai nol agar dapat bergerak lurus"], answer: 2 }, 
     ];
 
-    // --- 3. STATE ---
+    // 3. STATE
     let currentIndex = 0;
     const userAnswers = new Array(questions.length).fill(null);
     let lastResultTuntas = false;
 
-    // --- 4. DOM ELEMENTS (MENGGUNAKAN ID BARU YANG ADA SUFFIX -kuis2) ---
+    // 4. DOM ELEMENTS (MENGGUNAKAN ID BARU YANG ADA SUFFIX -kuis2)
     const navSoal = document.getElementById("navSoal-kuis2");
     const questionNumber = document.getElementById("questionNumber-kuis2");
     const questionText = document.getElementById("questionText-kuis2");
@@ -2466,7 +2622,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishBtn = document.getElementById("finishBtn-kuis2");
     const timerEl = document.getElementById("timer-kuis2");
 
-    // --- 5. FUNGSI RENDER NAVIGASI ---
+    // 5. FUNGSI RENDER NAVIGASI
     function renderNav() {
       // Safety check: jika elemen tidak ada, hentikan
       if (!navSoal) return;
@@ -2493,7 +2649,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 6. FUNGSI LOAD SOAL ---
+    // 6. FUNGSI LOAD SOAL
     function loadQuestion() {
       // Safety check
       if (!questionText || !optionsList) return;
@@ -2534,7 +2690,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // --- 7. EVENT HANDLERS ---
+    // 7. EVENT HANDLERS
     
     // Saat Opsi Dipilih
     if (optionsList) {
@@ -2566,7 +2722,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 8. LOGIKA HASIL & POPUP ---
+    // 8. LOGIKA HASIL & POPUP
     function showSweetAlertResult(tuntas, score, total) {
       lastResultTuntas = tuntas;
       
@@ -2642,7 +2798,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 9. TIMER (10 Menit) ---
+    // 9. TIMER (10 Menit)
     let timeLeft = 2 * 60; 
     const timerInterval = setInterval(() => {
       // Cek apakah elemen timer ada (untuk menghindari error di console)
@@ -2672,7 +2828,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }, 1000);
 
-    // --- 10. JALANKAN FUNGSI PERTAMA KALI ---
+    // 10. JALANKAN FUNGSI PERTAMA KALI
     renderNav();
     loadQuestion();
   }
@@ -2683,9 +2839,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // INI MERUPAKAN FILE EVALUASI 
-/* ============================================================
-   LOGIKA EVALUASI AKHIR (GERAK DAN GAYA)
-   ============================================================ */
+// LOGIKA EVALUASI AKHIR (GERAK DAN GAYA) */
 
 document.addEventListener("DOMContentLoaded", function () {
   
@@ -2695,7 +2849,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Jika elemen ini ada, berarti kita sedang di halaman Evaluasi Akhir
   if (halamanEvaluasi) {
     
-    // --- 2. DATA SOAL (20 SOAL) ---
+    // 2. DATA SOAL (20 SOAL)
     const questions = [
       { 
         q: "Seorang peserta didik sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika terminal dianggap sebagai titik acuan, maka pernyataan yang benar adalah...", 
@@ -2799,12 +2953,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     ];
 
-    // --- 3. STATE ---
+    // 3. STATE
     let currentIndex = 0;
     const userAnswers = new Array(questions.length).fill(null);
     const scorePerSoal = 5; // Bobot per soal
 
-    // --- 4. DOM ELEMENTS (ID dengan suffix -evaluasi) ---
+    // 4. DOM ELEMENTS (ID dengan suffix -evaluasi)
     const navSoal = document.getElementById("navSoal-evaluasi");
     const questionNumber = document.getElementById("questionNumber-evaluasi");
     const questionText = document.getElementById("questionText-evaluasi");
@@ -2814,7 +2968,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishBtn = document.getElementById("finishBtn-evaluasi");
     const timerEl = document.getElementById("timer-evaluasi");
 
-    // --- 5. FUNGSI RENDER NAVIGASI ---
+    // 5. FUNGSI RENDER NAVIGASI
     function renderNav() {
       if (!navSoal) return;
 
@@ -2840,7 +2994,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 6. FUNGSI LOAD SOAL ---
+    // 6. FUNGSI LOAD SOAL
     function loadQuestion() {
       if (!questionText || !optionsList) return;
 
@@ -2882,7 +3036,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // --- 7. EVENT HANDLERS ---
+    // 7. EVENT HANDLERS
     
     // Saat Opsi Dipilih
     if (optionsList) {
@@ -2914,7 +3068,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 8. LOGIKA HASIL (Hanya Tampilkan Nilai) ---
+    // 8. LOGIKA HASIL (Hanya Tampilkan Nilai)
     function tampilkanHasilAkhir(score, totalScore) {
       
       // URL redirect (misal: kembali ke Dashboard/Beranda)
@@ -2986,7 +3140,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // --- 9. TIMER (45 Menit) ---
+    // 9. TIMER (45 Menit)
     let timeLeft = 10 * 60; // 45 menit dalam detik
     
     const timerInterval = setInterval(() => {
@@ -3016,7 +3170,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }, 1000);
 
-    // --- 10. JALANKAN FUNGSI PERTAMA KALI ---
+    // 10. JALANKAN FUNGSI PERTAMA KALI
     renderNav();
     loadQuestion();
   }

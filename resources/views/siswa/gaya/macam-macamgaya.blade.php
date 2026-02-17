@@ -113,6 +113,7 @@
           <li>Geser kartu tersebut lalu lepaskan ke dalam kolom jenis gaya yang sesuai.</li>
           <li>Pastikan setiap kartu masuk ke dalam kotak yang benar.</li>
           <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu.</li>
+          <li><b>Cocokkan semua kartu dengan benar untuk membuka materi selanjutnya!</b></li>
         </ul>
       </div>
 
@@ -172,7 +173,8 @@
 
   <div class="bottom-nav">
     <a href="{{ url('siswa/gaya/resultangaya') }}" class="nav-btn prev">« Materi Sebelumnya</a>
-    <a href="{{ url('siswa/gaya/hukumnewton') }}" class="nav-btn next">Materi Selanjutnya »</a>
+    
+    <a href="{{ url('siswa/gaya/hukumnewton') }}" id="btn-next-materi" class="nav-btn next locked">Materi Selanjutnya »</a>
   </div>
 
 </div>
