@@ -43,7 +43,7 @@
       
       <header class="kuis2-top-header">
         <div class="kuis2-timer-box">
-          <i class="fas fa-stopwatch"></i> Sisa Waktu: <span id="timer-kuis2">10:00</span>
+          <i class="fas fa-stopwatch"></i> Sisa Waktu: <span id="timer-kuis2">30:00</span>
         </div>
         <button class="kuis2-btn-finish" id="finishBtn-kuis2">
           Selesaikan Kuis ✓
@@ -72,8 +72,11 @@
 
   <script>
     // Konfigurasi Link Redirect
+    // Jika GAGAL, kembali ke materi awal Gaya
     window.RETRY_PAGE = "{{ url('siswa/gaya/pengertiangaya') }}"; 
-    window.NEXT_PAGE = "{{ url('/') }}"; 
+    
+    // Jika LULUS, lanjut ke Petunjuk Evaluasi
+    window.NEXT_PAGE = "{{ url('siswa/evaluasi/petunjukpengerjaan') }}"; 
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
