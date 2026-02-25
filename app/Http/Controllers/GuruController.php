@@ -170,4 +170,18 @@ class GuruController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Data kelas tidak ditemukan.'], 404);
     }
+
+    // =================================================================
+    // MANAJEMEN PROGRES BELAJAR (DITAMBAHKAN)
+    // =================================================================
+    
+    public function progresBelajar()
+    {
+        // Ambil data user yang perannya 'siswa', sertakan data kelas dan progres belajarnya
+        $data_siswa = User::where('peran', 'siswa')
+                          ->with(['kelas', 'progres'])
+                          ->get();
+
+        return view('guru.progresbelajar', compact('data_siswa'));
+    }
 }

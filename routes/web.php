@@ -83,6 +83,9 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     Route::put('/datakelas/{id}', [GuruController::class, 'updateKelas'])->name('guru.datakelas.update');
     Route::delete('/datakelas/{id}', [GuruController::class, 'destroyKelas'])->name('guru.datakelas.destroy');
 
+    // --- MANAJEMEN PROGRES BELAJAR ---
+    Route::get('/progresbelajar', [GuruController::class, 'progresBelajar'])->name('guru.progresbelajar');
+
     // --- ROUTE NILAI ---
     Route::get('/nilai/kuis1', function() { return "Halaman Nilai Kuis 1"; });
     Route::get('/nilai/kuis2', function() { return "Halaman Nilai Kuis 2"; });

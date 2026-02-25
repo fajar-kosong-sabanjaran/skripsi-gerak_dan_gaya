@@ -642,3 +642,82 @@ body {
 .col-center {
     text-align: center;
 }
+
+/* =======================================================================
+   ini css progresbelajar.blade (Tabel Progres Lebar & Sticky)
+   ======================================================================= */
+
+/* Kotak Keterangan Ikon (Dibuat Lebih Rapat) */
+.legend-container {
+    display: inline-flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    background: #f8fafc;
+    padding: 6px 12px; /* Padding atas-bawah dikurangi dari 10px menjadi 6px */
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Pengaturan lebar kolom judul materi agar teks bisa turun ke bawah */
+.table-progres th.th-materi {
+    font-size: 11px;
+    min-width: 95px;
+    max-width: 120px;
+    white-space: normal !important;
+    line-height: 1.4;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Pengaturan sel icon ceklis/silang */
+.table-progres td.td-icon {
+    font-size: 20px;
+}
+
+/* Konfigurasi Sticky Column */
+.table-progres th.sticky-col,
+.table-progres td.sticky-col {
+    position: sticky;
+    z-index: 2;
+}
+
+/* Kolom Nomor di kiri mentok */
+.table-progres th.sticky-no,
+.table-progres td.sticky-no {
+    left: 0;
+    min-width: 50px;
+}
+
+/* Kolom Nama di sebelah kolom nomor (Maju 50px) */
+.table-progres th.sticky-nama,
+.table-progres td.sticky-nama {
+    left: 50px; 
+    min-width: 200px;
+}
+
+.table-progres th.sticky-col {
+    background-color: #f8fafc;
+}
+
+.table-progres td.sticky-col {
+    background-color: #fff;
+}
+
+.table-progres tr:hover td.sticky-col {
+    background-color: #f1f5f9;
+}
+
+/* Menambahkan border di sisi kanan kolom Nama Siswa agar jelas batasnya saat di-scroll */
+.table-progres th.border-right-sticky,
+.table-progres td.border-right-sticky {
+    border-right: 2px solid #e2e8f0;
+}

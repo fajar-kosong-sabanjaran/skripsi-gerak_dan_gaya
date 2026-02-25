@@ -38,9 +38,9 @@ class User extends Authenticatable
         return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
-    // Relasi: Satu User memiliki banyak Progres Belajar (1 to Many)
+    // Relasi ke tabel progres_belajars
     public function progres()
     {
-        return $this->hasMany(ProgresBelajar::class);
+        return $this->hasMany(ProgresBelajar::class, 'user_id');
     }
 }
