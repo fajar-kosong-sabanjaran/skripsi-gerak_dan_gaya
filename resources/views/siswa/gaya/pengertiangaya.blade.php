@@ -107,7 +107,7 @@
           Browser Anda tidak mendukung tag video.
         </video>
       </p>
-      <p class="image-caption">Aktivitas bersepeda</p>
+      <p class="image-caption">Perubahan kecepatan dari aktivitas bersepeda</p>
       
       <p>
         Perhatikan animasi bersepeda tersebut. Sepeda akan melaju cepat saat pedal dikayuh kuat, dan melambat saat direm. 
@@ -116,7 +116,7 @@
     </div>
 
     <div class="inner-box">
-      <h3>Kuis Kilat: Pahamkah Kamu? 🤔</h3>
+      <h3>Kuis Kilat: Pahamkah Kamu?</h3>
 
       <div class="kotak-instruksi">
         <p>

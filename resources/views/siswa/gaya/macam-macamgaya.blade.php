@@ -46,7 +46,7 @@
                   Browser Anda tidak mendukung tag video.
               </video>
             </div>
-            <p class="jg-video-caption">Ilustrasi gaya gravitasi pada benda jatuh</p>
+            <p class="jg-video-caption">Ilustrasi gaya gravitasi pada apel yang jatuh</p>
             
             <p>
                 <b>Gaya Gravitasi</b> adalah <b>gaya tarik bumi yang menyebabkan segala sesuatu jatuh ke bawah menuju pusat bumi</b>.
@@ -85,7 +85,7 @@
                   Browser Anda tidak mendukung tag video.
               </video>
             </div>
-            <p class="jg-video-caption">Ilustrasi penggunaan kekuatan otot</p>
+            <p class="jg-video-caption">Gaya otot saat mengangkat beban</p>
             
             <p>
                 <b>Gaya Otot</b> adalah <b>gaya yang dihasilkan oleh kerja otot tubuh</b> manusia atau hewan saat melakukan aktivitas fisik untuk mendorong atau menarik sesuatu.

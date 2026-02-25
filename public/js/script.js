@@ -3,31 +3,73 @@ document.addEventListener("DOMContentLoaded", () => {
     const path = window.location.pathname;
 
     // =========================================================================
-    // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (LOGIKA UTAMA SEMUA MATERI)
+    // FUNGSI BARU: MENYIMPAN PROGRES KE DATABASE
     // =========================================================================
+    function simpanProgresKeDatabase(kodeMateri) {
+        // Ambil CSRF token dari meta tag
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute("content");
+
+        if (!csrfToken) {
+            console.error(
+                "CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.",
+            );
+            return;
+        }
+
+        fetch("/simpan-progres", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify({
+                kode_materi: kodeMateri,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.message); // Muncul di console log browser jika berhasil
+            })
+            .catch((error) => {
+                console.error("Error saat menyimpan progres:", error);
+            });
+    }
+    // =========================================================================
+
+    // =========================================================================
+    // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
+    // =========================================================================
+
+    // Fungsi pembantu untuk mengecek apakah materi ada di dalam array database
+    function isLulus(kodeMateri) {
+        return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
+    }
+
     function checkAllLocks() {
         // --- BAGIAN A: MODUL GERAK ---
 
         // 1. Pengertian Gerak Selesai -> Buka Jarak Tempuh
-        if (localStorage.getItem("pengertiangerak_completed") === "true") {
+        if (isLulus("pengertiangerak_completed")) {
             unlockSidebar("nav-jarak");
             unlockNextButtonIfPage("pengertiangerak");
         }
 
         // 2. Jarak Tempuh Selesai -> Buka Kelajuan
-        if (localStorage.getItem("jarak_completed") === "true") {
+        if (isLulus("jarak_completed")) {
             unlockSidebar("nav-kelajuan");
             unlockNextButtonIfPage("jaraktempuhdanperpindahan");
         }
 
         // 3. Kelajuan Selesai -> Buka Percepatan
-        if (localStorage.getItem("kelajuan_completed") === "true") {
+        if (isLulus("kelajuan_completed")) {
             unlockSidebar("nav-percepatan");
             unlockNextButtonIfPage("kelajuandankecepatan");
         }
 
         // 4. Percepatan Selesai -> Buka Kuis 1
-        if (localStorage.getItem("percepatan_completed") === "true") {
+        if (isLulus("percepatan_completed")) {
             unlockSidebar("nav-kuis1");
             unlockNextButtonIfPage("percepatan");
         }
@@ -35,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // --- BAGIAN B: MODUL GAYA ---
 
         // 5. Kuis 1 Selesai -> Buka Menu Gaya (Header & Pengantar)
-        if (localStorage.getItem("kuis1_completed") === "true") {
+        if (isLulus("kuis1_completed")) {
             unlockSidebar("nav-gaya-header");
             unlockSidebar("nav-pengantar-gaya");
             unlockSidebar("nav-pengertian-gaya"); // Langsung buka materi pertama
@@ -43,25 +85,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 6. Pengertian Gaya Selesai -> Buka Resultan Gaya
-        if (localStorage.getItem("pengertiangaya_completed") === "true") {
+        if (isLulus("pengertiangaya_completed")) {
             unlockSidebar("nav-resultan-gaya");
             unlockNextButtonIfPage("pengertiangaya");
         }
 
         // 7. Resultan Gaya Selesai -> Buka Macam-macam Gaya
-        if (localStorage.getItem("resultangaya_completed") === "true") {
+        if (isLulus("resultangaya_completed")) {
             unlockSidebar("nav-macam-gaya");
             unlockNextButtonIfPage("resultangaya");
         }
 
         // 8. Macam-macam Gaya Selesai -> Buka Hukum Newton
-        if (localStorage.getItem("macamgaya_completed") === "true") {
+        if (isLulus("macamgaya_completed")) {
             unlockSidebar("nav-newton");
             unlockNextButtonIfPage("macam-macamgaya");
         }
 
         // 9. Hukum Newton Selesai -> Buka Kuis 2
-        if (localStorage.getItem("hukumnewton_completed") === "true") {
+        if (isLulus("hukumnewton_completed")) {
             unlockSidebar("nav-kuis2");
             unlockNextButtonIfPage("hukumnewton");
         }
@@ -69,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // --- BAGIAN C: EVALUASI ---
 
         // 10. Kuis 2 Selesai -> Buka Menu Evaluasi
-        if (localStorage.getItem("kuis2_completed") === "true") {
+        if (isLulus("kuis2_completed")) {
             unlockSidebar("nav-evaluasi");
             // Tidak ada tombol next di halaman Kuis 2 (redirect otomatis)
         }
@@ -174,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================================================================
     // 3. LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP)
     // =========================================================================
-    // (Kode ini tetap dipertahankan agar fitur Drag & Drop di halaman tersebut tetap jalan)
     const cards = document.querySelectorAll(".card-item");
     if (cards.length > 0) {
         const zones = document.querySelectorAll(".drop-zone, #card-pool");
@@ -234,7 +275,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (benar === total) {
-                    localStorage.setItem(STORAGE_KEY, "true");
+                    // [REVISI]: Ganti dengan push ke array & simpan ke DB
+                    window.progresSiswa.push(STORAGE_KEY);
+                    simpanProgresKeDatabase(STORAGE_KEY);
+
                     Swal.fire({
                         title: "Luar Biasa!",
                         text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
@@ -270,20 +314,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // INI MERUPAKAN FILE JARAK TEMPUH DAN PERPINDAHAN
 document.addEventListener("DOMContentLoaded", () => {
-    // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK */
+    // =========================================================================
+    // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
+    // =========================================================================
     function checkAllLocks() {
-        // Deteksi URL saat ini agar tombol Next yang dibuka tidak salah alamat
         const path = window.location.pathname;
 
-        // 1. Cek Kelulusan Materi Pengertian Gerak (Untuk referensi global jika digabung)
-        if (localStorage.getItem("pengertiangerak_completed") === "true") {
+        // Cek kelulusan menggunakan fungsi isLulus (terhubung ke Database)
+        function isLulus(kodeMateri) {
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
+        }
+
+        // 1. Cek Kelulusan Materi Pengertian Gerak
+        if (isLulus("pengertiangerak_completed")) {
             const navJarak = document.getElementById("nav-jarak");
             if (navJarak) {
                 navJarak.classList.remove("locked");
                 const lockIcon = navJarak.querySelector(".fa-lock");
                 if (lockIcon) lockIcon.remove();
             }
-            // Buka Tombol Next HANYA jika sedang di halaman Pengertian Gerak
             if (path.includes("pengertiangerak")) {
                 const btnNextMateri =
                     document.getElementById("btn-next-materi");
@@ -292,17 +343,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 2. Cek Kelulusan Materi Jarak Tempuh dan Perpindahan
-        if (localStorage.getItem("jarak_completed") === "true") {
-            // Buka menu sidebar Kelajuan & Kecepatan
+        if (isLulus("jarak_completed")) {
             const navKelajuan = document.getElementById("nav-kelajuan");
             if (navKelajuan) {
                 navKelajuan.classList.remove("locked");
                 const lockIcon = navKelajuan.querySelector(".fa-lock");
                 if (lockIcon) lockIcon.remove();
             }
-
-            // Buka tombol materi selanjutnya di bagian bawah halaman
-            // Buka Tombol Next HANYA jika sedang di halaman Jarak Tempuh
             if (path.includes("jaraktempuhdanperpindahan")) {
                 const btnNextMateri =
                     document.getElementById("btn-next-materi");
@@ -312,15 +359,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // 3. Cek Kelulusan Materi Kelajuan dan Kecepatan (Persiapan)
-        if (localStorage.getItem("kelajuan_completed") === "true") {
+        // 3. Cek Kelulusan Materi Kelajuan dan Kecepatan
+        if (isLulus("kelajuan_completed")) {
             const navPercepatan = document.getElementById("nav-percepatan");
             if (navPercepatan) {
                 navPercepatan.classList.remove("locked");
                 const lockIcon = navPercepatan.querySelector(".fa-lock");
                 if (lockIcon) lockIcon.remove();
             }
-            // Buka Tombol Next HANYA jika sedang di halaman Kelajuan
             if (path.includes("kelajuandankecepatan")) {
                 const btnNextMateri =
                     document.getElementById("btn-next-materi");
@@ -328,15 +374,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // 4. Cek Kelulusan Materi Percepatan (Persiapan)
-        if (localStorage.getItem("percepatan_completed") === "true") {
+        // 4. Cek Kelulusan Materi Percepatan
+        if (isLulus("percepatan_completed")) {
             const navKuis1 = document.getElementById("nav-kuis1");
             if (navKuis1) {
                 navKuis1.classList.remove("locked");
                 const lockIcon = navKuis1.querySelector(".fa-lock");
                 if (lockIcon) lockIcon.remove();
             }
-            // Buka Tombol Next HANYA jika sedang di halaman Percepatan
             if (path.includes("percepatan")) {
                 const btnNextMateri =
                     document.getElementById("btn-next-materi");
@@ -345,15 +390,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Jalankan pengecekan saat halaman pertama kali dimuat
     checkAllLocks();
 
-    // 1. LOGIKA ANIMASI GERAK MOBIL */
+    // =========================================================================
+    // 1. LOGIKA ANIMASI GERAK MOBIL
+    // =========================================================================
     const posA = 0;
     const posB = 4; // A → B = 4 km
     const posC = 10; // B → C = 6 km → total A → C = 10 km
 
-    // Jalur perjalanan: A → B → C → B
     const segments = [
         { from: posA, to: posB, distance: 4, label: "A → B" },
         { from: posB, to: posC, distance: 6, label: "B → C" },
@@ -364,40 +409,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnStart = document.getElementById("btn-start");
     const btnReset = document.getElementById("btn-reset");
 
-    const closeModal = document.getElementById("close-modal"); // Tombol tutup modal hasil animasi
-    const resultModal = document.getElementById("result-modal"); // Modal hasil animasi
+    const closeModal = document.getElementById("close-modal");
+    const resultModal = document.getElementById("result-modal");
 
     const road = document.querySelector(".anim-road");
-    const roadLeft = 40; // sesuai CSS .anim-road { left: 40px; }
+    const roadLeft = 40;
     const startPos = posA;
 
-    // Cek keberadaan elemen agar tidak error
     if (car && road) {
         const roadWidth = () => road.clientWidth;
 
-        let totalDistance = 0; // jarak tempuh
+        let totalDistance = 0;
         let currentSegmentIndex = 0;
         let currentSegmentStartTime = null;
         let running = false;
 
-        // kecepatan animasi: km per detik
         const speedKmPerSec = 2.0;
 
-        // konversi posisi (km) ke piksel di layar
         function kmToPx(km) {
             const roadPixelWidth = roadWidth();
-            const totalKmSpan = posC - posA; // 10 km
+            const totalKmSpan = posC - posA;
             const usableWidth = roadPixelWidth - car.clientWidth;
             const ratio = usableWidth / totalKmSpan;
             return roadLeft + km * ratio;
         }
 
-        // set posisi mobil
         function setCarPosition(kmPos) {
             car.style.left = kmToPx(kmPos) + "px";
         }
 
-        // reset ke awal
         function resetAnimation() {
             totalDistance = 0;
             currentSegmentIndex = 0;
@@ -407,7 +447,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (btnStart) btnStart.disabled = false;
         }
 
-        // loop animasi
         function step(timestamp) {
             if (!running) return;
 
@@ -416,17 +455,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentSegmentStartTime = timestamp;
             }
 
-            const elapsed = (timestamp - currentSegmentStartTime) / 1000; // detik
+            const elapsed = (timestamp - currentSegmentStartTime) / 1000;
             const duration = seg.distance / speedKmPerSec;
             let t = elapsed / duration;
 
             if (t >= 1) t = 1;
 
-            // posisi sekarang (km)
             const kmPos = seg.from + (seg.to - seg.from) * t;
             setCarPosition(kmPos);
 
-            // update jarak & perpindahan
             const distanceBeforeSeg = segments
                 .slice(0, currentSegmentIndex)
                 .reduce((acc, s) => acc + s.distance, 0);
@@ -436,18 +473,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (t < 1) {
                 requestAnimationFrame(step);
             } else {
-                // segmen selesai
                 currentSegmentIndex++;
                 currentSegmentStartTime = null;
 
                 if (currentSegmentIndex < segments.length) {
                     requestAnimationFrame(step);
                 } else {
-                    // selesai semua segmen
                     running = false;
                     btnStart.disabled = false;
 
-                    // Hitung hasil akhir untuk ditampilkan
                     const totalDistanceAll = segments.reduce(
                         (a, s) => a + s.distance,
                         0,
@@ -456,13 +490,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         segments[segments.length - 1].to - startPos,
                     );
 
-                    // Simpan ke window agar bisa diakses fungsi kuis
                     window.finalSummary = {
                         jarak: totalDistanceAll,
                         perpindahan: finalDisplacement,
                     };
 
-                    // Munculkan kuis setelah jeda sedikit
                     setTimeout(() => {
                         if (typeof showQuiz === "function") {
                             showQuiz();
@@ -472,7 +504,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Event Listeners Animasi
         if (btnStart) {
             btnStart.addEventListener("click", () => {
                 if (running) return;
@@ -494,25 +525,24 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Handle resize layar (responsif)
         window.addEventListener("resize", () => {
             setCarPosition(startPos);
         });
 
-        // Inisialisasi awal
         resetAnimation();
     }
 
-    // 2. LOGIKA KUIS REFLEKSI (POP-UP) */
+    // =========================================================================
+    // 2. LOGIKA KUIS REFLEKSI (POP-UP)
+    // =========================================================================
     const quizModal = document.getElementById("quiz-modal");
     const quizQuestion = document.getElementById("quiz-question");
     const quizInput = document.getElementById("quiz-input");
     const quizFeedback = document.getElementById("quiz-feedback");
     const quizSubmit = document.getElementById("quiz-submit");
     const quizNext = document.getElementById("quiz-next");
-    const modalText = document.getElementById("modal-text"); // Text di modal hasil akhir
+    const modalText = document.getElementById("modal-text");
 
-    // Data Soal Kuis
     const quizData = [
         {
             q: "Di mana titik awal mobil bergerak? (A, B, atau C)",
@@ -558,7 +588,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let quizIndex = 0;
 
-    // Fungsi Global agar bisa dipanggil dari animasi
     window.showQuiz = function () {
         if (!quizModal) return;
         quizInput.value = "";
@@ -597,7 +626,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 quizModal.style.display = "none";
                 quizIndex = 0;
 
-                // Tampilkan ringkasan akhir
                 if (modalText && window.finalSummary) {
                     modalText.innerHTML =
                         "Jarak tempuh total: " +
@@ -613,9 +641,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. LOGIKA LATIHAN SOAL (ADI DI SIRKUIT) */
-
-    // Buat modal latihan secara dinamis jika belum ada (antisipasi)
+    // =========================================================================
+    // 3. LOGIKA LATIHAN SOAL (ADI DI SIRKUIT)
+    // =========================================================================
     if (!document.getElementById("latihan-modal")) {
         const modalEl = document.createElement("div");
         modalEl.id = "latihan-modal";
@@ -649,7 +677,6 @@ document.addEventListener("DOMContentLoaded", () => {
         soal5: document.getElementById("soal5"),
     };
 
-    // Helper Functions
     function extractNumber(value) {
         if (!value) return null;
         const m = value.toString().match(/-?\d+(\.\d+)?/);
@@ -689,7 +716,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Logic Tombol Cek
     // LOGIKA TOMBOL CEK & MODAL
     if (btnCekAdi) {
         btnCekAdi.addEventListener("click", () => {
@@ -697,7 +723,6 @@ document.addEventListener("DOMContentLoaded", () => {
             let salahCount = 0;
             let belumCount = 0;
 
-            // Fungsi Helper untuk memvalidasi satu input
             const validateInput = (inputEl, kunci, isAngka) => {
                 resetFieldStyle(inputEl);
                 const val = inputEl.value.trim();
@@ -724,25 +749,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
 
-            // 1. Validasi Setiap Soal
             validateInput(inputs.soal1, "A", false);
             validateInput(inputs.soal2, "A", false);
             validateInput(inputs.soal3, 110, true);
             validateInput(inputs.soal4, 550, true);
             validateInput(inputs.soal5, 0, true);
 
-            // 2. CEK APAKAH SEMUA BENAR
+            // CEK APAKAH SEMUA BENAR
             if (benarCount === 5) {
-                // Simpan status ke memori browser
-                localStorage.setItem("jarak_completed", "true");
+                // [REVISI]: Ganti localStorage dengan push ke array & simpan ke DB
+                window.progresSiswa.push("jarak_completed");
+                simpanProgresKeDatabase("jarak_completed");
 
-                // Jalankan pengecekan gembok untuk langsung membuka menu sidebar dan tombol next
                 checkAllLocks();
 
-                // Sembunyikan modal biasa jika kebetulan terbuka
                 if (modalLatihan) modalLatihan.style.display = "none";
 
-                // Munculkan SweetAlert
                 Swal.fire({
                     title: "Luar Biasa!",
                     text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
@@ -751,12 +773,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     confirmButtonColor: "#2ecc71",
                 });
             } else {
-                // Jika belum benar semua, munculkan Pop-up Hasil Latihan
-                // Sembunyikan list detail lama
                 modalDetail.innerHTML = "";
                 modalDetail.style.display = "none";
 
-                // Masukkan HTML dengan Class CSS (Styling ada di file CSS)
                 modalRingkasan.innerHTML = `
                 <div class="hasil-skor-container">
                     <span class="txt-sukses">✔ Benar : ${benarCount}</span>
@@ -767,14 +786,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
 
-                // Tampilkan Modal
                 modalLatihan.style.display = "flex";
                 if (modalTutup) modalTutup.focus();
             }
         });
     }
 
-    // Logic Tombol Reset & Controls
     if (btnResetAdi) btnResetAdi.addEventListener("click", resetAllAdi);
 
     if (modalTutup)
@@ -789,18 +806,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (btnCekAdi) btnCekAdi.focus();
         });
 
-    // Klik di luar modal untuk menutup
     if (modalLatihan) {
         modalLatihan.addEventListener("click", (e) => {
             if (e.target === modalLatihan) modalLatihan.style.display = "none";
         });
     }
 
-    // 4. LOGIKA UNDUH PDF */
-
+    // =========================================================================
+    // 4. LOGIKA UNDUH PDF
+    // =========================================================================
     const btnUnduhAdi = document.getElementById("unduh-adi");
 
-    // Helper: Mengompres Gambar
     const getCompressedImage = (el) => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -827,7 +843,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Helper: Ekstrak Angka
     const extractNum = (val) => {
         if (!val) return null;
         const m = val.toString().match(/-?\d+(\.\d+)?/);
@@ -853,7 +868,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const margin = 20;
                 let yPos = 0;
 
-                // 1. HEADER (Orange)
                 doc.setFillColor(249, 92, 80);
                 doc.rect(0, 0, pageWidth, 40, "F");
                 doc.setTextColor(255, 255, 255);
@@ -873,10 +887,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 yPos = 55;
 
-                // 2. INFO IDENTITAS (REVISI: KECIL & MIRING)
-                doc.setTextColor(80, 80, 80); // Abu agak tua
-                doc.setFontSize(9); // Ukuran lebih kecil
-                doc.setFont("helvetica", "italic"); // Gaya Miring
+                doc.setTextColor(80, 80, 80);
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "italic");
 
                 const tgl = new Date().toLocaleDateString("id-ID", {
                     weekday: "long",
@@ -887,25 +900,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 doc.text(`Tanggal Pengerjaan: ${tgl}`, margin, yPos);
                 yPos += 10;
 
-                // 3. CERITA SOAL (REVISI: UKURAN LEBIH BESAR)
-                doc.setFont("helvetica", "normal"); // Kembalikan ke normal (tidak miring)
-                doc.setFontSize(12); // Ukuran font diperbesar (Standar baca nyaman)
-                doc.setTextColor(0, 0, 0); // Hitam pekat
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
 
                 const cerita =
                     "Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang 110 meter. Jika Adi mengendarai mobilnya sebanyak 5 putaran, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?";
 
-                // Memecah teks agar rapi (Word Wrap)
                 const splitCerita = doc.splitTextToSize(
                     cerita,
                     pageWidth - margin * 2,
                 );
                 doc.text(splitCerita, margin, yPos);
 
-                // Update yPos berdasarkan tinggi teks cerita
                 yPos += splitCerita.length * 6 + 5;
 
-                // 4. GAMBAR (Di Bawah Cerita)
                 const imgElement = document.querySelector(".gambar-latihan");
                 if (imgElement) {
                     try {
@@ -916,7 +925,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             (imgProps.height * imgWidth) / imgProps.width;
                         const xImg = (pageWidth - imgWidth) / 2;
 
-                        // Cek sisa halaman
                         if (yPos + imgHeight > pageHeight - 20) {
                             doc.addPage();
                             yPos = 20;
@@ -936,7 +944,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
 
-                // 5. VALIDASI & LIST JAWABAN
                 const rawAnswers = [
                     {
                         q: "1. Di mana posisi awal Adi saat mulai mengemudi?",
@@ -979,7 +986,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let countSalah = 0;
                 let countKosong = 0;
 
-                doc.setFontSize(11); // Ukuran font soal kembali normal
+                doc.setFontSize(11);
 
                 rawAnswers.forEach((item) => {
                     const val = item.el.value.trim();
@@ -1003,34 +1010,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     else if (status === "salah") countSalah++;
                     else countKosong++;
 
-                    // Cek halaman
                     if (yPos > pageHeight - 30) {
                         doc.addPage();
                         yPos = 20;
                     }
 
-                    // Teks Soal
                     doc.setFont("helvetica", "bold");
                     doc.setTextColor(0, 0, 0);
                     doc.text(item.q, margin, yPos);
                     yPos += 6;
 
-                    // Styling Kotak
                     if (status === "benar") {
-                        doc.setFillColor(209, 250, 229); // Hijau Muda
-                        doc.setDrawColor(34, 197, 94); // Hijau Tua
-                        doc.setTextColor(21, 128, 61); // Teks Hijau
+                        doc.setFillColor(209, 250, 229);
+                        doc.setDrawColor(34, 197, 94);
+                        doc.setTextColor(21, 128, 61);
                     } else if (status === "salah") {
-                        doc.setFillColor(254, 226, 226); // Merah Muda
-                        doc.setDrawColor(239, 68, 68); // Merah Tua
-                        doc.setTextColor(185, 28, 28); // Teks Merah
+                        doc.setFillColor(254, 226, 226);
+                        doc.setDrawColor(239, 68, 68);
+                        doc.setTextColor(185, 28, 28);
                     } else {
-                        doc.setFillColor(245, 245, 245); // Abu
+                        doc.setFillColor(245, 245, 245);
                         doc.setDrawColor(200, 200, 200);
                         doc.setTextColor(100, 100, 100);
                     }
 
-                    // Gambar Kotak
                     doc.roundedRect(
                         margin,
                         yPos - 5,
@@ -1041,7 +1044,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         "FD",
                     );
 
-                    // Tulis Jawaban
                     doc.setFont("helvetica", "normal");
                     const textAns = val
                         ? `${val} ${item.unit}`
@@ -1057,7 +1059,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     yPos += 16;
                 });
 
-                // 6. RINGKASAN SKOR
                 yPos += 5;
                 doc.setFont("helvetica", "bold");
                 doc.setTextColor(0, 0, 0);
@@ -1079,7 +1080,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     align: "center",
                 });
 
-                // 7. FOOTER
                 yPos += 15;
                 doc.setFontSize(9);
                 doc.setTextColor(150, 150, 150);
@@ -1099,8 +1099,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// INI MERUPAKAN FILE KELAJUAN DAN KECEPATAN (REVISI LOCKING SYSTEM)
-
+// INI MERUPAKAN FILE KELAJUAN DAN KECEPATAN
 // Kunci Jawaban Latihan Soal Isian
 const kunciLatihan = [
     // ===== KELAJUAN =====
@@ -1122,7 +1121,6 @@ const kunciLatihan = [
     { id: "v2-hasil", jawaban: "4" },
 ];
 
-// Fungsi Popup Global
 function tutupPopupQuiz() {
     const popup = document.getElementById("popup-quiz");
     if (popup) popup.classList.remove("show");
@@ -1140,7 +1138,6 @@ function tutupPopupLatihan() {
     if (popup) popup.classList.remove("show");
 }
 
-// Fungsi Coba Lagi Latihan (Global)
 window.cobaLagiLatihan = function () {
     kunciLatihan.forEach((item) => {
         const input = document.getElementById(item.id);
@@ -1152,18 +1149,22 @@ window.cobaLagiLatihan = function () {
     tutupPopupLatihan();
 };
 
-/*MAIN LOGIC (DOM CONTENT LOADED)*/
 document.addEventListener("DOMContentLoaded", function () {
-    /*
-     0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (SISTEM PENGUNCIAN)
-     */
+    // =========================================================================
+    // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
+    // =========================================================================
     function checkAllLocks() {
-        // AMBIL PATH HALAMAN SAAT INI
         const path = window.location.pathname;
 
+        // Fungsi pembantu untuk mengecek database
+        function isLulus(kodeMateri) {
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
+        }
+
         // 1. Cek Kelulusan Materi Sebelumnya (Jarak Tempuh)
-        // Jika sudah lulus Jarak Tempuh, pastikan menu Kelajuan (sidebar) terbuka
-        if (localStorage.getItem("jarak_completed") === "true") {
+        if (isLulus("jarak_completed")) {
             const navKelajuan = document.getElementById("nav-kelajuan");
             if (navKelajuan) {
                 navKelajuan.classList.remove("locked");
@@ -1173,8 +1174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 2. Cek Kelulusan Materi INI (Kelajuan dan Kecepatan)
-        if (localStorage.getItem("kelajuan_completed") === "true") {
-            // A. Buka Sidebar Materi Selanjutnya (Percepatan) - INI GLOBAL
+        if (isLulus("kelajuan_completed")) {
             const navPercepatan = document.getElementById("nav-percepatan");
             if (navPercepatan) {
                 navPercepatan.classList.remove("locked");
@@ -1182,8 +1182,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (lockIcon) lockIcon.remove();
             }
 
-            // B. Buka Tombol "Materi Selanjutnya"
-            // --- PERBAIKAN: HANYA JIKA DI HALAMAN KELAJUAN ---
             if (path.includes("kelajuandankecepatan")) {
                 const btnNextMateri =
                     document.getElementById("btn-next-materi");
@@ -1194,10 +1192,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Jalankan pengecekan gembok saat halaman dimuat
     checkAllLocks();
 
-    // 1. LOGIKA KUIS KELAJUAN vs KECEPATAN */
+    // =========================================================================
+    // 1. LOGIKA KUIS KELAJUAN vs KECEPATAN
+    // =========================================================================
     const checks = document.querySelectorAll(".quiz-check");
     const btnCekQuiz = document.getElementById("btn-cek-quiz");
     const btnResetQuiz = document.getElementById("btn-reset-quiz");
@@ -1214,7 +1213,6 @@ document.addEventListener("DOMContentLoaded", function () {
         9: "kecepatan",
     };
 
-    // Checkbox behavior (hanya boleh pilih satu per baris)
     if (checks.length > 0) {
         checks.forEach((cb) => {
             cb.addEventListener("change", function () {
@@ -1230,7 +1228,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Tombol Cek Kuis
     if (btnCekQuiz) {
         btnCekQuiz.addEventListener("click", function () {
             let benar = 0;
@@ -1275,14 +1272,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Tombol Reset Kuis
     if (btnResetQuiz) {
         btnResetQuiz.addEventListener("click", function () {
             checks.forEach((cb) => (cb.checked = false));
         });
     }
 
-    // 2. LOGIKA LATIHAN SOAL ISIAN (UPDATED: BUKA KUNCI JIKA BENAR) */
+    // =========================================================================
+    // 2. LOGIKA LATIHAN SOAL ISIAN
+    // =========================================================================
     const btnCekLatihan = document.getElementById("btn-cek-latihan");
     const btnResetLatihan = document.getElementById("btn-reset-latihan");
 
@@ -1312,13 +1310,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // CEK APAKAH SEMUA JAWABAN BENAR
             if (benar === kunciLatihan.length) {
-                // 1. Simpan Status Lulus ke Memori Browser
-                localStorage.setItem("kelajuan_completed", "true");
+                // Simpan status ke array JS dan Database
+                window.progresSiswa.push("kelajuan_completed");
+                simpanProgresKeDatabase("kelajuan_completed");
 
-                // 2. Jalankan fungsi buka gembok (agar tombol next langsung aktif tanpa refresh)
                 checkAllLocks();
 
-                // 3. Tampilkan Notifikasi Sukses (SweetAlert)
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -1328,13 +1325,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    // Fallback jika SweetAlert tidak terload
                     alert(
                         "Selamat! Jawaban kamu benar semua. Materi selanjutnya telah terbuka.",
                     );
                 }
             } else {
-                // Jika belum benar semua, tampilkan popup skor biasa
                 const popupText = document.getElementById("popup-latihan-text");
                 const popup = document.getElementById("popup-latihan");
 
@@ -1358,10 +1353,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 3. LOGIKA UNDUH PDF */
+    // =========================================================================
+    // 3. LOGIKA UNDUH PDF
+    // =========================================================================
     const btnUnduhLatihan = document.getElementById("btn-unduh-latihan");
 
-    // Helper Kompresi Gambar
     const getCompressedImage = (el) => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -1401,12 +1397,11 @@ document.addEventListener("DOMContentLoaded", function () {
             btnUnduhLatihan.disabled = true;
 
             try {
-                const doc = new jsPDF("p", "mm", "a4"); // Portrait, Millimeters
+                const doc = new jsPDF("p", "mm", "a4");
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
                 let yPos = 0;
 
-                // 1. HEADER
                 doc.setFillColor(249, 92, 80);
                 doc.rect(0, 0, pageWidth, 40, "F");
                 doc.setTextColor(255, 255, 255);
@@ -1423,7 +1418,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 yPos = 55;
 
-                // 2. INFO IDENTITAS
                 doc.setTextColor(80, 80, 80);
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "italic");
@@ -1433,7 +1427,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
                 yPos += 10;
 
-                // 3. SOAL CERITA
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(11);
                 doc.setTextColor(0, 0, 0);
@@ -1443,14 +1436,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text(splitCerita, 20, yPos);
                 yPos += splitCerita.length * 5 + 5;
 
-                // 4. GAMBAR
                 const images = document.querySelectorAll(".content-image2");
-                const imgElement = images[images.length - 1]; // Ambil gambar terakhir di halaman
+                const imgElement = images[images.length - 1];
                 if (imgElement) {
                     try {
                         const imgData = await getCompressedImage(imgElement);
                         const imgProps = doc.getImageProperties(imgData);
-                        const imgWidth = 80; // Gambar lebih kecil agar muat
+                        const imgWidth = 80;
                         const imgHeight =
                             (imgProps.height * imgWidth) / imgProps.width;
                         const xImg = (pageWidth - imgWidth) / 2;
@@ -1466,31 +1458,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     } catch (e) {}
                 }
 
-                // 5. LOGIKA GAMBAR KOTAK JAWABAN (HELPER)
-
                 let countBenar = 0,
                     countSalah = 0,
                     countKosong = 0;
 
-                // Fungsi menggambar kotak jawaban di koordinat spesifik
                 const drawAnswerBox = (id, x, y, w = 15, h = 7) => {
                     const inputEl = document.getElementById(id);
                     const val = inputEl ? inputEl.value.trim() : "";
-                    // Mencari kunci jawaban dari array kunciLatihan
                     const kunci = kunciLatihan.find((k) => k.id === id);
 
-                    let bgColor = [245, 245, 245]; // Abu (Kosong)
+                    let bgColor = [245, 245, 245];
                     let textColor = [100, 100, 100];
                     let borderColor = [200, 200, 200];
 
                     if (val !== "") {
                         if (val === kunci.jawaban) {
-                            bgColor = [209, 250, 229]; // Hijau Muda
+                            bgColor = [209, 250, 229];
                             borderColor = [34, 197, 94];
                             textColor = [21, 128, 61];
                             countBenar++;
                         } else {
-                            bgColor = [254, 226, 226]; // Merah Muda
+                            bgColor = [254, 226, 226];
                             borderColor = [239, 68, 68];
                             textColor = [185, 28, 28];
                             countSalah++;
@@ -1508,13 +1496,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     const textToShow = val !== "" ? val : "(?)";
                     doc.text(textToShow, x + w / 2, y + 5, { align: "center" });
 
-                    // Reset warna ke hitam untuk teks biasa berikutnya
                     doc.setTextColor(0, 0, 0);
                 };
-
-                // 6. LAYOUT DUA KOLOM (KELAJUAN & KECEPATAN)
-                // Kita akan menggambar secara manual menggunakan koordinat
-                // Kolom Kiri: X = 20, Kolom Kanan: X = 115
 
                 const startY = yPos;
                 let leftY = startY;
@@ -1525,12 +1508,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.setFontSize(11);
                 doc.setFont("helvetica", "bold");
 
-                // === KOLOM KIRI (KELAJUAN) ===
+                // KOLOM KIRI (KELAJUAN)
                 doc.text("A. Kelajuan", colLeft, leftY);
                 leftY += 8;
                 doc.setFont("helvetica", "normal");
 
-                // Diketahui
                 doc.text("Diketahui:", colLeft, leftY);
                 leftY += 6;
                 doc.text("Jarak =", colLeft, leftY);
@@ -1547,31 +1529,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text("sekon", colLeft + 32, leftY);
                 leftY += 10;
 
-                // Ditanya
                 doc.text("Ditanya: Kelajuan (v) = ?", colLeft, leftY);
                 leftY += 10;
 
-                // Dijawab
                 doc.text("Dijawab: v = s / t", colLeft, leftY);
                 leftY += 10;
 
-                // Pecahan
                 doc.text("v =", colLeft, leftY + 5);
-                drawAnswerBox("v-atas", colLeft + 10, leftY - 2, 15); // Atas
-                doc.line(colLeft + 10, leftY + 6, colLeft + 25, leftY + 6); // Garis bagi
-                drawAnswerBox("v-bawah", colLeft + 10, leftY + 7, 15); // Bawah
+                drawAnswerBox("v-atas", colLeft + 10, leftY - 2, 15);
+                doc.line(colLeft + 10, leftY + 6, colLeft + 25, leftY + 6);
+                drawAnswerBox("v-bawah", colLeft + 10, leftY + 7, 15);
 
                 doc.text("=", colLeft + 28, leftY + 5);
-                drawAnswerBox("v-hasil", colLeft + 33, leftY + 2, 15); // Hasil
+                drawAnswerBox("v-hasil", colLeft + 33, leftY + 2, 15);
                 doc.text("m/s", colLeft + 50, leftY + 5);
 
-                // === KOLOM KANAN (KECEPATAN) ===
+                // KOLOM KANAN (KECEPATAN)
                 doc.setFont("helvetica", "bold");
                 doc.text("B. Kecepatan", colRight, rightY);
                 rightY += 8;
                 doc.setFont("helvetica", "normal");
 
-                // Diketahui
                 doc.text("Diketahui:", colRight, rightY);
                 rightY += 6;
                 doc.text("Selatan (x0) =", colRight, rightY);
@@ -1589,11 +1567,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text("s", colRight + 32, rightY);
                 rightY += 10;
 
-                // Ditanya
                 doc.text("Ditanya: Kecepatan (v) = ?", colRight, rightY);
                 rightY += 10;
 
-                // Dijawab
                 doc.text("Dijawab: Cari Perpindahan", colRight, rightY);
                 rightY += 8;
                 doc.text("Delta s = xt - x0", colRight, rightY);
@@ -1603,18 +1579,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text("m", colRight + 35, rightY);
                 rightY += 12;
 
-                // Pecahan Kecepatan
                 doc.text("v =", colRight, rightY + 5);
-                drawAnswerBox("v2-atas", colRight + 10, rightY - 2, 15); // Atas
-                doc.line(colRight + 10, rightY + 6, colRight + 25, rightY + 6); // Garis bagi
-                drawAnswerBox("v2-bawah", colRight + 10, rightY + 7, 15); // Bawah
+                drawAnswerBox("v2-atas", colRight + 10, rightY - 2, 15);
+                doc.line(colRight + 10, rightY + 6, colRight + 25, rightY + 6);
+                drawAnswerBox("v2-bawah", colRight + 10, rightY + 7, 15);
 
                 doc.text("=", colRight + 28, rightY + 5);
-                drawAnswerBox("v2-hasil", colRight + 33, rightY + 2, 15); // Hasil
+                drawAnswerBox("v2-hasil", colRight + 33, rightY + 2, 15);
                 doc.text("m/s", colRight + 50, rightY + 5);
 
-                // 7. RINGKASAN SKOR
-                // Cari posisi Y paling bawah antara kolom kiri atau kanan
                 yPos = Math.max(leftY, rightY) + 25;
 
                 doc.setFont("helvetica", "bold");
@@ -1628,7 +1601,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     align: "center",
                 });
 
-                // Footer
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(150, 150, 150);
@@ -1648,8 +1620,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// FILE: PERCEPATAN (LOGIKA LATIHAN & UNDUH PDF - REVISI LOCK SYSTEM) */
-
+// FILE: PERCEPATAN (LOGIKA LATIHAN & UNDUH PDF)
 // 1. HELPER GLOBAL: KOMPRESI GAMBAR
 const getCompressedImage = (el) => {
     return new Promise((resolve, reject) => {
@@ -1678,14 +1649,21 @@ const getCompressedImage = (el) => {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (SISTEM PENGUNCIAN) */
+    // =========================================================================
+    // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
+    // =========================================================================
     function checkAllLocks() {
-        // Ambil path untuk memastikan kita ada di halaman yang benar
         const path = window.location.pathname;
 
+        // Fungsi pembantu untuk mengecek database
+        function isLulus(kodeMateri) {
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
+        }
+
         // 1. Cek Kelulusan Materi Sebelumnya (Kelajuan & Kecepatan)
-        // Logika: Jika Kelajuan Lulus -> Buka Sidebar Percepatan SAJA.
-        if (localStorage.getItem("kelajuan_completed") === "true") {
+        if (isLulus("kelajuan_completed")) {
             const navPercepatan = document.getElementById("nav-percepatan");
             if (navPercepatan) {
                 navPercepatan.classList.remove("locked");
@@ -1695,9 +1673,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 2. Cek Kelulusan Materi INI (Percepatan)
-        // Logika: Jika Percepatan Lulus -> Buka Sidebar Kuis 1 DAN Tombol 'Ke Kuis 1'
-        if (localStorage.getItem("percepatan_completed") === "true") {
-            // A. Buka Sidebar Kuis 1
+        if (isLulus("percepatan_completed")) {
             const navKuis = document.getElementById("nav-kuis1");
             if (navKuis) {
                 navKuis.classList.remove("locked");
@@ -1705,7 +1681,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (lockIcon) lockIcon.remove();
             }
 
-            // B. Buka Tombol "Ke Kuis 1" (HANYA jika di halaman Percepatan)
             if (path.includes("percepatan")) {
                 const btnNextMateri =
                     document.getElementById("btn-next-materi");
@@ -1716,17 +1691,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Jalankan pengecekan gembok saat halaman dimuat
     checkAllLocks();
 
-    // BAGIAN A: LOGIKA LATIHAN SOAL (INTERAKSI WEBSITE) */
+    // =========================================================================
+    // BAGIAN A: LOGIKA LATIHAN SOAL (INTERAKSI WEBSITE)
+    // =========================================================================
 
     const btnCek = document.getElementById("btn-cek-percepatan");
     const btnReset = document.getElementById("btn-reset-percepatan");
     const btnPopupUlang = document.getElementById("btn-popup-ulang-percepatan");
     const btnPopupTutup = document.getElementById("btn-popup-tutup-percepatan");
 
-    // Kunci Jawaban Soal Percepatan
     const kunciPercepatan = [
         { id: "v1", jawaban: "10" },
         { id: "v2", jawaban: "50" },
@@ -1736,7 +1711,6 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "a-hasil", jawaban: "2" },
     ];
 
-    // Fungsi Reset Input
     function resetPercepatan() {
         kunciPercepatan.forEach((item) => {
             const input = document.getElementById(item.id);
@@ -1749,7 +1723,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (popupBox) popupBox.classList.remove("show");
     }
 
-    // Event Listener: Cek Jawaban
     if (btnCek) {
         btnCek.addEventListener("click", () => {
             let benar = 0;
@@ -1774,15 +1747,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // LOGIKA BARU: JIKA BENAR SEMUA, BUKA KUNCI
+            // LOGIKA BARU: JIKA BENAR SEMUA, BUKA KUNCI DAN SIMPAN KE DATABASE
             if (benar === kunciPercepatan.length) {
-                // 1. Simpan Status Lulus ke Memori Browser
-                localStorage.setItem("percepatan_completed", "true");
+                // Simpan status ke array JS dan Database
+                window.progresSiswa.push("percepatan_completed");
+                simpanProgresKeDatabase("percepatan_completed");
 
-                // 2. Jalankan fungsi buka gembok (agar tombol next langsung aktif)
                 checkAllLocks();
 
-                // 3. Tampilkan Notifikasi Sukses (SweetAlert)
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -1792,13 +1764,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    // Fallback jika SweetAlert tidak terload
                     alert(
                         "Selamat! Jawaban kamu benar semua. Akses ke Kuis 1 telah terbuka.",
                     );
                 }
             } else {
-                // Jika belum benar semua, tampilkan popup skor biasa
                 const popupText = document.getElementById(
                     "popup-percepatan-text",
                 );
@@ -1818,7 +1788,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Event Listener: Tombol Reset & Tutup
     if (btnReset) btnReset.addEventListener("click", resetPercepatan);
     if (btnPopupUlang) btnPopupUlang.addEventListener("click", resetPercepatan);
     if (btnPopupTutup) {
@@ -1828,7 +1797,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // BAGIAN B: LOGIKA UNDUH PDF (LAYOUT KHUSUS PERCEPATAN) */
+    // =========================================================================
+    // BAGIAN B: LOGIKA UNDUH PDF
+    // =========================================================================
 
     const btnUnduhPercepatan = document.getElementById("btn-unduh-percepatan");
 
@@ -1840,7 +1811,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Ubah status tombol saat proses
             const originalText = btnUnduhPercepatan.innerHTML;
             btnUnduhPercepatan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
             btnUnduhPercepatan.disabled = true;
@@ -1850,7 +1820,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const pageWidth = doc.internal.pageSize.getWidth();
                 let yPos = 0;
 
-                // 1. HEADER (Orange Theme)
                 doc.setFillColor(249, 92, 80);
                 doc.rect(0, 0, pageWidth, 40, "F");
                 doc.setTextColor(255, 255, 255);
@@ -1867,7 +1836,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 yPos = 55;
 
-                // 2. IDENTITAS & TANGGAL
                 doc.setTextColor(80, 80, 80);
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "italic");
@@ -1877,7 +1845,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
                 yPos += 10;
 
-                // 3. SOAL CERITA
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(11);
                 doc.setTextColor(0, 0, 0);
@@ -1887,9 +1854,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text(splitCerita, 20, yPos);
                 yPos += splitCerita.length * 6 + 5;
 
-                // 4. GAMBAR ILUSTRASI
                 const images = document.querySelectorAll(".content-image2");
-                // Mengambil gambar terakhir di halaman (asumsi gambar latihan ada di bawah)
                 const imgElement = images[images.length - 1];
 
                 if (imgElement) {
@@ -1914,7 +1879,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
-                // 5. LOGIKA GAMBAR KOTAK (VALIDASI)
                 let countBenar = 0,
                     countSalah = 0,
                     countKosong = 0;
@@ -1952,15 +1916,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     doc.text(val !== "" ? val : "(?)", x + w / 2, y + 5, {
                         align: "center",
                     });
-                    doc.setTextColor(0, 0, 0); // Reset warna hitam
+                    doc.setTextColor(0, 0, 0);
                 };
 
-                // 6. LAYOUT JAWABAN (MANUAL DRAWING)
                 let leftX = 20;
                 doc.setFontSize(11);
                 doc.setFont("helvetica", "normal");
 
-                // Bagian Diketahui
                 doc.text("Diketahui:", leftX, yPos);
                 yPos += 8;
 
@@ -1979,32 +1941,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.text("s", leftX + 62, yPos);
                 yPos += 12;
 
-                // Bagian Ditanya
                 doc.text("Ditanya: Percepatan (a) = ?", leftX, yPos);
                 yPos += 10;
 
-                // Bagian Dijawab
                 doc.text("Dijawab: a = (v2 - v1) / t", leftX, yPos);
                 yPos += 10;
 
-                // Rumus Pecahan Hasil
                 doc.text("a =", leftX, yPos + 5);
 
-                // Kotak Atas (Selisih Kecepatan)
                 drawBox("a-atas", leftX + 10, yPos - 2, 15);
-                // Garis Pembagi
                 doc.line(leftX + 10, yPos + 6, leftX + 25, yPos + 6);
-                // Kotak Bawah (Waktu)
                 drawBox("a-bawah", leftX + 10, yPos + 7, 15);
 
                 doc.text("=", leftX + 28, yPos + 5);
-                // Kotak Hasil Akhir
                 drawBox("a-hasil", leftX + 33, yPos + 2, 15);
                 doc.text("m/s²", leftX + 50, yPos + 5);
 
-                yPos += 25; // Spasi ke footer
+                yPos += 25;
 
-                // 7. RINGKASAN & FOOTER
                 const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
 
                 doc.setDrawColor(0, 0, 0);
@@ -2022,7 +1976,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     align: "center",
                 });
 
-                // Simpan File PDF
                 doc.save("Laporan_Latihan_Percepatan.pdf");
             } catch (err) {
                 console.error(err);
@@ -2035,29 +1988,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// FILE: SCRIPT KHUSUS MODUL GAYA (Fokus: Locking System & Progres Kuis Kilat) */
-
+// FILE: SCRIPT KHUSUS MODUL GAYA (Fokus: Locking System & Progres Kuis Kilat)
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // Variabel pelacak progres kuis kilat di halaman Pengertian Gaya
     let answeredCount = 0;
     const totalQuestions = 4;
 
-    // 1. SISTEM PENGUNCIAN (LOCKING SYSTEM) */
+    // =========================================================================
+    // 1. SISTEM PENGUNCIAN (LOCKING SYSTEM DENGAN DATABASE)
+    // =========================================================================
     function checkAllLocks() {
-        // A. Logika Halaman: Pengantar Gaya
-        // Tombol terbuka jika siswa sudah Lulus Kuis 1 (Gerak)
-        if (localStorage.getItem("kuis1_completed") === "true") {
+        // Fungsi pembantu untuk mengecek database
+        function isLulus(kodeMateri) {
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
+        }
+
+        // A. Logika Halaman: Pengantar Gaya (Syarat: Lulus Kuis 1)
+        if (isLulus("kuis1_completed")) {
             if (path.includes("pengantargaya")) {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
             }
         }
 
-        // B. Logika Halaman: Pengertian Gaya
-        // Tombol terbuka jika kuis kilat di halaman ini sudah diselesaikan sebelumnya
-        if (localStorage.getItem("pengertiangaya_completed") === "true") {
+        // B. Logika Halaman: Pengertian Gaya (Syarat: Lulus Kuis Kilat Ini)
+        if (isLulus("pengertiangaya_completed")) {
             if (path.includes("pengertiangaya")) {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
@@ -2065,43 +2023,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Jalankan pengecekan gembok saat halaman dimuat
     checkAllLocks();
 
-    // 2. LOGIKA KUIS PILIHAN GANDA (KUIS KILAT GAYA) */
+    // =========================================================================
+    // 2. LOGIKA KUIS PILIHAN GANDA (KUIS KILAT GAYA)
+    // =========================================================================
     window.cekJawaban = function (tombol, status) {
-        // 1. Ambil elemen induk (grup tombol)
         const grupTombol = tombol.parentElement;
         const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
-        const respon = grupTombol.nextElementSibling; // Elemen <p> untuk pesan respon
+        const respon = grupTombol.nextElementSibling;
 
-        // Cegah klik ganda pada soal yang sama untuk penghitungan progres
         if (grupTombol.getAttribute("data-answered") === "true") return;
 
-        // 2. Matikan semua tombol di soal ini agar tidak bisa diklik lagi
         semuaTombol.forEach((btn) => {
             btn.disabled = true;
-            btn.style.pointerEvents = "none"; // Hilangkan efek kursor
+            btn.style.pointerEvents = "none";
         });
 
-        // Tandai soal sudah dijawab dan tambah progres
         grupTombol.setAttribute("data-answered", "true");
         answeredCount++;
 
-        // 3. Cek apakah jawaban Benar atau Salah
         if (status === "benar") {
-            // Jika Benar
             tombol.classList.add("jawaban-benar");
             respon.innerHTML = "✅ Benar! Bagus sekali.";
-            respon.style.color = "#28a745"; // Warna hijau
+            respon.style.color = "#28a745";
         } else {
-            // Jika Salah
             tombol.classList.add("jawaban-salah");
             respon.innerHTML =
                 "❌ Kurang tepat. Jawaban yang benar ditandai hijau.";
-            respon.style.color = "#dc3545"; // Warna merah
+            respon.style.color = "#dc3545";
 
-            // Otomatis tunjukkan mana jawaban yang benar
             semuaTombol.forEach((btn) => {
                 if (btn.getAttribute("onclick").includes("'benar'")) {
                     btn.classList.add("jawaban-benar");
@@ -2109,16 +2060,16 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 4. Cek Progres: Jika semua soal (4 soal) sudah dijawab, buka tombol Selanjutnya
+        // Jika semua soal sudah dijawab, buka tombol Selanjutnya & simpan ke DB
         if (answeredCount === totalQuestions) {
-            // Simpan status lulus materi ke memori browser
-            localStorage.setItem("pengertiangaya_completed", "true");
+            // [REVISI]: Ganti localStorage dengan push ke array & simpan ke DB
+            window.progresSiswa.push("pengertiangaya_completed");
+            simpanProgresKeDatabase("pengertiangaya_completed");
 
             const btnNext = document.getElementById("btn-next-materi");
             if (btnNext) {
                 btnNext.classList.remove("locked");
 
-                // Berikan feedback menggunakan SweetAlert2
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Materi Selesai!",
@@ -2133,40 +2084,45 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 
-// ini file RESULTAN GAYA
-
+// FILE: RESULTAN GAYA
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT
-    // Jika siswa sebelumnya sudah lulus materi ini, langsung buka tombolnya.
-    if (localStorage.getItem("resultangaya_completed") === "true") {
+    // =========================================================================
+    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT (DARI DATABASE)
+    // =========================================================================
+    if (
+        window.progresSiswa &&
+        window.progresSiswa.includes("resultangaya_completed")
+    ) {
         const btnNext = document.getElementById("btn-next-materi");
         if (btnNext) {
             btnNext.classList.remove("locked");
         }
     }
 
+    // =========================================================================
     // 2. VARIABEL PELACAK STATUS JAWABAN (Soal 1 & 2)
+    // =========================================================================
     let statusResultan = {
         1: false,
         2: false,
     };
 
+    // =========================================================================
     // 3. FUNGSI CEK JAWABAN
+    // =========================================================================
     window.cekJawabanResultan = function (no) {
         const kunciJawaban = {
-            1: 40, // Jawaban Latihan 1: 15 + 25
-            2: 0, // Jawaban Latihan 2: 35 + (-35)
+            1: 40, // Latihan 1: 15 + 25
+            2: 0, // Latihan 2: 35 + (-35)
         };
 
         const inputEl = document.getElementById("jawaban" + no);
         const feedbackEl = document.getElementById("feedback" + no);
 
-        // Defensive check
         if (!inputEl || !feedbackEl) return;
 
         const nilaiInput = inputEl.value.trim();
 
-        // Cek jika kosong
         if (nilaiInput === "") {
             feedbackEl.textContent = "⚠️ Masukkan jawaban terlebih dahulu.";
             feedbackEl.className = "feedback salah";
@@ -2174,28 +2130,23 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Validasi Benar/Salah
         if (Number(nilaiInput) === kunciJawaban[no]) {
-            // JIKA BENAR
             feedbackEl.textContent = "✅ Jawaban benar!";
             feedbackEl.className = "feedback benar";
             feedbackEl.style.color = "green";
 
-            // Tandai soal nomor ini sudah benar
             statusResultan[no] = true;
 
-            // --- LOGIKA BUKA GEMBOK ---
-            // Cek apakah Soal 1 DAN Soal 2 sudah benar semua?
+            // Jika Soal 1 dan Soal 2 sudah benar semua
             if (statusResultan[1] && statusResultan[2]) {
-                // 1. Simpan status lulus ke memori browser
-                localStorage.setItem("resultangaya_completed", "true");
+                // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
+                window.progresSiswa.push("resultangaya_completed");
+                simpanProgresKeDatabase("resultangaya_completed");
 
-                // 2. Buka Tombol "Materi Selanjutnya"
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
                     btnNext.classList.remove("locked");
 
-                    // 3. Tampilkan Notifikasi Sukses
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
                             title: "Luar Biasa!",
@@ -2208,26 +2159,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         } else {
-            // JIKA SALAH
             feedbackEl.textContent = "❌ Jawaban salah, coba lagi.";
             feedbackEl.className = "feedback salah";
             feedbackEl.style.color = "red";
 
-            // Tandai soal ini belum benar
             statusResultan[no] = false;
         }
     };
 });
 
-// INI MERUPAKAN FILE MACAM - MACAM GAYA
-// LOGIKA DRAG & DROP HALAMAN MACAM-MACAM GAYA
+// FILE: MACAM - MACAM GAYA (LOGIKA DRAG & DROP)
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // --- 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT ---
+    // =========================================================================
+    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT (DARI DATABASE)
+    // =========================================================================
     function checkLocalLock() {
         if (path.includes("macam-macamgaya")) {
-            if (localStorage.getItem("macamgaya_completed") === "true") {
+            // Cek apakah kode materi ada di dalam array progres dari database
+            if (
+                window.progresSiswa &&
+                window.progresSiswa.includes("macamgaya_completed")
+            ) {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
             } else {
@@ -2239,6 +2193,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkLocalLock();
 
+    // =========================================================================
+    // 2. LOGIKA DRAG & DROP
+    // =========================================================================
     const containerMacam = document.getElementById("drag-container-macam");
     const poolMacam = document.getElementById("card-pool-macam");
     const btnCekMacam = document.getElementById("btn-cek-macam");
@@ -2254,7 +2211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let draggedCard = null;
 
-        // 1. Event Drag Start
+        // Event Drag Start
         cards.forEach((card) => {
             card.addEventListener("dragstart", function () {
                 draggedCard = this;
@@ -2267,7 +2224,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // 2. Event Drop Zone
+        // Event Drop Zone
         zones.forEach((zone) => {
             zone.addEventListener("dragover", function (e) {
                 e.preventDefault();
@@ -2289,7 +2246,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // 3. Tombol Cek Jawaban
+        // =========================================================================
+        // 3. TOMBOL CEK JAWABAN & PENYIMPANAN PROGRES
+        // =========================================================================
         btnCekMacam.addEventListener("click", function () {
             let benar = 0;
             const total = cards.length;
@@ -2313,20 +2272,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const salah = total - benar;
 
-            // --- PERBAIKAN LOGIKA DISINI ---
+            // JIKA BENAR SEMUA -> BUKA KUNCI & SIMPAN KE DB
             if (benar === total) {
-                // A. JIKA BENAR SEMUA -> TAMPILKAN SWEETALERT SAJA
+                // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
+                window.progresSiswa.push("macamgaya_completed");
+                simpanProgresKeDatabase("macamgaya_completed");
 
-                // Simpan status
-                localStorage.setItem("macamgaya_completed", "true");
-
-                // Buka tombol
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
                     btnNext.classList.remove("locked");
                 }
 
-                // Tampilkan SweetAlert
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -2337,7 +2293,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             } else {
-                // B. JIKA BELUM BENAR SEMUA -> TAMPILKAN MODAL HASIL LATIHAN
+                // JIKA BELUM BENAR SEMUA -> TAMPILKAN MODAL HASIL LATIHAN
                 if (modalText && modal) {
                     modalText.innerHTML = `
                   <span class="hasil-benar">✔ Benar : ${benar}</span><br>
@@ -2348,7 +2304,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // 4. Tutup Modal
+        // Tutup Modal Latihan
         if (closeModal) {
             closeModal.addEventListener("click", function () {
                 modal.style.display = "none";
@@ -2363,24 +2319,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// INI MERUPAKAN FILE HUKUM NEWTON
-// LOGIKA HALAMAN HUKUM NEWTON
+// FILE: HUKUM NEWTON
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // --- 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT ---
-    // Fungsi ini memastikan tombol hanya terbuka jika user SUDAH PERNAH LULUS materi ini sebelumnya.
+    // =========================================================================
+    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT (DARI DATABASE)
+    // =========================================================================
     function checkLocalLock() {
-        // Hanya jalankan logika ini jika user berada di halaman 'hukumnewton'
         if (path.includes("hukumnewton")) {
-            // Cek apakah materi INI sudah lulus?
-            if (localStorage.getItem("hukumnewton_completed") === "true") {
+            // Cek apakah materi INI sudah lulus dari array database
+            if (
+                window.progresSiswa &&
+                window.progresSiswa.includes("hukumnewton_completed")
+            ) {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
                     btnNext.classList.remove("locked");
                 }
             } else {
-                // Jika belum lulus, pastikan tombol tetap terkunci (Safety Measure)
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
                     btnNext.classList.add("locked");
@@ -2389,68 +2346,60 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Jalankan pengecekan saat halaman dimuat
     checkLocalLock();
 
+    // =========================================================================
+    // 2. LOGIKA KLIK PILIHAN GANDA
+    // =========================================================================
     const btnCekNewton = document.getElementById("btn-cek-newton");
     const btnResetNewton = document.getElementById("btn-reset-newton");
     const btnTutupNewton = document.getElementById("btn-tutup-newton");
 
-    // Pastikan kita berada di halaman Hukum Newton (tombol cek ada)
     if (btnCekNewton) {
-        // 2. Logika Klik Pilihan Ganda
         document.querySelectorAll(".grup-opsi .tombol-opsi").forEach((btn) => {
             btn.addEventListener("click", () => {
-                // Ambil grup induknya
                 const grup = btn.parentElement;
 
-                // Hapus kelas 'dipilih' dari semua tombol di grup ini
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
                     b.classList.remove("dipilih"),
                 );
 
-                // Tambahkan kelas 'dipilih' ke tombol yang diklik
                 btn.classList.add("dipilih");
-
-                // Simpan jawaban siswa di dataset grup
                 grup.dataset.jawaban = btn.dataset.pilihan;
             });
         });
 
-        // 3. Logika Cek Jawaban (Hanya Pilihan Ganda)
+        // =========================================================================
+        // 3. LOGIKA CEK JAWABAN & SIMPAN PROGRES
+        // =========================================================================
         btnCekNewton.addEventListener("click", () => {
             let benar = 0;
             let salah = 0;
-            let totalSoal = 0; // Hitung jumlah soal dinamis
+            let totalSoal = 0;
 
-            // Cek setiap grup soal
             document.querySelectorAll(".grup-opsi").forEach((grup) => {
                 totalSoal++;
                 const jawabanSiswa = grup.dataset.jawaban;
                 const kunci = grup.dataset.kunci;
 
-                // Reset warna/status sebelumnya
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
                     b.classList.remove("jawaban-benar", "jawaban-salah"),
                 );
 
                 if (!jawabanSiswa) {
-                    salah++; // Belum diisi dianggap salah
+                    salah++;
                 } else if (jawabanSiswa === kunci) {
                     benar++;
-                    // Beri warna hijau pada pilihan siswa
                     grup.querySelector(
                         `[data-pilihan="${jawabanSiswa}"]`,
                     ).classList.add("jawaban-benar");
                 } else {
                     salah++;
-                    // Beri warna merah pada pilihan siswa yang salah
                     const btnSalah = grup.querySelector(
                         `[data-pilihan="${jawabanSiswa}"]`,
                     );
                     if (btnSalah) btnSalah.classList.add("jawaban-salah");
 
-                    // Opsional: Tunjukkan jawaban yang benar
                     const btnKunci = grup.querySelector(
                         `[data-pilihan="${kunci}"]`,
                     );
@@ -2458,35 +2407,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // 4. Tampilkan Popup Hasil (Modal Bawaan)
+            // Tampilkan Popup Hasil
             const popupText = document.getElementById("popup-newton-text");
             const popupBox = document.getElementById("popup-newton");
 
-            // Logika Popup: Tampilkan SELALU (baik benar semua atau tidak) agar user tahu hasilnya
             if (popupText && popupBox) {
                 popupText.innerHTML = `
           <span class="hasil-benar">✔ Benar : ${benar}</span>
           <span class="pemisah">|</span>
           <span class="hasil-salah">✖ Salah : ${salah}</span>
         `;
-                // Tampilkan Popup Terlebih Dahulu
                 popupBox.classList.add("show");
             }
 
-            // --- LOGIKA SISTEM PENGUNCIAN ---
-            // Jika Benar Semua (sesuai jumlah soal), buka gembok
+            // JIKA BENAR SEMUA -> BUKA GEMBOK DAN SIMPAN KE DATABASE
             if (benar === totalSoal) {
-                // Simpan status lulus ke memori browser
-                localStorage.setItem("hukumnewton_completed", "true");
+                // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
+                window.progresSiswa.push("hukumnewton_completed");
+                simpanProgresKeDatabase("hukumnewton_completed");
 
-                // Buka Tombol Navigasi
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
                     btnNext.classList.remove("locked");
 
-                    // Tampilkan Notifikasi SweetAlert setelah jeda sebentar (agar popup hasil terlihat dulu)
                     setTimeout(() => {
-                        // Tutup popup hasil latihan agar tidak menumpuk
                         if (popupBox) popupBox.classList.remove("show");
 
                         if (typeof Swal !== "undefined") {
@@ -2498,14 +2442,15 @@ document.addEventListener("DOMContentLoaded", function () {
                                 confirmButtonColor: "#2ecc71",
                             });
                         }
-                    }, 1500); // Muncul setelah 1.5 detik
+                    }, 1500);
                 }
             }
         });
 
-        // 5. Logika Reset / Coba Lagi
+        // =========================================================================
+        // 4. LOGIKA RESET / COBA LAGI
+        // =========================================================================
         btnResetNewton.addEventListener("click", () => {
-            // Reset Pilihan Ganda: Hapus dataset jawaban dan kelas styling
             document.querySelectorAll(".grup-opsi").forEach((grup) => {
                 delete grup.dataset.jawaban;
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
@@ -2517,12 +2462,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             });
 
-            // Tutup Popup jika masih terbuka
             const popupBox = document.getElementById("popup-newton");
             if (popupBox) popupBox.classList.remove("show");
         });
 
-        // 6. Logika Tutup Popup
+        // =========================================================================
+        // 5. LOGIKA TUTUP POPUP
+        // =========================================================================
         if (btnTutupNewton) {
             btnTutupNewton.addEventListener("click", () => {
                 const popupBox = document.getElementById("popup-newton");
@@ -2532,11 +2478,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// INI MERUPAKAN FILE QUIZ 1 (REVISI LOCKING SYSTEM)
+// FILE: KUIS 1 (GERAK)
 document.addEventListener("DOMContentLoaded", function () {
-    // Cek apakah halaman ini adalah halaman kuis fullscreen
     if (document.querySelector(".body-kuis-fullscreen")) {
-        // 1. DATA SOAL
+        // =========================================================================
+        // 1. DATA SOAL KUIS 1
+        // =========================================================================
         const questions = [
             {
                 q: "Suatu benda dikatakan bergerak apabila …",
@@ -2546,7 +2493,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Kedudukan benda berubah terhadap titik acuan",
                     "Kecepatan benda selalu tetap",
                 ],
-                answer: 2, // Jawaban c
+                answer: 2,
             },
             {
                 q: "Saat berkendara di malam hari, kita sering melihat bulan seolah-olah bergerak mengikuti arah lari kita. Fenomena ini merupakan contoh dari...",
@@ -2556,7 +2503,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Gerak relatif",
                     "Gerak dipercepat",
                 ],
-                answer: 1, // Jawaban B
+                answer: 1,
             },
             {
                 q: "Perpindahan didefinisikan sebagai ...",
@@ -2566,7 +2513,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Jarak antara posisi awal dan posisi akhir dengan memperhatikan arah.",
                     "Selisih antara kecepatan awal dan kecepatan akhir.",
                 ],
-                answer: 2, // Jawaban C
+                answer: 2,
             },
             {
                 q: "Budi berlari berkeliling lapangan bola yang memiliki keliling 400 meter. Jika Budi berlari tepat satu putaran dan kembali ke posisi awal, maka ...",
@@ -2576,7 +2523,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Jarak = 400 m, perpindahan = 400 m",
                     "Jarak = 0 m, perpindahan = 0 m",
                 ],
-                answer: 1, // Jawaban b
+                answer: 1,
             },
             {
                 q: "Seorang anak bersepeda ke arah selatan sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Jika waktu yang dihabiskan adalah 20 sekon, maka besar kecepatan rata-rata anak tersebut adalah...",
@@ -2586,12 +2533,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     "4 m/s ke arah utara",
                     "4 m/s ke arah selatan",
                 ],
-                answer: 3, // Jawaban d
+                answer: 3,
             },
             {
                 q: "Sebuah bus sekolah menempuh jarak total 150 meter untuk menjemput siswa dalam waktu 25 sekon. Kelajuan bus tersebut adalah …",
                 options: ["2 m/s", "4 m/s", "6 m/s", "8 m/s"],
-                answer: 2, // Jawaban c
+                answer: 2,
             },
             {
                 q: "Perbedaan mendasar antara kelajuan dan kecepatan berdasarkan sifat besarannya adalah...",
@@ -2601,7 +2548,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Kelajuan adalah besaran skalar, sedangkan kecepatan adalah besaran vektor.",
                     "Kelajuan selalu memiliki nilai yang lebih kecil daripada kecepatan.",
                 ],
-                answer: 2, // Jawaban c
+                answer: 2,
             },
             {
                 q: "Besaran yang menyatakan adanya perubahan kecepatan suatu benda, baik menjadi lebih cepat maupun lebih lambat dalam selang waktu tertentu, disebut...",
@@ -2611,12 +2558,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Percepatan",
                     "Perpindahan",
                 ],
-                answer: 2, // Jawaban c
+                answer: 2,
             },
             {
                 q: "Sebuah sepeda mula-mula bergerak dengan kecepatan 10 m/s, kemudian pada detik ke-20 kecepatannya menjadi 50 m/s. Besar percepatan yang dialami sepeda tersebut adalah …",
                 options: ["2 m/s²", "3 m/s²", "4 m/s²", "5 m/s²"],
-                answer: 0, // Jawaban a
+                answer: 0,
             },
             {
                 q: "Seorang pelari maraton yang telah melewati garis finis perlahan-lahan mengurangi kecepatannya dari berlari kencang menjadi jalan santai hingga akhirnya berhenti untuk mengatur napas. Berdasarkan konsep percepatan, peristiwa yang dialami pelari setelah melewati garis finis tersebut adalah...",
@@ -2626,16 +2573,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Gerak diperlambat karena terjadi perubahan kecepatan yang nilainya negatif.",
                     "Gerak semu karena pelari merasa garis finis menjauh darinya.",
                 ],
-                answer: 2, // Jawaban c
+                answer: 2,
             },
         ];
 
-        // 2. STATE (VARIABLE)
+        // =========================================================================
+        // 2. STATE & DOM ELEMENTS
+        // =========================================================================
         let currentIndex = 0;
         const userAnswers = new Array(questions.length).fill(null);
         let lastResultTuntas = false;
 
-        // 3. DOM ELEMENTS
         const navSoal = document.getElementById("navSoal");
         const questionNumber = document.getElementById("questionNumber");
         const questionText = document.getElementById("questionText");
@@ -2645,13 +2593,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn");
         const timerEl = document.getElementById("timer");
 
-        // 4. FUNGSI RENDER NAVIGASI
+        // =========================================================================
+        // 3. FUNGSI LOGIKA KUIS
+        // =========================================================================
         function renderNav() {
             navSoal.innerHTML = "";
             questions.forEach((_, i) => {
                 const btn = document.createElement("button");
                 btn.textContent = i + 1;
-                // Gunakan class 'kuis-'
                 btn.classList.add("kuis-btn-num");
 
                 if (i === currentIndex) {
@@ -2669,20 +2618,18 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 5. FUNGSI LOAD SOAL
         function loadQuestion() {
             const q = questions[currentIndex];
             questionNumber.textContent = "Nomor " + (currentIndex + 1);
             questionText.textContent = q.q;
 
-            optionsList.innerHTML = ""; // Bersihkan opsi lama
+            optionsList.innerHTML = "";
 
             q.options.forEach((opt, idx) => {
                 const li = document.createElement("li");
                 const isChecked = userAnswers[currentIndex] === idx;
                 const checkedAttr = isChecked ? "checked" : "";
 
-                // Render struktur HTML opsi (menggunakan class 'kuis-')
                 li.innerHTML = `
           <label class="kuis-option-label">
             <input type="radio" name="option" value="${idx}" ${checkedAttr}>
@@ -2695,7 +2642,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             renderNav();
 
-            // Update status tombol prev/next
             prevBtn.disabled = currentIndex === 0;
             nextBtn.disabled = currentIndex === questions.length - 1;
             prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
@@ -2703,7 +2649,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentIndex === questions.length - 1 ? "0.5" : "1";
         }
 
-        // 6. EVENT LISTENER: PILIH JAWABAN
         optionsList.addEventListener("change", function (e) {
             if (e.target.name === "option") {
                 userAnswers[currentIndex] = Number(e.target.value);
@@ -2711,7 +2656,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // 7. NAVIGASI (PREV/NEXT)
         prevBtn.addEventListener("click", () => {
             if (currentIndex > 0) {
                 currentIndex--;
@@ -2726,13 +2670,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // 8. FUNGSI TAMPILKAN HASIL (SWEETALERT2)
+        // =========================================================================
+        // 4. HASIL KUIS & PENYIMPANAN PROGRES
+        // =========================================================================
         function showSweetAlertResult(tuntas, score, total) {
             lastResultTuntas = tuntas;
 
             let titleText = tuntas ? "Luar Biasa!" : "Belum Tuntas";
             let iconType = tuntas ? "success" : "error";
-            // Pesan HTML Custom
+
             let messageHtml = tuntas
                 ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score}/${total}</b><br><br>Kamu hebat! Materi gerak sudah dikuasai. Siap lanjut ke Gaya?`
                 : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score}/${total}</b><br><br>Jangan menyerah! Yuk, pelajari ulang materi Gerak agar lebih paham.`;
@@ -2750,23 +2696,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (lastResultTuntas) {
-                        // [REVISI] LOCKING SYSTEM
-                        // Simpan status kelulusan ke memori browser agar materi selanjutnya (Gaya) terbuka
-                        localStorage.setItem("kuis1_completed", "true");
+                        // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
+                        window.progresSiswa.push("kuis1_completed");
+                        simpanProgresKeDatabase("kuis1_completed");
 
-                        // Redirect ke materi Gaya (Ambil URL dari variabel global Blade)
                         window.location.href = window.GAYA_PAGE;
                     } else {
-                        // Jika belum tuntas, redirect ulang ke materi Gerak
                         window.location.href = window.PENGERTIAN_PAGE;
                     }
                 }
             });
         }
 
-        // 9. TOMBOL SELESAI (VALIDASI & KONFIRMASI)
         finishBtn.addEventListener("click", () => {
-            // Cek apakah ada jawaban kosong
             if (userAnswers.includes(null)) {
                 Swal.fire({
                     title: "Belum Selesai!",
@@ -2778,7 +2720,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Konfirmasi sebelum submit
             Swal.fire({
                 title: "Yakin mau mengumpulkan?",
                 text: "Pastikan semua jawaban sudah diperiksa ya!",
@@ -2790,25 +2731,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 cancelButtonText: "Cek lagi",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Hitung Skor
                     let score = 0;
                     questions.forEach((q, i) => {
                         if (userAnswers[i] === q.answer) score++;
                     });
-                    // Kriteria ketuntasan (minimal 70% benar)
                     const tuntas = score >= Math.ceil(questions.length * 0.7);
 
-                    // Tampilkan Hasil via SweetAlert
                     showSweetAlertResult(tuntas, score, questions.length);
                 }
             });
         });
 
-        // 10. TIMER
-        // [PERMINTAAN PENGGUNA]: Biarkan durasi 2 menit (2 * 60)
-        let timeLeft = 2 * 60;
+        // =========================================================================
+        // 5. TIMER KUIS
+        // =========================================================================
+        let timeLeft = 2 * 60; // 2 Menit
 
-        // Simpan interval ke dalam variabel agar bisa dihentikan
         const timerInterval = setInterval(() => {
             const m = Math.floor(timeLeft / 60);
             const s = timeLeft % 60;
@@ -2817,39 +2755,33 @@ document.addEventListener("DOMContentLoaded", function () {
             if (timeLeft > 0) {
                 timeLeft--;
             } else {
-                // STOP TIMER AGAR TIDAK LOOPING
                 clearInterval(timerInterval);
 
-                // Tampilkan Popup Waktu Habis
                 Swal.fire({
                     title: "Waktu Habis!",
                     text: "Kuis akan otomatis dikumpulkan.",
                     icon: "info",
-                    timer: 2000, // Durasi popup muncul (2 detik)
+                    timer: 2000,
                     showConfirmButton: false,
                     allowOutsideClick: false,
                 }).then(() => {
-                    // Hitung nilai otomatis
                     let score = 0;
                     questions.forEach((q, i) => {
                         if (userAnswers[i] === q.answer) score++;
                     });
                     const tuntas = score >= Math.ceil(questions.length * 0.7);
 
-                    // Tampilkan Hasil
                     showSweetAlertResult(tuntas, score, questions.length);
                 });
             }
         }, 1000);
 
-        // 11. INITIALIZE
         renderNav();
         loadQuestion();
     }
 });
 
 // INI MERUPAKAN FILE KUIS 2
-
 document.addEventListener("DOMContentLoaded", function () {
     // 1. CEK IDENTITAS HALAMAN (Target ID di Body)
     const halamanKuis2 = document.getElementById("halaman-kuis-2");
@@ -3100,7 +3032,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (result.isConfirmed) {
                     if (tuntas) {
                         // --- PERBAIKAN: SIMPAN STATUS LULUS AGAR SIDEBAR TERBUKA ---
-                        localStorage.setItem("kuis2_completed", "true");
+                        window.progresSiswa.push("kuis2_completed");
+                        simpanProgresKeDatabase("kuis2_completed");
                         // -----------------------------------------------------------
                         window.location.href = urlLulus;
                     } else {
@@ -3138,6 +3071,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 Swal.fire({
                     title: "Yakin mau mengumpulkan?",
+                    text: "Jawaban yang sudah dikirim tidak dapat diubah.",
                     icon: "question",
                     showCancelButton: true,
                     confirmButtonText: "Ya, Kumpulkan!",
@@ -3146,6 +3080,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cancelButtonColor: "#d33",
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        clearInterval(timerInterval); // Hentikan timer
                         hitungDanTampilkanNilai();
                     }
                 });
@@ -3188,16 +3123,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// INI MERUPAKAN FILE EVALUASI
-// LOGIKA EVALUASI AKHIR (GERAK DAN GAYA) */
-
+// FILE: EVALUASI AKHIR (GERAK DAN GAYA)
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. CEK IDENTITAS HALAMAN (Target ID di Body Evaluasi)
     const halamanEvaluasi = document.getElementById("halaman-evaluasi");
 
-    // Jika elemen ini ada, berarti kita sedang di halaman Evaluasi Akhir
     if (halamanEvaluasi) {
-        // 2. DATA SOAL (20 SOAL)
+        // =========================================================================
+        // 1. DATA SOAL EVALUASI
+        // =========================================================================
         const questions = [
             {
                 q: "Seorang peserta didik sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika terminal dianggap sebagai titik acuan, maka pernyataan yang benar adalah...",
@@ -3207,7 +3140,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Peserta didik bergerak terhadap bus",
                     "Terminal bergerak menjauhi bus (gerak semu)",
                 ],
-                answer: 3, // D
+                answer: 3,
             },
             {
                 q: "Saat melakukan perjalanan jauh dengan mobil, Andi melihat deretan tiang listrik di pinggir jalan seolah-olah berlari ke arah belakang mobil. Peristiwa ini membuktikan bahwa...",
@@ -3217,7 +3150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Mobil Andi diam terhadap tiang listrik",
                     "Kecepatan tiang listrik lebih besar dari kecepatan mobil",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Seekor kucing berlari ke arah timur sejauh 9 meter, kemudian berbalik arah ke barat sejauh 4 meter. Total jarak dan besar perpindahan kucing tersebut secara berturut-turut adalah...",
@@ -3227,7 +3160,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "5 meter dan 13 meter",
                     "5 meter dan 5 meter",
                 ],
-                answer: 0, // A
+                answer: 0,
             },
             {
                 q: "Seorang pelari maraton menempuh lintasan lari yang berbentuk lingkaran dengan keliling 400 meter. Jika ia berhasil menyelesaikan tepat 2 putaran dan kembali ke posisi start, maka...",
@@ -3237,7 +3170,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Jarak yang ditempuh 800 meter dan perpindahannya 0 meter",
                     "Pelari tersebut tidak mengalami gerak karena kembali ke awal",
                 ],
-                answer: 2, // C
+                answer: 2,
             },
             {
                 q: "Perbedaan utama yang menjadikan kecepatan sebagai besaran vektor, sedangkan kelajuan sebagai besaran skalar adalah...",
@@ -3247,7 +3180,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Kelajuan dihitung berdasarkan posisi awal dan akhir saja",
                     "Kelajuan selalu bernilai negatif jika benda berbalik arah",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Sebuah motor bergerak dengan kecepatan tetap 20 m/s ke arah utara selama 10 sekon. Besar perpindahan yang dialami motor tersebut adalah...",
@@ -3257,7 +3190,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "200 meter ke arah utara",
                     "200 meter ke arah selatan",
                 ],
-                answer: 2, // C
+                answer: 2,
             },
             {
                 q: "Perhatikan fenomena berikut:\n(1) Buah kelapa jatuh dari pohonnya ke tanah.\n(2) Mobil yang sedang melaju kencang tiba-tiba direm hingga berhenti.\n(3) Pesawat lepas landas hingga mencapai ketinggian tertentu.\n\nPeristiwa yang menunjukkan terjadinya percepatan positif (gerak dipercepat) ditunjukkan oleh nomor...",
@@ -3267,12 +3200,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     "(2) dan (3)",
                     "(1), (2), dan (3)",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Sebuah sepeda yang awalnya bergerak dengan kecepatan 2 m/s dipercepat hingga kecepatannya menjadi 10 m/s dalam waktu 4 sekon. Besar percepatan sepeda tersebut adalah...",
                 options: ["2 m/s²", "4 m/s²", "8 m/s²", "12 m/s²"],
-                answer: 0, // A
+                answer: 0,
             },
             {
                 q: "Manakah dari peristiwa berikut yang merupakan pengaruh gaya terhadap perubahan bentuk benda?",
@@ -3282,7 +3215,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Menekan kaleng minuman bekas hingga penyok",
                     "Menendang bola hingga menggelinding jauh",
                 ],
-                answer: 2, // C
+                answer: 2,
             },
             {
                 q: "Dua orang anak, Rian dan Dino, sedang mendorong lemari kayu. Rian mendorong ke kanan dengan gaya 50 N, sedangkan Dino menarik dari arah berlawanan (ke arah kiri) dengan gaya 30 N. Resultan gaya yang bekerja pada lemari adalah...",
@@ -3292,7 +3225,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "20 N ke arah kiri",
                     "0 N (lemari diam)",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Tiga buah gaya bekerja pada sebuah kotak: ke kanan, ke kanan, dan ke kiri. Keadaan kotak tersebut adalah...",
@@ -3302,7 +3235,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Tetap diam karena resultan gayanya nol",
                     "Bergerak ke kanan dengan gaya 40 N",
                 ],
-                answer: 2, // C
+                answer: 2,
             },
             {
                 q: "Mengapa lantai di gedung olahraga sering kali memiliki permukaan yang agak kasar atau menggunakan sepatu beralas karet bagi pemainnya?",
@@ -3312,7 +3245,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Agar gaya gravitasi bumi terhadap pemain berkurang",
                     "Untuk mengubah gaya gesek kinetis menjadi gaya pegas",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Seorang pemanah menarik tali busur sehingga melengkung sebelum melepaskan anak panah. Gaya yang menyebabkan anak panah tersebut melesat ke depan adalah...",
@@ -3322,7 +3255,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Gaya Pegas",
                     "Gaya Gravitasi",
                 ],
-                answer: 2, // C
+                answer: 2,
             },
             {
                 q: "Berdasarkan Hukum I Newton, jika sebuah kertas di bawah gelas ditarik secara sangat cepat dan mendatar, maka gelas akan tetap diam di posisinya. Hal ini terjadi karena...",
@@ -3332,7 +3265,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Terjadi gaya aksi-reaksi antara gelas dan kertas",
                     "Gelas mengalami percepatan yang sangat tinggi",
                 ],
-                answer: 0, // A
+                answer: 0,
             },
             {
                 q: "Perhatikan dua buah benda: Benda A massanya 5 kg dan Benda B massanya 20 kg. Jika keduanya diberi gaya dorong yang sama besar, maka...",
@@ -3342,12 +3275,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Percepatan kedua benda akan sama karena gayanya sama",
                     "Benda A akan sulit bergerak karena kelembamannya kecil",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Sebuah balok bermassa 2 kg diberi gaya sebesar 10 N. Besar percepatan yang dialami balok tersebut adalah...",
                 options: ["0,2 m/s²", "5 m/s²", "12 m/s²", "20 m/s²"],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Contoh penerapan Hukum III Newton (Aksi-Reaksi) yang benar dalam kehidupan sehari-hari adalah...",
@@ -3357,7 +3290,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Tangan terasa sakit saat memukul tembok dengan keras",
                     "Kelereng berhenti menggelinding karena gesekan lantai",
                 ],
-                answer: 2, // C
+                answer: 2,
             },
             {
                 q: "Saat kita mendayung perahu, kita mendorong air ke arah belakang menggunakan dayung. Akibatnya, perahu bergerak maju ke depan. Hal ini menunjukkan bahwa...",
@@ -3367,7 +3300,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Dayung menghilangkan gaya gesek antara perahu dan air",
                     "Resultan gaya pada perahu selalu nol saat mendayung",
                 ],
-                answer: 0, // A
+                answer: 0,
             },
             {
                 q: "Seorang anak melempar bola kasti ke arah tembok. Bola tersebut memantul kembali ke arah anak tersebut. Pasangan aksi-reaksi pada peristiwa ini adalah...",
@@ -3377,21 +3310,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Gaya gesek udara dan kecepatan bola",
                     "Kecepatan bola saat dilempar dan saat memantul",
                 ],
-                answer: 1, // B
+                answer: 1,
             },
             {
                 q: "Sebuah mobil mula-mula diam, kemudian digas sehingga bergerak dengan percepatan 2 m/s². Jika massa mobil adalah 1.000 kg, maka besar gaya mesin yang bekerja pada mobil tersebut adalah...",
                 options: ["500 N", "1.002 N", "2.000 N", "2.000 m/s"],
-                answer: 2, // C
+                answer: 2,
             },
         ];
 
-        // 3. STATE
+        // =========================================================================
+        // 2. STATE & DOM ELEMENTS
+        // =========================================================================
         let currentIndex = 0;
         const userAnswers = new Array(questions.length).fill(null);
-        const scorePerSoal = 5; // Bobot per soal
+        const scorePerSoal = 5;
 
-        // 4. DOM ELEMENTS (ID dengan suffix -evaluasi)
         const navSoal = document.getElementById("navSoal-evaluasi");
         const questionNumber = document.getElementById(
             "questionNumber-evaluasi",
@@ -3403,7 +3337,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn-evaluasi");
         const timerEl = document.getElementById("timer-evaluasi");
 
-        // 5. FUNGSI RENDER NAVIGASI
+        // =========================================================================
+        // 3. FUNGSI RENDER NAVIGASI
+        // =========================================================================
         function renderNav() {
             if (!navSoal) return;
 
@@ -3411,7 +3347,6 @@ document.addEventListener("DOMContentLoaded", function () {
             questions.forEach((_, i) => {
                 const btn = document.createElement("button");
                 btn.textContent = i + 1;
-                // Gunakan class evaluasi-btn-num
                 btn.classList.add("evaluasi-btn-num");
 
                 if (i === currentIndex) {
@@ -3429,7 +3364,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 6. FUNGSI LOAD SOAL
+        // =========================================================================
+        // 4. FUNGSI LOAD SOAL
+        // =========================================================================
         function loadQuestion() {
             if (!questionText || !optionsList) return;
 
@@ -3447,7 +3384,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const isChecked = userAnswers[currentIndex] === idx;
                 const checkedAttr = isChecked ? "checked" : "";
 
-                // Gunakan class evaluasi-option-label
                 li.innerHTML = `
           <label class="evaluasi-option-label">
             <input type="radio" name="option-evaluasi" value="${idx}" ${checkedAttr}>
@@ -3472,9 +3408,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // 7. EVENT HANDLERS
-
-        // Saat Opsi Dipilih
+        // =========================================================================
+        // 5. EVENT HANDLERS
+        // =========================================================================
         if (optionsList) {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-evaluasi") {
@@ -3484,7 +3420,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Tombol Prev
         if (prevBtn) {
             prevBtn.addEventListener("click", () => {
                 if (currentIndex > 0) {
@@ -3494,7 +3429,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Tombol Next
         if (nextBtn) {
             nextBtn.addEventListener("click", () => {
                 if (currentIndex < questions.length - 1) {
@@ -3504,12 +3438,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 8. LOGIKA HASIL (Hanya Tampilkan Nilai)
+        // =========================================================================
+        // 6. LOGIKA HASIL (SIMPAN KE DB)
+        // =========================================================================
         function tampilkanHasilAkhir(score, totalScore) {
-            // URL redirect (misal: kembali ke Dashboard/Beranda)
             const urlKeluar = window.EXIT_PAGE || "/";
 
-            // WARNA DISESUAIKAN DENGAN CSS: #ff6b01 (Deep Orange)
             Swal.fire({
                 title: "Evaluasi Selesai!",
                 html: `
@@ -3519,7 +3453,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `,
                 icon: "info",
                 confirmButtonText: "Kembali ke Beranda 🏠",
-                confirmButtonColor: "#ff6b01", // Update warna tombol jadi Orange
+                confirmButtonColor: "#ff6b01",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,0,0.5)`,
             }).then((result) => {
@@ -3537,7 +3471,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Hitung skor (Benar * 5)
             const finalScore = jumlahBenar * scorePerSoal;
-            const maxScore = questions.length * scorePerSoal; // Seharusnya 100
+            const maxScore = questions.length * scorePerSoal;
+
+            // [REVISI]: Simpan status lulus evaluasi ke DB agar guru bisa memantau
+            window.progresSiswa.push("evaluasi_completed");
+            simpanProgresKeDatabase("evaluasi_completed");
 
             tampilkanHasilAkhir(finalScore, maxScore);
         }
@@ -3545,14 +3483,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Tombol Selesai
         if (finishBtn) {
             finishBtn.addEventListener("click", () => {
-                // Cek jawaban kosong
                 if (userAnswers.includes(null)) {
                     Swal.fire({
                         title: "Belum Selesai!",
                         text: "Masih ada soal yang belum dijawab. Cek nomor yang berwarna putih.",
                         icon: "warning",
                         confirmButtonText: "Oke",
-                        confirmButtonColor: "#f95c50", // Orange standard
+                        confirmButtonColor: "#f95c50",
                     });
                     return;
                 }
@@ -3564,19 +3501,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     showCancelButton: true,
                     confirmButtonText: "Ya, Kumpulkan!",
                     cancelButtonText: "Cek lagi",
-                    confirmButtonColor: "#2ecc71", // Hijau (Positif)
-                    cancelButtonColor: "#d33", // Merah (Batal)
+                    confirmButtonColor: "#2ecc71",
+                    cancelButtonColor: "#d33",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        clearInterval(timerInterval); // Hentikan timer
+                        clearInterval(timerInterval);
                         hitungNilai();
                     }
                 });
             });
         }
 
-        // 9. TIMER (45 Menit)
-        let timeLeft = 10 * 60; // 45 menit dalam detik
+        // =========================================================================
+        // 7. TIMER
+        // =========================================================================
+        let timeLeft = 10 * 60; // 10 menit dalam detik
 
         const timerInterval = setInterval(() => {
             if (!timerEl) {
@@ -3605,7 +3544,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }, 1000);
 
-        // 10. JALANKAN FUNGSI PERTAMA KALI
         renderNav();
         loadQuestion();
     }

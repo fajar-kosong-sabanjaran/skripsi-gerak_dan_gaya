@@ -58,7 +58,7 @@
                 <p>
                     <img src="{{ asset('aset/12.jpg') }}" class="content-image4" alt="Ilustrasi Hukum Newton 1">
                 </p>
-                <p class="image-caption">Bola diam di atas lantai</p>
+                <p class="image-caption">Bola diam di rumput</p>
 
                 <p>
                     Pada gambar di atas, terlihat sebuah bola diletakkan di atas lantai.

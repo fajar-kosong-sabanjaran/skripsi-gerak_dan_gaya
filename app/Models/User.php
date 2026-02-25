@@ -2,45 +2,28 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'nama_lengkap',
         'email',
         'password',
         'peran',
         'nomor_induk',
-        'kelas_id', // Pastikan kolom ini ada di fillable
+        'kelas_id', 
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -49,12 +32,15 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Relasi: Satu User (Siswa) memiliki satu Kelas (Belongs To)
-     * Menghubungkan kolom 'kelas_id' di tabel users ke id di tabel kelas
-     */
+    // Relasi: Satu User (Siswa) memiliki satu Kelas
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
+
+    // Relasi: Satu User memiliki banyak Progres Belajar (1 to Many)
+    public function progres()
+    {
+        return $this->hasMany(ProgresBelajar::class);
     }
 }

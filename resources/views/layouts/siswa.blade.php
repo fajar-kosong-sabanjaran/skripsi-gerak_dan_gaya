@@ -4,12 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <title>GERAK DAN GAYA</title>
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -19,7 +23,7 @@
         <h2>GERAK DAN GAYA</h2>
 
         <div class="menu-item has-toggle" data-target="gerak" id="nav-gerak-header">
-            🏃‍♂ Gerak
+            🏃‍♂️ Gerak
         </div>
         <div class="submenu" id="gerak">
             <a href="{{ url('siswa/gerak/pengantargerak') }}" id="nav-pengantar"
@@ -117,6 +121,10 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        window.progresSiswa = @json(Auth::user()->progres->pluck('kode_materi'));
+    </script>
 
     <script src="{{ asset('js/script.js') }}"></script>
 
