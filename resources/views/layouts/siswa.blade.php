@@ -123,7 +123,8 @@
     </div>
 
     <script>
-        window.progresSiswa = @json(Auth::user()->progres->pluck('kode_materi'));
+        // [REVISI] Mengambil data progres dari database dan menjadikannya array di JavaScript
+        window.progresSiswa = @json(Auth::user()->progres->pluck('kode_materi')->toArray() ?? []);
     </script>
 
     <script src="{{ asset('js/script.js') }}"></script>

@@ -1,42 +1,64 @@
 // INI MERUPAKAN FILE JS GLOBAL (DIGUNAKAN DI SEMUA HALAMAN via siswa.blade.php)
+
+// =========================================================================
+// FUNGSI BARU: MENYIMPAN PROGRES KE DATABASE (DIBUAT JADI GLOBAL)
+// =========================================================================
+window.simpanProgresKeDatabase = function (kodeMateri) {
+    // Ambil CSRF token dari meta tag
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute("content");
+
+    if (!csrfToken) {
+        console.error(
+            "CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.",
+        );
+        return;
+    }
+
+    fetch("/simpan-progres", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: JSON.stringify({
+            kode_materi: kodeMateri,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.message); // Muncul di console log browser jika berhasil
+        })
+        .catch((error) => {
+            console.error("Error saat menyimpan progres:", error);
+        });
+};
+
+// --- HELPER FUNCTION: UNTUK MEMBUKA SIDEBAR (DIBUAT GLOBAL) ---
+window.unlockSidebar = function (elementId) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.classList.remove("locked");
+        const icon = el.querySelector(".fa-lock");
+        if (icon) icon.remove();
+    }
+};
+
+// --- HELPER FUNCTION: UNTUK MEMBUKA TOMBOL NEXT (DIBUAT GLOBAL) ---
+window.unlockNextButtonIfPage = function (pageKeyword) {
+    const path = window.location.pathname;
+    if (path.includes(pageKeyword)) {
+        const btn = document.getElementById("btn-next-materi");
+        if (btn) btn.classList.remove("locked");
+    }
+};
+
+// =========================================================================
+// DOM CONTENT LOADED UTAMA (TIDAK BOLEH MENGURUNG FUNGSI GLOBAL DI ATAS)
+// =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
     const path = window.location.pathname;
-
-    // =========================================================================
-    // FUNGSI BARU: MENYIMPAN PROGRES KE DATABASE
-    // =========================================================================
-    function simpanProgresKeDatabase(kodeMateri) {
-        // Ambil CSRF token dari meta tag
-        const csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            ?.getAttribute("content");
-
-        if (!csrfToken) {
-            console.error(
-                "CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.",
-            );
-            return;
-        }
-
-        fetch("/simpan-progres", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-            },
-            body: JSON.stringify({
-                kode_materi: kodeMateri,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data.message); // Muncul di console log browser jika berhasil
-            })
-            .catch((error) => {
-                console.error("Error saat menyimpan progres:", error);
-            });
-    }
-    // =========================================================================
 
     // =========================================================================
     // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
@@ -52,86 +74,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 1. Pengertian Gerak Selesai -> Buka Jarak Tempuh
         if (isLulus("pengertiangerak_completed")) {
-            unlockSidebar("nav-jarak");
-            unlockNextButtonIfPage("pengertiangerak");
+            window.unlockSidebar("nav-jarak");
+            window.unlockNextButtonIfPage("pengertiangerak");
         }
 
         // 2. Jarak Tempuh Selesai -> Buka Kelajuan
         if (isLulus("jarak_completed")) {
-            unlockSidebar("nav-kelajuan");
-            unlockNextButtonIfPage("jaraktempuhdanperpindahan");
+            window.unlockSidebar("nav-kelajuan");
+            window.unlockNextButtonIfPage("jaraktempuhdanperpindahan");
         }
 
         // 3. Kelajuan Selesai -> Buka Percepatan
         if (isLulus("kelajuan_completed")) {
-            unlockSidebar("nav-percepatan");
-            unlockNextButtonIfPage("kelajuandankecepatan");
+            window.unlockSidebar("nav-percepatan");
+            window.unlockNextButtonIfPage("kelajuandankecepatan");
         }
 
         // 4. Percepatan Selesai -> Buka Kuis 1
         if (isLulus("percepatan_completed")) {
-            unlockSidebar("nav-kuis1");
-            unlockNextButtonIfPage("percepatan");
+            window.unlockSidebar("nav-kuis1");
+            window.unlockNextButtonIfPage("percepatan");
         }
 
         // --- BAGIAN B: MODUL GAYA ---
 
         // 5. Kuis 1 Selesai -> Buka Menu Gaya (Header & Pengantar)
         if (isLulus("kuis1_completed")) {
-            unlockSidebar("nav-gaya-header");
-            unlockSidebar("nav-pengantar-gaya");
-            unlockSidebar("nav-pengertian-gaya"); // Langsung buka materi pertama
+            window.unlockSidebar("nav-gaya-header");
+            window.unlockSidebar("nav-pengantar-gaya");
+            window.unlockSidebar("nav-pengertian-gaya"); // Langsung buka materi pertama
             // Tidak ada tombol next khusus di halaman Kuis 1 (karena redirect otomatis)
         }
 
         // 6. Pengertian Gaya Selesai -> Buka Resultan Gaya
         if (isLulus("pengertiangaya_completed")) {
-            unlockSidebar("nav-resultan-gaya");
-            unlockNextButtonIfPage("pengertiangaya");
+            window.unlockSidebar("nav-resultan-gaya");
+            window.unlockNextButtonIfPage("pengertiangaya");
         }
 
         // 7. Resultan Gaya Selesai -> Buka Macam-macam Gaya
         if (isLulus("resultangaya_completed")) {
-            unlockSidebar("nav-macam-gaya");
-            unlockNextButtonIfPage("resultangaya");
+            window.unlockSidebar("nav-macam-gaya");
+            window.unlockNextButtonIfPage("resultangaya");
         }
 
         // 8. Macam-macam Gaya Selesai -> Buka Hukum Newton
         if (isLulus("macamgaya_completed")) {
-            unlockSidebar("nav-newton");
-            unlockNextButtonIfPage("macam-macamgaya");
+            window.unlockSidebar("nav-newton");
+            window.unlockNextButtonIfPage("macam-macamgaya");
         }
 
         // 9. Hukum Newton Selesai -> Buka Kuis 2
         if (isLulus("hukumnewton_completed")) {
-            unlockSidebar("nav-kuis2");
-            unlockNextButtonIfPage("hukumnewton");
+            window.unlockSidebar("nav-kuis2");
+            window.unlockNextButtonIfPage("hukumnewton");
         }
 
         // --- BAGIAN C: EVALUASI ---
 
         // 10. Kuis 2 Selesai -> Buka Menu Evaluasi
         if (isLulus("kuis2_completed")) {
-            unlockSidebar("nav-evaluasi");
+            window.unlockSidebar("nav-evaluasi");
             // Tidak ada tombol next di halaman Kuis 2 (redirect otomatis)
-        }
-    }
-
-    // --- HELPER FUNCTION: UNTUK MEMBUKA SIDEBAR ---
-    function unlockSidebar(elementId) {
-        const el = document.getElementById(elementId);
-        if (el) {
-            el.classList.remove("locked");
-            const icon = el.querySelector(".fa-lock");
-            if (icon) icon.remove();
-        }
-    }
-
-    // --- HELPER FUNCTION: UNTUK MEMBUKA TOMBOL NEXT (HANYA DI HALAMAN TERKAIT) ---
-    function unlockNextButtonIfPage(pageKeyword) {
-        if (path.includes(pageKeyword)) {
-            const btn = document.getElementById("btn-next-materi");
-            if (btn) btn.classList.remove("locked");
         }
     }
 
@@ -276,8 +280,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (benar === total) {
                     // [REVISI]: Ganti dengan push ke array & simpan ke DB
-                    window.progresSiswa.push(STORAGE_KEY);
-                    simpanProgresKeDatabase(STORAGE_KEY);
+                    window.progresSiswa = window.progresSiswa || [];
+                    if (!window.progresSiswa.includes(STORAGE_KEY)) {
+                        window.progresSiswa.push(STORAGE_KEY);
+                    }
+                    window.simpanProgresKeDatabase(STORAGE_KEY);
 
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -757,9 +764,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // CEK APAKAH SEMUA BENAR
             if (benarCount === 5) {
-                // [REVISI]: Ganti localStorage dengan push ke array & simpan ke DB
-                window.progresSiswa.push("jarak_completed");
-                simpanProgresKeDatabase("jarak_completed");
+                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                window.progresSiswa = window.progresSiswa || [];
+
+                if (!window.progresSiswa.includes("jarak_completed")) {
+                    window.progresSiswa.push("jarak_completed");
+                }
+
+                // Panggil fungsi Global
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("jarak_completed");
+                }
+
+                // Buka kunci secara manual via Helper Global
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-kelajuan");
+                }
+                if (window.unlockNextButtonIfPage) {
+                    window.unlockNextButtonIfPage("jaraktempuhdanperpindahan");
+                }
 
                 checkAllLocks();
 
@@ -1310,9 +1333,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // CEK APAKAH SEMUA JAWABAN BENAR
             if (benar === kunciLatihan.length) {
-                // Simpan status ke array JS dan Database
-                window.progresSiswa.push("kelajuan_completed");
-                simpanProgresKeDatabase("kelajuan_completed");
+                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                window.progresSiswa = window.progresSiswa || [];
+
+                if (!window.progresSiswa.includes("kelajuan_completed")) {
+                    window.progresSiswa.push("kelajuan_completed");
+                }
+
+                // Panggil fungsi Global
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("kelajuan_completed");
+                }
+
+                // Buka kunci secara manual via Helper Global
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-percepatan");
+                }
+                if (window.unlockNextButtonIfPage) {
+                    window.unlockNextButtonIfPage("kelajuandankecepatan");
+                }
 
                 checkAllLocks();
 
@@ -1749,9 +1788,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // LOGIKA BARU: JIKA BENAR SEMUA, BUKA KUNCI DAN SIMPAN KE DATABASE
             if (benar === kunciPercepatan.length) {
-                // Simpan status ke array JS dan Database
-                window.progresSiswa.push("percepatan_completed");
-                simpanProgresKeDatabase("percepatan_completed");
+                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                window.progresSiswa = window.progresSiswa || [];
+
+                if (!window.progresSiswa.includes("percepatan_completed")) {
+                    window.progresSiswa.push("percepatan_completed");
+                }
+
+                // Panggil fungsi Global
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("percepatan_completed");
+                }
+
+                // Buka kunci secara manual via Helper Global
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-kuis1");
+                }
+                if (window.unlockNextButtonIfPage) {
+                    window.unlockNextButtonIfPage("percepatan");
+                }
 
                 checkAllLocks();
 
@@ -2062,9 +2117,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Jika semua soal sudah dijawab, buka tombol Selanjutnya & simpan ke DB
         if (answeredCount === totalQuestions) {
-            // [REVISI]: Ganti localStorage dengan push ke array & simpan ke DB
-            window.progresSiswa.push("pengertiangaya_completed");
-            simpanProgresKeDatabase("pengertiangaya_completed");
+            // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+            window.progresSiswa = window.progresSiswa || [];
+
+            if (!window.progresSiswa.includes("pengertiangaya_completed")) {
+                window.progresSiswa.push("pengertiangaya_completed");
+            }
+
+            // Panggil fungsi Global
+            if (window.simpanProgresKeDatabase) {
+                window.simpanProgresKeDatabase("pengertiangaya_completed");
+            }
 
             const btnNext = document.getElementById("btn-next-materi");
             if (btnNext) {
@@ -2139,9 +2202,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Jika Soal 1 dan Soal 2 sudah benar semua
             if (statusResultan[1] && statusResultan[2]) {
-                // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
-                window.progresSiswa.push("resultangaya_completed");
-                simpanProgresKeDatabase("resultangaya_completed");
+                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                window.progresSiswa = window.progresSiswa || [];
+
+                if (!window.progresSiswa.includes("resultangaya_completed")) {
+                    window.progresSiswa.push("resultangaya_completed");
+                }
+
+                // Panggil fungsi Global
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("resultangaya_completed");
+                }
+
+                // Buka kunci secara manual via Helper Global
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-macam-gaya");
+                }
+                if (window.unlockNextButtonIfPage) {
+                    window.unlockNextButtonIfPage("resultangaya");
+                }
 
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
@@ -2274,9 +2353,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // JIKA BENAR SEMUA -> BUKA KUNCI & SIMPAN KE DB
             if (benar === total) {
-                // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
-                window.progresSiswa.push("macamgaya_completed");
-                simpanProgresKeDatabase("macamgaya_completed");
+                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                window.progresSiswa = window.progresSiswa || [];
+
+                if (!window.progresSiswa.includes("macamgaya_completed")) {
+                    window.progresSiswa.push("macamgaya_completed");
+                }
+
+                // Panggil fungsi Global
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("macamgaya_completed");
+                }
+
+                // Buka kunci secara manual via Helper Global
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-newton");
+                }
+                if (window.unlockNextButtonIfPage) {
+                    window.unlockNextButtonIfPage("macam-macamgaya");
+                }
 
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
@@ -2422,9 +2517,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // JIKA BENAR SEMUA -> BUKA GEMBOK DAN SIMPAN KE DATABASE
             if (benar === totalSoal) {
-                // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
-                window.progresSiswa.push("hukumnewton_completed");
-                simpanProgresKeDatabase("hukumnewton_completed");
+                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                window.progresSiswa = window.progresSiswa || [];
+
+                if (!window.progresSiswa.includes("hukumnewton_completed")) {
+                    window.progresSiswa.push("hukumnewton_completed");
+                }
+
+                // Panggil fungsi Global
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("hukumnewton_completed");
+                }
+
+                // Buka kunci secara manual via Helper Global
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-kuis2");
+                }
+                if (window.unlockNextButtonIfPage) {
+                    window.unlockNextButtonIfPage("hukumnewton");
+                }
 
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) {
@@ -2485,10 +2596,14 @@ document.addEventListener("DOMContentLoaded", function () {
         // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
         // =========================================================================
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                console.error(
+                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
+                );
                 return;
             }
 
@@ -2504,11 +2619,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     detail_jawaban: arrayDetail,
                 }),
             })
-            .then(response => response.json())
-            .then(data => console.log(data.message))
-            .catch(error => console.error("Error menyimpan nilai:", error));
+                .then((response) => response.json())
+                .then((data) => console.log(data.message))
+                .catch((error) =>
+                    console.error("Error menyimpan nilai:", error),
+                );
         }
-        
+
         // =========================================================================
         // 1. DATA SOAL KUIS 1
         // =========================================================================
@@ -2724,8 +2841,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (lastResultTuntas) {
-                        window.progresSiswa.push("kuis1_completed");
-                        simpanProgresKeDatabase("kuis1_completed");
+                        // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+                        window.progresSiswa = window.progresSiswa || [];
+
+                        if (!window.progresSiswa.includes("kuis1_completed")) {
+                            window.progresSiswa.push("kuis1_completed");
+                        }
+
+                        // Panggil fungsi Global
+                        if (window.simpanProgresKeDatabase) {
+                            window.simpanProgresKeDatabase("kuis1_completed");
+                        }
+
                         window.location.href = window.GAYA_PAGE;
                     } else {
                         window.location.href = window.PENGERTIAN_PAGE;
@@ -2740,7 +2867,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let arrayDetail = []; // Menyimpan true/false per jawaban
 
             questions.forEach((q, i) => {
-                let isBenar = (userAnswers[i] === q.answer);
+                let isBenar = userAnswers[i] === q.answer;
                 if (isBenar) score++;
                 arrayDetail.push(isBenar);
             });
@@ -2750,7 +2877,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const tuntas = score100 >= 70; // Set KKM di Frontend (Sinkron dgn Backend)
 
             // Kirim ke database (Kuis 1)
-            simpanNilaiKeDatabase('Kuis 1', score100, arrayDetail);
+            simpanNilaiKeDatabase("Kuis 1", score100, arrayDetail);
 
             // Tampilkan popup
             showSweetAlertResult(tuntas, score100, score, questions.length);
@@ -2825,15 +2952,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Jika elemen ini ada, berarti kita sedang di halaman Kuis 2
     if (halamanKuis2) {
-        
         // =========================================================================
         // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
         // =========================================================================
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                console.error(
+                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
+                );
                 return;
             }
 
@@ -2849,9 +2979,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     detail_jawaban: arrayDetail,
                 }),
             })
-            .then(response => response.json())
-            .then(data => console.log(data.message))
-            .catch(error => console.error("Error menyimpan nilai:", error));
+                .then((response) => response.json())
+                .then((data) => console.log(data.message))
+                .catch((error) =>
+                    console.error("Error menyimpan nilai:", error),
+                );
         }
 
         // 2. DATA SOAL
@@ -2944,9 +3076,9 @@ document.addEventListener("DOMContentLoaded", function () {
             {
                 q: "Saat kamu sedang mendayung perahu di danau, kamu menggerakkan dayung dengan cara mendorong air ke arah belakang (aksi). Akibatnya, perahu akan bergerak maju ke depan (reaksi). Hal ini membuktikan bahwa...",
                 options: [
-                    "Gaya gesek air lebih kecil daripada gaya otot tangan",
-                    "Gaya gravitasi membantu perahu tetap terapung di permukaan air",
-                    "Air memberikan gaya balasan kepada dayung yang besarnya sama namun berlawanan arah",
+                    "Gaya aksi (dorongan air ke belakang) menghasilkan gaya reaksi (perahu maju ke depan)",
+                    "Perahu bergerak karena gaya gravitasi air lebih besar",
+                    "Dayung menghilangkan gaya gesek antara perahu dan air",
                     "Resultan gaya pada perahu harus selalu bernilai nol agar dapat bergerak lurus",
                 ],
                 answer: 2,
@@ -3098,8 +3230,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (result.isConfirmed) {
                     if (tuntas) {
                         // --- PERBAIKAN: SIMPAN STATUS LULUS AGAR SIDEBAR TERBUKA ---
-                        window.progresSiswa.push("kuis2_completed");
-                        simpanProgresKeDatabase("kuis2_completed");
+                        window.progresSiswa = window.progresSiswa || [];
+                        if (!window.progresSiswa.includes("kuis2_completed")) {
+                            window.progresSiswa.push("kuis2_completed");
+                        }
+
+                        if (window.simpanProgresKeDatabase) {
+                            window.simpanProgresKeDatabase("kuis2_completed");
+                        }
                         // -----------------------------------------------------------
                         window.location.href = urlLulus;
                     } else {
@@ -3115,19 +3253,19 @@ document.addEventListener("DOMContentLoaded", function () {
             let arrayDetail = []; // Menyimpan true/false per jawaban
 
             questions.forEach((q, i) => {
-                let isBenar = (userAnswers[i] === q.answer);
+                let isBenar = userAnswers[i] === q.answer;
                 if (isBenar) score++;
                 arrayDetail.push(isBenar);
             });
 
             // Konversi ke skala 100
             let score100 = Math.round((score / questions.length) * 100);
-            
+
             // KKM: 70
-            const tuntas = score100 >= 70; 
+            const tuntas = score100 >= 70;
 
             // Kirim ke database (Kuis 2)
-            simpanNilaiKeDatabase('Kuis 2', score100, arrayDetail);
+            simpanNilaiKeDatabase("Kuis 2", score100, arrayDetail);
 
             // Tampilkan popup hasil
             showSweetAlertResult(tuntas, score100, score, questions.length);
@@ -3207,15 +3345,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const halamanEvaluasi = document.getElementById("halaman-evaluasi");
 
     if (halamanEvaluasi) {
-        
         // =========================================================================
         // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
         // =========================================================================
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                console.error(
+                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
+                );
                 return;
             }
 
@@ -3231,9 +3372,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     detail_jawaban: arrayDetail,
                 }),
             })
-            .then(response => response.json())
-            .then(data => console.log(data.message))
-            .catch(error => console.error("Error menyimpan nilai:", error));
+                .then((response) => response.json())
+                .then((data) => console.log(data.message))
+                .catch((error) =>
+                    console.error("Error menyimpan nilai:", error),
+                );
         }
 
         // =========================================================================
@@ -3576,7 +3719,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let arrayDetail = []; // Array riwayat tiap soal
 
             questions.forEach((q, i) => {
-                let isBenar = (userAnswers[i] === q.answer);
+                let isBenar = userAnswers[i] === q.answer;
                 if (isBenar) jumlahBenar++;
                 arrayDetail.push(isBenar);
             });
@@ -3588,12 +3731,19 @@ document.addEventListener("DOMContentLoaded", function () {
             // Konversi ke persentase (skala 100) untuk dikirim ke Database
             let score100 = Math.round((jumlahBenar / questions.length) * 100);
 
+            // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+            window.progresSiswa = window.progresSiswa || [];
+
             // Simpan status lulus evaluasi ke DB progres
-            window.progresSiswa.push("evaluasi_completed");
-            simpanProgresKeDatabase("evaluasi_completed");
+            if (!window.progresSiswa.includes("evaluasi_completed")) {
+                window.progresSiswa.push("evaluasi_completed");
+            }
+            if (window.simpanProgresKeDatabase) {
+                window.simpanProgresKeDatabase("evaluasi_completed");
+            }
 
             // SIMPAN NILAI KE DATABASE LOG/RIWAYAT
-            simpanNilaiKeDatabase('Evaluasi', score100, arrayDetail);
+            simpanNilaiKeDatabase("Evaluasi", score100, arrayDetail);
 
             tampilkanHasilAkhir(finalScore, maxScore);
         }
