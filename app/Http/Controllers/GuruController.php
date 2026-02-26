@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Kelas;
+use App\Models\Nilai; // [DITAMBAHKAN]
+use App\Models\RiwayatNilai; // [DITAMBAHKAN]
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,11 +19,11 @@ class GuruController extends Controller
     public function index()
     {
         $data_siswa = User::where('peran', 'siswa')
-                          ->with('kelas') 
-                          ->orderBy('nama_lengkap', 'asc')
-                          ->get();
+            ->with('kelas')
+            ->orderBy('nama_lengkap', 'asc')
+            ->get();
 
-        $data_kelas = Kelas::all(); 
+        $data_kelas = Kelas::all();
 
         return view('guru.datasiswa', compact('data_siswa', 'data_kelas'));
     }
@@ -37,15 +39,15 @@ class GuruController extends Controller
         // Validasi Siswa
         $request->validate([
             'nama_lengkap' => 'required|string|max:255',
-            'email'        => 'required|email|unique:users,email,'.$id, 
-            'nomor_induk'  => 'nullable|string',
-            'kelas_id'     => 'nullable|exists:kelas,id',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'nomor_induk' => 'nullable|string',
+            'kelas_id' => 'nullable|exists:kelas,id',
         ]);
 
         $siswa->nama_lengkap = $request->nama_lengkap;
-        $siswa->email        = $request->email;
-        $siswa->nomor_induk  = $request->nomor_induk;
-        $siswa->kelas_id     = $request->kelas_id;
+        $siswa->email = $request->email;
+        $siswa->nomor_induk = $request->nomor_induk;
+        $siswa->kelas_id = $request->kelas_id;
 
         if ($request->filled('password')) {
             $siswa->password = Hash::make($request->password);
@@ -77,9 +79,9 @@ class GuruController extends Controller
     {
         // [REVISI] Menambahkan withCount('users') untuk menghitung jumlah siswa
         $data_kelas = Kelas::withCount('users')
-                           ->orderBy('nama', 'asc')
-                           ->get();
-                           
+            ->orderBy('nama', 'asc')
+            ->get();
+
         return view('guru.datakelas', compact('data_kelas'));
     }
 
@@ -88,8 +90,8 @@ class GuruController extends Controller
         // 1. Pesan Error Bahasa Indonesia
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            'nama.unique'   => 'Nama kelas sudah digunakan, silakan pilih nama lain.',
-            'nama.max'      => 'Nama kelas maksimal 50 karakter.',
+            'nama.unique' => 'Nama kelas sudah digunakan, silakan pilih nama lain.',
+            'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 255 karakter.'
         ];
 
@@ -119,19 +121,20 @@ class GuruController extends Controller
     public function updateKelas(Request $request, $id)
     {
         $kelas = Kelas::find($id);
-        if (!$kelas) return response()->json(['success' => false, 'message' => 'Data kelas tidak ditemukan.'], 404);
+        if (!$kelas)
+            return response()->json(['success' => false, 'message' => 'Data kelas tidak ditemukan.'], 404);
 
         // 1. Pesan Error Bahasa Indonesia
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            'nama.unique'   => 'Nama kelas sudah digunakan, silakan pilih nama lain.',
-            'nama.max'      => 'Nama kelas maksimal 50 karakter.',
+            'nama.unique' => 'Nama kelas sudah digunakan, silakan pilih nama lain.',
+            'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 255 karakter.'
         ];
 
         // 2. Validasi Manual (Abaikan ID sendiri untuk unique)
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:50|unique:kelas,nama,'.$id,
+            'nama' => 'required|string|max:50|unique:kelas,nama,' . $id,
             'deskripsi' => 'nullable|string|max:255'
         ], $messages);
 
@@ -154,12 +157,12 @@ class GuruController extends Controller
     public function destroyKelas($id)
     {
         $kelas = Kelas::find($id);
-        
+
         if ($kelas) {
             // Cek apakah ada siswa di kelas ini sebelum menghapus
             if ($kelas->users()->count() > 0) {
                 return response()->json([
-                    'success' => false, 
+                    'success' => false,
                     'message' => 'Gagal! Masih ada siswa yang terdaftar di kelas ini.'
                 ], 400);
             }
@@ -174,14 +177,56 @@ class GuruController extends Controller
     // =================================================================
     // MANAJEMEN PROGRES BELAJAR (DITAMBAHKAN)
     // =================================================================
-    
+
     public function progresBelajar()
     {
         // Ambil data user yang perannya 'siswa', sertakan data kelas dan progres belajarnya
         $data_siswa = User::where('peran', 'siswa')
-                          ->with(['kelas', 'progres'])
-                          ->get();
+            ->with(['kelas', 'progres'])
+            ->get();
 
         return view('guru.progresbelajar', compact('data_siswa'));
+    }
+
+    // =================================================================
+    // MANAJEMEN DATA NILAI (DITAMBAHKAN)
+    // =================================================================
+
+    public function dataNilai()
+    {
+        // Ambil data siswa beserta relasi kelas dan nilainya
+        $data_siswa = User::where('peran', 'siswa')
+            ->with(['kelas', 'nilais'])
+            ->orderBy('nama_lengkap', 'asc')
+            ->get();
+
+        $data_kelas = Kelas::orderBy('nama', 'asc')->get();
+
+        return view('guru.datanilai', compact('data_siswa', 'data_kelas'));
+    }
+
+    public function riwayatNilai($user_id, $jenis_kuis)
+    {
+        // Cari ID nilai utama berdasarkan user_id dan jenis_kuis
+        $nilai = Nilai::where('user_id', $user_id)
+            ->where('jenis_kuis', $jenis_kuis)
+            ->first();
+
+        if (!$nilai) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Belum ada riwayat pengerjaan.'
+            ]);
+        }
+
+        // Ambil semua riwayat percobaan berdasarkan nilai_id tersebut
+        $riwayat = RiwayatNilai::where('nilai_id', $nilai->id)
+            ->orderBy('percobaan_ke', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $riwayat
+        ]);
     }
 }

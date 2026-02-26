@@ -2482,6 +2482,34 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".body-kuis-fullscreen")) {
         // =========================================================================
+        // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
+        // =========================================================================
+        function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+
+            if (!csrfToken) {
+                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                return;
+            }
+
+            fetch("/simpan-nilai", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify({
+                    jenis_kuis: jenisKuis,
+                    nilai_percobaan: nilaiSkala100,
+                    detail_jawaban: arrayDetail,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data.message))
+            .catch(error => console.error("Error menyimpan nilai:", error));
+        }
+        
+        // =========================================================================
         // 1. DATA SOAL KUIS 1
         // =========================================================================
         const questions = [
@@ -2673,15 +2701,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // =========================================================================
         // 4. HASIL KUIS & PENYIMPANAN PROGRES
         // =========================================================================
-        function showSweetAlertResult(tuntas, score, total) {
+        function showSweetAlertResult(tuntas, score100, scoreAsli, totalSoal) {
             lastResultTuntas = tuntas;
 
             let titleText = tuntas ? "Luar Biasa!" : "Belum Tuntas";
             let iconType = tuntas ? "success" : "error";
 
             let messageHtml = tuntas
-                ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score}/${total}</b><br><br>Kamu hebat! Materi gerak sudah dikuasai. Siap lanjut ke Gaya?`
-                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score}/${total}</b><br><br>Jangan menyerah! Yuk, pelajari ulang materi Gerak agar lebih paham.`;
+                ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score100}</b><br><br>Kamu hebat! Materi gerak sudah dikuasai. Siap lanjut ke Gaya?`
+                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Jangan menyerah! Yuk, pelajari ulang materi Gerak agar lebih paham.`;
 
             Swal.fire({
                 title: titleText,
@@ -2696,16 +2724,36 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (lastResultTuntas) {
-                        // [REVISI]: Ganti localStorage dengan push ke array JS & simpan ke DB
                         window.progresSiswa.push("kuis1_completed");
                         simpanProgresKeDatabase("kuis1_completed");
-
                         window.location.href = window.GAYA_PAGE;
                     } else {
                         window.location.href = window.PENGERTIAN_PAGE;
                     }
                 }
             });
+        }
+
+        // [REVISI] Ekstraksi logika hitung nilai agar bisa dipakai di finishBtn & timer
+        function hitungDanKirimNilai() {
+            let score = 0;
+            let arrayDetail = []; // Menyimpan true/false per jawaban
+
+            questions.forEach((q, i) => {
+                let isBenar = (userAnswers[i] === q.answer);
+                if (isBenar) score++;
+                arrayDetail.push(isBenar);
+            });
+
+            // Konversi ke skala 100
+            let score100 = Math.round((score / questions.length) * 100);
+            const tuntas = score100 >= 70; // Set KKM di Frontend (Sinkron dgn Backend)
+
+            // Kirim ke database (Kuis 1)
+            simpanNilaiKeDatabase('Kuis 1', score100, arrayDetail);
+
+            // Tampilkan popup
+            showSweetAlertResult(tuntas, score100, score, questions.length);
         }
 
         finishBtn.addEventListener("click", () => {
@@ -2731,13 +2779,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 cancelButtonText: "Cek lagi",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let score = 0;
-                    questions.forEach((q, i) => {
-                        if (userAnswers[i] === q.answer) score++;
-                    });
-                    const tuntas = score >= Math.ceil(questions.length * 0.7);
-
-                    showSweetAlertResult(tuntas, score, questions.length);
+                    clearInterval(timerInterval); // Hentikan timer
+                    hitungDanKirimNilai();
                 }
             });
         });
@@ -2765,13 +2808,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     showConfirmButton: false,
                     allowOutsideClick: false,
                 }).then(() => {
-                    let score = 0;
-                    questions.forEach((q, i) => {
-                        if (userAnswers[i] === q.answer) score++;
-                    });
-                    const tuntas = score >= Math.ceil(questions.length * 0.7);
-
-                    showSweetAlertResult(tuntas, score, questions.length);
+                    hitungDanKirimNilai();
                 });
             }
         }, 1000);
@@ -2788,6 +2825,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Jika elemen ini ada, berarti kita sedang di halaman Kuis 2
     if (halamanKuis2) {
+        
+        // =========================================================================
+        // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
+        // =========================================================================
+        function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+
+            if (!csrfToken) {
+                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                return;
+            }
+
+            fetch("/simpan-nilai", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify({
+                    jenis_kuis: jenisKuis,
+                    nilai_percobaan: nilaiSkala100,
+                    detail_jawaban: arrayDetail,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data.message))
+            .catch(error => console.error("Error menyimpan nilai:", error));
+        }
+
         // 2. DATA SOAL
         const questions = [
             {
@@ -3004,14 +3070,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 8. LOGIKA HASIL & POPUP
-        function showSweetAlertResult(tuntas, score, total) {
+        function showSweetAlertResult(tuntas, score100, scoreAsli, totalSoal) {
             lastResultTuntas = tuntas;
 
             let titleText = tuntas ? "Luar Biasa!" : "Belum Tuntas";
             let iconType = tuntas ? "success" : "error";
             let messageHtml = tuntas
-                ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score}/${total}</b><br><br>Selamat! Materi Gaya Selesai.`
-                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score}/${total}</b><br><br>Nilai belum mencapai target. Yuk, pelajari lagi!`;
+                ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score100}</b><br><br>Selamat! Materi Gaya Selesai.`
+                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Nilai belum mencapai target. Yuk, pelajari lagi!`;
 
             // Mengambil URL dari variabel global Blade
             // Fallback url jika variabel window tidak terbaca
@@ -3043,15 +3109,28 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+        // [REVISI] Fungsi untuk menghitung nilai, konversi ke skala 100, dan simpan ke DB
         function hitungDanTampilkanNilai() {
             let score = 0;
-            questions.forEach((q, i) => {
-                if (userAnswers[i] === q.answer) score++;
-            });
-            // KKM: 70%
-            const tuntas = score >= Math.ceil(questions.length * 0.7);
+            let arrayDetail = []; // Menyimpan true/false per jawaban
 
-            showSweetAlertResult(tuntas, score, questions.length);
+            questions.forEach((q, i) => {
+                let isBenar = (userAnswers[i] === q.answer);
+                if (isBenar) score++;
+                arrayDetail.push(isBenar);
+            });
+
+            // Konversi ke skala 100
+            let score100 = Math.round((score / questions.length) * 100);
+            
+            // KKM: 70
+            const tuntas = score100 >= 70; 
+
+            // Kirim ke database (Kuis 2)
+            simpanNilaiKeDatabase('Kuis 2', score100, arrayDetail);
+
+            // Tampilkan popup hasil
+            showSweetAlertResult(tuntas, score100, score, questions.length);
         }
 
         // Tombol Selesai
@@ -3128,6 +3207,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const halamanEvaluasi = document.getElementById("halaman-evaluasi");
 
     if (halamanEvaluasi) {
+        
+        // =========================================================================
+        // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
+        // =========================================================================
+        function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+
+            if (!csrfToken) {
+                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                return;
+            }
+
+            fetch("/simpan-nilai", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify({
+                    jenis_kuis: jenisKuis,
+                    nilai_percobaan: nilaiSkala100,
+                    detail_jawaban: arrayDetail,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data.message))
+            .catch(error => console.error("Error menyimpan nilai:", error));
+        }
+
         // =========================================================================
         // 1. DATA SOAL EVALUASI
         // =========================================================================
@@ -3465,17 +3573,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function hitungNilai() {
             let jumlahBenar = 0;
+            let arrayDetail = []; // Array riwayat tiap soal
+
             questions.forEach((q, i) => {
-                if (userAnswers[i] === q.answer) jumlahBenar++;
+                let isBenar = (userAnswers[i] === q.answer);
+                if (isBenar) jumlahBenar++;
+                arrayDetail.push(isBenar);
             });
 
-            // Hitung skor (Benar * 5)
+            // Hitung skor akhir untuk ditampilkan (benar * 5)
             const finalScore = jumlahBenar * scorePerSoal;
             const maxScore = questions.length * scorePerSoal;
 
-            // [REVISI]: Simpan status lulus evaluasi ke DB agar guru bisa memantau
+            // Konversi ke persentase (skala 100) untuk dikirim ke Database
+            let score100 = Math.round((jumlahBenar / questions.length) * 100);
+
+            // Simpan status lulus evaluasi ke DB progres
             window.progresSiswa.push("evaluasi_completed");
             simpanProgresKeDatabase("evaluasi_completed");
+
+            // SIMPAN NILAI KE DATABASE LOG/RIWAYAT
+            simpanNilaiKeDatabase('Evaluasi', score100, arrayDetail);
 
             tampilkanHasilAkhir(finalScore, maxScore);
         }

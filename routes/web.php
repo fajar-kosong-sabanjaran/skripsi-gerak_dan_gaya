@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\ProgresController; // [DITAMBAHKAN] Memanggil ProgresController
+use App\Http\Controllers\ProgresController; // Memanggil ProgresController
 use App\Http\Middleware\CekGuru;
 
 // =============================================================
@@ -30,10 +30,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware(['auth'])->group(function () {
 
-    // [DITAMBAHKAN] Route untuk menyimpan progres belajar via AJAX/Fetch API
+    // Route untuk menyimpan progres belajar via AJAX/Fetch API
     Route::post('/simpan-progres', [ProgresController::class, 'simpanProgres'])->name('simpan.progres');
     
-    // [DITAMBAHKAN] Route khusus untuk menyimpan nilai Kuis/Evaluasi beserta riwayatnya
+    // Route khusus untuk menyimpan nilai Kuis/Evaluasi beserta riwayatnya
     Route::post('/simpan-nilai', [ProgresController::class, 'simpanNilai'])->name('simpan.nilai');
 
     // Route khusus halaman materi siswa (menggunakan prefix /siswa)
@@ -89,11 +89,7 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     // --- MANAJEMEN PROGRES BELAJAR ---
     Route::get('/progresbelajar', [GuruController::class, 'progresBelajar'])->name('guru.progresbelajar');
 
-    // --- ROUTE NILAI ---
-    Route::get('/nilai/kuis1', function () {
-        return "Halaman Nilai Kuis 1"; });
-    Route::get('/nilai/kuis2', function () {
-        return "Halaman Nilai Kuis 2"; });
-    Route::get('/nilai/evaluasi', function () {
-        return "Halaman Nilai Evaluasi"; });
+    // --- MANAJEMEN DATA NILAI (DITAMBAHKAN) ---
+    Route::get('/datanilai', [GuruController::class, 'dataNilai'])->name('guru.datanilai');
+    Route::get('/datanilai/riwayat/{user_id}/{jenis_kuis}', [GuruController::class, 'riwayatNilai'])->name('guru.datanilai.riwayat');
 });
