@@ -28,15 +28,12 @@
 
             <div class="sort-control">
                 <label>
-                    Urutkan:
-                    <select class="form-select" id="sortSelect">
-                        <option value="default">Default (No Urut)</option>
-                        <option value="nama_asc">Nama (A-Z)</option>
-                        <option value="nama_desc">Nama (Z-A)</option>
-                        <option value="kelas_asc">Kelas (A-Z)</option>
-                        <option value="kelas_desc">Kelas (Z-A)</option>
-                        <option value="nis_asc">NIS (Terkecil)</option>
-                        <option value="nis_desc">NIS (Terbesar)</option>
+                    Pilih Kelas:
+                    <select class="form-select" id="filterKelas">
+                        <option value="semua">Semua Kelas</option>
+                        @foreach ($data_kelas as $k)
+                            <option value="{{ $k->nama }}">{{ $k->nama }}</option>
+                        @endforeach
                     </select>
                 </label>
             </div>

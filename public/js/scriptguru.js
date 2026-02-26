@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =======================================================================
-    // ini js datasiswa.blade (Search, Pagination, & Sorting)
+    // ini js untuk Table (Search, Filter Kelas, Pagination) - Dipakai di semua tabel
     // =======================================================================
 
     const tableBody = document.getElementById("tableBody");
@@ -80,74 +80,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const searchInput = document.getElementById("searchInput");
         const entriesSelect = document.getElementById("entriesSelect");
-        const sortSelect = document.getElementById("sortSelect");
+        const filterKelas = document.getElementById("filterKelas"); // Menggunakan filterKelas
         const btnPrev = document.getElementById("btnPrev");
         const btnNext = document.getElementById("btnNext");
         const dataInfo = document.getElementById("dataInfo");
         const paginationNumbers = document.getElementById("paginationNumbers");
 
         let currentPage = 1;
-        let rowsPerPage = parseInt(entriesSelect.value);
+        let rowsPerPage = entriesSelect ? parseInt(entriesSelect.value) : 10;
         let processedRows = [...originalRows]; // Data yang sedang diproses
 
-        // FUNGSI UTAMA: Update Tabel (Filter -> Sort -> Render)
+        // FUNGSI UTAMA: Update Tabel (Pencarian & Filter Kelas secara sinkron)
         function updateTable() {
-            // A. FILTER (Pencarian)
             const query = searchInput ? searchInput.value.toLowerCase() : "";
-            let tempRows = originalRows.filter((row) => {
+            const kelasDipilih = filterKelas
+                ? filterKelas.value.toLowerCase()
+                : "semua";
+
+            processedRows = originalRows.filter((row) => {
+                // Pencarian kata kunci (Nama atau NIS)
                 const rowText = row.innerText.toLowerCase();
-                return rowText.includes(query);
+                const cocokKata = rowText.includes(query);
+
+                // Filter berdasarkan Kelas
+                const elKelas = row.querySelector(".row-kelas");
+                const teksKelas = elKelas
+                    ? elKelas.innerText.trim().toLowerCase()
+                    : "";
+                const cocokKelas =
+                    kelasDipilih === "semua" || teksKelas === kelasDipilih;
+
+                return cocokKata && cocokKelas;
             });
 
-            // B. SORTING (Pengurutan)
-            if (sortSelect) {
-                const sortValue = sortSelect.value;
-
-                tempRows.sort((a, b) => {
-                    const getText = (row, selector) => {
-                        const el = row.querySelector(selector);
-                        return el ? el.innerText.trim().toLowerCase() : "";
-                    };
-
-                    switch (sortValue) {
-                        case "nama_asc":
-                            return getText(a, ".row-name").localeCompare(
-                                getText(b, ".row-name"),
-                            );
-                        case "nama_desc":
-                            return getText(b, ".row-name").localeCompare(
-                                getText(a, ".row-name"),
-                            );
-                        case "kelas_asc":
-                            return getText(a, ".row-kelas").localeCompare(
-                                getText(b, ".row-kelas"),
-                            );
-                        case "kelas_desc":
-                            return getText(b, ".row-kelas").localeCompare(
-                                getText(a, ".row-kelas"),
-                            );
-                        case "nis_asc":
-                            return getText(a, ".row-nis").localeCompare(
-                                getText(b, ".row-nis"),
-                                undefined,
-                                { numeric: true },
-                            );
-                        case "nis_desc":
-                            return getText(b, ".row-nis").localeCompare(
-                                getText(a, ".row-nis"),
-                                undefined,
-                                { numeric: true },
-                            );
-                        default:
-                            return (
-                                originalRows.indexOf(a) -
-                                originalRows.indexOf(b)
-                            );
-                    }
-                });
-            }
-
-            processedRows = tempRows;
             renderTable();
         }
 
@@ -219,8 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        if (sortSelect) {
-            sortSelect.addEventListener("change", () => {
+        if (filterKelas) {
+            filterKelas.addEventListener("change", () => {
                 currentPage = 1;
                 updateTable();
             });
@@ -580,54 +545,8 @@ function confirmDeleteKelas(button, id) {
 }
 
 // =======================================================================
-// ini js datanilai.blade (Filter Kelas, Live Search, & Modal Riwayat AJAX)
+// ini js datanilai.blade (Modal Riwayat AJAX) - Filter & Search sudah ditangani fungsi utama di atas
 // =======================================================================
-
-// --- 1. FITUR FILTER & PENCARIAN TABEL UTAMA ---
-document.addEventListener("DOMContentLoaded", () => {
-    const tabelNilaiBody = document.getElementById("tableBody");
-    const filterKelas = document.getElementById("filterKelas");
-    const searchInputNilai = document.getElementById("searchInput");
-
-    if (tabelNilaiBody && filterKelas && searchInputNilai) {
-        const rows = Array.from(
-            tabelNilaiBody.querySelectorAll(".searchable-row"),
-        );
-
-        function filterTabelNilai() {
-            const query = searchInputNilai.value.toLowerCase();
-            const kelasDipilih = filterKelas.value.toLowerCase();
-            let nomorUrut = 1;
-
-            rows.forEach((row) => {
-                const nama = row
-                    .querySelector(".row-name")
-                    .innerText.toLowerCase();
-                const nis = row
-                    .querySelector(".row-nis")
-                    .innerText.toLowerCase();
-                const kelas = row
-                    .querySelector(".row-kelas")
-                    .innerText.toLowerCase();
-
-                // Cek kecocokan
-                const cocokKata = nama.includes(query) || nis.includes(query);
-                const cocokKelas =
-                    kelasDipilih === "semua" || kelas === kelasDipilih;
-
-                if (cocokKata && cocokKelas) {
-                    row.style.display = "";
-                    row.querySelector(".row-number").innerText = nomorUrut++;
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
-
-        searchInputNilai.addEventListener("keyup", filterTabelNilai);
-        filterKelas.addEventListener("change", filterTabelNilai);
-    }
-});
 
 // --- 2. FITUR MODAL RIWAYAT (FETCH AJAX) ---
 const riwayatModal = document.getElementById("riwayatModal");
