@@ -16,8 +16,8 @@ Route::get('/', function () {
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']); 
-    
+    Route::post('/login', [AuthController::class, 'login']);
+
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
@@ -32,10 +32,13 @@ Route::middleware(['auth'])->group(function () {
 
     // [DITAMBAHKAN] Route untuk menyimpan progres belajar via AJAX/Fetch API
     Route::post('/simpan-progres', [ProgresController::class, 'simpanProgres'])->name('simpan.progres');
+    
+    // [DITAMBAHKAN] Route khusus untuk menyimpan nilai Kuis/Evaluasi beserta riwayatnya
+    Route::post('/simpan-nilai', [ProgresController::class, 'simpanNilai'])->name('simpan.nilai');
 
     // Route khusus halaman materi siswa (menggunakan prefix /siswa)
     Route::prefix('siswa')->group(function () {
-        
+
         // Materi Gerak
         Route::prefix('gerak')->group(function () {
             Route::view('pengantargerak', 'siswa.gerak.pengantargerak');
@@ -61,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
         // Evaluasi
         Route::prefix('evaluasi')->group(function () {
             Route::view('petunjukpengerjaan', 'siswa.evaluasi.petunjukpengerjaan');
-            Route::view('mulai', 'siswa.evaluasi.evaluasi'); 
+            Route::view('mulai', 'siswa.evaluasi.evaluasi');
         });
     });
 });
@@ -71,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
 // =============================================================
 
 Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
-    
+
     // --- MANAJEMEN DATA SISWA ---
     Route::get('/datasiswa', [GuruController::class, 'index'])->name('guru.datasiswa.index');
     Route::delete('/datasiswa/{id}', [GuruController::class, 'destroy'])->name('guru.datasiswa.destroy');
@@ -87,7 +90,10 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     Route::get('/progresbelajar', [GuruController::class, 'progresBelajar'])->name('guru.progresbelajar');
 
     // --- ROUTE NILAI ---
-    Route::get('/nilai/kuis1', function() { return "Halaman Nilai Kuis 1"; });
-    Route::get('/nilai/kuis2', function() { return "Halaman Nilai Kuis 2"; });
-    Route::get('/nilai/evaluasi', function() { return "Halaman Nilai Evaluasi"; });
+    Route::get('/nilai/kuis1', function () {
+        return "Halaman Nilai Kuis 1"; });
+    Route::get('/nilai/kuis2', function () {
+        return "Halaman Nilai Kuis 2"; });
+    Route::get('/nilai/evaluasi', function () {
+        return "Halaman Nilai Evaluasi"; });
 });

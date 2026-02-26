@@ -43,4 +43,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProgresBelajar::class, 'user_id');
     }
+
+    // Relasi ke tabel nilais
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class, 'user_id');
+    }
 }
