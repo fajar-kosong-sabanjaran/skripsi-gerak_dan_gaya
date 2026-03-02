@@ -185,7 +185,10 @@ class GuruController extends Controller
             ->with(['kelas', 'progres'])
             ->get();
 
-        return view('guru.progresbelajar', compact('data_siswa'));
+        // [REVISI] Menambahkan pemanggilan data kelas agar dropdown filter di blade berfungsi
+        $data_kelas = Kelas::orderBy('nama', 'asc')->get();
+
+        return view('guru.progresbelajar', compact('data_siswa', 'data_kelas'));
     }
 
     // =================================================================

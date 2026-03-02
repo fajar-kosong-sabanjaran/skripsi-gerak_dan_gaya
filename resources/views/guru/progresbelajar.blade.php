@@ -31,6 +31,18 @@
                 </label>
             </div>
 
+            <div class="sort-control">
+                <label>
+                    Pilih Kelas:
+                    <select class="form-select" id="filterKelas">
+                        <option value="semua">Semua Kelas</option>
+                        @foreach ($data_kelas ?? [] as $k)
+                            <option value="{{ $k->nama }}">{{ $k->nama }}</option>
+                        @endforeach
+                    </select>
+                </label>
+            </div>
+
             <div class="search-control">
                 <label>
                     Cari:
@@ -72,13 +84,15 @@
                     @forelse ($data_siswa as $index => $siswa)
                         @php
                             $progresSiswa = $siswa->progres->pluck('kode_materi')->toArray();
+                            $namaKelas = $siswa->kelas->nama ?? 'Belum Ada';
                         @endphp
-                        <tr class="searchable-row">
+                        <tr class="searchable-row" data-kelas="{{ strtolower($namaKelas) }}">
                             <td class="col-center row-number sticky-col sticky-no">{{ $index + 1 }}</td>
                             <td class="text-bold row-name sticky-col sticky-nama border-right-sticky">{{ $siswa->nama_lengkap }}</td>
-                            <td>
-                                <span class="badge-kelas row-kelas">
-                                    {{ $siswa->kelas->nama ?? 'Belum Ada' }}
+                            
+                            <td class="row-kelas">
+                                <span class="badge-kelas">
+                                    {{ $namaKelas }}
                                 </span>
                             </td>
 

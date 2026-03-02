@@ -99,20 +99,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
             processedRows = originalRows.filter((row) => {
                 // Pencarian kata kunci (Nama atau NIS)
-                const rowText = row.innerText.toLowerCase();
-                const cocokKata = rowText.includes(query);
+                const namaEl = row.querySelector(".row-name");
+                const nisEl = row.querySelector(".row-nis");
+                const teksNama = namaEl ? namaEl.innerText.toLowerCase() : "";
+                const teksNis = nisEl ? nisEl.innerText.toLowerCase() : "";
+                const cocokKata = teksNama.includes(query) || teksNis.includes(query);
 
-                // Filter berdasarkan Kelas
-                const elKelas = row.querySelector(".row-kelas");
-                const teksKelas = elKelas
-                    ? elKelas.innerText.trim().toLowerCase()
-                    : "";
+                // [REVISI] Filter berdasarkan Kelas dengan deteksi cerdas
+                let teksKelas = row.getAttribute("data-kelas");
+                
+                if (!teksKelas) {
+                    const elKelas = row.querySelector(".row-kelas");
+                    if (elKelas) {
+                        const spanKelas = elKelas.querySelector(".badge-kelas");
+                        teksKelas = spanKelas ? spanKelas.innerText.trim().toLowerCase() : elKelas.innerText.trim().toLowerCase();
+                    } else {
+                        teksKelas = "";
+                    }
+                } else {
+                    teksKelas = teksKelas.toLowerCase();
+                }
+
                 const cocokKelas =
                     kelasDipilih === "semua" || teksKelas === kelasDipilih;
 
                 return cocokKata && cocokKelas;
             });
 
+            currentPage = 1; // [REVISI] Reset ke halaman 1 setiap ada filter
             renderTable();
         }
 
@@ -179,14 +193,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // EVENT LISTENERS
         if (searchInput) {
             searchInput.addEventListener("keyup", () => {
-                currentPage = 1;
                 updateTable();
             });
         }
 
         if (filterKelas) {
             filterKelas.addEventListener("change", () => {
-                currentPage = 1;
                 updateTable();
             });
         }
@@ -194,7 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (entriesSelect) {
             entriesSelect.addEventListener("change", function () {
                 rowsPerPage = parseInt(this.value);
-                currentPage = 1;
                 updateTable();
             });
         }
