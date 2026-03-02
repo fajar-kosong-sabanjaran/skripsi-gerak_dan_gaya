@@ -766,17 +766,39 @@ body {
     box-shadow: 0 2px 5px rgba(249, 92, 80, 0.3);
 }
 
-/* Badge Status Lulus/Tidak Lulus di Tabel Riwayat */
+/* --- PERBAIKAN: Badge Status Lulus/Tidak Lulus di Tabel Riwayat --- */
 .badge-status {
+    display: inline-block; /* Agar bentuk badge tetap proporsional */
+    white-space: nowrap;   /* Mencegah teks terpotong atau turun baris */
     padding: 4px 10px;
     border-radius: 4px;
     font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
 }
-.badge-lulus { background: #dcfce7; color: #16a34a; border: 1px solid #16a34a; }
-.badge-gagal { background: #fee2e2; color: #ef4444; border: 1px solid #ef4444; }
 
-/* Ikon Ceklis dan Silang di Detail Jawaban */
-.icon-benar { color: #16a34a; font-weight: bold; }
-.icon-salah { color: #ef4444; font-weight: bold; }
+.badge-lulus { 
+    background: #dcfce7; 
+    color: #16a34a; 
+    border: 1px solid #16a34a; 
+}
+
+.badge-gagal { 
+    background: #fee2e2; 
+    color: #ef4444; 
+    border: 1px solid #ef4444; 
+}
+
+/* --- PERBAIKAN: Ikon Ceklis dan Silang di Detail Jawaban --- */
+/* Harus memastikan target tag td dan class-nya agar spesifik menimpa css default tabel */
+td.icon-benar,
+.table-guru td.icon-benar { 
+    color: #16a34a !important; 
+    font-weight: bold; 
+}
+
+td.icon-salah,
+.table-guru td.icon-salah { 
+    color: #ef4444 !important; 
+    font-weight: bold; 
+}
