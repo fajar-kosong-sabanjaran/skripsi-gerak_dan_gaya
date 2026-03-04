@@ -802,3 +802,84 @@ td.icon-salah,
     color: #ef4444 !important; 
     font-weight: bold; 
 }
+
+/* =======================================================================
+   ini css pengaturankkm.blade (Pengaturan KKM)
+   ======================================================================= */
+
+.kkm-header-container {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 15px;
+}
+
+.kkm-subtitle {
+    color: #64748b;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.kkm-hidden {
+    display: none;
+}
+
+.kkm-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.kkm-form-group {
+    margin-bottom: 0; /* Diatur oleh grid gap */
+}
+
+.kkm-label {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 14px;
+}
+
+.kkm-input-wrapper {
+    position: relative;
+}
+
+.kkm-input {
+    font-size: 16px;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.kkm-input:focus {
+    border-color: #f95c50;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(249, 92, 80, 0.1);
+}
+
+.kkm-footer {
+    text-align: right;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 20px;
+}
+
+.kkm-btn-submit {
+    padding: 12px 30px;
+    font-size: 15px;
+    background: linear-gradient(135deg, #f95c50 0%, #e04a3f 100%);
+    box-shadow: 0 4px 15px rgba(249, 92, 80, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.kkm-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(249, 92, 80, 0.4);
+}

@@ -721,3 +721,21 @@ function renderTabelRiwayat(dataRiwayat, jenis_kuis) {
         bodyRiwayat.appendChild(tr);
     });
 }
+
+// =======================================================================
+// FUNGSI PENGATURAN KKM (SweetAlert Notifikasi)
+// =======================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const successMessageElement = document.getElementById('kkm-success-message');
+    
+    if (successMessageElement) {
+        const message = successMessageElement.getAttribute('data-message');
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: message,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+});

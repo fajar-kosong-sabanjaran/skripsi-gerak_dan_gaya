@@ -28,12 +28,18 @@
             <span><i class="fas fa-chalkboard"></i> Data Kelas</span>
         </a>
 
-        <a href="{{ url('guru/progresbelajar') }}" class="menu-item {{ request()->is('guru/progresbelajar*') ? 'active' : '' }}">
+        <a href="{{ url('guru/progresbelajar') }}"
+            class="menu-item {{ request()->is('guru/progresbelajar*') ? 'active' : '' }}">
             <span><i class="fas fa-tasks"></i> Progres Belajar</span>
         </a>
 
         <a href="{{ url('guru/datanilai') }}" class="menu-item {{ request()->is('guru/datanilai*') ? 'active' : '' }}">
             <span><i class="fas fa-star"></i> Data Nilai</span>
+        </a>
+
+        <a href="{{ url('guru/pengaturan-kkm') }}"
+            class="menu-item {{ request()->is('guru/pengaturan-kkm*') ? 'active' : '' }}">
+            <span><i class="fas fa-cog"></i> Pengaturan KKM</span>
         </a>
 
     </div>

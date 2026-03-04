@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Kelas;
-use App\Models\Nilai; // [DITAMBAHKAN]
-use App\Models\RiwayatNilai; // [DITAMBAHKAN]
+use App\Models\Nilai; 
+use App\Models\RiwayatNilai; 
+use App\Models\PengaturanKkm; // [DITAMBAHKAN UNTUK FITUR KKM]
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -77,7 +78,6 @@ class GuruController extends Controller
 
     public function indexKelas()
     {
-        // [REVISI] Menambahkan withCount('users') untuk menghitung jumlah siswa
         $data_kelas = Kelas::withCount('users')
             ->orderBy('nama', 'asc')
             ->get();
@@ -175,7 +175,7 @@ class GuruController extends Controller
     }
 
     // =================================================================
-    // MANAJEMEN PROGRES BELAJAR (DITAMBAHKAN)
+    // MANAJEMEN PROGRES BELAJAR
     // =================================================================
 
     public function progresBelajar()
@@ -185,14 +185,13 @@ class GuruController extends Controller
             ->with(['kelas', 'progres'])
             ->get();
 
-        // [REVISI] Menambahkan pemanggilan data kelas agar dropdown filter di blade berfungsi
         $data_kelas = Kelas::orderBy('nama', 'asc')->get();
 
         return view('guru.progresbelajar', compact('data_siswa', 'data_kelas'));
     }
 
     // =================================================================
-    // MANAJEMEN DATA NILAI (DITAMBAHKAN)
+    // MANAJEMEN DATA NILAI
     // =================================================================
 
     public function dataNilai()
@@ -231,5 +230,41 @@ class GuruController extends Controller
             'success' => true,
             'data' => $riwayat
         ]);
+    }
+
+    // =================================================================
+    // MANAJEMEN PENGATURAN KKM (DITAMBAHKAN)
+    // =================================================================
+
+    public function pengaturanKkm()
+    {
+        // Ambil data KKM baris pertama
+        $kkm = PengaturanKkm::first();
+        return view('guru.pengaturankkm', compact('kkm'));
+    }
+
+    public function updateKkm(Request $request)
+    {
+        // Validasi inputan guru
+        $request->validate([
+            'kkm_kuis1' => 'required|integer|min:0|max:100',
+            'kkm_kuis2' => 'required|integer|min:0|max:100',
+            'kkm_evaluasi' => 'required|integer|min:0|max:100',
+        ]);
+
+        // Ambil baris pertama dan update nilainya
+        $kkm = PengaturanKkm::first();
+        if ($kkm) {
+            $kkm->update([
+                'kkm_kuis1' => $request->kkm_kuis1,
+                'kkm_kuis2' => $request->kkm_kuis2,
+                'kkm_evaluasi' => $request->kkm_evaluasi,
+            ]);
+        } else {
+             // Opsional: Jika entah kenapa datanya kosong, buat baru
+             PengaturanKkm::create($request->only(['kkm_kuis1', 'kkm_kuis2', 'kkm_evaluasi']));
+        }
+
+        return redirect()->back()->with('success', 'Nilai KKM berhasil diperbarui!');
     }
 }

@@ -89,7 +89,11 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     // --- MANAJEMEN PROGRES BELAJAR ---
     Route::get('/progresbelajar', [GuruController::class, 'progresBelajar'])->name('guru.progresbelajar');
 
-    // --- MANAJEMEN DATA NILAI (DITAMBAHKAN) ---
+    // --- MANAJEMEN DATA NILAI ---
     Route::get('/datanilai', [GuruController::class, 'dataNilai'])->name('guru.datanilai');
     Route::get('/datanilai/riwayat/{user_id}/{jenis_kuis}', [GuruController::class, 'riwayatNilai'])->name('guru.datanilai.riwayat');
+
+    // --- MANAJEMEN PENGATURAN KKM (DITAMBAHKAN) ---
+    Route::get('/pengaturan-kkm', [GuruController::class, 'pengaturanKkm'])->name('guru.pengaturankkm');
+    Route::post('/pengaturan-kkm', [GuruController::class, 'updateKkm'])->name('guru.updatekkm');
 });
