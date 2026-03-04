@@ -204,7 +204,10 @@ class GuruController extends Controller
 
         $data_kelas = Kelas::orderBy('nama', 'asc')->get();
 
-        return view('guru.datanilai', compact('data_siswa', 'data_kelas'));
+        // [REVISI] Ambil data KKM untuk mewarnai tabel secara dinamis
+        $kkm = PengaturanKkm::first();
+
+        return view('guru.datanilai', compact('data_siswa', 'data_kelas', 'kkm'));
     }
 
     public function riwayatNilai($user_id, $jenis_kuis)
@@ -225,6 +228,21 @@ class GuruController extends Controller
         $riwayat = RiwayatNilai::where('nilai_id', $nilai->id)
             ->orderBy('percobaan_ke', 'asc')
             ->get();
+
+        // [REVISI] HITUNG ULANG STATUS BERDASARKAN KKM TERBARU
+        $pengaturan = PengaturanKkm::first();
+        $kkm_sekarang = 70; // Default
+
+        if ($pengaturan) {
+            if ($jenis_kuis === 'Kuis 1') $kkm_sekarang = $pengaturan->kkm_kuis1;
+            elseif ($jenis_kuis === 'Kuis 2') $kkm_sekarang = $pengaturan->kkm_kuis2;
+            elseif ($jenis_kuis === 'Evaluasi') $kkm_sekarang = $pengaturan->kkm_evaluasi;
+        }
+
+        // Timpa status bawaan database dengan perhitungan dinamis yang baru sebelum dikirim ke JS
+        foreach ($riwayat as $r) {
+            $r->status = ($r->nilai_percobaan >= $kkm_sekarang) ? 'Lulus' : 'Tidak Lulus';
+        }
 
         return response()->json([
             'success' => true,

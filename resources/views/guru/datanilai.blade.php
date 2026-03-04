@@ -5,7 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="card-guru">
-    <div class="card-header-action" style="margin-bottom: 25px;">
+    <div class="card-header-action nilai-header-margin">
         <h3>Data Nilai Siswa</h3>
     </div>
 
@@ -43,6 +43,12 @@
         </div>
     </div>
 
+    @php
+        $kkm1 = $kkm->kkm_kuis1 ?? 70;
+        $kkm2 = $kkm->kkm_kuis2 ?? 70;
+        $kkm3 = $kkm->kkm_evaluasi ?? 70;
+    @endphp
+
     <div class="table-responsive">
         <table class="table-guru table-nilai" id="tabelNilai">
             <thead>
@@ -60,7 +66,6 @@
             <tbody id="tableBody">
                 @foreach ($data_siswa as $index => $siswa)
                     @php
-                        // Ekstrak Nilai Tertinggi per kuis
                         $n_kuis1 = $siswa->nilais->where('jenis_kuis', 'Kuis 1')->first();
                         $n_kuis2 = $siswa->nilais->where('jenis_kuis', 'Kuis 2')->first();
                         $n_evaluasi = $siswa->nilais->where('jenis_kuis', 'Evaluasi')->first();
@@ -75,13 +80,13 @@
                         <td class="row-nis">{{ $siswa->nomor_induk ?? '-' }}</td>
                         <td class="row-kelas">{{ $siswa->kelas->nama ?? '-' }}</td>
                         
-                        <td class="col-center text-bold {{ $skor1 >= 70 ? 'text-success' : 'text-danger' }}">
+                        <td class="col-center text-bold {{ $skor1 >= $kkm1 ? 'text-success' : 'text-danger' }}">
                             {{ $skor1 }}
                         </td>
-                        <td class="col-center text-bold {{ $skor2 >= 70 ? 'text-success' : 'text-danger' }}">
+                        <td class="col-center text-bold {{ $skor2 >= $kkm2 ? 'text-success' : 'text-danger' }}">
                             {{ $skor2 }}
                         </td>
-                        <td class="col-center text-bold {{ $skor3 >= 70 ? 'text-success' : 'text-danger' }}">
+                        <td class="col-center text-bold {{ $skor3 >= $kkm3 ? 'text-success' : 'text-danger' }}">
                             {{ $skor3 }}
                         </td>
 
@@ -100,7 +105,7 @@
         <div class="data-info" id="dataInfo">Menampilkan 0 - 0 dari 0 siswa</div>
         <div class="pagination-buttons">
             <button class="btn-page" id="btnPrev">Previous</button>
-            <span id="paginationNumbers" style="display:flex; gap:5px;"></span>
+            <span id="paginationNumbers" class="pagination-container"></span>
             <button class="btn-page" id="btnNext">Next</button>
         </div>
     </div>
@@ -113,9 +118,9 @@
             <span class="close-btn" onclick="closeRiwayatModal()">&times;</span>
         </div>
 
-        <div class="modal-body" style="background: #f8fafc; overflow-y: auto; max-height: 70vh;">
+        <div class="modal-body modal-body-scroll">
             
-            <div class="tab-container" style="margin-bottom: 20px; display:flex; gap:10px;">
+            <div class="tab-container riwayat-tab-gap">
                 <button class="btn-tab active" onclick="loadDetailRiwayat(this, 'Kuis 1')">Kuis 1 (Gerak)</button>
                 <button class="btn-tab" onclick="loadDetailRiwayat(this, 'Kuis 2')">Kuis 2 (Gaya)</button>
                 <button class="btn-tab" onclick="loadDetailRiwayat(this, 'Evaluasi')">Evaluasi Akhir</button>
@@ -124,24 +129,22 @@
             <input type="hidden" id="currentSiswaId">
             <input type="hidden" id="currentJenisKuis" value="Kuis 1">
 
-            <div class="table-responsive" style="background: white; border-radius: 8px; border: 1px solid #e2e8f0; padding: 15px;">
-                <h4 id="judulTabelRiwayat" style="margin-bottom:15px; color:#1e293b;"></h4>
+            <div class="table-responsive riwayat-table-container">
+                <h4 id="judulTabelRiwayat" class="riwayat-title"></h4>
                 
                 <table class="table-guru" id="tabelDetailRiwayat">
                     <thead>
-                        <tr id="headerRiwayat">
-                            </tr>
+                        <tr id="headerRiwayat"></tr>
                     </thead>
-                    <tbody id="bodyRiwayat">
-                        </tbody>
+                    <tbody id="bodyRiwayat"></tbody>
                 </table>
                 
-                <div id="loadingRiwayat" style="display:none; text-align:center; padding:30px;">
+                <div id="loadingRiwayat" class="riwayat-loading">
                     <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
-                    <p style="margin-top:10px; color:#64748b;">Memuat data...</p>
+                    <p class="loading-text">Memuat data...</p>
                 </div>
 
-                <div id="kosongRiwayat" style="display:none; text-align:center; padding:30px; color:#94a3b8; font-style:italic;">
+                <div id="kosongRiwayat" class="riwayat-empty">
                     Belum ada riwayat pengerjaan.
                 </div>
             </div>
