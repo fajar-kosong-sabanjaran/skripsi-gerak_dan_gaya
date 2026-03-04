@@ -2841,14 +2841,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (lastResultTuntas) {
-                        // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
                         window.progresSiswa = window.progresSiswa || [];
 
                         if (!window.progresSiswa.includes("kuis1_completed")) {
                             window.progresSiswa.push("kuis1_completed");
                         }
 
-                        // Panggil fungsi Global
                         if (window.simpanProgresKeDatabase) {
                             window.simpanProgresKeDatabase("kuis1_completed");
                         }
@@ -2861,7 +2859,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // [REVISI] Ekstraksi logika hitung nilai agar bisa dipakai di finishBtn & timer
         function hitungDanKirimNilai() {
             let score = 0;
             let arrayDetail = []; // Menyimpan true/false per jawaban
@@ -2874,7 +2871,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Konversi ke skala 100
             let score100 = Math.round((score / questions.length) * 100);
-            const tuntas = score100 >= 70; // Set KKM di Frontend (Sinkron dgn Backend)
+            
+            // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
+            const nilaiKkm = window.KKM_KUIS || 70; 
+            const tuntas = score100 >= nilaiKkm;
 
             // Kirim ke database (Kuis 1)
             simpanNilaiKeDatabase("Kuis 1", score100, arrayDetail);
@@ -3261,8 +3261,9 @@ document.addEventListener("DOMContentLoaded", function () {
             // Konversi ke skala 100
             let score100 = Math.round((score / questions.length) * 100);
 
-            // KKM: 70
-            const tuntas = score100 >= 70;
+            // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
+            const nilaiKkm = window.KKM_KUIS || 70;
+            const tuntas = score100 >= nilaiKkm;
 
             // Kirim ke database (Kuis 2)
             simpanNilaiKeDatabase("Kuis 2", score100, arrayDetail);
@@ -3731,15 +3732,21 @@ document.addEventListener("DOMContentLoaded", function () {
             // Konversi ke persentase (skala 100) untuk dikirim ke Database
             let score100 = Math.round((jumlahBenar / questions.length) * 100);
 
+            // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
+            const nilaiKkm = window.KKM_KUIS || 70;
+            const tuntas = score100 >= nilaiKkm;
+
             // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
             window.progresSiswa = window.progresSiswa || [];
 
-            // Simpan status lulus evaluasi ke DB progres
-            if (!window.progresSiswa.includes("evaluasi_completed")) {
-                window.progresSiswa.push("evaluasi_completed");
-            }
-            if (window.simpanProgresKeDatabase) {
-                window.simpanProgresKeDatabase("evaluasi_completed");
+            // Simpan status lulus evaluasi ke DB progres jika nilai memenuhi KKM
+            if (tuntas) {
+                if (!window.progresSiswa.includes("evaluasi_completed")) {
+                    window.progresSiswa.push("evaluasi_completed");
+                }
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("evaluasi_completed");
+                }
             }
 
             // SIMPAN NILAI KE DATABASE LOG/RIWAYAT

@@ -80,6 +80,9 @@
   <script>
     // URL ini digunakan jika siswa selesai mengerjakan (misal kembali ke beranda)
     window.EXIT_PAGE = "{{ url('/') }}"; 
+    
+    // [TAMBAHAN] Menangkap nilai KKM dari database untuk Evaluasi
+    window.KKM_KUIS = {{ $kkm }};
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -80,6 +80,9 @@
     
     // Jika LULUS, lanjut ke Petunjuk Evaluasi
     window.NEXT_PAGE = "{{ url('siswa/evaluasi/petunjukpengerjaan') }}"; 
+    
+    // [TAMBAHAN] Menangkap nilai KKM dari database untuk Kuis 2
+    window.KKM_KUIS = {{ $kkm }};
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

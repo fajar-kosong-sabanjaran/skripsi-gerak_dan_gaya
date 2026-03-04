@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProgresBelajar;
-use App\Models\Nilai; // [DITAMBAHKAN] Panggil model Nilai
-use App\Models\RiwayatNilai; // [DITAMBAHKAN] Panggil model RiwayatNilai
+use App\Models\Nilai; 
+use App\Models\RiwayatNilai; 
+use App\Models\PengaturanKkm; // [DITAMBAHKAN] Panggil model PengaturanKkm
 use Illuminate\Support\Facades\Auth;
 
 class ProgresController extends Controller
@@ -43,7 +44,7 @@ class ProgresController extends Controller
     }
 
     // =========================================================================
-    // FUNGSI BARU: MENYIMPAN NILAI DAN RIWAYAT
+    // FUNGSI MENYIMPAN NILAI DAN RIWAYAT
     // =========================================================================
     public function simpanNilai(Request $request)
     {
@@ -57,7 +58,19 @@ class ProgresController extends Controller
             // Waktu mulai dan selesai akan kita set otomatis dari controller jika tidak dikirim dari JS
         ]);
 
-        $kkm = 70; // Set KKM Kelulusan
+        // [REVISI] Ambil KKM dari database sesuai jenis kuisnya
+        $pengaturan = PengaturanKkm::first();
+        $kkm = 70; // Fallback default
+        if ($pengaturan) {
+            if ($request->jenis_kuis === 'Kuis 1') {
+                $kkm = $pengaturan->kkm_kuis1;
+            } elseif ($request->jenis_kuis === 'Kuis 2') {
+                $kkm = $pengaturan->kkm_kuis2;
+            } elseif ($request->jenis_kuis === 'Evaluasi') {
+                $kkm = $pengaturan->kkm_evaluasi;
+            }
+        }
+
         $skor = $request->nilai_percobaan;
         $status_percobaan = ($skor >= $kkm) ? 'Lulus' : 'Tidak Lulus';
 
@@ -106,5 +119,27 @@ class ProgresController extends Controller
                 'percobaan_ke' => $riwayat->percobaan_ke
             ]
         ]);
+    }
+
+    // =========================================================================
+    // TAMPILAN KUIS (MENYISIPKAN DATA KKM)
+    // =========================================================================
+    
+    public function tampilKuis1()
+    {
+        $kkm = PengaturanKkm::first()->kkm_kuis1 ?? 70; // Ambil dari DB atau default 70
+        return view('siswa.gerak.kuis1', compact('kkm'));
+    }
+
+    public function tampilKuis2()
+    {
+        $kkm = PengaturanKkm::first()->kkm_kuis2 ?? 70; // Ambil dari DB atau default 70
+        return view('siswa.gaya.kuis2', compact('kkm'));
+    }
+
+    public function tampilEvaluasi()
+    {
+        $kkm = PengaturanKkm::first()->kkm_evaluasi ?? 70; // Ambil dari DB atau default 70
+        return view('siswa.evaluasi.evaluasi', compact('kkm'));
     }
 }

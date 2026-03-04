@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Route untuk menyimpan progres belajar via AJAX/Fetch API
     Route::post('/simpan-progres', [ProgresController::class, 'simpanProgres'])->name('simpan.progres');
-    
+
     // Route khusus untuk menyimpan nilai Kuis/Evaluasi beserta riwayatnya
     Route::post('/simpan-nilai', [ProgresController::class, 'simpanNilai'])->name('simpan.nilai');
 
@@ -47,7 +47,8 @@ Route::middleware(['auth'])->group(function () {
             Route::view('kelajuandankecepatan', 'siswa.gerak.kelajuandankecepatan');
             Route::view('percepatan', 'siswa.gerak.percepatan');
             Route::view('petunjukpengerjaan', 'siswa.gerak.petunjukpengerjaan');
-            Route::view('kuis1', 'siswa.gerak.kuis1');
+            // [REVISI] Ubah menjadi Route::get yang mengarah ke Controller
+            Route::get('kuis1', [ProgresController::class, 'tampilKuis1']);
         });
 
         // Materi Gaya
@@ -58,13 +59,15 @@ Route::middleware(['auth'])->group(function () {
             Route::view('macam-macamgaya', 'siswa.gaya.macam-macamgaya');
             Route::view('hukumnewton', 'siswa.gaya.hukumnewton');
             Route::view('petunjukpengerjaan', 'siswa.gaya.petunjukpengerjaan');
-            Route::view('kuis2', 'siswa.gaya.kuis2');
+            // [REVISI] Ubah menjadi Route::get yang mengarah ke Controller
+            Route::get('kuis2', [ProgresController::class, 'tampilKuis2']);
         });
 
         // Evaluasi
         Route::prefix('evaluasi')->group(function () {
             Route::view('petunjukpengerjaan', 'siswa.evaluasi.petunjukpengerjaan');
-            Route::view('mulai', 'siswa.evaluasi.evaluasi');
+            // [REVISI] Ubah menjadi Route::get yang mengarah ke Controller
+            Route::get('mulai', [ProgresController::class, 'tampilEvaluasi']);
         });
     });
 });
@@ -93,7 +96,7 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     Route::get('/datanilai', [GuruController::class, 'dataNilai'])->name('guru.datanilai');
     Route::get('/datanilai/riwayat/{user_id}/{jenis_kuis}', [GuruController::class, 'riwayatNilai'])->name('guru.datanilai.riwayat');
 
-    // --- MANAJEMEN PENGATURAN KKM (DITAMBAHKAN) ---
+    // --- MANAJEMEN PENGATURAN KKM ---
     Route::get('/pengaturan-kkm', [GuruController::class, 'pengaturanKkm'])->name('guru.pengaturankkm');
     Route::post('/pengaturan-kkm', [GuruController::class, 'updateKkm'])->name('guru.updatekkm');
 });
