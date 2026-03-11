@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const teksNis = nisEl ? nisEl.innerText.toLowerCase() : "";
                 const cocokKata = teksNama.includes(query) || teksNis.includes(query);
 
-                // [REVISI] Filter berdasarkan Kelas dengan deteksi cerdas
+                // Filter berdasarkan Kelas dengan deteksi cerdas
                 let teksKelas = row.getAttribute("data-kelas");
                 
                 if (!teksKelas) {
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return cocokKata && cocokKelas;
             });
 
-            currentPage = 1; // [REVISI] Reset ke halaman 1 setiap ada filter
+            currentPage = 1; // Reset ke halaman 1 setiap ada filter
             renderTable();
         }
 
@@ -378,11 +378,12 @@ function saveEditData() {
 
 const createKelasModal = document.getElementById("createKelasModal");
 const createNama = document.getElementById("createNama");
-const createDeskripsi = document.getElementById("createDeskripsi");
+// [REVISI] Mengubah createDeskripsi menjadi createTahun
+const createTahun = document.getElementById("createTahun"); 
 
 function openCreateKelasModal() {
     if (createNama) createNama.value = "";
-    if (createDeskripsi) createDeskripsi.value = "";
+    if (createTahun) createTahun.value = "";
     if (createKelasModal) createKelasModal.classList.add("show");
 }
 
@@ -394,9 +395,10 @@ function storeKelasData() {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     const token = tokenElement ? tokenElement.getAttribute("content") : "";
 
+    // [REVISI] Mengubah properti payload menjadi tahun
     const payload = {
         nama: createNama.value,
-        deskripsi: createDeskripsi.value,
+        tahun: createTahun.value, 
     };
 
     fetch("/guru/datakelas", {
@@ -439,16 +441,18 @@ function storeKelasData() {
 const editKelasModal = document.getElementById("editKelasModal");
 const editKelasId = document.getElementById("editKelasId");
 const editNamaKelas = document.getElementById("editNamaKelas");
-const editDeskripsiKelas = document.getElementById("editDeskripsiKelas");
+// [REVISI] Mengubah editDeskripsiKelas menjadi editTahunKelas
+const editTahunKelas = document.getElementById("editTahunKelas");
 
 function openEditKelasModal(button) {
     const id = button.dataset.id;
     const nama = button.dataset.nama;
-    const deskripsi = button.dataset.deskripsi;
+    // [REVISI] Menangkap dataset tahun, bukan deskripsi
+    const tahun = button.dataset.tahun; 
 
     if (editKelasId) editKelasId.value = id;
     if (editNamaKelas) editNamaKelas.value = nama;
-    if (editDeskripsiKelas) editDeskripsiKelas.value = deskripsi || "";
+    if (editTahunKelas) editTahunKelas.value = tahun || ""; 
 
     if (editKelasModal) editKelasModal.classList.add("show");
 }
@@ -462,9 +466,10 @@ function updateKelasData() {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     const token = tokenElement ? tokenElement.getAttribute("content") : "";
 
+    // [REVISI] Mengirim payload properti tahun
     const payload = {
         nama: editNamaKelas.value,
-        deskripsi: editDeskripsiKelas.value,
+        tahun: editTahunKelas.value, 
     };
 
     fetch(`/guru/datakelas/${id}`, {

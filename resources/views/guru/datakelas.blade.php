@@ -41,7 +41,7 @@
                 <tr>
                     <th class="col-number">No</th>
                     <th>Nama Kelas</th>
-                    <th>Deskripsi</th>
+                    <th>Tahun Ajaran</th>
                     <th class="col-center">Jumlah Siswa</th> <th class="col-aksi">Aksi</th>
                 </tr>
             </thead>
@@ -50,7 +50,7 @@
                 <tr class="searchable-row">
                     <td class="col-center row-number">{{ $index + 1 }}</td>
                     <td class="text-bold row-name">{{ $kelas->nama }}</td>
-                    <td>{{ $kelas->deskripsi ?? '-' }}</td>
+                    <td>{{ $kelas->tahun ?? '-' }}</td>
                     
                     <td class="col-center">
                         <span class="badge-count">
@@ -64,7 +64,7 @@
                                     onclick="openEditKelasModal(this)"
                                     data-id="{{ $kelas->id }}"
                                     data-nama="{{ $kelas->nama }}"
-                                    data-deskripsi="{{ $kelas->deskripsi }}"
+                                    data-tahun="{{ $kelas->tahun }}"
                                     title="Edit">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
@@ -111,8 +111,8 @@
                 <input type="text" id="createNama" class="form-input full-width" placeholder="Contoh: VII-A">
             </div>
             <div class="form-group">
-                <label>Deskripsi (Opsional)</label>
-                <input type="text" id="createDeskripsi" class="form-input full-width" placeholder="Contoh: Kelas Unggulan">
+                <label>Tahun Ajaran (Opsional)</label>
+                <input type="text" id="createTahun" class="form-input full-width" placeholder="Contoh: 2023/2024">
             </div>
         </div>
         <div class="modal-footer">
@@ -135,8 +135,8 @@
                 <input type="text" id="editNamaKelas" class="form-input full-width">
             </div>
             <div class="form-group">
-                <label>Deskripsi (Opsional)</label>
-                <input type="text" id="editDeskripsiKelas" class="form-input full-width">
+                <label>Tahun Ajaran (Opsional)</label>
+                <input type="text" id="editTahunKelas" class="form-input full-width">
             </div>
         </div>
         <div class="modal-footer">

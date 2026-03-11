@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kelas', function (Blueprint $table) {
             $table->id(); // Primary Key
             $table->string('nama'); // Kolom untuk Nama Kelas (Contoh: VIII-A)
-            $table->text('deskripsi')->nullable(); // Kolom Deskripsi (Boleh dikosongkan)
+            $table->text('tahun')->nullable(); // Kolom tahun (Boleh dikosongkan)
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
