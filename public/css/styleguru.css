@@ -883,6 +883,49 @@ td.icon-salah,
     font-style: italic;
 }
 
+.swal-soal-pertanyaan {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.swal-soal-opsi {
+    text-align: left;
+    padding-left: 20px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.swal-opsi-item {
+    margin-bottom: 8px;
+}
+
+.swal-opsi-item.opsi-benar {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.swal-opsi-item.opsi-biasa {
+    color: #475569;
+    font-weight: normal;
+}
+
+.swal-btn-tutup-kecil {
+    padding: 6px 24px !important;
+    font-size: 14px !important;
+    border-radius: 6px !important;
+}
+
+.swal-judul-kecil {
+    font-size: 22px !important;
+}
+
 /* =======================================================================
    ini css pengaturankkm.blade (Pengaturan KKM)
    ======================================================================= */
@@ -952,7 +995,9 @@ td.icon-salah,
     font-size: 15px;
     background: linear-gradient(135deg, #f95c50 0%, #e04a3f 100%);
     box-shadow: 0 4px 15px rgba(249, 92, 80, 0.3);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
     border: none;
     color: white;
     border-radius: 6px;
