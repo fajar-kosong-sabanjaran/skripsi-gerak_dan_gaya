@@ -224,7 +224,8 @@ class GuruController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $riwayat
+            'data' => $riwayat,
+            'kkm' => $kkm_sekarang // [REVISI] Ikut kirim nilai KKM ke Javascript
         ]);
     }
 

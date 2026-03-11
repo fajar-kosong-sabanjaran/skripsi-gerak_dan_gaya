@@ -1,302 +1,294 @@
-/* #######################################################################
-   FILE: PUBLIC/CSS/STYLEGURU.CSS
-   deskripsi: Styling untuk layout utama dan halaman data siswa
-   ####################################################################### */
-
 /* =======================================================================
    ini css global (Reset & Body)
    ======================================================================= */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
 }
 
 body {
-  display: flex;
-  background-color: #e2e8f0; 
-  color: #333;
-  font-size: 15px; 
+    display: flex;
+    background-color: #e2e8f0;
+    color: #333;
+    font-size: 15px;
 }
-
 
 /* =======================================================================
    ini css guru.blade (Sidebar & Navbar)
    ======================================================================= */
 
-/* --- SIDEBAR --- */
 .sidebar {
-  width: 260px;
-  background: linear-gradient(160deg, #f95c50 0%, #e04a3f 100%);
-  color: #fff;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  height: 100vh;
-  box-shadow: 4px 0 20px rgba(249, 92, 80, 0.25); 
-  z-index: 100;
-  padding: 15px 10px;
+    width: 260px;
+    background: linear-gradient(160deg, #f95c50 0%, #e04a3f 100%);
+    color: #fff;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 4px 0 20px rgba(249, 92, 80, 0.25);
+    z-index: 100;
+    padding: 15px 10px;
 }
 
 .sidebar-header {
-  text-align: center;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .guru-icon {
-  font-size: 38px;
-  margin-bottom: 8px;
-  color: #fff;
-  text-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-size: 38px;
+    margin-bottom: 8px;
+    color: #fff;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h2 {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
-  border-radius: 50px;
-  display: inline-block;
-  backdrop-filter: blur(4px);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 50px;
+    display: inline-block;
+    backdrop-filter: blur(4px);
 }
 
-/* --- MENU ITEMS --- */
 .sidebar-menu {
-  flex: 1;
-  overflow-y: auto;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .menu-item {
-  margin-top: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  padding: 10px 14px;
-  font-size: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #fff;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+    margin-top: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 10px 14px;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
 }
 
 .menu-item span {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
 }
 
 .menu-item:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateX(3px);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(3px);
 }
 
 .menu-item.active {
-  background: #ffffff;
-  color: #f95c50;
-  font-weight: 700;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-  transform: scale(1.01);
+    background: #ffffff;
+    color: #f95c50;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    transform: scale(1.01);
 }
 
 .menu-item.has-toggle::after {
-  content: "›";
-  font-size: 18px;
-  transition: transform 0.3s ease;
-  font-weight: 300;
+    content: "›";
+    font-size: 18px;
+    transition: transform 0.3s ease;
+    font-weight: 300;
 }
 
 .menu-item.has-toggle.active::after {
-  transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
-/* --- SUBMENU --- */
 .submenu {
-  background-color: rgba(0, 0, 0, 0.05);
-  display: none;
-  flex-direction: column;
-  margin: 3px 0 10px 0;
-  border-radius: 0 0 10px 10px;
-  padding: 5px 8px 8px 8px;
-  border-left: 2px solid rgba(255,255,255,0.3); 
-  margin-left: 15px;
+    background-color: rgba(0, 0, 0, 0.05);
+    display: none;
+    flex-direction: column;
+    margin: 3px 0 10px 0;
+    border-radius: 0 0 10px 10px;
+    padding: 5px 8px 8px 8px;
+    border-left: 2px solid rgba(255, 255, 255, 0.3);
+    margin-left: 15px;
 }
 
 .submenu.open {
-  display: flex;
+    display: flex;
 }
 
 .submenu a {
-  padding: 8px 12px;
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  font-size: 14px;
-  border-radius: 6px;
-  transition: all 0.2s;
-  margin-top: 2px;
+    padding: 8px 12px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    margin-top: 2px;
 }
 
 .submenu a:hover,
 .submenu a.active {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: 600;
 }
 
-/* --- CONTENT AREA & NAVBAR --- */
 .content-area {
-  margin-left: 260px;
-  width: calc(100% - 260px);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .guru-navbar {
-  background: #ffffff;
-  height: 60px; 
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  transition: all 0.3s ease;
+    background: #ffffff;
+    height: 60px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: all 0.3s ease;
 }
 
-.navbar-left, 
+.navbar-left,
 .navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-/* --- USER DROPDOWN --- */
 .user-dropdown-wrapper {
-  position: relative; 
+    position: relative;
 }
 
 .profile-menu {
-  display: flex;
-  align-items: center;
-  gap: 10px; 
-  cursor: pointer;
-  padding: 5px 15px 5px 5px;
-  background: #fff;
-  border: 1.5px solid #f95c50; 
-  border-radius: 50px;
-  box-shadow: 0 1px 3px rgba(249, 92, 80, 0.1);
-  transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 15px 5px 5px;
+    background: #fff;
+    border: 1.5px solid #f95c50;
+    border-radius: 50px;
+    box-shadow: 0 1px 3px rgba(249, 92, 80, 0.1);
+    transition: all 0.2s;
 }
 
 .profile-menu:hover {
-  background-color: #fff5f5;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(249, 92, 80, 0.2);
+    background-color: #fff5f5;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(249, 92, 80, 0.2);
 }
 
 .profile-icon {
-  width: 30px; 
-  height: 30px;
-  background-color: #f95c50; 
-  color: #fff;               
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px; 
+    width: 30px;
+    height: 30px;
+    background-color: #f95c50;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
 }
 
 .profile-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: #f95c50; 
+    font-size: 14px;
+    font-weight: 700;
+    color: #f95c50;
 }
 
-/* --- ISI DROPDOWN (POPUP) --- */
 .user-dropdown-content {
-  display: none; 
-  position: absolute;
-  top: 50px; 
-  right: 0;
-  background-color: #fff;
-  min-width: 160px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  border: 1px solid #f1f5f9;
-  z-index: 1000;
-  padding: 5px;
-  animation: fadeIn 0.2s ease-in-out;
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+    z-index: 1000;
+    padding: 5px;
+    animation: fadeIn 0.2s ease-in-out;
 }
 
 .user-dropdown-content.active {
-  display: block;
+    display: block;
 }
 
 .dropdown-item-logout {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 15px;
-  color: #ef4444; 
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 6px;
-  transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: #ef4444;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background 0.2s;
 }
 
 .dropdown-item-logout:hover {
-  background-color: #fee2e2; 
+    background-color: #fee2e2;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .content-wrapper {
-  padding: 20px;
-  flex: 1;
-  overflow-y: auto;
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
 }
-
 
 /* =======================================================================
    ini css datasiswa.blade (Card, Tabel, & Button)
    ======================================================================= */
 
-/* --- CARD CONTAINER --- */
 .card-guru {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.03); 
-  margin-bottom: 20px;
-  border: 1px solid #f1f5f9;
-  position: relative;
-  overflow: hidden;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+    margin-bottom: 20px;
+    border: 1px solid #f1f5f9;
+    position: relative;
+    overflow: hidden;
 }
 
 .card-guru::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #f95c50, #ff8f70);
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #f95c50, #ff8f70);
 }
 
 .card-guru h3 {
@@ -306,17 +298,16 @@ body {
     font-weight: 700;
 }
 
-/* --- KONTROL TABEL (Updated for Sorting) --- */
 .table-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; 
-    gap: 15px;       
+    flex-wrap: wrap;
+    gap: 15px;
     margin-bottom: 15px;
 }
 
-.entries-control label, 
+.entries-control label,
 .search-control label,
 .sort-control label {
     display: flex;
@@ -325,9 +316,8 @@ body {
     font-weight: 500;
 }
 
-/* Styling Khusus Sort Control */
 .sort-control label {
-    color: #64748b; 
+    color: #64748b;
 }
 
 .sort-control .form-select {
@@ -335,7 +325,7 @@ body {
     cursor: pointer;
 }
 
-.form-select, 
+.form-select,
 .form-input {
     padding: 6px 12px;
     border: 1px solid #d1d5db;
@@ -347,57 +337,66 @@ body {
     transition: all 0.2s;
 }
 
-.form-select:focus, 
+.form-select:focus,
 .form-input:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* --- TABEL GURU --- */
 .table-responsive {
     overflow-x: auto;
 }
 
 .table-guru {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 5px;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 5px;
 }
 
 .table-guru th {
-  background-color: #f8fafc; 
-  color: #475569;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  padding: 10px 15px;
-  border-bottom: 2px solid #e2e8f0;
-  white-space: nowrap;
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 10px 15px;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
 }
 
 .table-guru td {
-  padding: 10px 15px;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
-  font-size: 14px;
-  vertical-align: middle;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+    vertical-align: middle;
 }
 
 .table-guru tr:last-child td {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .table-guru tr:hover td {
-  background-color: #f8fafc; 
+    background-color: #f8fafc;
 }
 
-/* Helper Classes untuk Tabel */
-.col-number { width: 50px; text-align: center; }
-.col-aksi { width: 160px; text-align: center; }
-.col-center { text-align: center; }
-.text-bold { font-weight: 600; color: #1e293b; }
+.col-number {
+    width: 50px;
+    text-align: center;
+}
+.col-aksi {
+    width: 160px;
+    text-align: center;
+}
+.col-center {
+    text-align: center;
+}
+.text-bold {
+    font-weight: 600;
+    color: #1e293b;
+}
 
 .badge-kelas {
     background: #e0f2fe;
@@ -409,7 +408,6 @@ body {
     display: inline-block;
 }
 
-/* --- FOOTER TABEL & PAGINATION --- */
 .table-footer {
     display: flex;
     justify-content: space-between;
@@ -456,10 +454,9 @@ body {
     background: #f8fafc;
 }
 
-/* --- TOMBOL AKSI --- */
 .action-buttons {
     display: flex;
-    gap: 6px; 
+    gap: 6px;
     justify-content: center;
     align-items: center;
 }
@@ -481,7 +478,7 @@ body {
 
 .btn-aksi:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .btn-edit {
@@ -500,21 +497,19 @@ body {
     box-shadow: 0 3px 6px rgba(239, 68, 68, 0.3);
 }
 
-
 /* =======================================================================
    ini css datasiswa.blade (Modal Edit / Popup)
    ======================================================================= */
 
-/* Overlay Gelap */
 .modal-overlay {
     display: none;
-    position: fixed; 
-    z-index: 999; 
+    position: fixed;
+    z-index: 999;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     align-items: center;
     justify-content: center;
     opacity: 0;
@@ -526,13 +521,12 @@ body {
     opacity: 1;
 }
 
-/* Kotak Popup */
 .modal-content {
     background-color: #fff;
     width: 100%;
     max-width: 500px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     transform: translateY(-20px);
     transition: transform 0.3s ease;
     overflow: hidden;
@@ -542,7 +536,6 @@ body {
     transform: translateY(0);
 }
 
-/* Header Modal */
 .modal-header {
     background: #f95c50;
     color: white;
@@ -552,21 +545,47 @@ body {
     align-items: center;
 }
 
-.modal-header h4 { font-size: 16px; font-weight: 700; margin: 0; }
-.close-btn { font-size: 24px; cursor: pointer; color: white; font-weight: bold; }
-.close-btn:hover { color: #ffecec; }
+.modal-header h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+.close-btn:hover {
+    color: #ffecec;
+}
 
-/* Isi Modal */
-.modal-body { padding: 20px; }
+.modal-body {
+    padding: 20px;
+}
 
-.form-group { margin-bottom: 15px; }
-.form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: #64748b; }
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #64748b;
+}
 
-.full-width { width: 100%; }
-.row { display: flex; gap: 15px; }
-.col-half { flex: 1; }
+.full-width {
+    width: 100%;
+}
+.row {
+    display: flex;
+    gap: 15px;
+}
+.col-half {
+    flex: 1;
+}
 
-/* Footer Modal */
 .modal-footer {
     padding: 15px 20px;
     background: #f8fafc;
@@ -577,24 +596,34 @@ body {
 }
 
 .btn-cancel {
-    padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e1;
-    background: white; color: #64748b; cursor: pointer; font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    color: #64748b;
+    cursor: pointer;
+    font-weight: 600;
     font-size: 14px;
 }
 
 .btn-save {
-    padding: 8px 16px; border-radius: 6px; border: none;
-    background: #3b82f6; color: white; cursor: pointer; font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
     font-size: 14px;
 }
-.btn-save:hover { background: #2563eb; }
-
+.btn-save:hover {
+    background: #2563eb;
+}
 
 /* =======================================================================
    ini css datakelas.blade
    ======================================================================= */
 
-/* Header Card (Judul & Tombol Tambah) */
 .card-header-action {
     margin-bottom: 25px;
     display: flex;
@@ -602,17 +631,14 @@ body {
     align-items: center;
 }
 
-/* Tombol Tambah Kelas (Ukuran Font Khusus) */
 .btn-add-new {
     font-size: 13px;
 }
 
-/* Teks Merah untuk Form Wajib (*) */
 .text-danger {
     color: #ef4444;
 }
 
-/* Baris Kosong pada Tabel */
 .empty-row {
     text-align: center;
     padding: 20px;
@@ -620,34 +646,27 @@ body {
     font-style: italic;
 }
 
-/* Container Nomor Pagination */
 .pagination-container {
     display: flex;
     gap: 5px;
 }
 
 .badge-count {
-    background-color: #e0f2fe; /* Biru muda soft */
-    color: #0284c7;            /* Biru tua */
+    background-color: #e0f2fe;
+    color: #0284c7;
     padding: 5px 12px;
     border-radius: 50px;
     font-size: 13px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 6px; /* Jarak antara ikon dan angka */
-}
-
-/* Pastikan kolom tengah benar-benar rata tengah */
-.col-center {
-    text-align: center;
+    gap: 6px;
 }
 
 /* =======================================================================
    ini css progresbelajar.blade (Tabel Progres Lebar & Sticky)
    ======================================================================= */
 
-/* Kotak Keterangan Ikon (Dibuat Lebih Rapat) */
 .legend-container {
     display: inline-flex;
     gap: 15px;
@@ -656,7 +675,7 @@ body {
     font-weight: 600;
     color: #475569;
     background: #f8fafc;
-    padding: 6px 12px; /* Padding atas-bawah dikurangi dari 10px menjadi 6px */
+    padding: 6px 12px;
     border-radius: 6px;
     border: 1px solid #e2e8f0;
 }
@@ -667,7 +686,6 @@ body {
     gap: 6px;
 }
 
-/* Pengaturan lebar kolom judul materi agar teks bisa turun ke bawah */
 .table-progres th.th-materi {
     font-size: 11px;
     min-width: 95px;
@@ -678,29 +696,25 @@ body {
     vertical-align: middle;
 }
 
-/* Pengaturan sel icon ceklis/silang */
 .table-progres td.td-icon {
     font-size: 20px;
 }
 
-/* Konfigurasi Sticky Column */
 .table-progres th.sticky-col,
 .table-progres td.sticky-col {
     position: sticky;
     z-index: 2;
 }
 
-/* Kolom Nomor di kiri mentok */
 .table-progres th.sticky-no,
 .table-progres td.sticky-no {
     left: 0;
     min-width: 50px;
 }
 
-/* Kolom Nama di sebelah kolom nomor (Maju 50px) */
 .table-progres th.sticky-nama,
 .table-progres td.sticky-nama {
-    left: 50px; 
+    left: 50px;
     min-width: 200px;
 }
 
@@ -716,7 +730,6 @@ body {
     background-color: #f1f5f9;
 }
 
-/* Menambahkan border di sisi kanan kolom Nama Siswa agar jelas batasnya saat di-scroll */
 .table-progres th.border-right-sticky,
 .table-progres td.border-right-sticky {
     border-right: 2px solid #e2e8f0;
@@ -726,12 +739,16 @@ body {
    ini css datanilai.blade (Tabel & Modal Riwayat)
    ======================================================================= */
 
-/* Warna Teks Status */
-.text-success { color: #16a34a !important; }
-.text-danger { color: #ef4444 !important; }
-.text-primary { color: #3b82f6 !important; }
+.text-success {
+    color: #16a34a !important;
+}
+.text-danger {
+    color: #ef4444 !important;
+}
+.text-primary {
+    color: #3b82f6 !important;
+}
 
-/* Tombol Riwayat Biru */
 .btn-riwayat {
     background-color: #3b82f6;
     color: white;
@@ -741,12 +758,10 @@ body {
     box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3);
 }
 
-/* Modal Besar (Large) untuk Riwayat */
 .modal-lg {
     max-width: 900px !important;
 }
 
-/* Tab Navigasi di Modal */
 .btn-tab {
     padding: 8px 16px;
     border: none;
@@ -766,10 +781,9 @@ body {
     box-shadow: 0 2px 5px rgba(249, 92, 80, 0.3);
 }
 
-/* --- PERBAIKAN: Badge Status Lulus/Tidak Lulus di Tabel Riwayat --- */
 .badge-status {
-    display: inline-block; /* Agar bentuk badge tetap proporsional */
-    white-space: nowrap;   /* Mencegah teks terpotong atau turun baris */
+    display: inline-block;
+    white-space: nowrap;
     padding: 4px 10px;
     border-radius: 4px;
     font-size: 11px;
@@ -777,30 +791,28 @@ body {
     text-transform: uppercase;
 }
 
-.badge-lulus { 
-    background: #dcfce7; 
-    color: #16a34a; 
-    border: 1px solid #16a34a; 
+.badge-lulus {
+    background: #dcfce7;
+    color: #16a34a;
+    border: 1px solid #16a34a;
 }
 
-.badge-gagal { 
-    background: #fee2e2; 
-    color: #ef4444; 
-    border: 1px solid #ef4444; 
+.badge-gagal {
+    background: #fee2e2;
+    color: #ef4444;
+    border: 1px solid #ef4444;
 }
 
-/* --- PERBAIKAN: Ikon Ceklis dan Silang di Detail Jawaban --- */
-/* Harus memastikan target tag td dan class-nya agar spesifik menimpa css default tabel */
 td.icon-benar,
-.table-guru td.icon-benar { 
-    color: #16a34a !important; 
-    font-weight: bold; 
+.table-guru td.icon-benar {
+    color: #16a34a !important;
+    font-weight: bold;
 }
 
 td.icon-salah,
-.table-guru td.icon-salah { 
-    color: #ef4444 !important; 
-    font-weight: bold; 
+.table-guru td.icon-salah {
+    color: #ef4444 !important;
+    font-weight: bold;
 }
 
 .nilai-header-margin {
@@ -827,8 +839,28 @@ td.icon-salah,
     padding: 15px;
 }
 
-.riwayat-title {
+.riwayat-header-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 15px;
+}
+
+.title-no-margin {
+    margin-bottom: 0 !important;
+}
+
+.badge-kkm {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.riwayat-title {
     color: #1e293b;
 }
 
@@ -879,7 +911,7 @@ td.icon-salah,
 }
 
 .kkm-form-group {
-    margin-bottom: 0; /* Diatur oleh grid gap */
+    margin-bottom: 0;
 }
 
 .kkm-label {

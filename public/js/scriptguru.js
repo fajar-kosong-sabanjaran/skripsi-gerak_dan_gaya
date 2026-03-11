@@ -378,7 +378,6 @@ function saveEditData() {
 
 const createKelasModal = document.getElementById("createKelasModal");
 const createNama = document.getElementById("createNama");
-// [REVISI] Mengubah createDeskripsi menjadi createTahun
 const createTahun = document.getElementById("createTahun"); 
 
 function openCreateKelasModal() {
@@ -395,7 +394,6 @@ function storeKelasData() {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     const token = tokenElement ? tokenElement.getAttribute("content") : "";
 
-    // [REVISI] Mengubah properti payload menjadi tahun
     const payload = {
         nama: createNama.value,
         tahun: createTahun.value, 
@@ -441,13 +439,11 @@ function storeKelasData() {
 const editKelasModal = document.getElementById("editKelasModal");
 const editKelasId = document.getElementById("editKelasId");
 const editNamaKelas = document.getElementById("editNamaKelas");
-// [REVISI] Mengubah editDeskripsiKelas menjadi editTahunKelas
 const editTahunKelas = document.getElementById("editTahunKelas");
 
 function openEditKelasModal(button) {
     const id = button.dataset.id;
     const nama = button.dataset.nama;
-    // [REVISI] Menangkap dataset tahun, bukan deskripsi
     const tahun = button.dataset.tahun; 
 
     if (editKelasId) editKelasId.value = id;
@@ -466,7 +462,6 @@ function updateKelasData() {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     const token = tokenElement ? tokenElement.getAttribute("content") : "";
 
-    // [REVISI] Mengirim payload properti tahun
     const payload = {
         nama: editNamaKelas.value,
         tahun: editTahunKelas.value, 
@@ -645,8 +640,20 @@ window.loadDetailRiwayat = function (btnElement, jenis_kuis) {
             if (res.success && res.data && res.data.length > 0) {
                 renderTabelRiwayat(res.data, jenis_kuis);
                 tabelDetailRiwayat.style.display = "table";
+                
+                // [REVISI TAMBAHAN KKM] Tampilkan info KKM
+                const elInfoKkm = document.getElementById("infoKkmSaatIni");
+                const elAngkaKkm = document.getElementById("angkaKkmTampil");
+                if(elInfoKkm && elAngkaKkm) {
+                    elAngkaKkm.innerText = res.kkm;
+                    elInfoKkm.style.display = "inline-block";
+                }
+
             } else {
                 kosongRiwayat.style.display = "block";
+                // Sembunyikan info KKM jika tidak ada data
+                const elInfoKkm = document.getElementById("infoKkmSaatIni");
+                if(elInfoKkm) elInfoKkm.style.display = "none";
             }
         })
         .catch((err) => {
@@ -654,6 +661,10 @@ window.loadDetailRiwayat = function (btnElement, jenis_kuis) {
             loadingRiwayat.style.display = "none";
             kosongRiwayat.innerText = "Terjadi kesalahan saat memuat data.";
             kosongRiwayat.style.display = "block";
+            
+            // Sembunyikan info KKM jika error
+            const elInfoKkm = document.getElementById("infoKkmSaatIni");
+            if(elInfoKkm) elInfoKkm.style.display = "none";
         });
 };
 

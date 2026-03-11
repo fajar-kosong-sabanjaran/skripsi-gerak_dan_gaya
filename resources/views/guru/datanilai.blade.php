@@ -130,7 +130,13 @@
             <input type="hidden" id="currentJenisKuis" value="Kuis 1">
 
             <div class="table-responsive riwayat-table-container">
-                <h4 id="judulTabelRiwayat" class="riwayat-title"></h4>
+                
+                <div class="riwayat-header-group">
+                    <h4 id="judulTabelRiwayat" class="riwayat-title title-no-margin"></h4>
+                    <span id="infoKkmSaatIni" class="badge-kkm" style="display: none;">
+                        KKM Saat Ini: <span id="angkaKkmTampil">-</span>
+                    </span>
+                </div>
                 
                 <table class="table-guru" id="tabelDetailRiwayat">
                     <thead>
