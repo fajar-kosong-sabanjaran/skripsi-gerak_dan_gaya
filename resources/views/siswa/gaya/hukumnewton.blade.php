@@ -231,9 +231,9 @@
                     </div>
                 </div>
 
-                <div class="latihan-actions">
-                    <button class="btn-cek" id="btn-cek-newton">Cek Jawaban</button>
-                    <button class="btn-reset" id="btn-reset-newton">Coba Lagi</button>
+                <div class="action-container-newton">
+                    <button type="button" class="btn-cek-newton" id="btn-cek-newton">Cek Jawaban</button>
+                    <button type="button" class="btn-reset-newton" id="btn-reset-newton">Coba Lagi</button>
                 </div>
             </div>
 
@@ -244,7 +244,7 @@
                 <h3>Hasil Latihan</h3>
                 <div id="popup-newton-text" class="hasil-ringkas"></div>
                 <div class="popup-actions">
-                    <button class="btn-reset" id="btn-tutup-newton">Tutup</button>
+                    <button class="btn-reset-newton" id="btn-tutup-newton">Tutup</button>
                 </div>
             </div>
         </div>

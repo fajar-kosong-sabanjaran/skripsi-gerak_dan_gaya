@@ -1803,6 +1803,75 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.rumus-box {
+    background-color: #f8f9fa;
+    border: 2px dashed #cccccc;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 15px auto; /* Margin auto untuk menengahkan kotak yang sudah menciut */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: fit-content; /* Revisi: Lebar kotak mengikuti panjang rumus */
+}
+
+.tombol-opsi.dipilih {
+    border: 2px solid #3b82f6 !important;
+    background-color: #eff6ff !important;
+    color: #0d47a1 !important;
+}
+
+.tombol-opsi.jawaban-benar {
+    background-color: #d4edda !important;
+    border-color: #28a745 !important;
+    color: #155724 !important;
+    cursor: default;
+}
+
+.tombol-opsi.jawaban-salah {
+    background-color: #f8d7da !important;
+    border-color: #dc3545 !important;
+    color: #721c24 !important;
+    cursor: default;
+}
+
+.action-container-newton {
+    display: flex;
+    justify-content: center;
+    gap: 15px; 
+    margin-top: 25px;
+    width: 100%;
+}
+
+.btn-cek-newton {
+    padding: 8px 16px;
+    background: #f95c50;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-cek-newton:hover {
+    background: #e44a3f;
+    transform: translateY(-2px);
+}
+
+.btn-reset-newton {
+    padding: 8px 16px;
+    background: #6c757d;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-reset-newton:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
 /* INI CSS UNTUK PETUNJUK PENGERJAAN */
 /* ============================================================
    STYLE KHUSUS HALAMAN PETUNJUK PENGERJAAN

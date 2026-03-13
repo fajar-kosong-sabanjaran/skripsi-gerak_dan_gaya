@@ -2574,7 +2574,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================================
     function checkLocalLock() {
         if (path.includes("hukumnewton")) {
-            // Cek apakah materi INI sudah lulus dari array database
             if (
                 window.progresSiswa &&
                 window.progresSiswa.includes("hukumnewton_completed")
@@ -2605,6 +2604,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".grup-opsi .tombol-opsi").forEach((btn) => {
             btn.addEventListener("click", () => {
                 const grup = btn.parentElement;
+                
+                // Jika sudah terkunci setelah klik Cek Jawaban, jangan biarkan ganti pilihan
+                if (grup.classList.contains("terkunci")) return;
 
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
                     b.classList.remove("dipilih"),
@@ -2620,36 +2622,50 @@ document.addEventListener("DOMContentLoaded", function () {
         // =========================================================================
         btnCekNewton.addEventListener("click", () => {
             let benar = 0;
-            let salah = 0;
             let totalSoal = 0;
+            const semuaGrup = document.querySelectorAll(".grup-opsi");
 
-            document.querySelectorAll(".grup-opsi").forEach((grup) => {
+            // Validasi: Cek apakah semua soal sudah diisi
+            let belumDiisi = false;
+            semuaGrup.forEach(grup => {
+                if (!grup.dataset.jawaban) belumDiisi = true;
+            });
+
+            if (belumDiisi) {
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Belum Lengkap",
+                        text: "Silakan pilih jawaban untuk semua soal terlebih dahulu!",
+                        confirmButtonColor: "#f95c50",
+                    });
+                }
+                return;
+            }
+
+            semuaGrup.forEach((grup) => {
                 totalSoal++;
                 const jawabanSiswa = grup.dataset.jawaban;
                 const kunci = grup.dataset.kunci;
+                
+                grup.classList.add("terkunci"); // Kunci pilihan
 
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
                     b.classList.remove("jawaban-benar", "jawaban-salah"),
                 );
 
-                if (!jawabanSiswa) {
-                    salah++;
-                } else if (jawabanSiswa === kunci) {
+                if (jawabanSiswa === kunci) {
                     benar++;
                     grup.querySelector(
                         `[data-pilihan="${jawabanSiswa}"]`,
                     ).classList.add("jawaban-benar");
                 } else {
-                    salah++;
+                    // [REVISI]: Hanya tandai merah pada pilihan siswa yang salah
+                    // Tanpa memberi warna hijau pada kunci jawaban yang benar (bocoran dihapus)
                     const btnSalah = grup.querySelector(
                         `[data-pilihan="${jawabanSiswa}"]`,
                     );
                     if (btnSalah) btnSalah.classList.add("jawaban-salah");
-
-                    const btnKunci = grup.querySelector(
-                        `[data-pilihan="${kunci}"]`,
-                    );
-                    if (btnKunci) btnKunci.classList.add("jawaban-benar");
                 }
             });
 
@@ -2658,34 +2674,28 @@ document.addEventListener("DOMContentLoaded", function () {
             const popupBox = document.getElementById("popup-newton");
 
             if (popupText && popupBox) {
+                let salah = totalSoal - benar;
                 popupText.innerHTML = `
-          <span class="hasil-benar">✔ Benar : ${benar}</span>
-          <span class="pemisah">|</span>
-          <span class="hasil-salah">✖ Salah : ${salah}</span>
-        `;
+                  <span class="hasil-benar">✔ Benar : ${benar}</span>
+                  <span class="pemisah">|</span>
+                  <span class="hasil-salah">✖ Salah : ${salah}</span>
+                `;
                 popupBox.classList.add("show");
             }
 
-            // JIKA BENAR SEMUA -> BUKA GEMBOK DAN SIMPAN KE DATABASE
+            // JIKA BENAR SEMUA -> SIMPAN & UNLOCK
             if (benar === totalSoal) {
-                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
                 window.progresSiswa = window.progresSiswa || [];
-
                 if (!window.progresSiswa.includes("hukumnewton_completed")) {
                     window.progresSiswa.push("hukumnewton_completed");
                 }
 
-                // Panggil fungsi Global
                 if (window.simpanProgresKeDatabase) {
                     window.simpanProgresKeDatabase("hukumnewton_completed");
                 }
 
-                // Buka kunci secara manual via Helper Global
                 if (window.unlockSidebar) {
                     window.unlockSidebar("nav-kuis2");
-                }
-                if (window.unlockNextButtonIfPage) {
-                    window.unlockNextButtonIfPage("hukumnewton");
                 }
 
                 const btnNext = document.getElementById("btn-next-materi");
@@ -2694,17 +2704,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     setTimeout(() => {
                         if (popupBox) popupBox.classList.remove("show");
-
                         if (typeof Swal !== "undefined") {
                             Swal.fire({
-                                title: "Hebat!",
-                                text: "Kamu menguasai Hukum Newton! Silakan lanjut ke Kuis 2.",
+                                title: "Luar Biasa!",
+                                text: "Kamu berhasil menguasai Hukum Newton! Silakan lanjut ke Kuis 2.",
                                 icon: "success",
                                 confirmButtonText: "Lanjut",
                                 confirmButtonColor: "#2ecc71",
                             });
                         }
-                    }, 1500);
+                    }, 1200);
                 }
             }
         });
@@ -2715,6 +2724,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btnResetNewton.addEventListener("click", () => {
             document.querySelectorAll(".grup-opsi").forEach((grup) => {
                 delete grup.dataset.jawaban;
+                grup.classList.remove("terkunci"); // Buka kunci pilihan
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
                     b.classList.remove(
                         "dipilih",
