@@ -46,7 +46,7 @@
             <div class="search-control">
                 <label>
                     Cari:
-                    <input type="text" class="form-input" id="searchInput" placeholder="Cari nama/kelas...">
+                    <input type="text" class="form-input" id="searchInput" placeholder="Cari nama siswa...">
                 </label>
             </div>
         </div>

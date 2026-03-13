@@ -1501,43 +1501,79 @@ body {
     margin-top: 6px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
 }
 
-.btn-cek-resultan {
-    margin-top: 10px;
-    padding: 8px 14px;
-    background-color: #f95c50;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-cek-resultan:hover {
-    background-color: #e44a3f;
-}
-
-.feedback.benar {
-    color: green;
-}
-
-.feedback.salah {
-    color: red;
-}
-
-*/ .note-box {
-    background-color: #fff9c4;
-    border-left: 5px solid #fbc02d;
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.tombol-opsi.dipilih {
-    background-color: #e3f2fd;
+.input-jawaban:focus {
     border-color: #2196f3;
-    color: #0d47a1;
+}
+
+/* Warna saat jawaban dievaluasi */
+.input-jawaban.jawaban-benar {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    font-weight: bold;
+}
+
+.input-jawaban.jawaban-salah {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+    font-weight: bold;
+}
+
+/* KELAS UNIK: Kontainer agar tombol presisi di tengah belahan kotak */
+.action-container-resultangaya {
+    display: flex;
+    gap: 20px; /* Samakan dengan gap di .container-soal */
+    margin-top: 25px;
+    width: 100%;
+}
+
+.action-left {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Tombol Cek di dorong ke dekat garis tengah */
+}
+
+.action-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start; /* Tombol Coba Lagi di dorong ke dekat garis tengah */
+}
+
+/* KELAS UNIK: Tombol Cek Jawaban Resultan Gaya */
+.btn-cek-resultangaya {
+    padding: 8px 16px;
+    background: #f95c50;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-cek-resultangaya:hover {
+    background: #e44a3f;
+    transform: translateY(-2px);
+}
+
+/* KELAS UNIK: Tombol Coba Lagi Resultan Gaya */
+.btn-reset-resultangaya {
+    padding: 8px 16px;
+    background: #6c757d;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-reset-resultangaya:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
 }
 
 /* Pengertian Gaya */
@@ -1578,6 +1614,12 @@ body {
     border-color: #2196f3;
 }
 
+/* Tambahan CSS: Saat opsi dipilih namun belum dikirim */
+.tombol-opsi.opsi-terpilih {
+    border: 2px solid #3b82f6 !important;
+    background-color: #eff6ff !important;
+}
+
 .tombol-opsi.jawaban-benar {
     background-color: #d4edda;
     border-color: #28a745;
@@ -1592,9 +1634,48 @@ body {
     cursor: default;
 }
 
-.teks-respon {
-    margin-top: 5px;
-    min-height: 0;
+/* KELAS UNIK: Kontainer untuk tombol Cek dan Coba Lagi */
+.action-container-pengertiangaya {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* KELAS UNIK: Tombol Cek Jawaban */
+.btn-cek-pengertiangaya {
+    padding: 8px 16px;
+    background: #f95c50;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-cek-pengertiangaya:hover {
+    background: #e44a3f;
+    transform: translateY(-2px);
+}
+
+/* KELAS UNIK: Tombol Coba Lagi */
+.btn-reset-pengertiangaya {
+    padding: 8px 16px;
+    background: #6c757d;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-reset-pengertiangaya:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Macam - Macam Gaya */
@@ -1658,6 +1739,57 @@ body {
 
 .jg-card ul li {
     margin-bottom: 5px;
+}
+
+/* KELAS UNIK: Kontainer tombol aksi untuk Macam-Macam Gaya */
+.action-container-macamgaya {
+    display: flex;
+    justify-content: center; /* Dipusatkan */
+    gap: 15px; 
+    margin-top: 15px; /* Margin dikurangi agar jarak tombol ke kartu lebih dekat */
+    width: 100%;
+}
+
+/* KELAS UNIK: Tombol Cek Jawaban Macam-Macam Gaya */
+.btn-cek-macamgaya {
+    padding: 8px 16px;
+    background: #f95c50;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-cek-macamgaya:hover {
+    background: #e44a3f;
+    transform: translateY(-2px);
+}
+
+/* KELAS UNIK: Tombol Coba Lagi Macam-Macam Gaya */
+.btn-reset-macamgaya {
+    padding: 8px 16px;
+    background: #6c757d;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-reset-macamgaya:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Kelas Warna untuk Fallback Modal */
+.hasil-benar {
+    color: #28a745; /* Hijau */
+    font-weight: bold;
+}
+.hasil-salah {
+    color: #dc3545; /* Merah */
+    font-weight: bold;
 }
 
 /* INI MERUPAKAN FILE HUKUM NEWTON */

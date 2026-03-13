@@ -124,51 +124,54 @@
         </p>
         <ul>
           <li>Baca setiap soal dengan teliti.</li>
-          <li>Pilih salah satu jawaban yang menurutmu paling tepat dengan mengkliknya.</li>
-          <li>Jika jawabanmu benar, tombol akan berubah warna menjadi hijau.</li>
-          <li>Jika jawabanmu salah, tombol akan berubah merah.</li>
+          <li>Pilih salah satu jawaban yang menurutmu paling tepat.</li>
+          <li>Pastikan menjawab semua soal, lalu klik tombol <b>Cek Jawaban</b>.</li>
+          <li>Jawaban yang benar akan berwarna hijau, dan yang salah berwarna merah.</li>
+          <li>Jika ada jawaban yang salah, tekan <b>Coba Lagi</b> untuk mengulang kuis.</li>
         </ul>
       </div>
 
       <div class="kotak-kuis-gaya">
         <p class="teks-soal">1. Apa yang dimaksud dengan gaya dalam ilmu fisika?</p>
         <div class="grup-opsi">
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">A. Energi yang membuat benda menjadi panas</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'benar')">B. Tarikan atau dorongan yang menyebabkan benda bergerak</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">C. Kemampuan benda untuk diam selamanya</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Energi yang membuat benda menjadi panas</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">B. Tarikan atau dorongan yang menyebabkan benda bergerak</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">C. Kemampuan benda untuk diam selamanya</button>
         </div>
-        <p class="teks-respon"></p>
       </div>
 
       <div class="kotak-kuis-gaya">
         <p class="teks-soal">2. Saat kamu bermain tanah liat atau plastisin lalu menekannya menjadi bentuk pipih, gaya yang kamu berikan menyebabkan...</p>
         <div class="grup-opsi">
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">A. Benda berubah arah</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'benar')">B. Benda berubah bentuk</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">C. Benda berubah kecepatan</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Benda berubah arah</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">B. Benda berubah bentuk</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">C. Benda berubah kecepatan</button>
         </div>
-        <p class="teks-respon"></p>
       </div>
 
       <div class="kotak-kuis-gaya">
         <p class="teks-soal">3. Kiper menepis bola yang ditendang lawan sehingga bola tidak masuk ke gawang melainkan melenceng ke samping. Peristiwa ini menunjukkan gaya dapat...</p>
         <div class="grup-opsi">
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'benar')">A. Mengubah arah gerak benda</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">B. Mengubah bentuk benda</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">C. Menambah massa benda</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">A. Mengubah arah gerak benda</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">B. Mengubah bentuk benda</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">C. Menambah massa benda</button>
         </div>
-        <p class="teks-respon"></p>
       </div>
 
       <div class="kotak-kuis-gaya">
         <p class="teks-soal">4. Ayah menginjak rem mobil saat mendekati lampu merah. Akibat gaya gesek rem tersebut, mobil mengalami...</p>
         <div class="grup-opsi">
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">A. Perubahan bentuk</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'salah')">B. Perubahan arah</button>
-          <button class="tombol-opsi" onclick="cekJawaban(this, 'benar')">C. Perubahan kecepatan (menjadi lambat)</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Perubahan bentuk</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">B. Perubahan arah</button>
+          <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">C. Perubahan kecepatan (menjadi lambat)</button>
         </div>
-        <p class="teks-respon"></p>
       </div>
+      
+      <div class="action-container-pengertiangaya">
+          <button type="button" class="btn-cek-pengertiangaya" id="btn-submit-pengertiangaya">Cek Jawaban</button>
+          <button type="button" class="btn-reset-pengertiangaya" id="btn-retry-pengertiangaya">Coba Lagi</button>
+      </div>
+
     </div>
 
   </div>

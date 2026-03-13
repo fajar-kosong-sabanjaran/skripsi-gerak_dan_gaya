@@ -153,7 +153,8 @@
                         <li>Perhatikan arah gaya pada gambar dan cerita di setiap latihan.</li>
                         <li>Hitung resultan gaya: jumlahkan jika searah, kurangkan jika berlawanan.</li>
                         <li>Isikan jawabanmu berupa angka saja pada kolom yang tersedia (contoh: 40).</li>
-                        <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu.</li>
+                        <li>Pastikan kamu mengisi semua jawaban, lalu tekan tombol <b>Cek Jawaban</b>.</li>
+                        <li>Jika masih ada jawaban yang salah, gunakan tombol <b>Coba Lagi</b> untuk mengulang.</li>
                     </ul>
                 </div>
 
@@ -173,22 +174,16 @@
                         </figure>
                         <div class="box-jawaban">
                             <span class="label-penyelesaian">Penyelesaian (Isikan jawabanmu):</span>
-
                             <label>Resultan Gaya (N):</label>
                             <input type="text" id="jawaban1" class="input-jawaban"
                                 placeholder="Masukkan hasil resultan">
-
-                            <button class="btn-cek-resultan" onclick="cekJawabanResultan(1)">Cek Jawaban</button>
-
-                            <p id="feedback1" class="feedback"></p>
                         </div>
-
                     </div>
 
                     <div class="box-soal">
                         <span class="judul-soal">Latihan 2</span>
                         <p>
-                            Fajar dan Fadhil memberi gaya yang sama besar dengan arah yang berlawanan.
+                            Fajar dan Fadhil memberi gaya yang sama besar yaitu 30 N dengan arah yang berlawanan.
                             Berapakah gaya yang diterima meja?
                         </p>
 
@@ -198,18 +193,24 @@
                         </figure>
                         <div class="box-jawaban">
                             <span class="label-penyelesaian">Penyelesaian (Isikan jawabanmu):</span>
-
                             <label>Resultan Gaya (N):</label>
                             <input type="text" id="jawaban2" class="input-jawaban"
                                 placeholder="Masukkan hasil resultan">
-
-                            <button class="btn-cek-resultan" onclick="cekJawabanResultan(2)">Cek Jawaban</button>
-
-                            <p id="feedback2" class="feedback"></p>
                         </div>
                     </div>
 
                 </div>
+
+                <div class="action-container-resultangaya">
+                    <div class="action-left">
+                        <button type="button" class="btn-cek-resultangaya" id="btn-submit-resultangaya">Cek
+                            Jawaban</button>
+                    </div>
+                    <div class="action-right">
+                        <button type="button" class="btn-reset-resultangaya" id="btn-retry-resultangaya">Coba Lagi</button>
+                    </div>
+                </div>
+
             </div>
 
         </div>

@@ -2047,9 +2047,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    let answeredCount = 0;
-    const totalQuestions = 4;
-
     // =========================================================================
     // 1. SISTEM PENGUNCIAN (LOCKING SYSTEM DENGAN DATABASE)
     // =========================================================================
@@ -2081,70 +2078,159 @@ document.addEventListener("DOMContentLoaded", function () {
     checkAllLocks();
 
     // =========================================================================
-    // 2. LOGIKA KUIS PILIHAN GANDA (KUIS KILAT GAYA)
+    // 2. LOGIKA KUIS PILIHAN GANDA: PILIH, KIRIM, DAN COBA LAGI
     // =========================================================================
-    window.cekJawaban = function (tombol, status) {
+
+    // Fungsi saat opsi diklik (hanya menandai, belum mengecek benar/salah)
+    window.pilihOpsi = function (tombol, status) {
         const grupTombol = tombol.parentElement;
+
+        // Jika kuis sudah dikirim (terkunci), abaikan klik
+        if (grupTombol.getAttribute("data-locked") === "true") return;
+
+        // Bersihkan class 'opsi-terpilih' dan data-status dari semua tombol di grup ini
         const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
-        const respon = grupTombol.nextElementSibling;
-
-        if (grupTombol.getAttribute("data-answered") === "true") return;
-
         semuaTombol.forEach((btn) => {
-            btn.disabled = true;
-            btn.style.pointerEvents = "none";
+            btn.classList.remove("opsi-terpilih");
+            btn.removeAttribute("data-status");
         });
 
-        grupTombol.setAttribute("data-answered", "true");
-        answeredCount++;
+        // Tandai tombol yang baru diklik
+        tombol.classList.add("opsi-terpilih");
+        tombol.setAttribute("data-status", status); // Simpan status 'benar' atau 'salah'
+        grupTombol.setAttribute("data-terjawab", "true");
+    };
 
-        if (status === "benar") {
-            tombol.classList.add("jawaban-benar");
-            respon.innerHTML = "✅ Benar! Bagus sekali.";
-            respon.style.color = "#28a745";
-        } else {
-            tombol.classList.add("jawaban-salah");
-            respon.innerHTML =
-                "❌ Kurang tepat. Jawaban yang benar ditandai hijau.";
-            respon.style.color = "#dc3545";
+    // Fungsi tombol Kirim Jawaban
+    const btnSubmitGaya = document.getElementById("btn-submit-pengertiangaya");
+    if (btnSubmitGaya) {
+        btnSubmitGaya.addEventListener("click", function () {
+            const semuaGrup = document.querySelectorAll(".grup-opsi");
+            const totalQuestions = 4;
+            let terjawab = 0;
+            let correctCount = 0;
 
-            semuaTombol.forEach((btn) => {
-                if (btn.getAttribute("onclick").includes("'benar'")) {
-                    btn.classList.add("jawaban-benar");
+            // Hitung berapa soal yang sudah dipilih
+            semuaGrup.forEach((grup) => {
+                if (grup.getAttribute("data-terjawab") === "true") {
+                    terjawab++;
                 }
             });
-        }
 
-        // Jika semua soal sudah dijawab, buka tombol Selanjutnya & simpan ke DB
-        if (answeredCount === totalQuestions) {
-            // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
-            window.progresSiswa = window.progresSiswa || [];
-
-            if (!window.progresSiswa.includes("pengertiangaya_completed")) {
-                window.progresSiswa.push("pengertiangaya_completed");
+            // Cegah pengiriman jika belum dijawab semua
+            if (terjawab < totalQuestions) {
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Belum Lengkap",
+                        text: "Silakan pilih jawaban untuk semua soal terlebih dahulu!",
+                        confirmButtonColor: "#f95c50",
+                    });
+                } else {
+                    alert("Pilih jawaban untuk semua soal terlebih dahulu!");
+                }
+                return;
             }
 
-            // Panggil fungsi Global
-            if (window.simpanProgresKeDatabase) {
-                window.simpanProgresKeDatabase("pengertiangaya_completed");
-            }
+            // Jika semua sudah dijawab, lakukan evaluasi
+            semuaGrup.forEach((grup) => {
+                grup.setAttribute("data-locked", "true"); // Kunci kuis
 
-            const btnNext = document.getElementById("btn-next-materi");
-            if (btnNext) {
-                btnNext.classList.remove("locked");
+                const opsiTerpilih = grup.querySelector(
+                    ".tombol-opsi.opsi-terpilih",
+                );
+                const semuaTombol = grup.querySelectorAll(".tombol-opsi");
+
+                // Matikan fungsi klik agar tidak bisa diubah lagi
+                semuaTombol.forEach(
+                    (btn) => (btn.style.pointerEvents = "none"),
+                );
+
+                if (opsiTerpilih) {
+                    const status = opsiTerpilih.getAttribute("data-status");
+
+                    // Ganti efek biru (opsi-terpilih) menjadi merah/hijau sesuai jawaban
+                    opsiTerpilih.classList.remove("opsi-terpilih");
+
+                    if (status === "benar") {
+                        opsiTerpilih.classList.add("jawaban-benar");
+                        correctCount++;
+                    } else {
+                        opsiTerpilih.classList.add("jawaban-salah");
+                    }
+                }
+            });
+
+            // Penentuan Lulus atau Gagal
+            if (correctCount === totalQuestions) {
+                // Berhasil: Simpan DB & Buka Materi
+                window.progresSiswa = window.progresSiswa || [];
+                if (!window.progresSiswa.includes("pengertiangaya_completed")) {
+                    window.progresSiswa.push("pengertiangaya_completed");
+                }
+                if (window.simpanProgresKeDatabase) {
+                    window.simpanProgresKeDatabase("pengertiangaya_completed");
+                }
+
+                const btnNext = document.getElementById("btn-next-materi");
+                if (btnNext) btnNext.classList.remove("locked");
+
+                // [REVISI]: Buka juga gembok di Sidebar secara langsung
+                if (window.unlockSidebar) {
+                    window.unlockSidebar("nav-resultan-gaya");
+                }
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
-                        title: "Materi Selesai!",
-                        text: "Hebat! Kamu telah mencoba semua soal. Tombol materi selanjutnya telah terbuka.",
+                        title: "Luar Biasa!",
+                        text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
                         icon: "success",
                         confirmButtonText: "Lanjut",
                         confirmButtonColor: "#2ecc71",
                     });
                 }
+            } else {
+                // Ada yang salah
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        title: "Masih Ada yang Kurang Tepat",
+                        text: `Kamu baru benar ${correctCount} dari ${totalQuestions}. Silakan klik 'Coba Lagi' untuk memperbaiki.`,
+                        icon: "error",
+                        confirmButtonText: "Tutup",
+                        confirmButtonColor: "#f95c50",
+                    });
+                }
             }
-        }
-    };
+        });
+    }
+
+    // Fungsi tombol Coba Lagi
+    const btnRetryGaya = document.getElementById("btn-retry-pengertiangaya");
+    if (btnRetryGaya) {
+        btnRetryGaya.addEventListener("click", function () {
+            const semuaKotak = document.querySelectorAll(".kotak-kuis-gaya");
+
+            semuaKotak.forEach((kotak) => {
+                const grupTombol = kotak.querySelector(".grup-opsi");
+                const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
+
+                // Hapus penguncian dan status terjawab
+                grupTombol.removeAttribute("data-terjawab");
+                grupTombol.removeAttribute("data-locked");
+
+                // Kembalikan semua tombol ke kondisi netral
+                semuaTombol.forEach((btn) => {
+                    btn.classList.remove(
+                        "opsi-terpilih",
+                        "jawaban-benar",
+                        "jawaban-salah",
+                    );
+                    btn.removeAttribute("data-status");
+                    btn.style.pointerEvents = "auto";
+                });
+            });
+        });
+    }
 });
 
 // FILE: RESULTAN GAYA
@@ -2163,88 +2249,128 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================================================================
-    // 2. VARIABEL PELACAK STATUS JAWABAN (Soal 1 & 2)
+    // 2. LOGIKA KUIS RESULTAN GAYA: ISI SEMUA, CEK JAWABAN, COBA LAGI
     // =========================================================================
-    let statusResultan = {
-        1: false,
-        2: false,
+    const btnSubmitResultan = document.getElementById("btn-submit-resultangaya");
+    const btnRetryResultan = document.getElementById("btn-retry-resultangaya");
+
+    // Kunci Jawaban
+    const kunciJawaban = {
+        1: 40, // Latihan 1: 15 + 25
+        2: 0,  // Latihan 2: 35 + (-35)
     };
 
-    // =========================================================================
-    // 3. FUNGSI CEK JAWABAN
-    // =========================================================================
-    window.cekJawabanResultan = function (no) {
-        const kunciJawaban = {
-            1: 40, // Latihan 1: 15 + 25
-            2: 0, // Latihan 2: 35 + (-35)
-        };
+    if (btnSubmitResultan) {
+        btnSubmitResultan.addEventListener("click", function () {
+            const input1 = document.getElementById("jawaban1");
+            const input2 = document.getElementById("jawaban2");
 
-        const inputEl = document.getElementById("jawaban" + no);
-        const feedbackEl = document.getElementById("feedback" + no);
+            if (!input1 || !input2) return;
 
-        if (!inputEl || !feedbackEl) return;
+            const val1 = input1.value.trim();
+            const val2 = input2.value.trim();
 
-        const nilaiInput = inputEl.value.trim();
+            // Cek apakah ada yang masih kosong
+            if (val1 === "" || val2 === "") {
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Belum Lengkap",
+                        text: "Silakan isi semua jawaban terlebih dahulu!",
+                        confirmButtonColor: "#f95c50",
+                    });
+                } else {
+                    alert("Isi semua jawaban terlebih dahulu!");
+                }
+                return;
+            }
 
-        if (nilaiInput === "") {
-            feedbackEl.textContent = "⚠️ Masukkan jawaban terlebih dahulu.";
-            feedbackEl.className = "feedback salah";
-            feedbackEl.style.color = "#d97706";
-            return;
-        }
+            // Kunci input agar tidak bisa diubah
+            input1.readOnly = true;
+            input2.readOnly = true;
 
-        if (Number(nilaiInput) === kunciJawaban[no]) {
-            feedbackEl.textContent = "✅ Jawaban benar!";
-            feedbackEl.className = "feedback benar";
-            feedbackEl.style.color = "green";
+            let correctCount = 0;
 
-            statusResultan[no] = true;
+            // Evaluasi Latihan 1
+            if (Number(val1) === kunciJawaban[1]) {
+                input1.classList.add("jawaban-benar");
+                correctCount++;
+            } else {
+                input1.classList.add("jawaban-salah");
+            }
 
-            // Jika Soal 1 dan Soal 2 sudah benar semua
-            if (statusResultan[1] && statusResultan[2]) {
-                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
+            // Evaluasi Latihan 2
+            if (Number(val2) === kunciJawaban[2]) {
+                input2.classList.add("jawaban-benar");
+                correctCount++;
+            } else {
+                input2.classList.add("jawaban-salah");
+            }
+
+            // Cek kelulusan
+            if (correctCount === 2) {
+                // Berhasil
                 window.progresSiswa = window.progresSiswa || [];
-
                 if (!window.progresSiswa.includes("resultangaya_completed")) {
                     window.progresSiswa.push("resultangaya_completed");
                 }
 
-                // Panggil fungsi Global
                 if (window.simpanProgresKeDatabase) {
                     window.simpanProgresKeDatabase("resultangaya_completed");
                 }
 
-                // Buka kunci secara manual via Helper Global
+                // Buka materi selanjutnya dan sidebar
+                const btnNext = document.getElementById("btn-next-materi");
+                if (btnNext) btnNext.classList.remove("locked");
+
                 if (window.unlockSidebar) {
                     window.unlockSidebar("nav-macam-gaya");
                 }
-                if (window.unlockNextButtonIfPage) {
-                    window.unlockNextButtonIfPage("resultangaya");
+
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        title: "Luar Biasa!",
+                        text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
+                        icon: "success",
+                        confirmButtonText: "Lanjut",
+                        confirmButtonColor: "#2ecc71",
+                    });
                 }
-
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) {
-                    btnNext.classList.remove("locked");
-
-                    if (typeof Swal !== "undefined") {
-                        Swal.fire({
-                            title: "Luar Biasa!",
-                            text: "Semua jawaban benar! Materi selanjutnya telah terbuka.",
-                            icon: "success",
-                            confirmButtonText: "Lanjut",
-                            confirmButtonColor: "#2ecc71",
-                        });
-                    }
+            } else {
+                // Ada yang salah
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        title: "Masih Ada yang Kurang Tepat",
+                        text: "Silakan klik 'Coba Lagi' untuk memperbaiki jawabanmu yang salah.",
+                        icon: "error",
+                        confirmButtonText: "Tutup",
+                        confirmButtonColor: "#f95c50",
+                    });
                 }
             }
-        } else {
-            feedbackEl.textContent = "❌ Jawaban salah, coba lagi.";
-            feedbackEl.className = "feedback salah";
-            feedbackEl.style.color = "red";
+        });
+    }
 
-            statusResultan[no] = false;
-        }
-    };
+    // =========================================================================
+    // 3. FUNGSI TOMBOL COBA LAGI (RESET KUIS RESULTAN GAYA)
+    // =========================================================================
+    if (btnRetryResultan) {
+        btnRetryResultan.addEventListener("click", function () {
+            const input1 = document.getElementById("jawaban1");
+            const input2 = document.getElementById("jawaban2");
+
+            if (input1) {
+                input1.readOnly = false; // Buka kunci input
+                input1.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
+                input1.value = ""; // Mengosongkan jawaban
+            }
+            if (input2) {
+                input2.readOnly = false; // Buka kunci input
+                input2.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
+                input2.value = ""; // Mengosongkan jawaban
+            }
+        });
+    }
 });
 
 // FILE: MACAM - MACAM GAYA (LOGIKA DRAG & DROP)
@@ -2278,6 +2404,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const containerMacam = document.getElementById("drag-container-macam");
     const poolMacam = document.getElementById("card-pool-macam");
     const btnCekMacam = document.getElementById("btn-cek-macam");
+    const btnRetryMacam = document.getElementById("btn-retry-macam"); // Tambahan tombol Coba Lagi
 
     if (containerMacam && poolMacam && btnCekMacam) {
         const zones = document.querySelectorAll(
@@ -2378,6 +2505,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     btnNext.classList.remove("locked");
                 }
 
+                // Opsional: Gunakan SweetAlert jika lebih disukai daripada Modal bawaan
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -2388,8 +2516,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             } else {
-                // JIKA BELUM BENAR SEMUA -> TAMPILKAN MODAL HASIL LATIHAN
-                if (modalText && modal) {
+                // JIKA BELUM BENAR SEMUA -> TAMPILKAN POP UP (SWEETALERT/MODAL)
+                if (typeof Swal !== "undefined") {
+                    // Dikembalikan seperti aslinya dengan tag <br>, namun diberi warna
+                    Swal.fire({
+                        title: "Hasil Latihan",
+                        html: `<b style="color: #28a745;">Benar: ${benar}</b> <br> <b style="color: #dc3545;">Salah: ${salah}</b> <br><br> Silakan perbaiki jawaban yang salah.`,
+                        icon: "info",
+                        confirmButtonText: "Tutup",
+                        confirmButtonColor: "#f95c50",
+                    });
+                } else if (modalText && modal) {
                     modalText.innerHTML = `
                   <span class="hasil-benar">✔ Benar : ${benar}</span><br>
                   <span class="hasil-salah">✖ Salah : ${salah}</span>
@@ -2399,7 +2536,21 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Tutup Modal Latihan
+        // =========================================================================
+        // 4. LOGIKA TOMBOL COBA LAGI (RESET DRAG & DROP)
+        // =========================================================================
+        if (btnRetryMacam) {
+            btnRetryMacam.addEventListener("click", function () {
+                // Pindahkan kembali semua kartu ke pool awal
+                cards.forEach((card) => {
+                    poolMacam.appendChild(card);
+                    // Hilangkan indikator warna
+                    card.classList.remove("correct", "incorrect");
+                });
+            });
+        }
+
+        // Tutup Modal Latihan (jika masih dipakai)
         if (closeModal) {
             closeModal.addEventListener("click", function () {
                 modal.style.display = "none";
@@ -2871,9 +3022,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Konversi ke skala 100
             let score100 = Math.round((score / questions.length) * 100);
-            
+
             // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
-            const nilaiKkm = window.KKM_KUIS || 70; 
+            const nilaiKkm = window.KKM_KUIS || 70;
             const tuntas = score100 >= nilaiKkm;
 
             // Kirim ke database (Kuis 1)

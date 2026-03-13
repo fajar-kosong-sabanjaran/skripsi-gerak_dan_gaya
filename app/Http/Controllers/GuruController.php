@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Kelas;
-use App\Models\Nilai; 
-use App\Models\RiwayatNilai; 
+use App\Models\Nilai;
+use App\Models\RiwayatNilai;
 use App\Models\PengaturanKkm;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule; // [REVISI] Tambahkan ini untuk custom rule validasi
 
 class GuruController extends Controller
 {
@@ -87,13 +88,22 @@ class GuruController extends Controller
     {
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            'nama.unique' => 'Nama kelas sudah digunakan, silakan pilih nama lain.',
+            // [REVISI] Ubah pesan error agar lebih jelas
+            'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan, silakan pilih nama atau tahun lain.',
             'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'tahun.max' => 'Tahun tidak boleh lebih dari 255 karakter.'
         ];
 
+        // [REVISI] Mengubah validasi unique agar mengecek kombinasi nama dan tahun
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:50|unique:kelas,nama',
+            'nama' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('kelas', 'nama')->where(function ($query) use ($request) {
+                    return $query->where('tahun', $request->tahun);
+                })
+            ],
             'tahun' => 'nullable|string|max:255'
         ], $messages);
 
@@ -106,7 +116,7 @@ class GuruController extends Controller
 
         $kelas = new Kelas();
         $kelas->nama = $request->nama;
-        $kelas->tahun = $request->tahun; 
+        $kelas->tahun = $request->tahun;
         $kelas->save();
 
         return response()->json(['success' => true]);
@@ -120,13 +130,22 @@ class GuruController extends Controller
 
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            'nama.unique' => 'Nama kelas sudah digunakan, silakan pilih nama lain.',
+            // [REVISI] Ubah pesan error
+            'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan, silakan pilih nama atau tahun lain.',
             'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'tahun.max' => 'Tahun tidak boleh lebih dari 255 karakter.'
         ];
 
+        // [REVISI] Mengubah validasi unique dengan kombinasi nama dan tahun, dan ignore ID kelas saat ini
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:50|unique:kelas,nama,' . $id,
+            'nama' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('kelas', 'nama')->ignore($id)->where(function ($query) use ($request) {
+                    return $query->where('tahun', $request->tahun);
+                })
+            ],
             'tahun' => 'nullable|string|max:255'
         ], $messages);
 
@@ -138,7 +157,7 @@ class GuruController extends Controller
         }
 
         $kelas->nama = $request->nama;
-        $kelas->tahun = $request->tahun; 
+        $kelas->tahun = $request->tahun;
         $kelas->save();
 
         return response()->json(['success' => true]);
@@ -210,12 +229,15 @@ class GuruController extends Controller
 
         // Hitung ulang status kelulusan berdasarkan KKM dinamis terbaru
         $pengaturan = PengaturanKkm::first();
-        $kkm_sekarang = 70; 
+        $kkm_sekarang = 70;
 
         if ($pengaturan) {
-            if ($jenis_kuis === 'Kuis 1') $kkm_sekarang = $pengaturan->kkm_kuis1;
-            elseif ($jenis_kuis === 'Kuis 2') $kkm_sekarang = $pengaturan->kkm_kuis2;
-            elseif ($jenis_kuis === 'Evaluasi') $kkm_sekarang = $pengaturan->kkm_evaluasi;
+            if ($jenis_kuis === 'Kuis 1')
+                $kkm_sekarang = $pengaturan->kkm_kuis1;
+            elseif ($jenis_kuis === 'Kuis 2')
+                $kkm_sekarang = $pengaturan->kkm_kuis2;
+            elseif ($jenis_kuis === 'Evaluasi')
+                $kkm_sekarang = $pengaturan->kkm_evaluasi;
         }
 
         foreach ($riwayat as $r) {
@@ -248,7 +270,7 @@ class GuruController extends Controller
         ]);
 
         $kkm = PengaturanKkm::first();
-        
+
         if ($kkm) {
             $kkm->update([
                 'kkm_kuis1' => $request->kkm_kuis1,
@@ -256,7 +278,7 @@ class GuruController extends Controller
                 'kkm_evaluasi' => $request->kkm_evaluasi,
             ]);
         } else {
-             PengaturanKkm::create($request->only(['kkm_kuis1', 'kkm_kuis2', 'kkm_evaluasi']));
+            PengaturanKkm::create($request->only(['kkm_kuis1', 'kkm_kuis2', 'kkm_evaluasi']));
         }
 
         return redirect()->back()->with('success', 'Nilai KKM berhasil diperbarui!');

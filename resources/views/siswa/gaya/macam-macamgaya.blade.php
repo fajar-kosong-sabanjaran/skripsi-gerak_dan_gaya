@@ -112,8 +112,9 @@
           <li>Klik dan tahan (drag) kartu pernyataan yang ada di bawah.</li>
           <li>Geser kartu tersebut lalu lepaskan ke dalam kolom jenis gaya yang sesuai.</li>
           <li>Pastikan setiap kartu masuk ke dalam kotak yang benar.</li>
-          <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu.</li>
-          <li><b>Cocokkan semua kartu dengan benar untuk membuka materi selanjutnya!</b></li>
+          <li>Tekan tombol <b>Cek Jawaban</b> untuk melihat hasil kerjamu.</li>
+          <li>Gunakan tombol <b>Coba Lagi</b> jika kamu ingin mengulang permainan.</li>
+          <li>Cocokkan semua kartu dengan benar untuk membuka materi selanjutnya!</li>
         </ul>
       </div>
 
@@ -156,16 +157,18 @@
         </div>
       </div>
 
-      <button type="button" class="btn-check" id="btn-cek-macam">
-        Cek Jawaban
-      </button>
+      <div class="action-container-macamgaya">
+          <button type="button" class="btn-cek-macamgaya" id="btn-cek-macam">Cek Jawaban</button>
+          <button type="button" class="btn-reset-macamgaya" id="btn-retry-macam">Coba Lagi</button>
+      </div>
+
     </div>
 
     <div id="modal-macam" class="modal">
       <div class="modal-content">
-        <h4>Hasil Latihan</h4>
+        <h4 style="margin-bottom: 5px;">Hasil Latihan</h4>
         <p id="modal-text-macam"></p>
-        <button type="button" id="close-modal-macam" class="btn-check">Tutup</button>
+        <button type="button" id="close-modal-macam" class="btn-cek-macamgaya">Tutup</button>
       </div>
     </div>
 
