@@ -67,6 +67,14 @@
         align-items: center;
     }
 
+    /* Penanda Menu Aktif */
+    .nav-links > a.active {
+        color: var(--primary) !important;
+    }
+    .nav-links > a.active::after {
+        width: 100% !important;
+    }
+
     .nav-links a {
         margin-left: 30px;
         color: var(--text);
@@ -271,15 +279,11 @@
         </div>
         <div class="nav-links">
             
-            @auth
-                {{-- <a href="{{ url('siswa/gerak/pengantargerak') }}">yap</a>
-                <a href="{{ url('siswa/gaya/pengantargaya') }}">yap</a>
-                <a href="{{ url('siswa/gerak/kuis1') }}">yap</a> --}}
-            @else
-                {{-- <a href="javascript:void(0);" onclick="showLoginAlert()">yap</a>
-                <a href="javascript:void(0);" onclick="showLoginAlert()">yap</a>
-                <a href="javascript:void(0);" onclick="showLoginAlert()">yap</a> --}}
-            @endauth
+            <!-- Link navigasi diubah mengarah ke URL -->
+            <a href="{{ url('/') }}" class="active">Beranda</a>
+            <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
+            <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
+            <a href="{{ url('/tentang') }}">Tentang</a>
 
 
             @auth

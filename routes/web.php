@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\ProgresController; // Memanggil ProgresController
+use App\Http\Controllers\ProgresController;
 use App\Http\Middleware\CekGuru;
 
 // =============================================================
@@ -13,6 +13,19 @@ use App\Http\Middleware\CekGuru;
 Route::get('/', function () {
     return view('beranda');
 })->name('home');
+
+// [REVISI] Menambahkan route untuk halaman multi-page baru
+Route::get('/daftar-materi', function () {
+    return view('daftarmateri');
+});
+
+Route::get('/petunjuk', function () {
+    return view('petunjukpenggunaan');
+});
+
+Route::get('/tentang', function () {
+    return view('tentang');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
