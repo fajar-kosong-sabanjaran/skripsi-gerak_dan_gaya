@@ -173,7 +173,7 @@
             <!-- BAB 1 -->
             <div class="materi-card" data-aos="fade-up" data-aos-delay="100">
                 <h3>Bab 1</h3>
-                <h4>Gerak Benda</h4>
+                <h4>Gerak</h4>
                 <ul>
                     <li>Pengantar Gerak</li>
                     <li>Pengertian Gerak</li>

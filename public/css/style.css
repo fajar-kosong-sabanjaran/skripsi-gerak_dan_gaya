@@ -427,6 +427,48 @@ body {
     border-color: #bbb;
 }
 
+.top-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-right: 20px;
+}
+
+.top-nav-links a {
+    color: #333;
+    font-weight: 500;
+    font-size: 15px;
+    text-decoration: none;
+    position: relative;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.top-nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #f95c50;
+    transition: width 0.3s;
+}
+
+.top-nav-links a:hover {
+    color: #f95c50;
+}
+
+.top-nav-links a:hover::after {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .top-nav-links {
+        display: none;
+    }
+}
+
 /* SAMPAI SINI BATAS FILE SISWA.blade, sisa nya css materi */
 
 /* ini css file pengertiangerak */

@@ -101,6 +101,16 @@
 
     <div class="content-area">
         <div class="top-bar">
+            
+            {{-- Menu Navigasi Utama --}}
+            <div class="top-nav-links">
+                <a href="{{ url('/') }}">Beranda</a>
+                <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
+                <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
+                <a href="{{ url('/tentang') }}">Tentang</a>
+            </div>
+
+            {{-- Bagian User Menu --}}
             <div class="user-menu-container">
                 <div class="user-greeting" onclick="toggleDropdown()">
                     Halo, {{ Auth::user()->nama_lengkap }} 👋
@@ -123,7 +133,7 @@
     </div>
 
     <script>
-        // [REVISI] Mengambil data progres dari database dan menjadikannya array di JavaScript
+        // Mengambil data progres dari database dan menjadikannya array di JavaScript
         window.progresSiswa = @json(Auth::user()->progres->pluck('kode_materi')->toArray() ?? []);
     </script>
 
