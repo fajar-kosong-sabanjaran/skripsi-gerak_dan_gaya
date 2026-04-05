@@ -104,6 +104,9 @@
             
             {{-- Menu Navigasi Utama --}}
             <div class="top-nav-links">
+                @if(Auth::check() && Auth::user()->peran === 'guru')
+                    <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
+                @endif
                 <a href="{{ url('/') }}">Beranda</a>
                 <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
                 <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
@@ -133,8 +136,28 @@
     </div>
 
     <script>
-        // Mengambil data progres dari database dan menjadikannya array di JavaScript
-        window.progresSiswa = @json(Auth::user()->progres->pluck('kode_materi')->toArray() ?? []);
+        // Mengambil data progres dari database dan menjadikannya array di JavaScript (untuk siswa)
+        // Ditambahkan pengecekan agar tidak error jika relasi progres kosong (biasanya pada Guru)
+        window.progresSiswa = @json(Auth::check() && Auth::user()->progres ? Auth::user()->progres->pluck('kode_materi')->toArray() : []);
+
+        // =====================================================================
+        // LOGIKA BYPASS KHUSUS GURU
+        // =====================================================================
+        @if(Auth::check() && Auth::user()->peran === 'guru')
+            document.addEventListener("DOMContentLoaded", function() {
+                // 1. Hapus semua class 'locked' dari sidebar maupun tombol 'Materi Selanjutnya'
+                const lockedElements = document.querySelectorAll('.locked');
+                lockedElements.forEach(function(el) {
+                    el.classList.remove('locked');
+                });
+                
+                // 2. Hapus semua icon gembok
+                const lockIcons = document.querySelectorAll('.fa-lock');
+                lockIcons.forEach(function(icon) {
+                    icon.remove();
+                });
+            });
+        @endif
     </script>
 
     <script src="{{ asset('js/script.js') }}"></script>

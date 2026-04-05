@@ -41,7 +41,6 @@
             class="menu-item {{ request()->is('guru/pengaturan-kkm*') ? 'active' : '' }}">
             <span><i class="fas fa-cog"></i> Pengaturan KKM</span>
         </a>
-
     </div>
 
     <div class="content-area" role="main">
@@ -51,13 +50,17 @@
             </div>
 
             <div class="navbar-right">
+                <div class="top-nav-links">
+                    <a href="{{ url('/') }}">Beranda</a>
+                    <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
+                    <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
+                    <a href="{{ url('/tentang') }}">Tentang</a>
+                </div>
+
                 <div class="user-dropdown-wrapper">
 
                     <div class="profile-menu" id="userMenuTrigger">
-                        <div class="profile-icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <span class="profile-name">Guru</span>
+                        Halo, {{ Auth::user()->nama_lengkap ?? 'Guru' }} 👋
                     </div>
 
                     <div class="user-dropdown-content" id="userDropdown">

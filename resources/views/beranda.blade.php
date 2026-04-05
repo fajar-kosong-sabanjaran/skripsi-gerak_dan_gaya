@@ -241,7 +241,6 @@
     .icon-2 { bottom: 5%; left: -10%; font-size: 90px; opacity: 0.2; animation: driveCar 20s linear infinite; }
     .icon-3 { top: 20%; right: 12%; font-size: 80px; animation: pushPull 2s ease-in-out infinite; }
     .icon-4 { bottom: 25%; right: 10%; font-size: 100px; transform-origin: top center; animation: pendulumSwing 3s ease-in-out infinite; }
-    /* ICON-5 TELAH DIHAPUS */
     .icon-6 { top: 80%; left: 10%; font-size: 60px; opacity: 0; animation: flyRocket 12s linear infinite; animation-delay: 2s; }
 
     /* KEYFRAMES */
@@ -249,7 +248,6 @@
     @keyframes driveCar { 0% { left: -15%; transform: scaleX(-1); } 45% { left: 110%; transform: scaleX(-1); } 50% { left: 110%; transform: scaleX(1); } 95% { left: -15%; transform: scaleX(1); } 100% { left: -15%; transform: scaleX(-1); } }
     @keyframes pushPull { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(25px); } }
     @keyframes pendulumSwing { 0% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
-    /* ANIMASI ORBIT CIRCLE (ICON-5) TELAH DIHAPUS */
     @keyframes flyRocket { 0% { transform: translate(0, 0) rotate(45deg); opacity: 0; } 10% { opacity: 0.2; } 80% { opacity: 0.2; } 100% { transform: translate(80vw, -80vh) rotate(45deg); opacity: 0; } }
 
     .hero-text { flex: 1; max-width: 650px; z-index: 2; }
@@ -279,12 +277,14 @@
         </div>
         <div class="nav-links">
             
-            <!-- Link navigasi diubah mengarah ke URL -->
+            @if(Auth::check() && Auth::user()->peran === 'guru')
+                <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
+            @endif
+
             <a href="{{ url('/') }}" class="active">Beranda</a>
             <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
             <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
             <a href="{{ url('/tentang') }}">Tentang</a>
-
 
             @auth
                 <div class="user-menu-container">

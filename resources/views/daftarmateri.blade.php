@@ -141,6 +141,11 @@
     <nav class="navbar">
         <div class="logo">⚡ GERAK & GAYA</div>
         <div class="nav-links">
+            
+            @if(Auth::check() && Auth::user()->peran === 'guru')
+                <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
+            @endif
+
             <a href="{{ url('/') }}">Beranda</a>
             <a href="{{ url('/daftar-materi') }}" class="active">Daftar Materi</a>
             <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
@@ -170,7 +175,6 @@
         
         <div class="materi-grid">
             
-            <!-- BAB 1 -->
             <div class="materi-card" data-aos="fade-up" data-aos-delay="100">
                 <h3>Bab 1</h3>
                 <h4>Gerak</h4>
@@ -184,7 +188,6 @@
                 </ul>
             </div>
             
-            <!-- BAB 2 -->
             <div class="materi-card" data-aos="fade-up" data-aos-delay="200">
                 <h3>Bab 2</h3>
                 <h4>Gaya</h4>
@@ -198,7 +201,6 @@
                 </ul>
             </div>
             
-            <!-- EVALUASI -->
             <div class="materi-card" data-aos="fade-up" data-aos-delay="300">
                 <h3>Evaluasi</h3>
                 <h4>Uji Pemahaman</h4>

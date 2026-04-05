@@ -176,41 +176,26 @@ body {
     position: relative;
 }
 
+/* ========================================= */
+/* STYLE TOMBOL PROFIL (Menyamakan dgn Siswa)*/
+/* ========================================= */
+
 .profile-menu {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    padding: 5px 15px 5px 5px;
+    font-weight: 600;
+    color: #f95c50;
     background: #fff;
-    border: 1.5px solid #f95c50;
+    padding: 8px 20px;
     border-radius: 50px;
-    box-shadow: 0 1px 3px rgba(249, 92, 80, 0.1);
-    transition: all 0.2s;
+    border: 2px solid #f95c50;
+    transition: 0.3s;
+    cursor: pointer;
+    display: block;
+    user-select: none;
+    font-family: 'Poppins', sans-serif;
 }
 
 .profile-menu:hover {
-    background-color: #fff5f5;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(249, 92, 80, 0.2);
-}
-
-.profile-icon {
-    width: 30px;
-    height: 30px;
-    background-color: #f95c50;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-}
-
-.profile-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #f95c50;
+    background: #fff5f3;
 }
 
 .user-dropdown-content {
@@ -264,6 +249,44 @@ body {
     padding: 20px;
     flex: 1;
     overflow-y: auto;
+}
+
+/* ========================================= */
+/* STYLE MENU NAVIGASI MATERI DI NAVBAR GURU */
+/* ========================================= */
+
+.top-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-right: 25px;
+}
+
+.top-nav-links a {
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.top-nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #f95c50;
+    transition: width 0.3s ease;
+}
+
+.top-nav-links a:hover::after {
+    width: 100%;
+}
+
+.top-nav-links a:hover {
+    color: #f95c50;
 }
 
 /* =======================================================================
@@ -1008,3 +1031,5 @@ td.icon-salah,
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(249, 92, 80, 0.4);
 }
+
+

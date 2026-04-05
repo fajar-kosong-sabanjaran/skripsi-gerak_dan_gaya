@@ -111,6 +111,11 @@
     <nav class="navbar">
         <div class="logo">⚡ GERAK & GAYA</div>
         <div class="nav-links">
+            
+            @if(Auth::check() && Auth::user()->peran === 'guru')
+                <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
+            @endif
+
             <a href="{{ url('/') }}">Beranda</a>
             <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
             <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
@@ -138,7 +143,6 @@
             <h2>Tentang Media Ini</h2>
         </div>
 
-        <!-- BOX INFORMASI PENGEMBANGAN -->
         <div class="info-box" data-aos="fade-up">
             <div class="info-header">
                 <span class="info-header-icon">ℹ️</span> Informasi Pengembangan
@@ -177,7 +181,6 @@
             </div>
         </div>
 
-        <!-- BOX DAFTAR PUSTAKA & ATRIBUSI -->
         <div class="info-box" data-aos="fade-up" data-aos-delay="100">
             <div class="info-header">
                 <span class="info-header-icon">📚</span> Daftar Pustaka & Atribusi

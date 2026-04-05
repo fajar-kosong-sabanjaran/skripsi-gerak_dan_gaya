@@ -416,6 +416,11 @@
     <nav class="navbar">
         <div class="logo">⚡ GERAK & GAYA</div>
         <div class="nav-links">
+            
+            @if(Auth::check() && Auth::user()->peran === 'guru')
+                <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
+            @endif
+
             <a href="{{ url('/') }}">Beranda</a>
             <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
             <a href="{{ url('/petunjuk') }}" class="active">Petunjuk Penggunaan</a>
@@ -449,7 +454,6 @@
 
         <div class="accordion-container" data-aos="fade-up" data-aos-delay="200">
 
-            <!-- ACCORDION 1: BERANDA -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <div class="title-wrapper">
@@ -469,7 +473,6 @@
                 </div>
             </div>
 
-            <!-- ACCORDION 2: DAFTAR AKUN -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <div class="title-wrapper">
@@ -479,10 +482,8 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-inner">
-                        <!-- Menambahkan Gambar Daftar Akun -->
                         <img src="{{ asset('aset/daftar akun.jpg') }}" class="step-img" alt="Cara Mendaftar Akun">
                         
-                        <!-- Menyesuaikan Teks Petunjuk -->
                         <ul class="step-list">
                             <li>Isi data diri kamu meliputi <b>Nama Lengkap</b>, <b>Email</b>, pilih <b>Kelas</b>, masukkan <b>Kata Sandi</b> dan konfirmasi ulang kata sandi tersebut.</li>
                             <li>Setelah semua data terisi dengan benar, klik tombol <b>Daftar Sekarang</b> untuk membuat akun kamu. Selanjutnya, materi bisa kamu akses dan pelajari.</li>
@@ -491,7 +492,6 @@
                 </div>
             </div>
 
-            <!-- ACCORDION 3: HALAMAN MATERI (DIREVISI SESUAI GAMBAR 1) -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <div class="title-wrapper">
@@ -501,7 +501,6 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-inner">
-                        <!-- Menambahkan Gambar Halaman Materi -->
                         <img src="{{ asset('aset/halaman materi.jpg') }}" class="step-img" alt="Halaman Materi Belajar">
                         
                         <ul class="step-list">
@@ -513,7 +512,6 @@
                 </div>
             </div>
 
-            <!-- ACCORDION 4: KUIS & EVALUASI -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <div class="title-wrapper">
@@ -532,7 +530,6 @@
                 </div>
             </div>
 
-            <!-- ACCORDION 5: HUBUNGI KAMI -->
             <div class="accordion-item">
                 <button class="accordion-header">
                     <div class="title-wrapper">
