@@ -64,7 +64,7 @@ class AuthController extends Controller
     }
 
     // =========================================================================
-    // PROSES LOGIN (REVISI FINAL: MEMPERTAHANKAN INPUT DROPWDOWN)
+    // PROSES LOGIN (REVISI FINAL: HANYA EMAIL & PASSWORD)
     // =========================================================================
     public function login(Request $request)
     {
@@ -72,11 +72,9 @@ class AuthController extends Controller
         $request->validate([
             'email'       => 'required|email',
             'password'    => 'required',
-            'peran_login' => 'required|in:siswa,guru' 
         ], [
             'email.required'       => 'Email wajib diisi.',
             'password.required'    => 'Kata sandi wajib diisi.',
-            'peran_login.required' => 'Silakan pilih peran (Siswa/Guru).'
         ]);
 
         // 2. Cek Email di Database
@@ -86,49 +84,21 @@ class AuthController extends Controller
         if (!$user) {
             return back()->withErrors([
                 'email' => 'Email tidak terdaftar dalam sistem.',
-            ])->withInput($request->except('password')); // Kembalikan input agar dropdown tidak reset
+            ])->withInput($request->except('password')); 
         }
 
-        // 3. CEK KECOCOKAN PERAN (PENTING!)
-        $peranInput = $request->peran_login; 
-        
-        if ($user->peran !== $peranInput) {
-            $pesanError = "Email ini terdaftar sebagai " . ucfirst($user->peran) . ", bukan " . ucfirst($peranInput) . ". Silakan ganti pilihan 'Masuk Sebagai'.";
-            
-            return back()->withErrors([
-                'email' => $pesanError,
-            ])->withInput($request->except('password')); // Kembalikan input agar dropdown tidak reset
-        }
-
-        // 4. Cek Password
+        // 3. Cek Password
         if (!Hash::check($request->password, $user->password)) {
             return back()->withErrors([
                 'password' => 'Kata sandi yang Anda masukkan salah.',
-            ])->withInput($request->except('password')); // Kembalikan input agar dropdown tidak reset
+            ])->withInput($request->except('password')); 
         }
 
-        // 5. Validasi KHUSUS SISWA
-        if ($user->peran === 'siswa') {
-            $inputKelasId = $request->kelas_id_login; 
-
-            if (!$inputKelasId) {
-                return back()->withErrors([
-                    'kelas_id_login' => 'Akun ini adalah akun Siswa. Silakan pilih kelas Anda.',
-                ])->withInput($request->except('password'));
-            }
-
-            if ((int)$inputKelasId !== (int)$user->kelas_id) {
-                $kelasAsli = $user->kelas->nama ?? 'Lainnya';
-                return back()->withErrors([
-                    'kelas_id_login' => "Kelas salah! Data Anda terdaftar di kelas $kelasAsli.",
-                ])->withInput($request->except('password'));
-            }
-        }
-
-        // 6. Login Sukses
+        // 4. Login Sukses
         Auth::login($user);
         $request->session()->regenerate();
 
+        // Arahkan berdasarkan peran yang ada di database
         if ($user->peran === 'guru') {
             return redirect()->route('guru.datasiswa.index');
         }

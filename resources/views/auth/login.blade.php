@@ -189,34 +189,8 @@
                 @csrf
                 
                 <div class="form-group">
-                    <label>Masuk Sebagai</label>
-                    <select id="roleSelect" name="peran_login" class="form-control" onchange="toggleForm()">
-                        <option value="siswa" {{ old('peran_login') == 'siswa' ? 'selected' : '' }}>Siswa</option>
-                        <option value="guru" {{ old('peran_login') == 'guru' ? 'selected' : '' }}>Guru</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label>Email</label>
                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="nama@email.com" value="{{ old('email') }}" required>
-                </div>
-
-                <div class="form-group" id="kelasGroup">
-                    <label>Kelas</label>
-                    <select name="kelas_id_login" class="form-control @error('kelas_id_login') is-invalid @enderror">
-                        <option value="">-- Pilih Kelas Kamu --</option>
-                        @if(isset($data_kelas))
-                            @foreach($data_kelas as $kelas)
-                                <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
-                            @endforeach
-                        @else
-                            <option value="" disabled>Data kelas tidak ditemukan</option>
-                        @endif
-                    </select>
-                    
-                    @error('kelas_id_login')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -263,25 +237,6 @@
                 icon.classList.add('fa-eye');
             }
         }
-
-        // Fungsi Toggle Form Berdasarkan Peran
-        function toggleForm() {
-            var role = document.getElementById('roleSelect').value;
-            var kelasGroup = document.getElementById('kelasGroup');
-
-            if (role === 'siswa') {
-                kelasGroup.style.display = 'block'; 
-            } else {
-                kelasGroup.style.display = 'none';
-                // Reset pilihan kelas jika pindah ke Guru agar tidak ada error validasi
-                document.querySelector('select[name="kelas_id_login"]').value = ""; 
-            }
-        }
-
-        // Jalankan saat halaman dimuat
-        document.addEventListener("DOMContentLoaded", function() {
-            toggleForm();
-        });
     </script>
 
 </body>
