@@ -454,6 +454,28 @@
 
         <div class="accordion-container" data-aos="fade-up" data-aos-delay="200">
 
+            @if(Auth::check() && Auth::user()->peran === 'guru')
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="title-wrapper">
+                        <span class="icon">👨‍🏫</span> Halaman Panel Guru
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <img src="{{ asset('aset/halaman guru.jpg') }}" class="step-img" alt="Halaman Panel Guru">
+                        
+                        <ul class="step-list">
+                            <li><b>Navigasi Atas:</b> Berisi tautan cepat untuk mengakses halaman materi pembelajaran secara bebas tanpa terhalang sistem kuncian (gembok), serta menu profil untuk keluar dari akun.</li>
+                            <li><b>Sidebar Panel Guru:</b> Berisi menu-menu utama untuk mengelola aktivitas pembelajaran, antara lain mengelola Data Siswa, Data Kelas, Progres Belajar, Data Nilai, dan Pengaturan KKM.</li>
+                            <li><b>Area Konten:</b> Menampilkan rincian tabel data sesuai dengan menu yang dipilih pada sidebar, di mana guru dapat melakukan aksi seperti mencari, menambah, mengedit, atau menghapus data terkait.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <div class="accordion-item">
                 <button class="accordion-header">
                     <div class="title-wrapper">
