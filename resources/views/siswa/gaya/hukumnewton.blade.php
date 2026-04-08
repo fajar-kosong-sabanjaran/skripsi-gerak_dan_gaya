@@ -178,56 +178,95 @@
             </div>
 
             <div class="inner-box">
-                <h3>Ayo Berlatih – Hukum Newton</h3>
+                <h3>Ayo Praktik: Pengamatan Hukum Newton</h3>
 
                 <div class="kotak-instruksi">
                     <p>
                         <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                     </p>
                     <ul>
-                        <li>Baca setiap soal dengan seksama.</li>
-                        <li>Analisis peristiwa yang dijelaskan, apakah termasuk Hukum I, II, atau III Newton.</li>
-                        <li>Klik pada salah satu tombol jawaban (Hukum I, II, atau III) yang menurutmu benar.</li>
-                        <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu, atau tombol "Coba Lagi" jika ingin
-                            mengulang.</li>
+                        <li>Tonton video pengujian Hukum Newton di bawah ini dengan saksama.</li>
+                        <li>Gunakan tombol "Lompat ke bagian" untuk melihat masing-perlakuan.</li>
+                        <li>Analisis setiap peristiwa yang terjadi pada video.</li>
+                        <li>Jawablah 5 pertanyaan pilihan ganda di bawah video berdasarkan pengamatanmu.</li>
                     </ul>
                 </div>
 
+                <p>
+                    <video id="video-praktik-gaya" class="content-video" controls preload="auto">
+                        <source src="{{ url('stream-video/praktik_gaya.mp4') }}#t=0.001" type="video/mp4">
+                        Browser Anda tidak mendukung tag video.
+                    </video>
+                </p>
+                <p class="image-caption">Video Praktik Hukum Newton</p>
+
+                <div class="video-timestamps">
+                    <span class="timestamp-label"><i class="fas fa-list-ul"></i> Lompat ke bagian:</span>
+                    <div class="timestamp-buttons">
+                        <button type="button" class="btn-time" data-time="7">Hukum 1 Newton</button>
+                        <button type="button" class="btn-time" data-time="52">Hukum 2 Newton</button>
+                        <button type="button" class="btn-time" data-time="101">Hukum 3 Newton</button>
+                    </div>
+                </div>
+
+                <hr><br>
+
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>1.</b> Ketika seorang siswa meloncat dari perahu, perahu terdorong ke arah berlawanan. Peristiwa
-                        ini menunjukkan bahwa...
+                        <b>1.</b> Pada Percobaan 1, saat kertas ditarik dengan sangat cepat, gelas kaca tetap diam di tempatnya dan tidak ikut terbawa kertas. Peristiwa ini merupakan bukti dari...
                     </p>
-                    <div class="grup-opsi" data-soal="1" data-kunci="III">
-                        <button class="tombol-opsi" data-pilihan="I">Hukum I Newton</button>
-                        <button class="tombol-opsi" data-pilihan="II">Hukum II Newton</button>
-                        <button class="tombol-opsi" data-pilihan="III">Hukum III Newton</button>
+                    <div class="grup-opsi" data-soal="1" data-kunci="A">
+                        <button class="tombol-opsi" data-pilihan="A">A. Hukum I Newton</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Hukum II Newton</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Hukum III Newton</button>
                     </div>
                 </div>
 
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>2.</b> Sebuah buku di atas meja tetap diam selama tidak ada gaya yang bekerja padanya. Hal ini
-                        sesuai dengan...
+                        <b>2.</b> Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap diam) pada Percobaan 1 disebut dengan...
                     </p>
-                    <div class="grup-opsi" data-soal="2" data-kunci="I">
-                        <button class="tombol-opsi" data-pilihan="I">Hukum I Newton</button>
-                        <button class="tombol-opsi" data-pilihan="II">Hukum II Newton</button>
-                        <button class="tombol-opsi" data-pilihan="III">Hukum III Newton</button>
+                    <div class="grup-opsi" data-soal="2" data-kunci="B">
+                        <button class="tombol-opsi" data-pilihan="A">A. Percepatan</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Kelembaman (Inersia)</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Gaya Reaksi</button>
                     </div>
                 </div>
 
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>3.</b> Sebuah bola ditendang semakin kuat sehingga bergerak semakin cepat. Pernyataan tersebut
-                        menunjukkan...
+                        <b>3.</b> Pada Percobaan 2, bola kuning kecil (ringan) melaju lebih cepat dibandingkan bola kuning besar (berat) meskipun didorong dengan gaya yang sama. Sesuai Hukum II Newton, hal ini membuktikan bahwa...
                     </p>
-                    <div class="grup-opsi" data-soal="3" data-kunci="II">
-                        <button class="tombol-opsi" data-pilihan="I">Hukum I Newton</button>
-                        <button class="tombol-opsi" data-pilihan="II">Hukum II Newton</button>
-                        <button class="tombol-opsi" data-pilihan="III">Hukum III Newton</button>
+                    <div class="grup-opsi" data-soal="3" data-kunci="C">
+                        <button class="tombol-opsi" data-pilihan="A">A. Massa benda berbanding lurus dengan percepatan</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Massa benda tidak berpengaruh pada gerak</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Massa benda berbanding terbalik dengan percepatan</button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="kotak-kuis">
+                    <p class="teks-soal">
+                        <b>4.</b> Pada Percobaan 3, bola dijatuhkan dan menabrak meja ke arah bawah (Gaya Aksi). Meja kemudian mendorong bola kembali ke atas sehingga bola memantul. Dorongan meja ke atas tersebut dinamakan...
+                    </p>
+                    <div class="grup-opsi" data-soal="4" data-kunci="B">
+                        <button class="tombol-opsi" data-pilihan="A">A. Gaya Gesek</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Gaya Reaksi</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Gaya Berat</button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="kotak-kuis">
+                    <p class="teks-soal">
+                        <b>5.</b> Dari ketiga percobaan di video, manakah yang paling jelas membuktikan bahwa gaya selalu muncul berpasangan (ada aksi, ada reaksi)?
+                    </p>
+                    <div class="grup-opsi" data-soal="5" data-kunci="C">
+                        <button class="tombol-opsi" data-pilihan="A">A. Percobaan 1 (Gelas dan Kertas)</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Percobaan 2 (Bola Ringan vs Bola Berat)</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Percobaan 3 (Memantulkan Bola)</button>
                     </div>
                 </div>
 
@@ -241,7 +280,7 @@
 
         <div id="popup-newton" class="popup">
             <div class="popup-box">
-                <h3>Hasil Latihan</h3>
+                <h3>Hasil Observasi</h3>
                 <div id="popup-newton-text" class="hasil-ringkas"></div>
                 <div class="popup-actions">
                     <button class="btn-reset-newton" id="btn-tutup-newton">Tutup</button>

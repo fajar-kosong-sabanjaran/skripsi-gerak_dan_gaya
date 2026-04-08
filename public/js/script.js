@@ -1144,6 +1144,21 @@ const kunciLatihan = [
     { id: "v2-hasil", jawaban: "4" },
 ];
 
+// Kunci Jawaban Praktik Video (Dipindah ke atas agar bisa diakses oleh popup)
+const kunciPraktik = [
+    { id: "prak-s-pulpen", jawaban: "20" },
+    { id: "prak-t-pulpen", jawaban: "5" },
+    { id: "prak-v-pulpen", jawaban: "4" },
+
+    { id: "prak-s-pensil", jawaban: "12" },
+    { id: "prak-t-pensil", jawaban: "2" },
+    { id: "prak-v-pensil", jawaban: "6" },
+
+    { id: "prak-s-lem", jawaban: "20" },
+    { id: "prak-t-lem", jawaban: "4" },
+    { id: "prak-v-lem", jawaban: "5" },
+];
+
 function tutupPopupQuiz() {
     const popup = document.getElementById("popup-quiz");
     if (popup) popup.classList.remove("show");
@@ -1162,13 +1177,31 @@ function tutupPopupLatihan() {
 }
 
 window.cobaLagiLatihan = function () {
-    kunciLatihan.forEach((item) => {
-        const input = document.getElementById(item.id);
-        if (input) {
-            input.value = "";
-            input.classList.remove("benar", "salah");
+    const popup = document.getElementById("popup-latihan");
+    const title = popup ? popup.querySelector("h3").innerText : "";
+
+    // Cek popup mana yang sedang aktif berdasarkan judul
+    if (title === "Hasil Evaluasi Praktik") {
+        kunciPraktik.forEach((item) => {
+            const input = document.getElementById(item.id);
+            if (input) {
+                input.value = "";
+                input.classList.remove("benar", "salah");
+            }
+        });
+        // Kembalikan judul aslinya jika popup ditutup
+        if (popup) {
+            popup.querySelector("h3").innerText = "Hasil Latihan";
         }
-    });
+    } else {
+        kunciLatihan.forEach((item) => {
+            const input = document.getElementById(item.id);
+            if (input) {
+                input.value = "";
+                input.classList.remove("benar", "salah");
+            }
+        });
+    }
     tutupPopupLatihan();
 };
 
@@ -1302,6 +1335,111 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================================================================
+    // LOGIKA TIMESTAMP VIDEO PRAKTIK - REVISI parseFloat
+    // =========================================================================
+    const videoPraktik = document.getElementById("video-praktik");
+    const timeButtons = document.querySelectorAll(".btn-time");
+
+    if (videoPraktik && timeButtons.length > 0) {
+        timeButtons.forEach((btn) => {
+            btn.addEventListener("click", function () {
+                // Ambil detik dari atribut data-time dan ubah jadi float/angka
+                const targetTime = parseFloat(this.getAttribute("data-time"));
+
+                // Ubah waktu video dan mainkan
+                if (!isNaN(targetTime)) {
+                    videoPraktik.currentTime = targetTime;
+                    videoPraktik.play();
+                }
+            });
+        });
+    }
+
+    // =========================================================================
+    // LOGIKA PRAKTIK VIDEO (Menghitung Kelajuan) - BARU DITAMBAHKAN
+    // =========================================================================
+    const btnCekPraktik = document.getElementById("btn-cek-praktik");
+    const btnResetPraktik = document.getElementById("btn-reset-praktik");
+
+    if (btnCekPraktik) {
+        btnCekPraktik.addEventListener("click", () => {
+            let benar = 0;
+            let salah = 0;
+            let belumDiisi = 0;
+
+            kunciPraktik.forEach((item) => {
+                const input = document.getElementById(item.id);
+                if (input) {
+                    const nilai = input.value.trim();
+                    input.classList.remove("benar", "salah");
+
+                    if (nilai === "") {
+                        belumDiisi++;
+                    } else if (nilai === item.jawaban) {
+                        benar++;
+                        input.classList.add("benar");
+                    } else {
+                        salah++;
+                        input.classList.add("salah");
+                    }
+                }
+            });
+
+            // Re-use popup latihan untuk menampilkan hasil
+            if (benar === kunciPraktik.length) {
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        title: "Kerja Bagus!",
+                        text: "Semua perhitungan dari video praktik sudah tepat!",
+                        icon: "success",
+                        confirmButtonText: "Lanjut",
+                        confirmButtonColor: "#2ecc71",
+                    });
+                } else {
+                    alert(
+                        "Kerja Bagus! Semua perhitungan dari video praktik sudah tepat!",
+                    );
+                }
+            } else {
+                const popupText = document.getElementById("popup-latihan-text");
+                const popup = document.getElementById("popup-latihan");
+
+                if (popupText && popup) {
+                    popupText.innerHTML = `
+                        <span class="hasil-benar">✔ Benar : ${benar}</span>
+                        <span class="pemisah">|</span>
+                        <span class="hasil-salah">✖ Salah : ${salah}</span>
+                        <span class="pemisah">|</span>
+                        <span class="hasil-belum">⏳ Belum diisi : ${belumDiisi}</span>
+                    `;
+                    // Ubah judul popup agar sesuai konteks
+                    popup.querySelector("h3").innerText =
+                        "Hasil Evaluasi Praktik";
+                    popup.classList.add("show");
+                }
+            }
+        });
+    }
+
+    if (btnResetPraktik) {
+        btnResetPraktik.addEventListener("click", () => {
+            kunciPraktik.forEach((item) => {
+                const input = document.getElementById(item.id);
+                if (input) {
+                    input.value = "";
+                    input.classList.remove("benar", "salah");
+                }
+            });
+
+            // Kembalikan judul aslinya jika popup direset
+            const popup = document.getElementById("popup-latihan");
+            if (popup) {
+                popup.querySelector("h3").innerText = "Hasil Latihan";
+            }
+        });
+    }
+
+    // =========================================================================
     // 2. LOGIKA LATIHAN SOAL ISIAN
     // =========================================================================
     const btnCekLatihan = document.getElementById("btn-cek-latihan");
@@ -1380,6 +1518,8 @@ document.addEventListener("DOMContentLoaded", function () {
               <span class="pemisah">|</span>
               <span class="hasil-belum">⏳ Belum diisi : ${belumDiisi}</span>
             `;
+                    // Pastikan judul popup benar untuk Latihan
+                    popup.querySelector("h3").innerText = "Hasil Latihan";
                     popup.classList.add("show");
                 }
             }
@@ -1389,6 +1529,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnResetLatihan) {
         btnResetLatihan.addEventListener("click", () => {
             window.cobaLagiLatihan();
+            const popup = document.getElementById("popup-latihan");
+            if (popup) {
+                popup.querySelector("h3").innerText = "Hasil Latihan";
+            }
         });
     }
 
@@ -2251,13 +2395,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================================
     // 2. LOGIKA KUIS RESULTAN GAYA: ISI SEMUA, CEK JAWABAN, COBA LAGI
     // =========================================================================
-    const btnSubmitResultan = document.getElementById("btn-submit-resultangaya");
+    const btnSubmitResultan = document.getElementById(
+        "btn-submit-resultangaya",
+    );
     const btnRetryResultan = document.getElementById("btn-retry-resultangaya");
 
     // Kunci Jawaban
     const kunciJawaban = {
         1: 40, // Latihan 1: 15 + 25
-        2: 0,  // Latihan 2: 35 + (-35)
+        2: 0, // Latihan 2: 35 + (-35)
     };
 
     if (btnSubmitResultan) {
@@ -2594,7 +2740,25 @@ document.addEventListener("DOMContentLoaded", function () {
     checkLocalLock();
 
     // =========================================================================
-    // 2. LOGIKA KLIK PILIHAN GANDA
+    // 2. LOGIKA TIMESTAMP VIDEO PRAKTIK GAYA
+    // =========================================================================
+    const videoPraktikGaya = document.getElementById("video-praktik-gaya");
+    const timeButtonsGaya = document.querySelectorAll(".btn-time");
+
+    if (videoPraktikGaya && timeButtonsGaya.length > 0) {
+        timeButtonsGaya.forEach((btn) => {
+            btn.addEventListener("click", function () {
+                const targetTime = parseFloat(this.getAttribute("data-time"));
+                if (!isNaN(targetTime)) {
+                    videoPraktikGaya.currentTime = targetTime;
+                    videoPraktikGaya.play();
+                }
+            });
+        });
+    }
+
+    // =========================================================================
+    // 3. LOGIKA KLIK PILIHAN GANDA
     // =========================================================================
     const btnCekNewton = document.getElementById("btn-cek-newton");
     const btnResetNewton = document.getElementById("btn-reset-newton");
@@ -2604,7 +2768,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".grup-opsi .tombol-opsi").forEach((btn) => {
             btn.addEventListener("click", () => {
                 const grup = btn.parentElement;
-                
+
                 // Jika sudah terkunci setelah klik Cek Jawaban, jangan biarkan ganti pilihan
                 if (grup.classList.contains("terkunci")) return;
 
@@ -2618,7 +2782,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // =========================================================================
-        // 3. LOGIKA CEK JAWABAN & SIMPAN PROGRES
+        // 4. LOGIKA CEK JAWABAN & SIMPAN PROGRES
         // =========================================================================
         btnCekNewton.addEventListener("click", () => {
             let benar = 0;
@@ -2627,7 +2791,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Validasi: Cek apakah semua soal sudah diisi
             let belumDiisi = false;
-            semuaGrup.forEach(grup => {
+            semuaGrup.forEach((grup) => {
                 if (!grup.dataset.jawaban) belumDiisi = true;
             });
 
@@ -2647,7 +2811,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 totalSoal++;
                 const jawabanSiswa = grup.dataset.jawaban;
                 const kunci = grup.dataset.kunci;
-                
+
                 grup.classList.add("terkunci"); // Kunci pilihan
 
                 grup.querySelectorAll(".tombol-opsi").forEach((b) =>
@@ -2660,8 +2824,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         `[data-pilihan="${jawabanSiswa}"]`,
                     ).classList.add("jawaban-benar");
                 } else {
-                    // [REVISI]: Hanya tandai merah pada pilihan siswa yang salah
-                    // Tanpa memberi warna hijau pada kunci jawaban yang benar (bocoran dihapus)
                     const btnSalah = grup.querySelector(
                         `[data-pilihan="${jawabanSiswa}"]`,
                     );
@@ -2719,7 +2881,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // =========================================================================
-        // 4. LOGIKA RESET / COBA LAGI
+        // 5. LOGIKA RESET / COBA LAGI
         // =========================================================================
         btnResetNewton.addEventListener("click", () => {
             document.querySelectorAll(".grup-opsi").forEach((grup) => {
@@ -2739,7 +2901,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // =========================================================================
-        // 5. LOGIKA TUTUP POPUP
+        // 6. LOGIKA TUTUP POPUP
         // =========================================================================
         if (btnTutupNewton) {
             btnTutupNewton.addEventListener("click", () => {

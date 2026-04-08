@@ -113,3 +113,17 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     Route::get('/pengaturan-kkm', [GuruController::class, 'pengaturanKkm'])->name('guru.pengaturankkm');
     Route::post('/pengaturan-kkm', [GuruController::class, 'updateKkm'])->name('guru.updatekkm');
 });
+
+// =============================================================
+// Route khusus untuk streaming video agar bisa di-seek (digeser/dipercepat)
+// =============================================================
+Route::get('/stream-video/{filename}', function ($filename) {
+    $path = public_path('aset/' . $filename);
+    
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    
+    // response()->file() otomatis menangani HTTP Range / pemotongan video
+    return response()->file($path);
+});

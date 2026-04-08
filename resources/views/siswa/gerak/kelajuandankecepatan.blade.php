@@ -245,7 +245,77 @@
                 </div>
             </div>
 
+            <div class="inner-box">
+                <h3>Ayo Praktik: Menghitung Kelajuan</h3>
 
+                <div class="kotak-instruksi">
+                    <p>
+                        <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
+                    </p>
+                    <ul>
+                        <li>Tonton video pengujian kelajuan benda di bawah ini dengan saksama.</li>
+                        <li>Amati dan catat jarak tempuh serta waktu yang dibutuhkan oleh setiap benda (Pulpen, Pensil, dan
+                            Lem).</li>
+                        <li>Gunakan rumus kelajuan \((v = \frac{s}{t})\) untuk menghitung kelajuan masing-masing benda.</li>
+                        <li>Isi tabel di bawah dengan angka saja (dalam satuan cm dan sekon).</li>
+                    </ul>
+                </div>
+                <p>
+                    <video id="video-praktik" class="content-video" controls preload="auto">
+                        <source src="{{ url('stream-video/praktik_gerak.mp4') }}#t=0.001" type="video/mp4">
+                        Browser Anda tidak mendukung tag video.
+                    </video>
+                </p>
+                <p class="image-caption">Video Praktik Menghitung Kelajuan</p>
+
+                <div class="video-timestamps">
+                    <span class="timestamp-label"><i class="fas fa-list-ul"></i> Lompat ke bagian:</span>
+                    <div class="timestamp-buttons">
+                        <button type="button" class="btn-time" data-time="5">Alat & Bahan</button>
+                        <button type="button" class="btn-time" data-time="33">Percobaan 1 (Pulpen)</button>
+                        <button type="button" class="btn-time" data-time="61">Percobaan 2 (Pensil)</button>
+                        <button type="button" class="btn-time" data-time="90">Percobaan 3 (Lem)</button>
+                    </div>
+                </div>
+
+                <hr><br>
+
+                <table class="quiz-table" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Benda</th>
+                            <th style="width: 25%;">Jarak (\(s\))<br><small>dalam cm</small></th>
+                            <th style="width: 25%;">Waktu (\(t\))<br><small>dalam sekon</small></th>
+                            <th style="width: 25%;">Kelajuan (\(v\))<br><small>dalam cm/s</small></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Pulpen</strong></td>
+                            <td><input class="isian-ayo" id="prak-s-pulpen" placeholder="..."></td>
+                            <td><input class="isian-ayo" id="prak-t-pulpen" placeholder="..."></td>
+                            <td><input class="isian-ayo" id="prak-v-pulpen" placeholder="..."></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pensil</strong></td>
+                            <td><input class="isian-ayo" id="prak-s-pensil" placeholder="..."></td>
+                            <td><input class="isian-ayo" id="prak-t-pensil" placeholder="..."></td>
+                            <td><input class="isian-ayo" id="prak-v-pensil" placeholder="..."></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lem</strong></td>
+                            <td><input class="isian-ayo" id="prak-s-lem" placeholder="..."></td>
+                            <td><input class="isian-ayo" id="prak-t-lem" placeholder="..."></td>
+                            <td><input class="isian-ayo" id="prak-v-lem" placeholder="..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="latihan-actions" style="margin-top: 20px;">
+                    <button type="button" id="btn-cek-praktik" class="btn-cek">Cek Jawaban Praktik</button>
+                    <button type="button" id="btn-reset-praktik" class="btn-reset">Coba Lagi</button>
+                </div>
+            </div>
             <div class="inner-box quiz-wrapper">
                 <h3>Ayo Bedakan Kelajuan dan Kecepatan</h3>
 

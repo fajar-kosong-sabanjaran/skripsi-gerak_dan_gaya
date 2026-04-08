@@ -1402,6 +1402,44 @@ body {
     gap: 12px;
 }
 
+.video-timestamps {
+    margin: 10px auto 20px;
+    max-width: 600px;
+    text-align: center;
+}
+
+.timestamp-label {
+    display: block;
+    font-weight: bold;
+    color: #b45309;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.timestamp-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-time {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-time:hover {
+    background-color: #f59e0b;
+    color: #fff;
+    border-color: #f59e0b;
+}
+
 /* ================= INPUT AYO BERLATIH ================= */
 
 .isian-ayo {
@@ -1912,6 +1950,45 @@ body {
 .btn-reset-newton:hover {
     background: #5a6268;
     transform: translateY(-2px);
+}
+
+/* --- TIMESTAMP VIDEO PRAKTIK --- */
+.video-timestamps {
+    margin: 10px auto 20px;
+    max-width: 600px;
+    text-align: center;
+}
+
+.timestamp-label {
+    display: block;
+    font-weight: bold;
+    color: #b45309;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.timestamp-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-time {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-time:hover {
+    background-color: #f59e0b;
+    color: #fff;
+    border-color: #f59e0b;
 }
 
 /* INI CSS UNTUK PETUNJUK PENGERJAAN */
