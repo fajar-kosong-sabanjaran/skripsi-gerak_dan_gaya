@@ -1801,6 +1801,86 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // =========================================================================
+    // 4. LOGIKA PAGINATION (HALAMAN STEP) - REVISI MENYATU DENGAN BOTTOM NAV
+    // =========================================================================
+    const step1 = document.getElementById("step-1");
+    const step2 = document.getElementById("step-2");
+
+    const btnPrevStep = document.getElementById("btn-prev-step");
+    const btnNextStep = document.getElementById("btn-next-step");
+    const btnPrevMateri = document.getElementById("btn-prev-materi");
+    const btnNextMateri = document.getElementById("btn-next-materi");
+
+    const numSteps = document.querySelectorAll(".num-step");
+
+    let currentStep = 1;
+
+    function updateStep() {
+        // Sembunyikan semua step
+        if (step1) step1.style.display = "none";
+        if (step2) step2.style.display = "none";
+
+        // Update warna tombol angka
+        numSteps.forEach((btn) => btn.classList.remove("active"));
+        const activeBtn = document.querySelector(
+            `.num-step[data-step="${currentStep}"]`,
+        );
+        if (activeBtn) activeBtn.classList.add("active");
+
+        // Atur Konten dan Tombol Bawah
+        if (currentStep === 1) {
+            if (step1) step1.style.display = "block";
+
+            // Kiri: Tampilkan "Materi Sebelumnya", Sembunyikan "Halaman Sebelumnya"
+            if (btnPrevMateri) btnPrevMateri.style.display = "inline-block";
+            if (btnPrevStep) btnPrevStep.style.display = "none";
+
+            // Kanan: Tampilkan "Halaman Selanjutnya", Sembunyikan "Materi Selanjutnya"
+            if (btnNextStep) btnNextStep.style.display = "inline-block";
+            if (btnNextMateri) btnNextMateri.style.display = "none";
+        } else {
+            if (step2) step2.style.display = "block";
+
+            // Kiri: Tampilkan "Halaman Sebelumnya", Sembunyikan "Materi Sebelumnya"
+            if (btnPrevMateri) btnPrevMateri.style.display = "none";
+            if (btnPrevStep) btnPrevStep.style.display = "inline-block";
+
+            // Kanan: Tampilkan "Materi Selanjutnya", Sembunyikan "Halaman Selanjutnya"
+            if (btnNextStep) btnNextStep.style.display = "none";
+            if (btnNextMateri) btnNextMateri.style.display = "inline-block";
+        }
+
+        // Auto-scroll ke atas saat pindah halaman
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    if (btnPrevStep && btnNextStep) {
+        btnPrevStep.addEventListener("click", () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStep();
+            }
+        });
+
+        btnNextStep.addEventListener("click", () => {
+            if (currentStep < 2) {
+                currentStep++;
+                updateStep();
+            }
+        });
+
+        numSteps.forEach((btn) => {
+            btn.addEventListener("click", function () {
+                currentStep = parseInt(this.getAttribute("data-step"));
+                updateStep();
+            });
+        });
+
+        // Inisialisasi tampilan awal
+        updateStep();
+    }
 });
 
 // FILE: PERCEPATAN (LOGIKA LATIHAN & UNDUH PDF)

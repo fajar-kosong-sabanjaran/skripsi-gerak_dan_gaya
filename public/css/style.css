@@ -1174,22 +1174,15 @@ body {
 }
 
 /* File kelajuan dan kecepatan */
-/* Untuk Rumus - Rumus */
-/* --- LAYOUT CONTAINER --- */
 .rumus-container-kelajuandankecepatan {
     display: flex;
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
     margin: 20px 0;
-
-    /* TRIK UTAMA: 
-     Mouse tidak akan mendeteksi container ini (area kosong/gap diabaikan).
-     Sehingga saat mouse di celah, status tetap dianggap "di luar". */
     pointer-events: none;
 }
 
-/* --- BASE STYLE KARTU --- */
 .rumus-card-kelajuandankecepatan {
     flex: 1;
     min-width: 120px;
@@ -1199,35 +1192,23 @@ body {
     border-radius: 12px;
     transition: all 0.3s ease;
     cursor: pointer;
-
-    /* Default Style (Abu-abu / Mati) untuk Jarak, Waktu, Perpindahan */
     background-color: #f8f9fa;
     border: 2px solid #e9ecef;
     color: #adb5bd;
-
-    /* TRIK: Aktifkan kembali mouse hanya pada kartu */
     pointer-events: auto;
 }
 
-/* Judul & Rumus */
 .rumus-card-kelajuandankecepatan .judul-rumus {
-    font-size: 12px;
-    font-weight: bold;
     margin-bottom: 5px;
     text-transform: uppercase;
     color: inherit;
 }
 
 .rumus-card-kelajuandankecepatan .math-expr {
-    font-size: 1.1em;
     padding: 2px;
     color: #333;
 }
 
-/* --- LOGIKA INTERAKSI (REVISI) --- */
-
-/* 1. KONDISI DEFAULT (Tidak ada mouse, atau mouse di area kosong/gap) 
-   Kelajuan & Kecepatan MENYALA (Orange), sisanya Abu-abu */
 .rumus-card-kelajuandankecepatan.kelajuan,
 .rumus-card-kelajuandankecepatan.kecepatan {
     background-color: #fff8f0;
@@ -1237,24 +1218,14 @@ body {
     transform: none;
 }
 
-/* 2. SAAT SALAH SATU KARTU DISENTUH
-   Jika container mendeteksi hover (artinya salah satu kartu disentuh karena pointer-events:auto),
-   maka PAKSA Kelajuan/Kecepatan jadi Abu-abu dulu. 
-   Nanti aturan no 3 akan menyalakan kartu yang sedang ditunjuk. */
-.rumus-container-kelajuandankecepatan:hover
-    .rumus-card-kelajuandankecepatan.kelajuan,
-.rumus-container-kelajuandankecepatan:hover
-    .rumus-card-kelajuandankecepatan.kecepatan {
+.rumus-container-kelajuandankecepatan:hover .rumus-card-kelajuandankecepatan.kelajuan,
+.rumus-container-kelajuandankecepatan:hover .rumus-card-kelajuandankecepatan.kecepatan {
     background-color: #f8f9fa;
     border-color: #e9ecef;
     color: #adb5bd;
     opacity: 0.6;
 }
 
-/* 3. SAAT KARTU SPESIFIK DIPILIH (HOVER)
-   Ini akan menimpa aturan abu-abu di atas */
-
-/* -> Hover Orange (Untuk dirinya sendiri: Kelajuan & Kecepatan) */
 .rumus-card-kelajuandankecepatan.kelajuan:hover,
 .rumus-card-kelajuandankecepatan.kecepatan:hover {
     background-color: #fff8f0 !important;
@@ -1264,7 +1235,6 @@ body {
     transform: translateY(-5px);
 }
 
-/* -> Hover Ungu (Jarak & Perpindahan) */
 .rumus-card-kelajuandankecepatan.jarak:hover,
 .rumus-card-kelajuandankecepatan.perpindahan:hover {
     background-color: #f8f0fc;
@@ -1274,7 +1244,6 @@ body {
     transform: translateY(-5px);
 }
 
-/* -> Hover Hijau (Waktu) */
 .rumus-card-kelajuandankecepatan.waktu:hover {
     background-color: #f4f8e8;
     border-color: #b5c94c;
@@ -1283,7 +1252,6 @@ body {
     transform: translateY(-5px);
 }
 
-/* ini masuk contoh dan latihan di bagian kelajuan dan kecepatan */
 .penyelesaian-dua-kolom {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1307,7 +1275,6 @@ body {
 }
 
 .rumus-besar mjx-container {
-    font-size: 125%;
     text-align: left !important;
 }
 
@@ -1315,7 +1282,6 @@ body {
     width: 56px;
     padding: 4px 6px;
     text-align: center;
-    font-size: 14px;
     border: 2px solid #fca5a5;
     border-radius: 6px;
     background: #fffdf7;
@@ -1370,7 +1336,6 @@ body {
 
 .popup-box h3 {
     color: #e44a3f;
-    font-size: 20px;
     margin-bottom: 10px;
     text-align: center;
 }
@@ -1380,7 +1345,6 @@ body {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    font-size: 16px;
     margin-bottom: 18px;
 }
 
@@ -1410,10 +1374,8 @@ body {
 
 .timestamp-label {
     display: block;
-    font-weight: bold;
     color: #b45309;
     margin-bottom: 10px;
-    font-size: 14px;
 }
 
 .timestamp-buttons {
@@ -1429,7 +1391,6 @@ body {
     border: 1px solid #fcd34d;
     padding: 6px 12px;
     border-radius: 20px;
-    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -1438,6 +1399,39 @@ body {
     background-color: #f59e0b;
     color: #fff;
     border-color: #f59e0b;
+}
+
+.num-step {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #fca5a5;
+    background-color: #fffdf7;
+    color: #f95c50;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.num-step:hover {
+    background-color: #fee2e2;
+}
+
+.num-step.active {
+    background-color: #f95c50;
+    color: white;
+    border-color: #f95c50;
+    box-shadow: 0 4px 8px rgba(249, 92, 80, 0.3);
+}
+
+.bottom-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
 }
 
 /* ================= INPUT AYO BERLATIH ================= */
