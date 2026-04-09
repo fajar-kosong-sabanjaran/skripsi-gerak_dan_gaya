@@ -266,6 +266,102 @@
 
     @media (max-width: 1024px) { .hero { padding: 0 40px; } .hero-text h1 { font-size: 42px; } }
     @media (max-width: 768px) { .navbar { padding: 15px 20px; } .nav-links { display: none; } .hero { flex-direction: column-reverse; justify-content: center; padding: 20px; text-align: center; } .hero-text h1 { font-size: 34px; margin-top: 30px; } .hero-text p { font-size: 16px; margin: 0 auto 30px auto; max-width: 100%; } .hero-image img { max-width: 85%; } .bg-icon { opacity: 0.1; } }
+    
+    /* ================= TAMBAHAN REVISI RESPONSIVE (TANPA MENGUBAH YG ATAS) ================= */
+    
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+    }
+
+    .menu-toggle .bar {
+        width: 25px;
+        height: 3px;
+        background-color: var(--primary);
+        border-radius: 3px;
+        transition: 0.3s;
+    }
+
+    @media (max-width: 850px) {
+        /* Buka kuncian overflow agar di HP bisa di-scroll bawah atas */
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        .menu-toggle {
+            display: flex;
+        }
+        
+        .nav-links {
+            display: flex !important; /* Timpa display: none dari css lama */
+            position: absolute;
+            top: 70px;
+            right: -100%; /* Sembunyikan ke luar layar kanan */
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.98);
+            width: 250px;
+            text-align: center;
+            transition: 0.4s ease-in-out;
+            box-shadow: -5px 10px 20px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            border-radius: 0 0 0 15px;
+        }
+
+        .nav-links.active {
+            right: 0;
+        }
+        
+        .nav-links a {
+            margin: 15px 0;
+            display: inline-block;
+        }
+        
+        .nav-links .btn-masuk, .nav-links .btn-daftar {
+            margin: 10px auto;
+            display: inline-block;
+            width: max-content;
+        }
+
+        .user-menu-container {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+
+        .dropdown-logout {
+            position: relative;
+            top: 0;
+            box-shadow: none;
+            border: none;
+            margin: 10px auto;
+        }
+
+        .btn-logout {
+            text-align: center;
+        }
+
+        .hero {
+            flex-direction: column-reverse;
+            justify-content: center;
+            padding: 120px 20px 60px; /* Padding atas ditambah agar tidak tertutup navbar */
+            text-align: center;
+            height: auto; 
+        }
+
+        .hero-text { max-width: 100%; }
+        .hero-text h1 { font-size: 38px; margin-top: 20px; }
+        .hero-text p { margin: 0 auto 30px auto; max-width: 100%; }
+        .hero-image img { max-width: 80%; }
+        .bg-icon { opacity: 0.1; }
+    }
+
+    @media (max-width: 480px) {
+        .navbar { padding: 15px 20px; }
+        .hero-text h1 { font-size: 32px; }
+        .hero-image img { max-width: 95%; }
+    }
     </style>
 
 </head>
@@ -275,7 +371,14 @@
         <div class="logo">
             ⚡ GERAK & GAYA
         </div>
-        <div class="nav-links">
+
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <div class="nav-links" id="nav-links">
             
             @if(Auth::check() && Auth::user()->peran === 'guru')
                 <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
@@ -384,6 +487,16 @@
                 if (result.isConfirmed) {
                     window.location.href = "{{ route('login') }}"; 
                 }
+            });
+        }
+
+        // 4. TAMBAHAN REVISI: FUNGSI HAMBURGER MENU (RESPONSIVE)
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
             });
         }
     </script>

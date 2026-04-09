@@ -103,14 +103,98 @@
     .pustaka-body { padding: 30px 40px; text-align: left; }
     .pustaka-body p { color: var(--text-light); font-size: 16px; line-height: 1.8; margin-left: 10px; }
 
-    @media (max-width: 768px) { .navbar { padding: 15px 20px; } .nav-links { display: none; } .page-wrapper { padding: 100px 20px 60px 20px; } .section-header h2 { font-size: 28px; } .info-body, .pustaka-body { padding: 25px; } .detail-table td { display: block; width: 100% !important; padding: 8px 0; } .detail-table td:first-child { padding-top: 15px; border-bottom: none; } }
+    /* ================= TAMBAHAN REVISI RESPONSIVE ================= */
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+    }
+
+    .menu-toggle .bar {
+        width: 25px;
+        height: 3px;
+        background-color: var(--primary);
+        border-radius: 3px;
+        transition: 0.3s;
+    }
+
+    @media (max-width: 850px) {
+        .navbar { padding: 15px 20px; }
+
+        .menu-toggle {
+            display: flex;
+        }
+        
+        .nav-links {
+            display: flex !important;
+            position: absolute;
+            top: 70px;
+            right: -100%;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.98);
+            width: 250px;
+            text-align: center;
+            transition: 0.4s ease-in-out;
+            box-shadow: -5px 10px 20px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            border-radius: 0 0 0 15px;
+        }
+
+        .nav-links.active {
+            right: 0;
+        }
+        
+        .nav-links a {
+            margin: 15px 0;
+            display: inline-block;
+        }
+        
+        .nav-links .btn-masuk, .nav-links .btn-daftar {
+            margin: 10px auto;
+            display: inline-block;
+            width: max-content;
+        }
+
+        .user-menu-container {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+
+        .dropdown-logout {
+            position: relative;
+            top: 0;
+            box-shadow: none;
+            border: none;
+            margin: 10px auto;
+        }
+
+        .btn-logout {
+            text-align: center;
+        }
+
+        .page-wrapper { padding: 100px 20px 60px 20px; } 
+        .section-header h2 { font-size: 28px; } 
+        .info-body, .pustaka-body { padding: 25px; } 
+        
+        /* Agar tabel biodata responsif di HP */
+        .detail-table td { display: block; width: 100% !important; padding: 8px 0; } 
+        .detail-table td:first-child { padding-top: 15px; border-bottom: none; font-size: 14px; color: #64748b;} 
+    }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="logo">⚡ GERAK & GAYA</div>
-        <div class="nav-links">
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <div class="nav-links" id="nav-links">
             
             @if(Auth::check() && Auth::user()->peran === 'guru')
                 <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
@@ -197,6 +281,16 @@
         AOS.init({ once: true, offset: 50 });
         function toggleDropdown() { document.getElementById("dropdownMenu").classList.toggle("show"); }
         window.onclick = function(event) { if (!event.target.matches('.user-greeting')) { var dropdowns = document.getElementsByClassName("dropdown-logout"); for (var i = 0; i < dropdowns.length; i++) { var openDropdown = dropdowns[i]; if (openDropdown.classList.contains('show')) { openDropdown.classList.remove('show'); } } } }
+        
+        // TAMBAHAN REVISI: FUNGSI HAMBURGER MENU
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
     </script>
 </body>
 </html>
