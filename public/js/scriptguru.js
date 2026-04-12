@@ -1,12 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
     // =======================================================================
+    // ini js untuk Responsive Mobile Sidebar
+    // =======================================================================
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+    if (mobileMenuBtn && sidebar && sidebarOverlay) {
+        mobileMenuBtn.addEventListener("click", () => {
+            sidebar.classList.add("active");
+            sidebarOverlay.classList.add("show");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+            sidebar.classList.remove("active");
+            sidebarOverlay.classList.remove("show");
+        });
+    }
+
+    // =======================================================================
     // ini js guru.blade (Sidebar & Navbar)
     // =======================================================================
-
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     const path = window.location.pathname;
 
-    // Logic Toggle Sidebar Menu
     toggleItems.forEach((item) => {
         item.addEventListener("click", () => {
             const targetId = item.dataset.target;
@@ -25,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Logic Auto-open Sidebar berdasarkan URL
     if (path.includes("/guru/nilai")) {
         const submenu = document.getElementById("nilai");
         const header = document.querySelector(
@@ -44,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (header) header.classList.add("active");
     }
 
-    // LOGIKA DROPDOWN NAVBAR
     const userMenuTrigger = document.getElementById("userMenuTrigger");
     const userDropdown = document.getElementById("userDropdown");
 
@@ -69,18 +84,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // =======================================================================
     // ini js untuk Table (Search, Filter Kelas, Pagination) - Dipakai di semua tabel
     // =======================================================================
-
     const tableBody = document.getElementById("tableBody");
 
     if (tableBody) {
-        // 1. Simpan data baris asli saat halaman dimuat
         const originalRows = Array.from(
             tableBody.querySelectorAll("tr.searchable-row"),
         );
 
         const searchInput = document.getElementById("searchInput");
         const entriesSelect = document.getElementById("entriesSelect");
-        const filterKelas = document.getElementById("filterKelas"); // Menggunakan filterKelas
+        const filterKelas = document.getElementById("filterKelas");
         const btnPrev = document.getElementById("btnPrev");
         const btnNext = document.getElementById("btnNext");
         const dataInfo = document.getElementById("dataInfo");
@@ -88,9 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let currentPage = 1;
         let rowsPerPage = entriesSelect ? parseInt(entriesSelect.value) : 10;
-        let processedRows = [...originalRows]; // Data yang sedang diproses
+        let processedRows = [...originalRows];
 
-        // FUNGSI UTAMA: Update Tabel (Pencarian & Filter Kelas secara sinkron)
         function updateTable() {
             const query = searchInput ? searchInput.value.toLowerCase() : "";
             const kelasDipilih = filterKelas
@@ -98,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 : "semua";
 
             processedRows = originalRows.filter((row) => {
-                // Pencarian kata kunci (Nama atau NIS)
                 const namaEl = row.querySelector(".row-name");
                 const nisEl = row.querySelector(".row-nis");
                 const teksNama = namaEl ? namaEl.innerText.toLowerCase() : "";
@@ -106,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const cocokKata =
                     teksNama.includes(query) || teksNis.includes(query);
 
-                // Filter berdasarkan Kelas dengan deteksi cerdas
                 let teksKelas = row.getAttribute("data-kelas");
 
                 if (!teksKelas) {
@@ -129,11 +139,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 return cocokKata && cocokKelas;
             });
 
-            currentPage = 1; // Reset ke halaman 1 setiap ada filter
+            currentPage = 1;
             renderTable();
         }
 
-        // FUNGSI RENDER (Pagination & Tampilan)
         function renderTable() {
             const totalPages = Math.ceil(processedRows.length / rowsPerPage);
 
@@ -193,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // EVENT LISTENERS
         if (searchInput) {
             searchInput.addEventListener("keyup", () => {
                 updateTable();

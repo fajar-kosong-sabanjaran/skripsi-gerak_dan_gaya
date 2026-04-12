@@ -12,6 +12,8 @@
 
 <body>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="guru-icon">
@@ -47,6 +49,9 @@
 
         <nav class="guru-navbar">
             <div class="navbar-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
 
             <div class="navbar-right">
@@ -64,6 +69,22 @@
                     </div>
 
                     <div class="user-dropdown-content" id="userDropdown">
+
+                        <div class="mobile-dropdown-links">
+                            <a href="{{ url('/') }}" class="dropdown-item">
+                                Beranda
+                            </a>
+                            <a href="{{ url('/daftar-materi') }}" class="dropdown-item">
+                                Daftar Materi
+                            </a>
+                            <a href="{{ url('/petunjuk') }}" class="dropdown-item">
+                                Petunjuk Penggunaan
+                            </a>
+                            <a href="{{ url('/tentang') }}" class="dropdown-item">
+                                Tentang
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </div>
 
                         <form id="logout-form" action="{{ url('logout') }}" method="POST" class="logout-form-hidden">
                             @csrf
