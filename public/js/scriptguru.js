@@ -1053,13 +1053,13 @@ window.loadDetailRiwayat = function (btnElement, jenis_kuis) {
         .forEach((btn) => btn.classList.remove("active"));
     btnElement.classList.add("active");
 
-    // 2. Set State & UI Loading
+    // 2. Set State & UI Loading (Bebas Inline CSS)
     currentJenisKuis.value = jenis_kuis;
     judulTabelRiwayat.innerText = "Riwayat " + jenis_kuis;
 
-    tabelDetailRiwayat.style.display = "none";
-    kosongRiwayat.style.display = "none";
-    loadingRiwayat.style.display = "block";
+    tabelDetailRiwayat.classList.add("d-none");
+    kosongRiwayat.classList.add("d-none");
+    loadingRiwayat.classList.remove("d-none");
 
     const id_siswa = currentSiswaId.value;
 
@@ -1067,33 +1067,33 @@ window.loadDetailRiwayat = function (btnElement, jenis_kuis) {
     fetch(`/guru/datanilai/riwayat/${id_siswa}/${jenis_kuis}`)
         .then((response) => response.json())
         .then((res) => {
-            loadingRiwayat.style.display = "none";
+            loadingRiwayat.classList.add("d-none");
 
             if (res.success && res.data && res.data.length > 0) {
                 renderTabelRiwayat(res.data, jenis_kuis);
-                tabelDetailRiwayat.style.display = "table";
+                tabelDetailRiwayat.classList.remove("d-none");
 
                 // Tampilkan info KKM
                 const elInfoKkm = document.getElementById("infoKkmSaatIni");
                 const elAngkaKkm = document.getElementById("angkaKkmTampil");
                 if (elInfoKkm && elAngkaKkm) {
                     elAngkaKkm.innerText = res.kkm;
-                    elInfoKkm.style.display = "inline-block";
+                    elInfoKkm.classList.remove("d-none");
                 }
             } else {
-                kosongRiwayat.style.display = "block";
+                kosongRiwayat.classList.remove("d-none");
                 const elInfoKkm = document.getElementById("infoKkmSaatIni");
-                if (elInfoKkm) elInfoKkm.style.display = "none";
+                if (elInfoKkm) elInfoKkm.classList.add("d-none");
             }
         })
         .catch((err) => {
             console.error(err);
-            loadingRiwayat.style.display = "none";
+            loadingRiwayat.classList.add("d-none");
             kosongRiwayat.innerText = "Terjadi kesalahan saat memuat data.";
-            kosongRiwayat.style.display = "block";
+            kosongRiwayat.classList.remove("d-none");
 
             const elInfoKkm = document.getElementById("infoKkmSaatIni");
-            if (elInfoKkm) elInfoKkm.style.display = "none";
+            if (elInfoKkm) elInfoKkm.classList.add("d-none");
         });
 };
 
@@ -1125,8 +1125,8 @@ function renderTabelRiwayat(dataRiwayat, jenis_kuis) {
     `;
 
     for (let i = 1; i <= jmlSoal; i++) {
-        headerHTML += `<th class="col-center" style="white-space: nowrap;">
-            S${i} <i class="fas fa-info-circle" style="color: #3b82f6; cursor: pointer; margin-left: 4px;" onclick="lihatDetailSoal('${jenis_kuis}', ${i})" title="Lihat Soal S${i}"></i>
+        headerHTML += `<th class="col-center text-nowrap">
+            S${i} <i class="fas fa-info-circle icon-info-soal" onclick="lihatDetailSoal('${jenis_kuis}', ${i})" title="Lihat Soal S${i}"></i>
         </th>`;
     }
     headerRiwayat.innerHTML = headerHTML;

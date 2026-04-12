@@ -821,8 +821,17 @@ body {
 }
 
 /* =======================================================================
-   ini css progresbelajar.blade (Tabel Progres Lebar & Sticky)
+   ini css progresbelajar.blade
    ======================================================================= */
+
+.page-header {
+    margin-bottom: 15px;
+}
+
+.page-description {
+    color: #64748b;
+    font-size: 14px;
+}
 
 .legend-container {
     display: inline-flex;
@@ -841,6 +850,31 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.legend-icon-success,
+.table-icon-success {
+    color: #10b981;
+}
+
+.legend-icon-danger {
+    color: #ef4444;
+    opacity: 0.6;
+}
+
+.table-icon-danger {
+    color: #ef4444;
+    opacity: 0.3;
+}
+
+.text-center-pad {
+    text-align: center;
+    padding: 20px;
+}
+
+.flex-gap-5 {
+    display: flex;
+    gap: 5px;
 }
 
 .table-progres th.th-materi {
@@ -892,8 +926,44 @@ body {
     border-right: 2px solid #e2e8f0;
 }
 
+@media (max-width: 768px) {
+    .legend-container {
+        flex-wrap: wrap; 
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .table-progres th.sticky-no,
+    .table-progres td.sticky-no {
+        min-width: 40px; 
+        padding: 8px 5px;
+    }
+
+    .table-progres th.sticky-nama,
+    .table-progres td.sticky-nama {
+        left: 40px;
+        min-width: 110px;
+        max-width: 110px;
+        padding: 8px 10px;
+        font-size: 13px;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    .table-progres th.th-materi {
+        min-width: 80px; 
+        font-size: 10px;
+        padding: 8px 5px;
+    }
+
+    .table-progres td.td-icon {
+        font-size: 17px; 
+    }
+}
+
 /* =======================================================================
-   ini css datanilai.blade (Tabel & Modal Riwayat)
+   ini css datanilai.blade
    ======================================================================= */
 
 .text-success {
@@ -904,6 +974,28 @@ body {
 }
 .text-primary {
     color: #3b82f6 !important;
+}
+
+.d-none {
+    display: none !important;
+}
+.d-block {
+    display: block !important;
+}
+.d-inline-block {
+    display: inline-block !important;
+}
+.d-table {
+    display: table !important;
+}
+.text-nowrap {
+    white-space: nowrap !important;
+}
+
+.icon-info-soal {
+    color: #3b82f6;
+    cursor: pointer;
+    margin-left: 4px;
 }
 
 .btn-riwayat {
@@ -1022,7 +1114,6 @@ td.icon-salah,
 }
 
 .riwayat-loading {
-    display: none;
     text-align: center;
     padding: 30px;
 }
@@ -1033,7 +1124,6 @@ td.icon-salah,
 }
 
 .riwayat-empty {
-    display: none;
     text-align: center;
     padding: 30px;
     color: #94a3b8;
@@ -1081,6 +1171,54 @@ td.icon-salah,
 
 .swal-judul-kecil {
     font-size: 22px !important;
+}
+
+@media (max-width: 768px) {
+    .riwayat-tab-gap {
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .btn-tab {
+        flex-shrink: 0;
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    .riwayat-header-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .riwayat-title {
+        font-size: 16px;
+    }
+
+    .modal-body-scroll {
+        padding: 15px 10px;
+    }
+
+    .riwayat-table-container {
+        padding: 10px;
+    }
+
+    .swal-judul-kecil {
+        font-size: 18px !important;
+    }
+
+    .swal-soal-pertanyaan {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .swal-soal-opsi {
+        font-size: 13px;
+        padding-left: 15px;
+    }
 }
 
 /* =======================================================================

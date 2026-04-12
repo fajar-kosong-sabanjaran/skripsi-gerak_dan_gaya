@@ -3,17 +3,17 @@
 @section('content')
     <div class="card-guru">
 
-        <div style="margin-bottom: 15px;">
+        <div class="page-header">
             <h3>Progres Belajar Siswa</h3>
-            <p style="color: #64748b; font-size: 14px;">Pantau rincian setiap langkah pembelajaran siswa di sini.</p>
+            <p class="page-description">Pantau rincian setiap langkah pembelajaran siswa di sini.</p>
         </div>
 
         <div class="legend-container">
             <div class="legend-item">
-                <i class="fas fa-check-circle" style="color: #10b981;"></i> = Sudah Selesai
+                <i class="fas fa-check-circle legend-icon-success"></i> = Sudah Selesai
             </div>
             <div class="legend-item">
-                <i class="fas fa-times-circle" style="color: #ef4444; opacity: 0.6;"></i> = Belum Selesai
+                <i class="fas fa-times-circle legend-icon-danger"></i> = Belum Selesai
             </div>
         </div>
 
@@ -99,16 +99,16 @@
                             @foreach ($list_materi as $kode => $judul)
                                 <td class="col-center td-icon">
                                     @if (in_array($kode, $progresSiswa))
-                                        <i class="fas fa-check-circle" style="color: #10b981;" title="Selesai"></i>
+                                        <i class="fas fa-check-circle table-icon-success" title="Selesai"></i>
                                     @else
-                                        <i class="fas fa-times-circle" style="color: #ef4444; opacity: 0.3;" title="Belum Selesai"></i>
+                                        <i class="fas fa-times-circle table-icon-danger" title="Belum Selesai"></i>
                                     @endif
                                 </td>
                             @endforeach
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="14" class="empty-row">Belum ada data siswa.</td>
+                            <td colspan="14" class="empty-row text-center-pad">Belum ada data siswa.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -121,7 +121,7 @@
             </div>
             <div class="pagination-buttons">
                 <button class="btn-page" id="btnPrev">Previous</button>
-                <span id="paginationNumbers" class="pagination-container"></span>
+                <span id="paginationNumbers" class="pagination-container flex-gap-5"></span>
                 <button class="btn-page" id="btnNext">Next</button>
             </div>
         </div>

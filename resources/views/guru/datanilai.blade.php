@@ -133,24 +133,24 @@
                 
                 <div class="riwayat-header-group">
                     <h4 id="judulTabelRiwayat" class="riwayat-title title-no-margin"></h4>
-                    <span id="infoKkmSaatIni" class="badge-kkm" style="display: none;">
+                    <span id="infoKkmSaatIni" class="badge-kkm d-none">
                         KKM Saat Ini: <span id="angkaKkmTampil">-</span>
                     </span>
                 </div>
                 
-                <table class="table-guru" id="tabelDetailRiwayat">
+                <table class="table-guru d-none" id="tabelDetailRiwayat">
                     <thead>
                         <tr id="headerRiwayat"></tr>
                     </thead>
                     <tbody id="bodyRiwayat"></tbody>
                 </table>
                 
-                <div id="loadingRiwayat" class="riwayat-loading">
+                <div id="loadingRiwayat" class="riwayat-loading d-none">
                     <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
                     <p class="loading-text">Memuat data...</p>
                 </div>
 
-                <div id="kosongRiwayat" class="riwayat-empty">
+                <div id="kosongRiwayat" class="riwayat-empty d-none">
                     Belum ada riwayat pengerjaan.
                 </div>
             </div>
