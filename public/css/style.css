@@ -1,4 +1,6 @@
-/* RESET & DASAR */
+/* =======================================================================
+   RESET & DASAR
+   ======================================================================= */
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +13,9 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR */
+/* =======================================================================
+   SIDEBAR
+   ======================================================================= */
 .sidebar {
     width: 260px;
     background-image: linear-gradient(180deg, #f95c50 0%, #e84a3e 100%);
@@ -78,7 +82,7 @@ body {
     transform: rotate(90deg);
 }
 
-/* SUBMENU (REVISI FLEXBOX) */
+/* SUBMENU */
 .submenu {
     background-color: #ff7b70;
     display: none;
@@ -95,11 +99,9 @@ body {
 }
 
 .submenu a {
-    /* Menggunakan Flexbox agar ikon gembok rapi di kanan */
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 10px 35px;
     color: #fff;
     text-decoration: none;
@@ -139,7 +141,7 @@ body {
 .top-bar {
     height: 60px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: 0 40px;
     background-color: #fff;
@@ -147,6 +149,12 @@ body {
     position: sticky;
     top: 0;
     z-index: 500;
+}
+
+.top-bar-left,
+.top-bar-right {
+    display: flex;
+    align-items: center;
 }
 
 .user-menu-container {
@@ -220,6 +228,33 @@ body {
 .btn-logout:hover {
     background: #fff5f3;
     color: #f95c50;
+}
+
+.mobile-dropdown-links {
+    display: none;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: #f95c50;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 5px 0;
 }
 
 /* PEMBUNGKUS KONTEN */
@@ -463,9 +498,97 @@ body {
     width: 100%;
 }
 
+/* =======================================================================
+   RESPONSIVE (Mobile & Tablet)
+   ======================================================================= */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #f95c50;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 995;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .mobile-dropdown-links {
+        display: block;
+    }
+
+    .user-dropdown-content {
+        min-width: 220px;
+        right: -10px;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .content-area {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .top-bar {
+        padding: 0 20px;
+    }
+
     .top-nav-links {
         display: none;
+    }
+
+    .content-wrapper {
+        padding: 20px 15px;
+    }
+
+    .content-image,
+    .content-image2,
+    .content-image3,
+    .content-image4 {
+        max-width: 90%;
+    }
+
+    .content-video {
+        width: 100%;
+    }
+
+    .gaya-video-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .gaya-video-item {
+        max-width: 100%;
+        margin-bottom: 15px;
     }
 }
 

@@ -176,10 +176,6 @@ body {
     position: relative;
 }
 
-/* ========================================= */
-/* STYLE TOMBOL PROFIL (Menyamakan dgn Siswa)*/
-/* ========================================= */
-
 .profile-menu {
     font-weight: 600;
     color: #f95c50;
@@ -278,10 +274,6 @@ body {
     flex: 1;
     overflow-y: auto;
 }
-
-/* ========================================= */
-/* STYLE MENU NAVIGASI MATERI DI NAVBAR GURU */
-/* ========================================= */
 
 .top-nav-links {
     display: flex;
@@ -708,12 +700,10 @@ body {
         display: block;
     }
 
-    /* Munculkan menu tambahan di dropdown khusus HP */
     .mobile-dropdown-links {
         display: block;
     }
 
-    /* Perlebar sedikit dropdownnya agar teksnya lega di HP */
     .user-dropdown-content {
         min-width: 220px;
         right: -10px;

@@ -19,6 +19,8 @@
 
 <body>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="sidebar">
         <h2>GERAK DAN GAYA</h2>
 
@@ -102,30 +104,50 @@
     <div class="content-area">
         <div class="top-bar">
             
-            {{-- Menu Navigasi Utama --}}
-            <div class="top-nav-links">
-                @if(Auth::check() && Auth::user()->peran === 'guru')
-                    <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
-                @endif
-                <a href="{{ url('/') }}">Beranda</a>
-                <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
-                <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
-                <a href="{{ url('/tentang') }}">Tentang</a>
+            <div class="top-bar-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-
-            {{-- Bagian User Menu --}}
-            <div class="user-menu-container">
-                <div class="user-greeting" onclick="toggleDropdown()">
-                    Halo, {{ Auth::user()->nama_lengkap }} 👋
+            
+            <div class="top-bar-right">
+                {{-- Menu Navigasi Utama --}}
+                <div class="top-nav-links">
+                    @if(Auth::check() && Auth::user()->peran === 'guru')
+                        <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
+                    @endif
+                    <a href="{{ url('/') }}">Beranda</a>
+                    <a href="{{ url('/daftar-materi') }}">Daftar Materi</a>
+                    <a href="{{ url('/petunjuk') }}">Petunjuk Penggunaan</a>
+                    <a href="{{ url('/tentang') }}">Tentang</a>
                 </div>
 
-                <div class="dropdown-logout" id="dropdownMenu">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn-logout">
-                            🚪 Keluar
-                        </button>
-                    </form>
+                {{-- Bagian User Menu --}}
+                <div class="user-menu-container">
+                    <div class="user-greeting" onclick="toggleDropdown()">
+                        Halo, {{ Auth::user()->nama_lengkap }} 👋
+                    </div>
+
+                    <div class="dropdown-logout" id="dropdownMenu">
+                        
+                        <div class="mobile-dropdown-links">
+                            @if(Auth::check() && Auth::user()->peran === 'guru')
+                                <a href="{{ url('/guru/datasiswa') }}" class="dropdown-item">Halaman Guru</a>
+                            @endif
+                            <a href="{{ url('/') }}" class="dropdown-item">Beranda</a>
+                            <a href="{{ url('/daftar-materi') }}" class="dropdown-item">Daftar Materi</a>
+                            <a href="{{ url('/petunjuk') }}" class="dropdown-item">Petunjuk Penggunaan</a>
+                            <a href="{{ url('/tentang') }}" class="dropdown-item">Tentang</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-logout">
+                                🚪 Keluar
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,6 +180,25 @@
                 });
             });
         @endif
+
+        // Logika Hamburger Menu Mobile
+        document.addEventListener("DOMContentLoaded", function() {
+            const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+            const sidebar = document.querySelector(".sidebar");
+            const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+            if (mobileMenuBtn && sidebar && sidebarOverlay) {
+                mobileMenuBtn.addEventListener("click", () => {
+                    sidebar.classList.add("active");
+                    sidebarOverlay.classList.add("show");
+                });
+
+                sidebarOverlay.addEventListener("click", () => {
+                    sidebar.classList.remove("active");
+                    sidebarOverlay.classList.remove("show");
+                });
+            }
+        });
     </script>
 
     <script src="{{ asset('js/script.js') }}"></script>
