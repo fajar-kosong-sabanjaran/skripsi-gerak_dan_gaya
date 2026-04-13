@@ -2281,6 +2281,7 @@ body.body-petunjuk {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    z-index: 1000;
 }
 
 .kuis-sidebar-header {
@@ -2288,12 +2289,25 @@ body.body-petunjuk {
     background: #f95c50;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .kuis-sidebar-header h3 {
     margin: 0;
     font-weight: 600;
     letter-spacing: 0.5px;
+}
+
+/* Tombol close di mobile (default sembunyi) */
+.kuis-close-sidebar {
+    display: none;
+    position: absolute;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .kuis-sidebar-content {
@@ -2400,6 +2414,18 @@ body.body-petunjuk {
     align-items: center;
     border-bottom: 1px solid #e4e6eb;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+/* Tombol hamburger khusus kuis mobile (default sembunyi) */
+.kuis-mobile-nav-btn {
+    display: none;
+    background: #fff;
+    border: 2px solid #f95c50;
+    color: #f95c50;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .kuis-timer-box {
@@ -2567,15 +2593,23 @@ body.body-petunjuk {
     box-shadow: 0 4px 15px rgba(249, 92, 80, 0.3);
 }
 
-.kuis-modal-overlay {
+.kuis-modal-overlay,
+.kuis-sidebar-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     display: none;
+    z-index: 50;
+}
+
+.kuis-modal-overlay {
     align-items: center;
     justify-content: center;
-    z-index: 50;
+}
+
+.kuis-sidebar-overlay.show {
+    display: block;
 }
 
 .kuis-modal-box {
@@ -2648,6 +2682,77 @@ body.body-petunjuk {
     background: #e44a3f;
 }
 
+/* =======================================================================
+   RESPONSIVE KUIS (Mobile & Tablet)
+   ======================================================================= */
+@media (max-width: 768px) {
+    .kuis-sidebar {
+        position: fixed;
+        left: -100%;
+        transition: left 0.3s ease;
+    }
+
+    .kuis-sidebar.active {
+        left: 0;
+    }
+
+    .kuis-close-sidebar {
+        display: block;
+    }
+
+    .kuis-mobile-nav-btn {
+        display: block;
+    }
+
+    .kuis-top-header {
+        padding: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .kuis-timer-box {
+        font-size: 16px;
+        padding: 6px 12px;
+        margin: 0 auto;
+    }
+
+    .kuis-btn-finish {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .timer-text-hide,
+    .finish-text-hide,
+    .nav-text-hide {
+        display: none;
+    }
+
+    .kuis-question-wrapper {
+        padding: 15px;
+    }
+
+    .kuis-question-box {
+        padding: 20px;
+    }
+
+    .kuis-question-text {
+        font-size: 16px;
+    }
+
+    .kuis-option-text {
+        font-size: 14px;
+    }
+
+    .kuis-option-label {
+        padding: 12px 15px;
+    }
+
+    .kuis-btn-nav {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
 /* ============================================================
    STYLE KHUSUS KUIS 2 (GAYA)
    ============================================================ */
@@ -2666,7 +2771,6 @@ body.body-petunjuk {
     width: 100%;
 }
 
-/* --- SIDEBAR --- */
 .kuis2-sidebar {
     width: 260px;
     background: #fff;
@@ -2674,6 +2778,7 @@ body.body-petunjuk {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    z-index: 1000;
 }
 
 .kuis2-sidebar-header {
@@ -2681,12 +2786,24 @@ body.body-petunjuk {
     background: #f95c50;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .kuis2-sidebar-header h3 {
     margin: 0;
     font-weight: 600;
     letter-spacing: 0.5px;
+}
+
+.kuis2-close-sidebar {
+    display: none;
+    position: absolute;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .kuis2-sidebar-content {
@@ -2703,7 +2820,6 @@ body.body-petunjuk {
     display: block;
 }
 
-/* --- GRID NOMOR SOAL --- */
 .kuis2-nomor-soal-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -2743,7 +2859,6 @@ body.body-petunjuk {
     border-color: #2ecc71;
 }
 
-/* --- LEGEND (KETERANGAN WARNA) --- */
 .kuis2-legend {
     border-top: 1px solid #e4e6eb;
     padding-top: 20px;
@@ -2779,7 +2894,6 @@ body.body-petunjuk {
     border-color: #2ecc71;
 }
 
-/* --- MAIN AREA (KANAN) --- */
 .kuis2-main-area {
     flex: 1;
     display: flex;
@@ -2798,7 +2912,17 @@ body.body-petunjuk {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
-/* --- TIMER & TOMBOL SELESAI --- */
+.kuis2-mobile-nav-btn {
+    display: none;
+    background: #fff;
+    border: 2px solid #f95c50;
+    color: #f95c50;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 .kuis2-timer-box {
     font-size: 18px;
     font-weight: 700;
@@ -2829,7 +2953,6 @@ body.body-petunjuk {
     transform: translateY(-2px);
 }
 
-/* --- CONTAINER SOAL --- */
 .kuis2-question-wrapper {
     padding: 30px;
     flex: 1;
@@ -2861,7 +2984,6 @@ body.body-petunjuk {
     margin-bottom: 30px;
 }
 
-/* --- OPSI JAWABAN (RADIO BUTTON) --- */
 .kuis2-options-list {
     list-style: none;
     padding: 0;
@@ -2913,7 +3035,6 @@ body.body-petunjuk {
     transition: 0.2s;
 }
 
-/* Hover & Checked States */
 .kuis2-option-label:hover {
     border-color: #f95c50;
     background: #fff5f4;
@@ -2936,7 +3057,6 @@ body.body-petunjuk {
     box-shadow: 0 4px 10px rgba(249, 92, 80, 0.15);
 }
 
-/* --- TOMBOL NAVIGASI BAWAH (PREV/NEXT) --- */
 .kuis2-nav-actions {
     margin-top: 40px;
     display: flex;
@@ -2971,16 +3091,23 @@ body.body-petunjuk {
     box-shadow: 0 4px 15px rgba(249, 92, 80, 0.3);
 }
 
-/* --- MODAL / POPUP CUSTOM (Jika tidak menggunakan SweetAlert) --- */
-.kuis2-modal-overlay {
+.kuis2-modal-overlay,
+.kuis2-sidebar-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     display: none;
+    z-index: 50;
+}
+
+.kuis2-modal-overlay {
     align-items: center;
     justify-content: center;
-    z-index: 50;
+}
+
+.kuis2-sidebar-overlay.show {
+    display: block;
 }
 
 .kuis2-modal-box {
@@ -3080,11 +3207,81 @@ body.body-petunjuk {
     margin-bottom: 2px;
 }
 
+/* =======================================================================
+   RESPONSIVE KUIS 2 (Mobile & Tablet)
+   ======================================================================= */
+@media (max-width: 768px) {
+    .kuis2-sidebar {
+        position: fixed;
+        left: -100%;
+        transition: left 0.3s ease;
+    }
+
+    .kuis2-sidebar.active {
+        left: 0;
+    }
+
+    .kuis2-close-sidebar {
+        display: block;
+    }
+
+    .kuis2-mobile-nav-btn {
+        display: block;
+    }
+
+    .kuis2-top-header {
+        padding: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .kuis2-timer-box {
+        font-size: 16px;
+        padding: 6px 12px;
+        margin: 0 auto;
+    }
+
+    .kuis2-btn-finish {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .timer-text-hide,
+    .finish-text-hide,
+    .nav-text-hide {
+        display: none;
+    }
+
+    .kuis2-question-wrapper {
+        padding: 15px;
+    }
+
+    .kuis2-question-box {
+        padding: 20px;
+    }
+
+    .kuis2-question-text {
+        font-size: 16px;
+    }
+
+    .kuis2-option-text {
+        font-size: 14px;
+    }
+
+    .kuis2-option-label {
+        padding: 12px 15px;
+    }
+
+    .kuis2-btn-nav {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
 /* ============================================================
    STYLE KHUSUS EVALUASI AKHIR (GERAK DAN GAYA)
    ============================================================ */
 
-/* --- BODY & CONTAINER --- */
 .body-evaluasi-fullscreen {
     margin: 0;
     padding: 0;
@@ -3099,7 +3296,6 @@ body.body-petunjuk {
     width: 100%;
 }
 
-/* --- SIDEBAR (KIRI) --- */
 .evaluasi-sidebar {
     width: 260px;
     background: #fff;
@@ -3107,20 +3303,32 @@ body.body-petunjuk {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    z-index: 1000;
 }
 
 .evaluasi-sidebar-header {
     padding: 20px;
-    /* MENGGUNAKAN ORANGE TUA/VIBRANT */
     background: #ff6b01;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .evaluasi-sidebar-header h3 {
     margin: 0;
     font-weight: 600;
     letter-spacing: 0.5px;
+}
+
+.evaluasi-close-sidebar {
+    display: none;
+    position: absolute;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .evaluasi-sidebar-content {
@@ -3137,7 +3345,6 @@ body.body-petunjuk {
     display: block;
 }
 
-/* --- GRID NOMOR SOAL --- */
 .evaluasi-nomor-soal-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -3165,19 +3372,18 @@ body.body-petunjuk {
 }
 
 .evaluasi-btn-num.current {
-    background: #ff6b01; /* Orange Tua */
+    background: #ff6b01;
     color: white;
     border-color: #ff6b01;
     box-shadow: 0 4px 10px rgba(255, 107, 1, 0.3);
 }
 
 .evaluasi-btn-num.answered {
-    background: #2ecc71; /* Hijau tetap untuk yang sudah dijawab */
+    background: #2ecc71;
     color: white;
     border-color: #2ecc71;
 }
 
-/* --- LEGEND (KETERANGAN WARNA) --- */
 .evaluasi-legend {
     border-top: 1px solid #e4e6eb;
     padding-top: 20px;
@@ -3204,7 +3410,7 @@ body.body-petunjuk {
 }
 
 .evaluasi-dot-orange {
-    background: #ff6b01; /* Orange Tua */
+    background: #ff6b01;
     border-color: #ff6b01;
 }
 
@@ -3213,7 +3419,6 @@ body.body-petunjuk {
     border-color: #2ecc71;
 }
 
-/* --- MAIN AREA (KANAN) --- */
 .evaluasi-main-area {
     flex: 1;
     display: flex;
@@ -3232,15 +3437,25 @@ body.body-petunjuk {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
-/* --- TIMER & TOMBOL SELESAI --- */
+.evaluasi-mobile-nav-btn {
+    display: none;
+    background: #fff;
+    border: 2px solid #ff6b01;
+    color: #ff6b01;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 .evaluasi-timer-box {
     font-size: 18px;
     font-weight: 700;
-    color: #ff6b01; /* Orange Tua */
+    color: #ff6b01;
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #fff5e6; /* Background Orange Sangat Muda */
+    background: #fff5e6;
     padding: 8px 20px;
     border-radius: 50px;
 }
@@ -3263,7 +3478,6 @@ body.body-petunjuk {
     transform: translateY(-2px);
 }
 
-/* --- CONTAINER SOAL --- */
 .evaluasi-question-wrapper {
     padding: 30px;
     flex: 1;
@@ -3283,7 +3497,7 @@ body.body-petunjuk {
 
 .evaluasi-question-number {
     font-size: 18px;
-    color: #ff6b01; /* Orange Tua */
+    color: #ff6b01;
     margin-bottom: 20px;
     font-weight: 700;
 }
@@ -3295,7 +3509,6 @@ body.body-petunjuk {
     margin-bottom: 30px;
 }
 
-/* --- OPSI JAWABAN (RADIO BUTTON) --- */
 .evaluasi-options-list {
     list-style: none;
     padding: 0;
@@ -3341,16 +3554,15 @@ body.body-petunjuk {
     content: "";
     width: 12px;
     height: 12px;
-    background: #ff6b01; /* Orange Tua */
+    background: #ff6b01;
     border-radius: 50%;
     opacity: 0;
     transition: 0.2s;
 }
 
-/* Hover & Checked States */
 .evaluasi-option-label:hover {
     border-color: #ff6b01;
-    background: #fff5e6; /* Orange Muda */
+    background: #fff5e6;
     transform: translateX(5px);
 }
 
@@ -3370,7 +3582,6 @@ body.body-petunjuk {
     box-shadow: 0 4px 10px rgba(255, 107, 1, 0.15);
 }
 
-/* --- TOMBOL NAVIGASI BAWAH (PREV/NEXT) --- */
 .evaluasi-nav-actions {
     margin-top: 40px;
     display: flex;
@@ -3396,25 +3607,32 @@ body.body-petunjuk {
 }
 
 .evaluasi-btn-nav.next {
-    background: #ff6b01; /* Orange Tua */
+    background: #ff6b01;
     color: white;
 }
 
 .evaluasi-btn-nav.next:hover {
-    background: #e65100; /* Darker Orange */
+    background: #e65100;
     box-shadow: 0 4px 15px rgba(255, 107, 1, 0.3);
 }
 
-/* --- MODAL / POPUP CUSTOM (Jika tidak menggunakan SweetAlert) --- */
-.evaluasi-modal-overlay {
+.evaluasi-modal-overlay,
+.evaluasi-sidebar-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     display: none;
+    z-index: 50;
+}
+
+.evaluasi-modal-overlay {
     align-items: center;
     justify-content: center;
-    z-index: 50;
+}
+
+.evaluasi-sidebar-overlay.show {
+    display: block;
 }
 
 .evaluasi-modal-box {
@@ -3428,10 +3646,30 @@ body.body-petunjuk {
     animation: popUp 0.4s ease;
 }
 
+@keyframes popUp {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .evaluasi-modal-icon {
     font-size: 60px;
     margin-bottom: 20px;
     animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
 }
 
 .evaluasi-modal-box h3 {
@@ -3445,7 +3683,7 @@ body.body-petunjuk {
     padding: 15px;
     border-radius: 12px;
     border: none;
-    background: #ff6b01; /* Orange Tua */
+    background: #ff6b01;
     color: white;
     font-size: 16px;
     font-weight: 700;
@@ -3456,4 +3694,75 @@ body.body-petunjuk {
 
 .evaluasi-btn-modal-ok:hover {
     background: #e65100;
+}
+
+/* =======================================================================
+   RESPONSIVE EVALUASI (Mobile & Tablet)
+   ======================================================================= */
+@media (max-width: 768px) {
+    .evaluasi-sidebar {
+        position: fixed;
+        left: -100%;
+        transition: left 0.3s ease;
+    }
+
+    .evaluasi-sidebar.active {
+        left: 0;
+    }
+
+    .evaluasi-close-sidebar {
+        display: block;
+    }
+
+    .evaluasi-mobile-nav-btn {
+        display: block;
+    }
+
+    .evaluasi-top-header {
+        padding: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .evaluasi-timer-box {
+        font-size: 16px;
+        padding: 6px 12px;
+        margin: 0 auto;
+    }
+
+    .evaluasi-btn-finish {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .timer-text-hide,
+    .finish-text-hide,
+    .nav-text-hide {
+        display: none;
+    }
+
+    .evaluasi-question-wrapper {
+        padding: 15px;
+    }
+
+    .evaluasi-question-box {
+        padding: 20px;
+    }
+
+    .evaluasi-question-text {
+        font-size: 16px;
+    }
+
+    .evaluasi-option-text {
+        font-size: 14px;
+    }
+
+    .evaluasi-option-label {
+        padding: 12px 15px;
+    }
+
+    .evaluasi-btn-nav {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }

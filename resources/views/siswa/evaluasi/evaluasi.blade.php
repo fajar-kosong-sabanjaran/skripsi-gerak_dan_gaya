@@ -18,11 +18,14 @@
 
 <body class="body-evaluasi-fullscreen" id="halaman-evaluasi">
 
+  <div class="evaluasi-sidebar-overlay" id="evaluasiSidebarOverlay"></div>
+
   <div class="evaluasi-container-full">
     
-    <aside class="evaluasi-sidebar">
+    <aside class="evaluasi-sidebar" id="evaluasiSidebar">
       <div class="evaluasi-sidebar-header">
         <h3>Evaluasi Akhir</h3>
+        <span class="evaluasi-close-sidebar" id="evaluasiCloseBtn">&times;</span>
       </div>
       
       <div class="evaluasi-sidebar-content">
@@ -47,12 +50,16 @@
     <main class="evaluasi-main-area">
       
       <header class="evaluasi-top-header">
+        <button class="evaluasi-mobile-nav-btn" id="evaluasiMobileNavBtn">
+            <i class="fas fa-th-large"></i> Navigasi Soal
+        </button>
+
         <div class="evaluasi-timer-box">
-          <i class="fas fa-stopwatch"></i> Sisa Waktu: <span id="timer-evaluasi">45:00</span>
+          <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span id="timer-evaluasi">45:00</span>
         </div>
         
         <button class="evaluasi-btn-finish" id="finishBtn-evaluasi">
-          Selesaikan Evaluasi ✓
+          <span class="finish-text-hide">Selesaikan Evaluasi</span> ✓
         </button>
       </header>
 
@@ -68,8 +75,8 @@
           <ul class="evaluasi-options-list" id="optionsList-evaluasi"></ul>
 
           <div class="evaluasi-nav-actions">
-            <button class="evaluasi-btn-nav prev" id="prevBtn-evaluasi">← Sebelumnya</button>
-            <button class="evaluasi-btn-nav next" id="nextBtn-evaluasi">Selanjutnya →</button>
+            <button class="evaluasi-btn-nav prev" id="prevBtn-evaluasi">← <span class="nav-text-hide">Sebelumnya</span></button>
+            <button class="evaluasi-btn-nav next" id="nextBtn-evaluasi"><span class="nav-text-hide">Selanjutnya</span> →</button>
           </div>
         </div>
       </section>
@@ -83,6 +90,31 @@
     
     // [TAMBAHAN] Menangkap nilai KKM dari database untuk Evaluasi
     window.KKM_KUIS = {{ $kkm }};
+
+    // Logika Toggle Sidebar Evaluasi di Mobile
+    document.addEventListener("DOMContentLoaded", function() {
+        const mobileBtn = document.getElementById("evaluasiMobileNavBtn");
+        const closeBtn = document.getElementById("evaluasiCloseBtn");
+        const sidebar = document.getElementById("evaluasiSidebar");
+        const overlay = document.getElementById("evaluasiSidebarOverlay");
+
+        if (mobileBtn && sidebar && overlay && closeBtn) {
+            mobileBtn.addEventListener("click", () => {
+                sidebar.classList.add("active");
+                overlay.classList.add("show");
+            });
+
+            closeBtn.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+                overlay.classList.remove("show");
+            });
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+                overlay.classList.remove("show");
+            });
+        }
+    });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
