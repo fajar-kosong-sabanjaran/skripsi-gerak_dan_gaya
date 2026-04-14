@@ -1733,6 +1733,9 @@ body {
     }
 }
 
+
+
+
 /* Resultan Gaya */
 .container-soal {
     display: flex;
@@ -1882,6 +1885,11 @@ body {
     transform: translateY(-2px);
 }
 
+
+
+
+
+
 /* Pengertian Gaya */
 .kotak-kuis-gaya {
     background-color: #f8f9fa;
@@ -1984,7 +1992,10 @@ body {
     display: none !important;
 }
 
-/* Macam - Macam Gaya */
+
+
+
+/* Css dari Macam - Macam Gaya */
 .jg-grid-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2047,16 +2058,14 @@ body {
     margin-bottom: 5px;
 }
 
-/* KELAS UNIK: Kontainer tombol aksi untuk Macam-Macam Gaya */
 .action-container-macamgaya {
     display: flex;
-    justify-content: center; /* Dipusatkan */
-    gap: 15px; 
-    margin-top: 15px; /* Margin dikurangi agar jarak tombol ke kartu lebih dekat */
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
     width: 100%;
 }
 
-/* KELAS UNIK: Tombol Cek Jawaban Macam-Macam Gaya */
 .btn-cek-macamgaya {
     padding: 8px 16px;
     background: #f95c50;
@@ -2072,7 +2081,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* KELAS UNIK: Tombol Coba Lagi Macam-Macam Gaya */
 .btn-reset-macamgaya {
     padding: 8px 16px;
     background: #6c757d;
@@ -2088,15 +2096,55 @@ body {
     transform: translateY(-2px);
 }
 
-/* Kelas Warna untuk Fallback Modal */
 .hasil-benar {
-    color: #28a745; /* Hijau */
+    color: #28a745;
     font-weight: bold;
 }
+
 .hasil-salah {
-    color: #dc3545; /* Merah */
+    color: #dc3545;
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+    .jg-grid-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    #drag-container-macam {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    #drag-container-macam .drop-column {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #drag-container-macam .drop-header {
+        font-size: 13px;
+        padding: 6px 4px;
+    }
+
+    #drag-container-macam .drop-zone {
+        min-height: 100px;
+    }
+
+    #card-pool-macam {
+        grid-template-columns: 1fr;
+    }
+
+    .action-container-macamgaya {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+
+
+
 
 /* INI MERUPAKAN FILE HUKUM NEWTON */
 .note-box {
@@ -2410,7 +2458,6 @@ body.body-petunjuk {
     letter-spacing: 0.5px;
 }
 
-/* Tombol close di mobile (default sembunyi) */
 .kuis-close-sidebar {
     display: none;
     position: absolute;
@@ -2525,7 +2572,6 @@ body.body-petunjuk {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
-/* Tombol hamburger khusus kuis mobile (default sembunyi) */
 .kuis-mobile-nav-btn {
     display: none;
     background: #fff;
@@ -2791,12 +2837,11 @@ body.body-petunjuk {
     background: #e44a3f;
 }
 
-/* =======================================================================
-   RESPONSIVE KUIS (Mobile & Tablet)
-   ======================================================================= */
 @media (max-width: 768px) {
     .kuis-sidebar {
         position: fixed;
+        top: 0;
+        height: 100vh;
         left: -100%;
         transition: left 0.3s ease;
     }
@@ -3290,7 +3335,6 @@ body.body-petunjuk {
     background: #e44a3f;
 }
 
-/* --- CSS PETUNJUK PENGERJAAN --- */
 .kotak-instruksi {
     background-color: #fff8e1;
     border-left: 5px solid #ffc107;
@@ -3316,12 +3360,11 @@ body.body-petunjuk {
     margin-bottom: 2px;
 }
 
-/* =======================================================================
-   RESPONSIVE KUIS 2 (Mobile & Tablet)
-   ======================================================================= */
 @media (max-width: 768px) {
     .kuis2-sidebar {
         position: fixed;
+        top: 0;
+        height: 100vh;
         left: -100%;
         transition: left 0.3s ease;
     }
@@ -3805,12 +3848,11 @@ body.body-petunjuk {
     background: #e65100;
 }
 
-/* =======================================================================
-   RESPONSIVE EVALUASI (Mobile & Tablet)
-   ======================================================================= */
 @media (max-width: 768px) {
     .evaluasi-sidebar {
         position: fixed;
+        top: 0;
+        height: 100vh;
         left: -100%;
         transition: left 0.3s ease;
     }

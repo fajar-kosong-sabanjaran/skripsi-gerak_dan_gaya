@@ -4,10 +4,14 @@
 // FUNGSI BARU: MENYIMPAN PROGRES KE DATABASE (DIBUAT JADI GLOBAL)
 // =========================================================================
 window.simpanProgresKeDatabase = function (kodeMateri) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute("content");
 
     if (!csrfToken) {
-        console.error("CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.");
+        console.error(
+            "CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.",
+        );
         return;
     }
 
@@ -19,13 +23,13 @@ window.simpanProgresKeDatabase = function (kodeMateri) {
         },
         body: JSON.stringify({ kode_materi: kodeMateri }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data.message);
-    })
-    .catch((error) => {
-        console.error("Error saat menyimpan progres:", error);
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.message);
+        })
+        .catch((error) => {
+            console.error("Error saat menyimpan progres:", error);
+        });
 };
 
 // --- HELPER FUNCTION: UNTUK MEMBUKA SIDEBAR (DIBUAT GLOBAL) ---
@@ -133,13 +137,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (path.includes("/siswa/gerak")) {
         const submenu = document.getElementById("gerak");
-        const header = document.querySelector('.menu-item.has-toggle[data-target="gerak"]');
+        const header = document.querySelector(
+            '.menu-item.has-toggle[data-target="gerak"]',
+        );
         if (submenu) submenu.classList.add("open");
         if (header) header.classList.add("active");
     }
     if (path.includes("/siswa/gaya")) {
         const submenu = document.getElementById("gaya");
-        const header = document.querySelector('.menu-item.has-toggle[data-target="gaya"]');
+        const header = document.querySelector(
+            '.menu-item.has-toggle[data-target="gaya"]',
+        );
         if (submenu) submenu.classList.add("open");
         if (header) header.classList.add("active");
     }
@@ -164,10 +172,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.onclick = function (event) {
         if (!event.target.matches(".user-greeting")) {
-            const dropdowns = document.getElementsByClassName("dropdown-logout");
+            const dropdowns =
+                document.getElementsByClassName("dropdown-logout");
             for (let i = 0; i < dropdowns.length; i++) {
                 const openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains("show")) openDropdown.classList.remove("show");
+                if (openDropdown.classList.contains("show"))
+                    openDropdown.classList.remove("show");
             }
         }
     };
@@ -201,7 +211,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault();
                 zone.classList.add("over");
             });
-            zone.addEventListener("dragleave", () => zone.classList.remove("over"));
+            zone.addEventListener("dragleave", () =>
+                zone.classList.remove("over"),
+            );
             zone.addEventListener("drop", (e) => {
                 e.preventDefault();
                 zone.classList.remove("over");
@@ -2409,537 +2421,607 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// =========================================================================
 // FILE: RESULTAN GAYA
-document.addEventListener("DOMContentLoaded", function () {
-    // =========================================================================
-    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT (DARI DATABASE)
-    // =========================================================================
-    if (
-        window.progresSiswa &&
-        window.progresSiswa.includes("resultangaya_completed")
-    ) {
-        const btnNext = document.getElementById("btn-next-materi");
-        if (btnNext) {
-            btnNext.classList.remove("locked");
-        }
-    }
-
-    // =========================================================================
-    // 2. LOGIKA KUIS RESULTAN GAYA: ISI SEMUA, CEK JAWABAN, COBA LAGI
-    // =========================================================================
-    const btnSubmitResultan = document.getElementById(
-        "btn-submit-resultangaya",
-    );
-    const btnRetryResultan = document.getElementById("btn-retry-resultangaya");
-
-    // Kunci Jawaban
-    const kunciJawaban = {
-        1: 40, // Latihan 1: 15 + 25
-        2: 0, // Latihan 2: 35 + (-35)
-    };
-
-    if (btnSubmitResultan) {
-        btnSubmitResultan.addEventListener("click", function () {
-            const input1 = document.getElementById("jawaban1");
-            const input2 = document.getElementById("jawaban2");
-
-            if (!input1 || !input2) return;
-
-            const val1 = input1.value.trim();
-            const val2 = input2.value.trim();
-
-            // Cek apakah ada yang masih kosong
-            if (val1 === "" || val2 === "") {
-                if (typeof Swal !== "undefined") {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Belum Lengkap",
-                        text: "Silakan isi semua jawaban terlebih dahulu!",
-                        confirmButtonColor: "#f95c50",
-                    });
-                } else {
-                    alert("Isi semua jawaban terlebih dahulu!");
-                }
-                return;
-            }
-
-            // Kunci input agar tidak bisa diubah
-            input1.readOnly = true;
-            input2.readOnly = true;
-
-            let correctCount = 0;
-
-            // Evaluasi Latihan 1
-            if (Number(val1) === kunciJawaban[1]) {
-                input1.classList.add("jawaban-benar");
-                correctCount++;
-            } else {
-                input1.classList.add("jawaban-salah");
-            }
-
-            // Evaluasi Latihan 2
-            if (Number(val2) === kunciJawaban[2]) {
-                input2.classList.add("jawaban-benar");
-                correctCount++;
-            } else {
-                input2.classList.add("jawaban-salah");
-            }
-
-            // Cek kelulusan
-            if (correctCount === 2) {
-                // Berhasil
-                window.progresSiswa = window.progresSiswa || [];
-                if (!window.progresSiswa.includes("resultangaya_completed")) {
-                    window.progresSiswa.push("resultangaya_completed");
-                }
-
-                if (window.simpanProgresKeDatabase) {
-                    window.simpanProgresKeDatabase("resultangaya_completed");
-                }
-
-                // Buka materi selanjutnya dan sidebar
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) btnNext.classList.remove("locked");
-
-                if (window.unlockSidebar) {
-                    window.unlockSidebar("nav-macam-gaya");
-                }
-
-                if (typeof Swal !== "undefined") {
-                    Swal.fire({
-                        title: "Luar Biasa!",
-                        text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
-                        icon: "success",
-                        confirmButtonText: "Lanjut",
-                        confirmButtonColor: "#2ecc71",
-                    });
-                }
-            } else {
-                // Ada yang salah
-                if (typeof Swal !== "undefined") {
-                    Swal.fire({
-                        title: "Masih Ada yang Kurang Tepat",
-                        text: "Silakan klik 'Coba Lagi' untuk memperbaiki jawabanmu yang salah.",
-                        icon: "error",
-                        confirmButtonText: "Tutup",
-                        confirmButtonColor: "#f95c50",
-                    });
-                }
-            }
-        });
-    }
-
-    // =========================================================================
-    // 3. FUNGSI TOMBOL COBA LAGI (RESET KUIS RESULTAN GAYA)
-    // =========================================================================
-    if (btnRetryResultan) {
-        btnRetryResultan.addEventListener("click", function () {
-            const input1 = document.getElementById("jawaban1");
-            const input2 = document.getElementById("jawaban2");
-
-            if (input1) {
-                input1.readOnly = false; // Buka kunci input
-                input1.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
-                input1.value = ""; // Mengosongkan jawaban
-            }
-            if (input2) {
-                input2.readOnly = false; // Buka kunci input
-                input2.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
-                input2.value = ""; // Mengosongkan jawaban
-            }
-        });
-    }
-});
-
-// FILE: MACAM - MACAM GAYA (LOGIKA DRAG & DROP)
+// =========================================================================
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // =========================================================================
-    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT (DARI DATABASE)
-    // =========================================================================
-    function checkLocalLock() {
-        if (path.includes("macam-macamgaya")) {
-            // Cek apakah kode materi ada di dalam array progres dari database
-            if (
-                window.progresSiswa &&
-                window.progresSiswa.includes("macamgaya_completed")
-            ) {
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) btnNext.classList.remove("locked");
-            } else {
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) btnNext.classList.add("locked");
+    // ISOLASI: Kode ini HANYA JALAN di halaman Resultan Gaya
+    if (path.includes("resultangaya")) {
+        const btnSubmitResultan = document.getElementById(
+            "btn-submit-resultangaya",
+        );
+        const btnRetryResultan = document.getElementById(
+            "btn-retry-resultangaya",
+        );
+        const btnNext = document.getElementById("btn-next-materi");
+
+        // =========================================================================
+        // KUNCI TOMBOL NEXT SECARA MUTLAK (VISUAL & FUNGSI)
+        // =========================================================================
+        let originalHref = "";
+        if (btnNext) {
+            originalHref = btnNext.getAttribute("href") || "";
+
+            // Jika saat halaman dimuat tombol berstatus 'locked', matikan total fungsinya
+            if (btnNext.classList.contains("locked")) {
+                btnNext.removeAttribute("href"); // Cabut link agar mustahil pindah halaman
+                btnNext.style.backgroundColor = "#6c757d"; // Ubah warna jadi abu-abu
+                btnNext.style.borderColor = "#6c757d";
+                btnNext.style.cursor = "not-allowed";
             }
+
+            // Tampilkan peringatan SweetAlert jika tombol abu-abu ini diklik
+            btnNext.addEventListener("click", function (e) {
+                if (this.classList.contains("locked")) {
+                    e.preventDefault();
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Materi Terkunci",
+                            text: "Selesaikan latihan resultan gaya terlebih dahulu!",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    }
+                }
+            });
+        }
+
+        // =========================================================================
+        // LOGIKA KUIS RESULTAN GAYA: ISI SEMUA, CEK JAWABAN, COBA LAGI
+        // =========================================================================
+        const kunciJawaban = {
+            1: 40, // Latihan 1: 15 + 25
+            2: 0, // Latihan 2: 35 + (-35)
+        };
+
+        if (btnSubmitResultan) {
+            btnSubmitResultan.addEventListener("click", function () {
+                const input1 = document.getElementById("jawaban1");
+                const input2 = document.getElementById("jawaban2");
+
+                if (!input1 || !input2) return;
+
+                const val1 = input1.value.trim();
+                const val2 = input2.value.trim();
+
+                // Cek apakah ada yang masih kosong
+                if (val1 === "" || val2 === "") {
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Belum Lengkap",
+                            text: "Silakan isi semua jawaban terlebih dahulu!",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    } else {
+                        alert("Isi semua jawaban terlebih dahulu!");
+                    }
+                    return;
+                }
+
+                // Kunci input agar tidak bisa diubah
+                input1.readOnly = true;
+                input2.readOnly = true;
+
+                let correctCount = 0;
+
+                // Evaluasi Latihan 1
+                if (Number(val1) === kunciJawaban[1]) {
+                    input1.classList.add("jawaban-benar");
+                    correctCount++;
+                } else {
+                    input1.classList.add("jawaban-salah");
+                }
+
+                // Evaluasi Latihan 2
+                if (Number(val2) === kunciJawaban[2]) {
+                    input2.classList.add("jawaban-benar");
+                    correctCount++;
+                } else {
+                    input2.classList.add("jawaban-salah");
+                }
+
+                // Cek kelulusan
+                if (correctCount === 2) {
+                    // Berhasil
+                    window.progresSiswa = window.progresSiswa || [];
+                    if (
+                        !window.progresSiswa.includes("resultangaya_completed")
+                    ) {
+                        window.progresSiswa.push("resultangaya_completed");
+                    }
+
+                    if (window.simpanProgresKeDatabase) {
+                        window.simpanProgresKeDatabase(
+                            "resultangaya_completed",
+                        );
+                    }
+
+                    if (window.unlockSidebar) {
+                        window.unlockSidebar("nav-macam-gaya");
+                    }
+
+                    // BUKA TOMBOL NEXT SAAT BERHASIL MENJAWAB
+                    if (btnNext) {
+                        btnNext.classList.remove("locked");
+                        btnNext.setAttribute("href", originalHref); // Pasang kembali link halaman berikutnya
+                        btnNext.style.backgroundColor = ""; // Kembalikan ke warna aslinya
+                        btnNext.style.borderColor = "";
+                        btnNext.style.cursor = "pointer";
+                    }
+
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            title: "Luar Biasa!",
+                            text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
+                            icon: "success",
+                            confirmButtonText: "Lanjut",
+                            confirmButtonColor: "#2ecc71",
+                        });
+                    }
+                } else {
+                    // Ada yang salah
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            title: "Masih Ada yang Kurang Tepat",
+                            text: "Silakan klik 'Coba Lagi' untuk memperbaiki jawabanmu yang salah.",
+                            icon: "error",
+                            confirmButtonText: "Tutup",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    }
+                }
+            });
+        }
+
+        // =========================================================================
+        // FUNGSI TOMBOL COBA LAGI (RESET KUIS RESULTAN GAYA)
+        // =========================================================================
+        if (btnRetryResultan) {
+            btnRetryResultan.addEventListener("click", function () {
+                const input1 = document.getElementById("jawaban1");
+                const input2 = document.getElementById("jawaban2");
+
+                if (input1) {
+                    input1.readOnly = false; // Buka kunci input
+                    input1.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
+                    input1.value = ""; // Mengosongkan jawaban
+                }
+                if (input2) {
+                    input2.readOnly = false; // Buka kunci input
+                    input2.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
+                    input2.value = ""; // Mengosongkan jawaban
+                }
+            });
         }
     }
+});
 
-    checkLocalLock();
+// =========================================================================
+// FILE: MACAM - MACAM GAYA (LOGIKA DRAG & DROP)
+// =========================================================================
+document.addEventListener("DOMContentLoaded", function () {
+    const path = window.location.pathname;
 
-    // =========================================================================
-    // 2. LOGIKA DRAG & DROP
-    // =========================================================================
-    const containerMacam = document.getElementById("drag-container-macam");
-    const poolMacam = document.getElementById("card-pool-macam");
-    const btnCekMacam = document.getElementById("btn-cek-macam");
-    const btnRetryMacam = document.getElementById("btn-retry-macam"); // Tambahan tombol Coba Lagi
+    // ISOLASI: Kode ini HANYA JALAN di halaman Macam-Macam Gaya
+    if (path.includes("macam-macamgaya")) {
+        const containerMacam = document.getElementById("drag-container-macam");
+        const poolMacam = document.getElementById("card-pool-macam");
+        const btnCekMacam = document.getElementById("btn-cek-macam");
+        const btnRetryMacam = document.getElementById("btn-retry-macam");
+        const btnNext = document.getElementById("btn-next-materi");
 
-    if (containerMacam && poolMacam && btnCekMacam) {
-        const zones = document.querySelectorAll(
-            "#drag-container-macam .drop-zone, #card-pool-macam",
-        );
-        const cards = document.querySelectorAll("#card-pool-macam .card-item");
-        const modal = document.getElementById("modal-macam");
-        const modalText = document.getElementById("modal-text-macam");
-        const closeModal = document.getElementById("close-modal-macam");
+        // =========================================================================
+        // KUNCI TOMBOL NEXT SECARA MUTLAK (VISUAL & FUNGSI)
+        // =========================================================================
+        let originalHref = "";
+        if (btnNext) {
+            // Simpan link tujuan asli ke dalam memori
+            originalHref = btnNext.getAttribute("href") || "";
 
-        let draggedCard = null;
+            // Jika saat halaman dimuat tombol berstatus 'locked', matikan total fungsinya
+            if (btnNext.classList.contains("locked")) {
+                btnNext.removeAttribute("href"); // Cabut link agar mustahil pindah halaman
+                btnNext.style.backgroundColor = "#6c757d"; // Ubah warna jadi abu-abu
+                btnNext.style.borderColor = "#6c757d";
+                btnNext.style.cursor = "not-allowed";
+            }
 
-        // Event Drag Start
-        cards.forEach((card) => {
-            card.addEventListener("dragstart", function () {
-                draggedCard = this;
-                setTimeout(() => (this.style.opacity = "0.5"), 0);
-            });
-
-            card.addEventListener("dragend", function () {
-                this.style.opacity = "1";
-                draggedCard = null;
-            });
-        });
-
-        // Event Drop Zone
-        zones.forEach((zone) => {
-            zone.addEventListener("dragover", function (e) {
-                e.preventDefault();
-                this.classList.add("over");
-            });
-
-            zone.addEventListener("dragleave", function () {
-                this.classList.remove("over");
-            });
-
-            zone.addEventListener("drop", function (e) {
-                e.preventDefault();
-                this.classList.remove("over");
-
-                if (draggedCard) {
-                    this.appendChild(draggedCard);
-                    draggedCard.classList.remove("correct", "incorrect");
+            // Tampilkan peringatan SweetAlert jika tombol abu-abu ini diklik
+            btnNext.addEventListener("click", function (e) {
+                if (this.classList.contains("locked")) {
+                    e.preventDefault();
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Materi Terkunci",
+                            text: "Susun semua kartu gaya ke kotak yang tepat untuk membuka materi selanjutnya!",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    }
                 }
             });
-        });
+        }
 
         // =========================================================================
-        // 3. TOMBOL CEK JAWABAN & PENYIMPANAN PROGRES
+        // LOGIKA DRAG & DROP
         // =========================================================================
-        btnCekMacam.addEventListener("click", function () {
-            let benar = 0;
-            const total = cards.length;
+        if (containerMacam && poolMacam && btnCekMacam) {
+            const zones = document.querySelectorAll(
+                "#drag-container-macam .drop-zone, #card-pool-macam",
+            );
+            const cards = document.querySelectorAll(
+                "#card-pool-macam .card-item",
+            );
+            const modal = document.getElementById("modal-macam");
+            const modalText = document.getElementById("modal-text-macam");
+            const closeModal = document.getElementById("close-modal-macam");
+
+            let draggedCard = null;
 
             cards.forEach((card) => {
-                const jawaban = card.dataset.answer;
-                const parent = card.parentElement;
-                const target = parent.dataset.type;
+                card.addEventListener("dragstart", function () {
+                    draggedCard = this;
+                    setTimeout(() => (this.style.opacity = "0.5"), 0);
+                });
 
-                if (target === jawaban) {
-                    benar++;
-                    card.classList.add("correct");
-                    card.classList.remove("incorrect");
-                } else if (target === "pool") {
-                    card.classList.remove("correct", "incorrect");
+                card.addEventListener("dragend", function () {
+                    this.style.opacity = "1";
+                    draggedCard = null;
+                });
+            });
+
+            zones.forEach((zone) => {
+                zone.addEventListener("dragover", function (e) {
+                    e.preventDefault();
+                    this.classList.add("over");
+                });
+
+                zone.addEventListener("dragleave", function () {
+                    this.classList.remove("over");
+                });
+
+                zone.addEventListener("drop", function (e) {
+                    e.preventDefault();
+                    this.classList.remove("over");
+
+                    if (draggedCard) {
+                        this.appendChild(draggedCard);
+                        draggedCard.classList.remove("correct", "incorrect");
+                    }
+                });
+            });
+
+            btnCekMacam.addEventListener("click", function () {
+                let benar = 0;
+                const total = cards.length;
+
+                cards.forEach((card) => {
+                    const jawaban = card.dataset.answer;
+                    const parent = card.parentElement;
+                    const target = parent.dataset.type;
+
+                    if (target === jawaban) {
+                        benar++;
+                        card.classList.add("correct");
+                        card.classList.remove("incorrect");
+                    } else if (target === "pool") {
+                        card.classList.remove("correct", "incorrect");
+                    } else {
+                        card.classList.add("incorrect");
+                        card.classList.remove("correct");
+                    }
+                });
+
+                const salah = total - benar;
+
+                if (benar === total) {
+                    // LULUS LATIHAN: SIMPAN PROGRES
+                    window.progresSiswa = window.progresSiswa || [];
+                    if (!window.progresSiswa.includes("macamgaya_completed")) {
+                        window.progresSiswa.push("macamgaya_completed");
+                    }
+
+                    if (window.simpanProgresKeDatabase) {
+                        window.simpanProgresKeDatabase("macamgaya_completed");
+                    }
+
+                    if (window.unlockSidebar) {
+                        window.unlockSidebar("nav-newton");
+                    }
+
+                    // =========================================================================
+                    // BUKA TOMBOL NEXT SAAT BERHASIL MENJAWAB
+                    // =========================================================================
+                    if (btnNext) {
+                        btnNext.classList.remove("locked");
+                        btnNext.setAttribute("href", originalHref); // Pasang kembali link halaman berikutnya
+                        btnNext.style.backgroundColor = ""; // Kembalikan ke warna aslinya
+                        btnNext.style.borderColor = "";
+                        btnNext.style.cursor = "pointer";
+                    }
+
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            title: "Luar Biasa!",
+                            text: "Semua jawaban benar! Materi selanjutnya (Hukum Newton) telah terbuka.",
+                            icon: "success",
+                            confirmButtonText: "Lanjut",
+                            confirmButtonColor: "#2ecc71",
+                        });
+                    }
                 } else {
-                    card.classList.add("incorrect");
-                    card.classList.remove("correct");
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            title: "Hasil Latihan",
+                            html: `<b style="color: #28a745;">Benar: ${benar}</b> <br> <b style="color: #dc3545;">Salah: ${salah}</b> <br><br> Silakan perbaiki jawaban yang salah.`,
+                            icon: "info",
+                            confirmButtonText: "Tutup",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    } else if (modalText && modal) {
+                        modalText.innerHTML = `
+                            <span class="hasil-benar">✔ Benar : ${benar}</span><br>
+                            <span class="hasil-salah">✖ Salah : ${salah}</span>
+                        `;
+                        modal.style.display = "flex";
+                    }
                 }
             });
 
-            const salah = total - benar;
-
-            // JIKA BENAR SEMUA -> BUKA KUNCI & SIMPAN KE DB
-            if (benar === total) {
-                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
-                window.progresSiswa = window.progresSiswa || [];
-
-                if (!window.progresSiswa.includes("macamgaya_completed")) {
-                    window.progresSiswa.push("macamgaya_completed");
-                }
-
-                // Panggil fungsi Global
-                if (window.simpanProgresKeDatabase) {
-                    window.simpanProgresKeDatabase("macamgaya_completed");
-                }
-
-                // Buka kunci secara manual via Helper Global
-                if (window.unlockSidebar) {
-                    window.unlockSidebar("nav-newton");
-                }
-                if (window.unlockNextButtonIfPage) {
-                    window.unlockNextButtonIfPage("macam-macamgaya");
-                }
-
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) {
-                    btnNext.classList.remove("locked");
-                }
-
-                // Opsional: Gunakan SweetAlert jika lebih disukai daripada Modal bawaan
-                if (typeof Swal !== "undefined") {
-                    Swal.fire({
-                        title: "Luar Biasa!",
-                        text: "Semua jawaban benar! Materi selanjutnya (Hukum Newton) telah terbuka.",
-                        icon: "success",
-                        confirmButtonText: "Lanjut",
-                        confirmButtonColor: "#2ecc71",
+            if (btnRetryMacam) {
+                btnRetryMacam.addEventListener("click", function () {
+                    cards.forEach((card) => {
+                        poolMacam.appendChild(card);
+                        card.classList.remove("correct", "incorrect");
                     });
-                }
-            } else {
-                // JIKA BELUM BENAR SEMUA -> TAMPILKAN POP UP (SWEETALERT/MODAL)
-                if (typeof Swal !== "undefined") {
-                    // Dikembalikan seperti aslinya dengan tag <br>, namun diberi warna
-                    Swal.fire({
-                        title: "Hasil Latihan",
-                        html: `<b style="color: #28a745;">Benar: ${benar}</b> <br> <b style="color: #dc3545;">Salah: ${salah}</b> <br><br> Silakan perbaiki jawaban yang salah.`,
-                        icon: "info",
-                        confirmButtonText: "Tutup",
-                        confirmButtonColor: "#f95c50",
-                    });
-                } else if (modalText && modal) {
-                    modalText.innerHTML = `
-                  <span class="hasil-benar">✔ Benar : ${benar}</span><br>
-                  <span class="hasil-salah">✖ Salah : ${salah}</span>
-                `;
-                    modal.style.display = "flex";
-                }
+                });
             }
-        });
+
+            if (closeModal) {
+                closeModal.addEventListener("click", function () {
+                    modal.style.display = "none";
+                });
+            }
+
+            window.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        }
+    }
+});
+
+// =========================================================================
+// FILE: HUKUM NEWTON
+// =========================================================================
+document.addEventListener("DOMContentLoaded", function () {
+    const path = window.location.pathname;
+
+    // ISOLASI: Kode ini HANYA JALAN di halaman Hukum Newton
+    if (path.includes("hukumnewton")) {
+        const videoPraktikGaya = document.getElementById("video-praktik-gaya");
+        const timeButtonsGaya = document.querySelectorAll(".btn-time");
+        const btnCekNewton = document.getElementById("btn-cek-newton");
+        const btnResetNewton = document.getElementById("btn-reset-newton");
+        const btnTutupNewton = document.getElementById("btn-tutup-newton");
+        const btnNext = document.getElementById("btn-next-materi");
 
         // =========================================================================
-        // 4. LOGIKA TOMBOL COBA LAGI (RESET DRAG & DROP)
+        // BUG FIX: KUNCI TOMBOL NEXT SECARA MUTLAK (VISUAL & FUNGSI)
         // =========================================================================
-        if (btnRetryMacam) {
-            btnRetryMacam.addEventListener("click", function () {
-                // Pindahkan kembali semua kartu ke pool awal
-                cards.forEach((card) => {
-                    poolMacam.appendChild(card);
-                    // Hilangkan indikator warna
-                    card.classList.remove("correct", "incorrect");
+        let originalHref = "";
+        if (btnNext) {
+            // Simpan link tujuan asli ke dalam memori
+            originalHref = btnNext.getAttribute("href") || "";
+
+            // Jika saat halaman dimuat tombol berstatus 'locked', matikan total fungsinya
+            if (btnNext.classList.contains("locked")) {
+                btnNext.removeAttribute("href");
+                btnNext.style.backgroundColor = "#6c757d"; // Warna abu-abu
+                btnNext.style.borderColor = "#6c757d";
+                btnNext.style.cursor = "not-allowed";
+            }
+
+            // Tampilkan peringatan SweetAlert jika tombol abu-abu ini diklik
+            btnNext.addEventListener("click", function (e) {
+                if (this.classList.contains("locked")) {
+                    e.preventDefault();
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Materi Terkunci",
+                            text: "Jawab semua soal latihan Hukum Newton dengan benar untuk membuka kuis selanjutnya!",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    }
+                }
+            });
+        }
+
+        // =========================================================================
+        // CEK STATUS DATABASE: BUKA KUNCI JIKA SUDAH PERNAH LULUS
+        // =========================================================================
+        if (
+            window.progresSiswa &&
+            window.progresSiswa.includes("hukumnewton_completed")
+        ) {
+            if (btnNext) {
+                btnNext.classList.remove("locked");
+                btnNext.setAttribute("href", originalHref);
+                btnNext.style.backgroundColor = "";
+                btnNext.style.borderColor = "";
+                btnNext.style.cursor = "pointer";
+            }
+        }
+
+        // =========================================================================
+        // LOGIKA KONTROL VIDEO
+        // =========================================================================
+        if (videoPraktikGaya && timeButtonsGaya.length > 0) {
+            timeButtonsGaya.forEach((btn) => {
+                btn.addEventListener("click", function () {
+                    const targetTime = parseFloat(
+                        this.getAttribute("data-time"),
+                    );
+                    if (!isNaN(targetTime)) {
+                        videoPraktikGaya.currentTime = targetTime;
+                        videoPraktikGaya.play();
+                    }
                 });
             });
         }
 
-        // Tutup Modal Latihan (jika masih dipakai)
-        if (closeModal) {
-            closeModal.addEventListener("click", function () {
-                modal.style.display = "none";
-            });
-        }
-
-        window.addEventListener("click", function (e) {
-            if (e.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-    }
-});
-
-// FILE: HUKUM NEWTON
-document.addEventListener("DOMContentLoaded", function () {
-    const path = window.location.pathname;
-
-    // =========================================================================
-    // 1. CEK STATUS GEMBOK SAAT HALAMAN DIMUAT (DARI DATABASE)
-    // =========================================================================
-    function checkLocalLock() {
-        if (path.includes("hukumnewton")) {
-            if (
-                window.progresSiswa &&
-                window.progresSiswa.includes("hukumnewton_completed")
-            ) {
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) {
-                    btnNext.classList.remove("locked");
-                }
-            } else {
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) {
-                    btnNext.classList.add("locked");
-                }
-            }
-        }
-    }
-
-    checkLocalLock();
-
-    // =========================================================================
-    // 2. LOGIKA TIMESTAMP VIDEO PRAKTIK GAYA
-    // =========================================================================
-    const videoPraktikGaya = document.getElementById("video-praktik-gaya");
-    const timeButtonsGaya = document.querySelectorAll(".btn-time");
-
-    if (videoPraktikGaya && timeButtonsGaya.length > 0) {
-        timeButtonsGaya.forEach((btn) => {
-            btn.addEventListener("click", function () {
-                const targetTime = parseFloat(this.getAttribute("data-time"));
-                if (!isNaN(targetTime)) {
-                    videoPraktikGaya.currentTime = targetTime;
-                    videoPraktikGaya.play();
-                }
-            });
-        });
-    }
-
-    // =========================================================================
-    // 3. LOGIKA KLIK PILIHAN GANDA
-    // =========================================================================
-    const btnCekNewton = document.getElementById("btn-cek-newton");
-    const btnResetNewton = document.getElementById("btn-reset-newton");
-    const btnTutupNewton = document.getElementById("btn-tutup-newton");
-
-    if (btnCekNewton) {
-        document.querySelectorAll(".grup-opsi .tombol-opsi").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const grup = btn.parentElement;
-
-                // Jika sudah terkunci setelah klik Cek Jawaban, jangan biarkan ganti pilihan
-                if (grup.classList.contains("terkunci")) return;
-
-                grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                    b.classList.remove("dipilih"),
-                );
-
-                btn.classList.add("dipilih");
-                grup.dataset.jawaban = btn.dataset.pilihan;
-            });
-        });
-
         // =========================================================================
-        // 4. LOGIKA CEK JAWABAN & SIMPAN PROGRES
+        // LOGIKA KUIS HUKUM NEWTON
         // =========================================================================
-        btnCekNewton.addEventListener("click", () => {
-            let benar = 0;
-            let totalSoal = 0;
-            const semuaGrup = document.querySelectorAll(".grup-opsi");
+        if (btnCekNewton) {
+            // Logika memilih opsi ganda
+            document
+                .querySelectorAll(".grup-opsi .tombol-opsi")
+                .forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const grup = btn.parentElement;
 
-            // Validasi: Cek apakah semua soal sudah diisi
-            let belumDiisi = false;
-            semuaGrup.forEach((grup) => {
-                if (!grup.dataset.jawaban) belumDiisi = true;
-            });
+                        if (grup.classList.contains("terkunci")) return;
 
-            if (belumDiisi) {
-                if (typeof Swal !== "undefined") {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Belum Lengkap",
-                        text: "Silakan pilih jawaban untuk semua soal terlebih dahulu!",
-                        confirmButtonColor: "#f95c50",
+                        grup.querySelectorAll(".tombol-opsi").forEach((b) =>
+                            b.classList.remove("dipilih"),
+                        );
+
+                        btn.classList.add("dipilih");
+                        grup.dataset.jawaban = btn.dataset.pilihan;
                     });
+                });
+
+            // Logika cek jawaban
+            btnCekNewton.addEventListener("click", () => {
+                let benar = 0;
+                let totalSoal = 0;
+                const semuaGrup = document.querySelectorAll(".grup-opsi");
+
+                let belumDiisi = false;
+                semuaGrup.forEach((grup) => {
+                    if (!grup.dataset.jawaban) belumDiisi = true;
+                });
+
+                if (belumDiisi) {
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Belum Lengkap",
+                            text: "Silakan pilih jawaban untuk semua soal terlebih dahulu!",
+                            confirmButtonColor: "#f95c50",
+                        });
+                    }
+                    return;
                 }
-                return;
-            }
 
-            semuaGrup.forEach((grup) => {
-                totalSoal++;
-                const jawabanSiswa = grup.dataset.jawaban;
-                const kunci = grup.dataset.kunci;
+                semuaGrup.forEach((grup) => {
+                    totalSoal++;
+                    const jawabanSiswa = grup.dataset.jawaban;
+                    const kunci = grup.dataset.kunci;
 
-                grup.classList.add("terkunci"); // Kunci pilihan
+                    grup.classList.add("terkunci");
 
-                grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                    b.classList.remove("jawaban-benar", "jawaban-salah"),
-                );
-
-                if (jawabanSiswa === kunci) {
-                    benar++;
-                    grup.querySelector(
-                        `[data-pilihan="${jawabanSiswa}"]`,
-                    ).classList.add("jawaban-benar");
-                } else {
-                    const btnSalah = grup.querySelector(
-                        `[data-pilihan="${jawabanSiswa}"]`,
+                    grup.querySelectorAll(".tombol-opsi").forEach((b) =>
+                        b.classList.remove("jawaban-benar", "jawaban-salah"),
                     );
-                    if (btnSalah) btnSalah.classList.add("jawaban-salah");
+
+                    if (jawabanSiswa === kunci) {
+                        benar++;
+                        grup.querySelector(
+                            `[data-pilihan="${jawabanSiswa}"]`,
+                        ).classList.add("jawaban-benar");
+                    } else {
+                        const btnSalah = grup.querySelector(
+                            `[data-pilihan="${jawabanSiswa}"]`,
+                        );
+                        if (btnSalah) btnSalah.classList.add("jawaban-salah");
+                    }
+                });
+
+                const popupText = document.getElementById("popup-newton-text");
+                const popupBox = document.getElementById("popup-newton");
+
+                if (popupText && popupBox) {
+                    let salah = totalSoal - benar;
+                    popupText.innerHTML = `
+                      <span class="hasil-benar">✔ Benar : ${benar}</span>
+                      <span class="pemisah">|</span>
+                      <span class="hasil-salah">✖ Salah : ${salah}</span>
+                    `;
+                    popupBox.classList.add("show");
+                }
+
+                if (benar === totalSoal) {
+                    // LULUS LATIHAN: SIMPAN PROGRES
+                    window.progresSiswa = window.progresSiswa || [];
+                    if (
+                        !window.progresSiswa.includes("hukumnewton_completed")
+                    ) {
+                        window.progresSiswa.push("hukumnewton_completed");
+                    }
+
+                    if (window.simpanProgresKeDatabase) {
+                        window.simpanProgresKeDatabase("hukumnewton_completed");
+                    }
+
+                    if (window.unlockSidebar) {
+                        window.unlockSidebar("nav-kuis2");
+                    }
+
+                    // BUKA KUNCI TOMBOL NEXT SECARA VISUAL & FUNGSI
+                    if (btnNext) {
+                        btnNext.classList.remove("locked");
+                        btnNext.setAttribute("href", originalHref); // Pasang kembali link halaman berikutnya
+                        btnNext.style.backgroundColor = ""; // Kembalikan ke warna aslinya
+                        btnNext.style.borderColor = "";
+                        btnNext.style.cursor = "pointer";
+
+                        setTimeout(() => {
+                            if (popupBox) popupBox.classList.remove("show");
+                            if (typeof Swal !== "undefined") {
+                                Swal.fire({
+                                    title: "Luar Biasa!",
+                                    text: "Kamu berhasil menguasai Hukum Newton! Silakan lanjut ke Kuis 2.",
+                                    icon: "success",
+                                    confirmButtonText: "Lanjut",
+                                    confirmButtonColor: "#2ecc71",
+                                });
+                            }
+                        }, 1200);
+                    }
                 }
             });
 
-            // Tampilkan Popup Hasil
-            const popupText = document.getElementById("popup-newton-text");
-            const popupBox = document.getElementById("popup-newton");
+            // Logika reset form
+            btnResetNewton.addEventListener("click", () => {
+                document.querySelectorAll(".grup-opsi").forEach((grup) => {
+                    delete grup.dataset.jawaban;
+                    grup.classList.remove("terkunci");
+                    grup.querySelectorAll(".tombol-opsi").forEach((b) =>
+                        b.classList.remove(
+                            "dipilih",
+                            "jawaban-benar",
+                            "jawaban-salah",
+                        ),
+                    );
+                });
 
-            if (popupText && popupBox) {
-                let salah = totalSoal - benar;
-                popupText.innerHTML = `
-                  <span class="hasil-benar">✔ Benar : ${benar}</span>
-                  <span class="pemisah">|</span>
-                  <span class="hasil-salah">✖ Salah : ${salah}</span>
-                `;
-                popupBox.classList.add("show");
-            }
-
-            // JIKA BENAR SEMUA -> SIMPAN & UNLOCK
-            if (benar === totalSoal) {
-                window.progresSiswa = window.progresSiswa || [];
-                if (!window.progresSiswa.includes("hukumnewton_completed")) {
-                    window.progresSiswa.push("hukumnewton_completed");
-                }
-
-                if (window.simpanProgresKeDatabase) {
-                    window.simpanProgresKeDatabase("hukumnewton_completed");
-                }
-
-                if (window.unlockSidebar) {
-                    window.unlockSidebar("nav-kuis2");
-                }
-
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) {
-                    btnNext.classList.remove("locked");
-
-                    setTimeout(() => {
-                        if (popupBox) popupBox.classList.remove("show");
-                        if (typeof Swal !== "undefined") {
-                            Swal.fire({
-                                title: "Luar Biasa!",
-                                text: "Kamu berhasil menguasai Hukum Newton! Silakan lanjut ke Kuis 2.",
-                                icon: "success",
-                                confirmButtonText: "Lanjut",
-                                confirmButtonColor: "#2ecc71",
-                            });
-                        }
-                    }, 1200);
-                }
-            }
-        });
-
-        // =========================================================================
-        // 5. LOGIKA RESET / COBA LAGI
-        // =========================================================================
-        btnResetNewton.addEventListener("click", () => {
-            document.querySelectorAll(".grup-opsi").forEach((grup) => {
-                delete grup.dataset.jawaban;
-                grup.classList.remove("terkunci"); // Buka kunci pilihan
-                grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                    b.classList.remove(
-                        "dipilih",
-                        "jawaban-benar",
-                        "jawaban-salah",
-                    ),
-                );
-            });
-
-            const popupBox = document.getElementById("popup-newton");
-            if (popupBox) popupBox.classList.remove("show");
-        });
-
-        // =========================================================================
-        // 6. LOGIKA TUTUP POPUP
-        // =========================================================================
-        if (btnTutupNewton) {
-            btnTutupNewton.addEventListener("click", () => {
                 const popupBox = document.getElementById("popup-newton");
                 if (popupBox) popupBox.classList.remove("show");
             });
+
+            if (btnTutupNewton) {
+                btnTutupNewton.addEventListener("click", () => {
+                    const popupBox = document.getElementById("popup-newton");
+                    if (popupBox) popupBox.classList.remove("show");
+                });
+            }
         }
     }
 });
