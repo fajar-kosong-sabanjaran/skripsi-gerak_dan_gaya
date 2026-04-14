@@ -1312,11 +1312,7 @@ body {
     }
 }
 
-/* File kelajuan dan kecepatan */
-
-/* =========================================================
-   KUIS TABEL KELAJUAN vs KECEPATAN
-========================================================= */
+/* File css kelajuan dan kecepatan & css percepatan */
 .quiz-wrapper {
     margin-top: 10px;
 }
@@ -1348,7 +1344,6 @@ body {
     background: #fff3f0;
 }
 
-/* checkbox styling */
 .quiz-table input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -1358,7 +1353,6 @@ body {
     font-size: 160%;
 }
 
-/* tombol kuis */
 .quiz-buttons {
     margin-top: 12px;
     display: flex;
@@ -1638,8 +1632,6 @@ body {
     width: 100%;
 }
 
-/* ================= INPUT AYO BERLATIH ================= */
-
 .isian-ayo {
     border: 2px solid #374151;
     border-radius: 6px;
@@ -1654,21 +1646,17 @@ body {
     color: #9ca3af;
 }
 
-/* BENAR */
 .isian-ayo.benar {
     border-color: #16a34a;
     background: #ecfdf5;
     color: #166534;
 }
 
-/* SALAH */
 .isian-ayo.salah {
     border-color: #dc2626;
     background: #fef2f2;
     color: #991b1b;
 }
-
-/* ================= TOMBOL ================= */
 
 .btn-cek {
     background: #f95c50;
@@ -1703,6 +1691,46 @@ body {
 
 .hasil-belum {
     color: #92400e;
+}
+
+@media (max-width: 768px) {
+    .penyelesaian-dua-kolom {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .quiz-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .bottom-nav {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    #nav-left, #nav-right {
+        width: 100%;
+    }
+
+    .bottom-nav .nav-btn {
+        width: 100%;
+        display: block;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .pagination-container {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .quiz-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }
 
 /* Resultan Gaya */
