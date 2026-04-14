@@ -4,15 +4,10 @@
 // FUNGSI BARU: MENYIMPAN PROGRES KE DATABASE (DIBUAT JADI GLOBAL)
 // =========================================================================
 window.simpanProgresKeDatabase = function (kodeMateri) {
-    // Ambil CSRF token dari meta tag
-    const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute("content");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
     if (!csrfToken) {
-        console.error(
-            "CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.",
-        );
+        console.error("CSRF Token tidak ditemukan. Data tidak bisa disimpan ke database.");
         return;
     }
 
@@ -22,17 +17,15 @@ window.simpanProgresKeDatabase = function (kodeMateri) {
             "Content-Type": "application/json",
             "X-CSRF-TOKEN": csrfToken,
         },
-        body: JSON.stringify({
-            kode_materi: kodeMateri,
-        }),
+        body: JSON.stringify({ kode_materi: kodeMateri }),
     })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data.message); // Muncul di console log browser jika berhasil
-        })
-        .catch((error) => {
-            console.error("Error saat menyimpan progres:", error);
-        });
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data.message);
+    })
+    .catch((error) => {
+        console.error("Error saat menyimpan progres:", error);
+    });
 };
 
 // --- HELPER FUNCTION: UNTUK MEMBUKA SIDEBAR (DIBUAT GLOBAL) ---
@@ -55,7 +48,7 @@ window.unlockNextButtonIfPage = function (pageKeyword) {
 };
 
 // =========================================================================
-// DOM CONTENT LOADED UTAMA (TIDAK BOLEH MENGURUNG FUNGSI GLOBAL DI ATAS)
+// DOM CONTENT LOADED UTAMA
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
     const path = window.location.pathname;
@@ -63,101 +56,72 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================================================================
     // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
     // =========================================================================
-
-    // Fungsi pembantu untuk mengecek apakah materi ada di dalam array database
     function isLulus(kodeMateri) {
         return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
     }
 
     function checkAllLocks() {
         // --- BAGIAN A: MODUL GERAK ---
-
-        // 1. Pengertian Gerak Selesai -> Buka Jarak Tempuh
         if (isLulus("pengertiangerak_completed")) {
             window.unlockSidebar("nav-jarak");
             window.unlockNextButtonIfPage("pengertiangerak");
         }
-
-        // 2. Jarak Tempuh Selesai -> Buka Kelajuan
         if (isLulus("jarak_completed")) {
             window.unlockSidebar("nav-kelajuan");
             window.unlockNextButtonIfPage("jaraktempuhdanperpindahan");
         }
-
-        // 3. Kelajuan Selesai -> Buka Percepatan
         if (isLulus("kelajuan_completed")) {
             window.unlockSidebar("nav-percepatan");
             window.unlockNextButtonIfPage("kelajuandankecepatan");
         }
-
-        // 4. Percepatan Selesai -> Buka Kuis 1
         if (isLulus("percepatan_completed")) {
             window.unlockSidebar("nav-kuis1");
             window.unlockNextButtonIfPage("percepatan");
         }
 
         // --- BAGIAN B: MODUL GAYA ---
-
-        // 5. Kuis 1 Selesai -> Buka Menu Gaya (Header & Pengantar)
         if (isLulus("kuis1_completed")) {
             window.unlockSidebar("nav-gaya-header");
             window.unlockSidebar("nav-pengantar-gaya");
-            window.unlockSidebar("nav-pengertian-gaya"); // Langsung buka materi pertama
-            // Tidak ada tombol next khusus di halaman Kuis 1 (karena redirect otomatis)
+            window.unlockSidebar("nav-pengertian-gaya");
         }
-
-        // 6. Pengertian Gaya Selesai -> Buka Resultan Gaya
         if (isLulus("pengertiangaya_completed")) {
             window.unlockSidebar("nav-resultan-gaya");
             window.unlockNextButtonIfPage("pengertiangaya");
         }
-
-        // 7. Resultan Gaya Selesai -> Buka Macam-macam Gaya
         if (isLulus("resultangaya_completed")) {
             window.unlockSidebar("nav-macam-gaya");
             window.unlockNextButtonIfPage("resultangaya");
         }
-
-        // 8. Macam-macam Gaya Selesai -> Buka Hukum Newton
         if (isLulus("macamgaya_completed")) {
             window.unlockSidebar("nav-newton");
             window.unlockNextButtonIfPage("macam-macamgaya");
         }
-
-        // 9. Hukum Newton Selesai -> Buka Kuis 2
         if (isLulus("hukumnewton_completed")) {
             window.unlockSidebar("nav-kuis2");
             window.unlockNextButtonIfPage("hukumnewton");
         }
 
         // --- BAGIAN C: EVALUASI ---
-
-        // 10. Kuis 2 Selesai -> Buka Menu Evaluasi
         if (isLulus("kuis2_completed")) {
             window.unlockSidebar("nav-evaluasi");
-            // Tidak ada tombol next di halaman Kuis 2 (redirect otomatis)
         }
     }
 
-    // Jalankan Pengecekan
     checkAllLocks();
 
     // =========================================================================
     // 2. SIDEBAR TOGGLE LOGIC & LAIN-LAIN
     // =========================================================================
-
-    // Sidebar Toggle
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     toggleItems.forEach((item) => {
         item.addEventListener("click", () => {
             if (item.classList.contains("locked")) return;
-
             const targetId = item.dataset.target;
             const submenu = document.getElementById(targetId);
             if (!submenu) return;
 
-            const isOpen = submenu.classList.contains("open");
-            if (!isOpen) {
+            if (!submenu.classList.contains("open")) {
                 submenu.classList.add("open");
                 item.classList.add("active");
             } else {
@@ -167,25 +131,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Auto Open Sidebar based on URL
     if (path.includes("/siswa/gerak")) {
         const submenu = document.getElementById("gerak");
-        const header = document.querySelector(
-            '.menu-item.has-toggle[data-target="gerak"]',
-        );
+        const header = document.querySelector('.menu-item.has-toggle[data-target="gerak"]');
         if (submenu) submenu.classList.add("open");
         if (header) header.classList.add("active");
     }
     if (path.includes("/siswa/gaya")) {
         const submenu = document.getElementById("gaya");
-        const header = document.querySelector(
-            '.menu-item.has-toggle[data-target="gaya"]',
-        );
+        const header = document.querySelector('.menu-item.has-toggle[data-target="gaya"]');
         if (submenu) submenu.classList.add("open");
         if (header) header.classList.add("active");
     }
 
-    // Locked Menu Alert
     document.querySelector("body").addEventListener("click", function (e) {
         const lockedItem = e.target.closest(".locked");
         if (lockedItem) {
@@ -200,19 +158,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // User Dropdown
     window.toggleDropdown = function () {
         document.getElementById("dropdownMenu").classList.toggle("show");
     };
 
     window.onclick = function (event) {
         if (!event.target.matches(".user-greeting")) {
-            const dropdowns =
-                document.getElementsByClassName("dropdown-logout");
+            const dropdowns = document.getElementsByClassName("dropdown-logout");
             for (let i = 0; i < dropdowns.length; i++) {
                 const openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains("show"))
-                    openDropdown.classList.remove("show");
+                if (openDropdown.classList.contains("show")) openDropdown.classList.remove("show");
             }
         }
     };
@@ -246,9 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault();
                 zone.classList.add("over");
             });
-            zone.addEventListener("dragleave", () =>
-                zone.classList.remove("over"),
-            );
+            zone.addEventListener("dragleave", () => zone.classList.remove("over"));
             zone.addEventListener("drop", (e) => {
                 e.preventDefault();
                 zone.classList.remove("over");
@@ -279,7 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (benar === total) {
-                    // [REVISI]: Ganti dengan push ke array & simpan ke DB
                     window.progresSiswa = window.progresSiswa || [];
                     if (!window.progresSiswa.includes(STORAGE_KEY)) {
                         window.progresSiswa.push(STORAGE_KEY);

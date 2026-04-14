@@ -595,7 +595,6 @@ body {
 /* SAMPAI SINI BATAS FILE SISWA.blade, sisa nya css materi */
 
 /* ini css file pengertiangerak */
-/* LATIHAN DRAG & DROP */
 .drag-instruction {
     font-size: 14px;
     margin-top: 6px;
@@ -630,7 +629,6 @@ body {
     background-color: #ffe7e3;
 }
 
-/* Kumpulan kartu awal */
 .card-pool-title {
     margin-top: 15px;
     font-size: 14px;
@@ -643,7 +641,6 @@ body {
     gap: 10px;
 }
 
-/* Kartu drag */
 .card-item {
     background-color: #fff;
     border: 2px solid #ffbfb7;
@@ -659,14 +656,12 @@ body {
     cursor: grabbing;
 }
 
-/* Highlight drop */
 .drop-zone.over,
 .card-pool.over {
     background-color: #ffdcd5;
     border-color: #e44a3f;
 }
 
-/* Feedback jawaban */
 .card-item.correct {
     border-color: #16a34a;
     background-color: #dcfce7;
@@ -691,14 +686,12 @@ body {
     color: #b45309;
 }
 
-/* Container Tombol Kuis */
 .quiz-action-container {
     margin-top: 20px;
     display: flex;
     gap: 10px;
 }
 
-/* Tombol Cek */
 .btn-check {
     padding: 8px 16px;
     border-radius: 10px;
@@ -713,12 +706,11 @@ body {
     background-color: #e44a3f;
 }
 
-/* Tombol Reset (Coba Lagi) */
 .btn-reset {
     padding: 8px 16px;
     border-radius: 10px;
     border: none;
-    background-color: #6b7280; /* Abu-abu */
+    background-color: #6b7280;
     color: #fff;
     font-size: 13px;
     cursor: pointer;
@@ -728,12 +720,10 @@ body {
     background-color: #4b5563;
 }
 
-/* Utility Hidden */
 .hidden {
     display: none !important;
 }
 
-/* POPUP / MODAL UMUM */
 .modal {
     position: fixed;
     inset: 0;
@@ -761,9 +751,49 @@ body {
     color: #e44a3f;
 }
 
-/* =========================================================
-   ANIMASI GERAK MOBIL (PERPINDAHAN & JARAK)
-========================================================= */
+@media (max-width: 768px) {
+    div:where(.swal2-container) div:where(.swal2-popup) {
+        width: 85% !important;
+        padding: 1.2em !important;
+        border-radius: 12px !important;
+    }
+    div:where(.swal2-container) h2:where(.swal2-title) {
+        font-size: 1.3em !important;
+    }
+    div:where(.swal2-container) div:where(.swal2-html-container) {
+        font-size: 0.9em !important;
+    }
+    div:where(.swal2-icon) {
+        transform: scale(0.65);
+        margin: 0.5em auto !important;
+    }
+    .drag-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .drop-column {
+        min-width: 100%;
+    }
+    .card-pool {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .card-item {
+        padding: 12px;
+        font-size: 13px;
+    }
+    .quiz-action-container {
+        flex-direction: row;
+        width: auto;
+        justify-content: flex-start;
+    }
+    .quiz-action-container button {
+        width: auto;
+        padding: 8px 16px;
+    }
+}
+
+/* Ini file css jarak tempuh dan perpindahan */
 .anim-wrapper {
     width: 100%;
     max-width: 900px;
@@ -880,14 +910,12 @@ body {
 .anim-car {
     position: absolute;
     bottom: 48px;
-    width: 50px; /* ubah nilai ini untuk memperbesar/memperkecil */
+    width: 50px;
     height: auto;
     display: block;
-    transform: translateX(
-        -50%
-    ); /* agar posisi center sesuai perhitungan left */
+    transform: translateX(-50%);
     pointer-events: none;
-    transition: left 0.04s linear; /* membuat gerakan lebih halus */
+    transition: left 0.04s linear;
     z-index: 20;
 }
 
@@ -952,7 +980,6 @@ body {
     cursor: default;
 }
 
-/* Popup hasil animasi */
 .anim-modal {
     position: fixed;
     inset: 0;
@@ -960,8 +987,6 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    /* saran pa andi - bisa di gunakan atau tidak */
-    /* justify-content: flex-end;  */
     z-index: 50;
 }
 
@@ -986,6 +1011,308 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
 }
+
+.gambar-latihan {
+    max-width: 60%;
+    border: 1px solid #ffbfb7;
+    border-radius: 6px;
+    margin: 10px auto;
+    display: block;
+}
+
+.keterangan-gambar {
+    font-size: 12px !important;
+    text-align: center;
+    color: #555;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.baris-soal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.baris-soal label {
+    font-size: 15px;
+    color: #333;
+}
+
+.isian-sedang,
+.isian-pendek {
+    width: 180px;
+    padding: 6px 10px;
+    border: 1px solid #ffd1cb;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.satuan-meter {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.aksi-latihan {
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tombol-unduh {
+    background-color: #5d9cec;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tombol-unduh:hover {
+    background-color: #4a89dc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tombol-cek {
+    padding: 8px 16px;
+    background: #f95c50;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.tombol-cek:hover {
+    background: #e44a3f;
+    transform: translateY(-2px);
+}
+
+.tombol-reset {
+    padding: 8px 16px;
+    background: #6b7280;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.tombol-reset:hover {
+    background: #4b5563;
+    transform: translateY(-2px);
+}
+
+.umpan-balik {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #155e75;
+}
+
+#latihan-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#latihan-modal .latihan-modal-konten {
+    width: 90%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.latihan-modal-judul {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4a4a4a;
+    margin-bottom: 10px;
+}
+
+.latihan-modal-ringkasan {
+    margin-bottom: 10px;
+}
+
+.pesan-feedback {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.txt-sukses {
+    color: #059669;
+    font-weight: 600;
+}
+
+.txt-gagal {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.txt-belum {
+    color: #d97706;
+    font-weight: 600;
+}
+
+.txt-sep {
+    color: #9ca3af;
+}
+
+.latihan-modal-detail {
+    display: none;
+}
+
+.latihan-modal-tombol {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.latihan-modal-tutup,
+.latihan-modal-ulang {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+}
+
+.latihan-modal-tutup {
+    background: #4b5563;
+    color: #fff;
+}
+
+.latihan-modal-ulang {
+    background: #e44a3f;
+    color: #fff;
+}
+
+.latihan-modal-tutup:hover,
+.latihan-modal-ulang:hover {
+    opacity: 0.9;
+}
+
+.explain-box {
+    background: #fffbeb;
+    border-left: 6px solid #f59e0b;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #78350f;
+}
+
+.explain-title {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.explain-result {
+    background: #fef3c7;
+    border: 1px dashed #f59e0b;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    color: #78350f;
+}
+
+.explain-box p {
+    margin: 6px 0;
+    color: #7f1d1d;
+}
+
+#quiz-feedback {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .anim-scene {
+        height: 160px;
+    }
+    .anim-road {
+        bottom: 30px;
+    }
+    .ikon-titik {
+        width: 50px;
+        height: 50px;
+    }
+    .anim-point {
+        bottom: 75px;
+    }
+    #pointA {
+        left: 20px !important;
+    }
+    #pointC {
+        right: 20px !important;
+        transform: translateX(0) !important;
+    }
+    .anim-car {
+        width: 40px;
+        bottom: 38px;
+    }
+    .label-titik {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+    .anim-label-dist {
+        font-size: 10px;
+        bottom: 0px;
+    }
+    .gambar-latihan {
+        max-width: 100%;
+    }
+    .baris-soal {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    .baris-soal > div {
+        width: 100%;
+    }
+    .isian-sedang, 
+    .isian-pendek {
+        width: 100%;
+        flex: 1;
+    }
+    .aksi-latihan {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    .tombol-cek, 
+    .tombol-reset, 
+    .tombol-unduh {
+        width: auto;
+        padding: 8px 16px;
+    }
+}
+
+/* File kelajuan dan kecepatan */
 
 /* =========================================================
    KUIS TABEL KELAJUAN vs KECEPATAN
@@ -1051,252 +1378,6 @@ body {
     color: #b45309;
 }
 
-/* ===== LATIHAN ADI - Perpindahan dan Jarak Tempuh ===== */
-
-.gambar-latihan {
-    max-width: 60%;
-    border: 1px solid #ffbfb7;
-    border-radius: 6px;
-    margin: 10px auto;
-    display: block;
-}
-
-.keterangan-gambar {
-    font-size: 12px !important;
-    text-align: center;
-    color: #555;
-    margin-top: 6px;
-    margin-bottom: 10px;
-    font-style: italic;
-}
-
-.baris-soal {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 12px 0;
-}
-
-.baris-soal label {
-    font-size: 15px;
-    color: #333;
-}
-
-.isian-sedang,
-.isian-pendek {
-    width: 180px;
-    padding: 6px 10px;
-    border: 1px solid #ffd1cb;
-    border-radius: 6px;
-    background: #fff;
-}
-
-.satuan-meter {
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-.aksi-latihan {
-    margin-top: 14px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-/* Styling Tombol Unduh */
-.tombol-unduh {
-    background-color: #5d9cec; /* Warna Biru */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Jarak ikon dan teks */
-}
-
-.tombol-unduh:hover {
-    background-color: #4a89dc;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.tombol-cek {
-    padding: 8px 16px;
-    background: #f95c50;
-    border-radius: 6px;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    transition:
-        background 0.15s ease,
-        transform 0.08s ease;
-}
-
-.tombol-cek:hover {
-    background: #e44a3f;
-    transform: translateY(-2px);
-}
-
-.tombol-reset {
-    padding: 8px 16px;
-    background: #6b7280;
-    border-radius: 6px;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    transition:
-        background 0.15s ease,
-        transform 0.08s ease;
-}
-
-.tombol-reset:hover {
-    background: #4b5563;
-    transform: translateY(-2px);
-}
-
-.umpan-balik {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #155e75;
-}
-
-/* ===== MODAL POPUP LATIHAN  ===== */
-#latihan-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-}
-
-#latihan-modal .latihan-modal-konten {
-    width: 90%;
-    max-width: 400px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.latihan-modal-judul {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #4a4a4a;
-    margin-bottom: 10px;
-}
-
-.latihan-modal-ringkasan {
-    margin-bottom: 10px;
-}
-
-.pesan-feedback {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-.txt-sukses {
-    color: #059669;
-    font-weight: 600;
-}
-.txt-gagal {
-    color: #dc2626;
-    font-weight: 600;
-}
-.txt-belum {
-    color: #d97706;
-    font-weight: 600;
-}
-.txt-sep {
-    color: #9ca3af;
-}
-
-.latihan-modal-detail {
-    display: none;
-}
-
-.latihan-modal-tombol {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 5px;
-}
-
-.latihan-modal-tutup,
-.latihan-modal-ulang {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: opacity 0.2s;
-}
-
-.latihan-modal-tutup {
-    background: #4b5563;
-    color: #fff;
-}
-
-.latihan-modal-ulang {
-    background: #e44a3f;
-    color: #fff;
-}
-
-.latihan-modal-tutup:hover,
-.latihan-modal-ulang:hover {
-    opacity: 0.9;
-}
-
-/* Animasi jarak tempuh dan perpindahan */
-.explain-box {
-    background: #fffbeb;
-    border-left: 6px solid #f59e0b;
-    padding: 16px;
-    border-radius: 12px;
-    margin-top: 12px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: #78350f;
-}
-
-.explain-title {
-    background: #fef3c7;
-    color: #92400e;
-    padding: 6px 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: inline-block;
-    font-size: 13px;
-}
-
-.explain-result {
-    background: #fef3c7;
-    border: 1px dashed #f59e0b;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 10px;
-    color: #78350f;
-}
-
-.explain-box p {
-    margin: 6px 0;
-    color: #7f1d1d;
-}
-
-#quiz-feedback {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-/* File kelajuan dan kecepatan */
 .rumus-container-kelajuandankecepatan {
     display: flex;
     justify-content: center;
