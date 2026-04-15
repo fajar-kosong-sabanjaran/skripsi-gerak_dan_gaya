@@ -256,8 +256,7 @@
                         </p>
                         <ul>
                             <li>Tonton video pengujian kelajuan benda di bawah ini dengan saksama.</li>
-                            <li>Amati dan catat jarak tempuh serta waktu yang dibutuhkan oleh setiap benda (Pulpen, Pensil, dan
-                                Lem).</li>
+                            <li>Amati dan catat jarak tempuh serta waktu yang dibutuhkan oleh setiap benda (Pensil, Pulpen, dan Lem Stik).</li>
                             <li>Gunakan rumus kelajuan \((v = \frac{s}{t})\) untuk menghitung kelajuan masing-masing benda.</li>
                             <li>Isi tabel di bawah dengan angka saja (dalam satuan cm dan sekon).</li>
                         </ul>
@@ -274,14 +273,19 @@
                     <div class="video-timestamps">
                         <span class="timestamp-label"><i class="fas fa-list-ul"></i> Lompat ke bagian:</span>
                         <div class="timestamp-buttons">
-                            <button type="button" class="btn-time" data-time="5">Alat & Bahan</button>
-                            <button type="button" class="btn-time" data-time="33">Percobaan 1 (Pulpen)</button>
-                            <button type="button" class="btn-time" data-time="61">Percobaan 2 (Pensil)</button>
-                            <button type="button" class="btn-time" data-time="90">Percobaan 3 (Lem)</button>
+                            <button type="button" class="btn-time" data-time="5">Tujuan Percobaan</button>
+                            <button type="button" class="btn-time" data-time="18">Alat & Bahan</button>
+                            <button type="button" class="btn-time" data-time="44">Percobaan 1 (Pensil)</button>
+                            <button type="button" class="btn-time" data-time="65">Percobaan 2 (Pulpen)</button>
+                            <button type="button" class="btn-time" data-time="86">Percobaan 3 (Lem stik)</button>
                         </div>
                     </div>
 
                     <hr><br>
+                    
+                    <p style="font-size: 14px; color: #666; font-style: italic; margin-bottom: 10px;">
+                        *Catatan: Hitunglah kelajuan (v) dengan pembulatan 2 angka di belakang koma. Gunakan tanda koma ( , ) bukan titik. Contoh: 5,18
+                    </p>
 
                     <table class="quiz-table" style="text-align: center;">
                         <thead>
@@ -294,21 +298,27 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Pulpen</strong></td>
-                                <td><input class="isian-ayo" id="prak-s-pulpen" placeholder="..."></td>
-                                <td><input class="isian-ayo" id="prak-t-pulpen" placeholder="..."></td>
-                                <td><input class="isian-ayo" id="prak-v-pulpen" placeholder="..."></td>
-                            </tr>
-                            <tr>
                                 <td><strong>Pensil</strong></td>
                                 <td><input class="isian-ayo" id="prak-s-pensil" placeholder="..."></td>
-                                <td><input class="isian-ayo" id="prak-t-pensil" placeholder="..."></td>
+                                <td>
+                                    <input class="isian-ayo" id="prak-t-pensil" style="width: 45px; text-align: center;" placeholder="..."> ,93
+                                </td>
                                 <td><input class="isian-ayo" id="prak-v-pensil" placeholder="..."></td>
                             </tr>
                             <tr>
-                                <td><strong>Lem</strong></td>
+                                <td><strong>Pulpen</strong></td>
+                                <td><input class="isian-ayo" id="prak-s-pulpen" placeholder="..."></td>
+                                <td>
+                                    <input class="isian-ayo" id="prak-t-pulpen" style="width: 45px; text-align: center;" placeholder="..."> ,09
+                                </td>
+                                <td><input class="isian-ayo" id="prak-v-pulpen" placeholder="..."></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lem Stik</strong></td>
                                 <td><input class="isian-ayo" id="prak-s-lem" placeholder="..."></td>
-                                <td><input class="isian-ayo" id="prak-t-lem" placeholder="..."></td>
+                                <td>
+                                    <input class="isian-ayo" id="prak-t-lem" style="width: 45px; text-align: center;" placeholder="..."> ,65
+                                </td>
                                 <td><input class="isian-ayo" id="prak-v-lem" placeholder="..."></td>
                             </tr>
                         </tbody>

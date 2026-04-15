@@ -44,6 +44,13 @@
                     <input type="text" class="form-input" id="searchInput" placeholder="Cari data siswa...">
                 </label>
             </div>
+
+            <div class="export-control">
+                <button class="btn-aksi btn-export" id="btnExportExcel" title="Export ke Excel/CSV">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </button>
+            </div>
+
         </div>
 
         <div class="table-responsive">

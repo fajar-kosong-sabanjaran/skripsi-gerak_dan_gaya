@@ -1108,19 +1108,22 @@ const kunciLatihan = [
     { id: "v2-hasil", jawaban: "4" },
 ];
 
-// Kunci Jawaban Praktik Video (Dipindah ke atas agar bisa diakses oleh popup)
+// Kunci Jawaban Praktik Video
 const kunciPraktik = [
+    // Percobaan 1: Pensil (s = 10, t = 1,93)
+    { id: "prak-s-pensil", jawaban: "10" },
+    { id: "prak-t-pensil", jawaban: "1" },
+    { id: "prak-v-pensil", jawaban: "5,18" },
+
+    // Percobaan 2: Pulpen (s = 20, t = 4,09)
     { id: "prak-s-pulpen", jawaban: "20" },
-    { id: "prak-t-pulpen", jawaban: "5" },
-    { id: "prak-v-pulpen", jawaban: "4" },
+    { id: "prak-t-pulpen", jawaban: "4" },
+    { id: "prak-v-pulpen", jawaban: "4,89" },
 
-    { id: "prak-s-pensil", jawaban: "12" },
-    { id: "prak-t-pensil", jawaban: "2" },
-    { id: "prak-v-pensil", jawaban: "6" },
-
-    { id: "prak-s-lem", jawaban: "20" },
-    { id: "prak-t-lem", jawaban: "4" },
-    { id: "prak-v-lem", jawaban: "5" },
+    // Percobaan 3: Lem Stik (s = 25, t = 8,65)
+    { id: "prak-s-lem", jawaban: "25" },
+    { id: "prak-t-lem", jawaban: "8" },
+    { id: "prak-v-lem", jawaban: "2,89" },
 ];
 
 function tutupPopupQuiz() {

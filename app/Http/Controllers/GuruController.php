@@ -10,7 +10,7 @@ use App\Models\RiwayatNilai;
 use App\Models\PengaturanKkm;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule; // [REVISI] Tambahkan ini untuk custom rule validasi
+use Illuminate\Validation\Rule;
 
 class GuruController extends Controller
 {
@@ -28,6 +28,62 @@ class GuruController extends Controller
         $data_kelas = Kelas::all();
 
         return view('guru.datasiswa', compact('data_siswa', 'data_kelas'));
+    }
+
+    // [REVISI] Menambahkan fungsi export Excel/CSV
+    public function exportExcel(Request $request)
+    {
+        // Tangkap parameter kelas dari URL (berisi nama kelas atau 'semua')
+        $kelasFilter = $request->query('kelas', 'semua');
+
+        // Mulai query data siswa sesuai peran
+        $query = User::where('peran', 'siswa');
+
+        // Jika filter bukan 'semua', filter berdasarkan nama kelas
+        if ($kelasFilter !== 'semua') {
+            $query->whereHas('kelas', function ($q) use ($kelasFilter) {
+                $q->where('nama', $kelasFilter); 
+            });
+        }
+
+        $dataSiswa = $query->with('kelas')->get();
+
+        // Penamaan file dinamis
+        $namaKelasFile = $kelasFilter === 'semua' ? 'Semua_Kelas' : str_replace(' ', '_', $kelasFilter);
+        $fileName = "Data_Siswa_{$namaKelasFile}.csv";
+
+        // Header agar terbaca sebagai file unduhan oleh browser
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        // Proses stream data ke file CSV
+        $callback = function() use ($dataSiswa) {
+            $file = fopen('php://output', 'w');
+            
+            // Judul Kolom (Header CSV)
+            fputcsv($file, ['No', 'NIS', 'Nama Siswa', 'Kelas', 'Email']);
+
+            // Isi Data
+            $no = 1;
+            foreach ($dataSiswa as $siswa) {
+                fputcsv($file, [
+                    $no++,
+                    $siswa->nomor_induk ?? '-',
+                    $siswa->nama_lengkap,
+                    $siswa->kelas ? $siswa->kelas->nama : 'Belum Ada',
+                    $siswa->email
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     public function update(Request $request, $id)

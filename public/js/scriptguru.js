@@ -244,6 +244,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTable();
     }
+
+    // =======================================================================
+    // ini js untuk Fitur Export Excel
+    // =======================================================================
+    const btnExportExcel = document.getElementById("btnExportExcel");
+    if (btnExportExcel) {
+        btnExportExcel.addEventListener("click", function () {
+            const filterKelas = document.getElementById("filterKelas");
+            // Ambil value dari dropdown kelas. Jika tidak ada, default 'semua'
+            const kelasPilihan = filterKelas ? filterKelas.value : "semua";
+            
+            // Redirect ke route Laravel untuk export, mengirimkan parameter kelas
+            window.location.href = `/guru/datasiswa/export?kelas=${encodeURIComponent(kelasPilihan)}`;
+        });
+    }
 });
 
 // =======================================================================

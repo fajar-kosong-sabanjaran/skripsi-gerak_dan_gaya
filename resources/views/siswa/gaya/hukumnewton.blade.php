@@ -203,9 +203,10 @@
                 <div class="video-timestamps">
                     <span class="timestamp-label"><i class="fas fa-list-ul"></i> Lompat ke bagian:</span>
                     <div class="timestamp-buttons">
-                        <button type="button" class="btn-time" data-time="7">Hukum 1 Newton</button>
-                        <button type="button" class="btn-time" data-time="52">Hukum 2 Newton</button>
-                        <button type="button" class="btn-time" data-time="101">Hukum 3 Newton</button>
+                        <button type="button" class="btn-time" data-time="7">Tujuan Percobaan</button>
+                        <button type="button" class="btn-time" data-time="22">Hukum 1 Newton</button>
+                        <button type="button" class="btn-time" data-time="67">Hukum 2 Newton</button>
+                        <button type="button" class="btn-time" data-time="115">Hukum 3 Newton</button>
                     </div>
                 </div>
 

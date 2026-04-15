@@ -1566,7 +1566,7 @@ body {
 
 .video-timestamps {
     margin: 10px auto 20px;
-    max-width: 600px;
+    max-width: 100%;
     text-align: center;
 }
 
@@ -2229,7 +2229,7 @@ body {
 /* --- TIMESTAMP VIDEO PRAKTIK --- */
 .video-timestamps {
     margin: 10px auto 20px;
-    max-width: 600px;
+    max-width: 100%;
     text-align: center;
 }
 
