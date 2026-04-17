@@ -9,7 +9,7 @@
 
     <title>Kuis 1 – Gerak dan Gaya</title>
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -55,9 +55,10 @@
                 </button>
 
                 <div class="kuis-timer-box">
-                    <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span id="timer">30:00</span>
+                    <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span
+                        id="timer">30:00</span>
                 </div>
-                
+
                 <button class="kuis-btn-finish" id="finishBtn">
                     <span class="finish-text-hide">Selesaikan Kuis</span> ✓
                 </button>
@@ -74,8 +75,10 @@
                     <ul class="kuis-options-list" id="optionsList"></ul>
 
                     <div class="kuis-nav-actions">
-                        <button class="kuis-btn-nav prev" id="prevBtn">← <span class="nav-text-hide">Sebelumnya</span></button>
-                        <button class="kuis-btn-nav next" id="nextBtn"><span class="nav-text-hide">Selanjutnya</span> →</button>
+                        <button class="kuis-btn-nav prev" id="prevBtn">← <span
+                                class="nav-text-hide">Sebelumnya</span></button>
+                        <button class="kuis-btn-nav next" id="nextBtn"><span class="nav-text-hide">Selanjutnya</span>
+                            →</button>
                     </div>
                 </div>
             </section>
@@ -117,7 +120,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}?v={{ filemtime(public_path('js/script.js')) }}"></script>
 </body>
 
 </html>
