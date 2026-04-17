@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const originalRows = Array.from(
             tableBody.querySelectorAll("tr.searchable-row"),
         );
-
         const searchInput = document.getElementById("searchInput");
         const entriesSelect = document.getElementById("entriesSelect");
         const filterKelas = document.getElementById("filterKelas");
@@ -135,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const cocokKelas =
                     kelasDipilih === "semua" || teksKelas === kelasDipilih;
-
                 return cocokKata && cocokKelas;
             });
 
@@ -211,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (filterKelas) {
             filterKelas.addEventListener("change", () => {
                 updateTable();
+                updateTextTombolExport();
             });
         }
 
@@ -248,14 +247,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // =======================================================================
     // ini js untuk Fitur Export Excel
     // =======================================================================
+    function updateTextTombolExport() {
+        const btnExportExcel = document.getElementById("btnExportExcel");
+        const filterKelas = document.getElementById("filterKelas");
+
+        if (btnExportExcel && filterKelas) {
+            const nilaiDipilih = filterKelas.value;
+            const teksDipilih =
+                filterKelas.options[filterKelas.selectedIndex].text;
+
+            if (nilaiDipilih === "semua") {
+                btnExportExcel.innerHTML =
+                    '<i class="fas fa-file-excel"></i> Export Semua Data Siswa';
+            } else {
+                btnExportExcel.innerHTML = `<i class="fas fa-file-excel"></i> Export Data Siswa Kelas ${teksDipilih}`;
+            }
+        }
+    }
+
+    updateTextTombolExport();
+
     const btnExportExcel = document.getElementById("btnExportExcel");
     if (btnExportExcel) {
         btnExportExcel.addEventListener("click", function () {
             const filterKelas = document.getElementById("filterKelas");
-            // Ambil value dari dropdown kelas. Jika tidak ada, default 'semua'
             const kelasPilihan = filterKelas ? filterKelas.value : "semua";
-            
-            // Redirect ke route Laravel untuk export, mengirimkan parameter kelas
             window.location.href = `/guru/datasiswa/export?kelas=${encodeURIComponent(kelasPilihan)}`;
         });
     }
@@ -340,15 +356,11 @@ function openEditModal(button) {
     if (editKelas) editKelas.value = kelas || "";
     if (editPassword) editPassword.value = "";
 
-    if (editModal) {
-        editModal.classList.add("show");
-    }
+    if (editModal) editModal.classList.add("show");
 }
 
 function closeEditModal() {
-    if (editModal) {
-        editModal.classList.remove("show");
-    }
+    if (editModal) editModal.classList.remove("show");
 }
 
 function saveEditData() {
@@ -461,7 +473,6 @@ function storeKelasData() {
         });
 }
 
-// LOGIKA EDIT KELAS (UPDATE)
 const editKelasModal = document.getElementById("editKelasModal");
 const editKelasId = document.getElementById("editKelasId");
 const editNamaKelas = document.getElementById("editNamaKelas");
@@ -529,7 +540,6 @@ function updateKelasData() {
         });
 }
 
-// LOGIKA HAPUS KELAS (DELETE)
 function confirmDeleteKelas(button, id) {
     Swal.fire({
         title: "Hapus Kelas?",
@@ -578,6 +588,41 @@ function confirmDeleteKelas(button, id) {
                     Swal.fire("Error!", "Gagal menghubungi server.", "error");
                 });
         }
+    });
+}
+
+// =======================================================================
+// ini js Progres Belajar
+// =======================================================================
+function updateTextTombolExportProgres() {
+    const btnExportProgres = document.getElementById("btnExportProgres");
+    const filterKelas = document.getElementById("filterKelas");
+
+    if (btnExportProgres && filterKelas) {
+        const nilaiDipilih = filterKelas.value;
+        const teksDipilih = filterKelas.options[filterKelas.selectedIndex].text;
+
+        if (nilaiDipilih === "semua") {
+            btnExportProgres.innerHTML =
+                '<i class="fas fa-file-excel"></i> Export Semua Data Progres';
+        } else {
+            btnExportProgres.innerHTML = `<i class="fas fa-file-excel"></i> Export Data Progres Kelas ${teksDipilih}`;
+        }
+    }
+}
+
+const btnExportProgres = document.getElementById("btnExportProgres");
+if (btnExportProgres) {
+    updateTextTombolExportProgres();
+
+    const filterKelas = document.getElementById("filterKelas");
+    if (filterKelas) {
+        filterKelas.addEventListener("change", updateTextTombolExportProgres);
+    }
+
+    btnExportProgres.addEventListener("click", function () {
+        const kelasPilihan = filterKelas ? filterKelas.value : "semua";
+        window.location.href = `/guru/progresbelajar/export?kelas=${encodeURIComponent(kelasPilihan)}`;
     });
 }
 
@@ -1006,6 +1051,38 @@ window.lihatDetailSoal = function (jenis_kuis, nomor_soal) {
         },
     });
 };
+
+function updateTextTombolExportNilai() {
+    const btnExportNilai = document.getElementById("btnExportNilai");
+    const filterKelas = document.getElementById("filterKelas");
+
+    if (btnExportNilai && filterKelas) {
+        const nilaiDipilih = filterKelas.value;
+        const teksDipilih = filterKelas.options[filterKelas.selectedIndex].text;
+
+        if (nilaiDipilih === "semua") {
+            btnExportNilai.innerHTML =
+                '<i class="fas fa-file-excel"></i> Export Semua Data Nilai';
+        } else {
+            btnExportNilai.innerHTML = `<i class="fas fa-file-excel"></i> Export Data Nilai Kelas ${teksDipilih}`;
+        }
+    }
+}
+
+const btnExportNilai = document.getElementById("btnExportNilai");
+if (btnExportNilai) {
+    updateTextTombolExportNilai();
+
+    const filterKelas = document.getElementById("filterKelas");
+    if (filterKelas) {
+        filterKelas.addEventListener("change", updateTextTombolExportNilai);
+    }
+
+    btnExportNilai.addEventListener("click", function () {
+        const kelasPilihan = filterKelas ? filterKelas.value : "semua";
+        window.location.href = `/guru/datanilai/export?kelas=${encodeURIComponent(kelasPilihan)}`;
+    });
+}
 
 const riwayatModal = document.getElementById("riwayatModal");
 const namaSiswaRiwayat = document.getElementById("namaSiswaRiwayat");

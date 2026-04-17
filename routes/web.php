@@ -104,9 +104,11 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
     Route::delete('/datakelas/{id}', [GuruController::class, 'destroyKelas'])->name('guru.datakelas.destroy');
 
     // --- MANAJEMEN PROGRES BELAJAR ---
+    Route::get('/progresbelajar/export', [GuruController::class, 'exportProgresExcel'])->name('guru.progresbelajar.export');
     Route::get('/progresbelajar', [GuruController::class, 'progresBelajar'])->name('guru.progresbelajar');
 
     // --- MANAJEMEN DATA NILAI ---
+    Route::get('/datanilai/export', [GuruController::class, 'exportNilaiExcel'])->name('guru.datanilai.export'); // [DITAMBAHKAN] Route export nilai
     Route::get('/datanilai', [GuruController::class, 'dataNilai'])->name('guru.datanilai');
     Route::get('/datanilai/riwayat/{user_id}/{jenis_kuis}', [GuruController::class, 'riwayatNilai'])->name('guru.datanilai.riwayat');
 
@@ -120,11 +122,11 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
 // =============================================================
 Route::get('/stream-video/{filename}', function ($filename) {
     $path = public_path('aset/' . $filename);
-    
+
     if (!file_exists($path)) {
         abort(404);
     }
-    
+
     // response()->file() otomatis menangani HTTP Range / pemotongan video
     return response()->file($path);
 });

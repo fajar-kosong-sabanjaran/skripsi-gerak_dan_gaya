@@ -49,7 +49,13 @@
                     <input type="text" class="form-input" id="searchInput" placeholder="Cari nama siswa...">
                 </label>
             </div>
-        </div>
+
+            <div class="export-control">
+                <button class="btn-aksi btn-export" id="btnExportProgres" title="Export ke Excel/CSV">
+                    <i class="fas fa-file-excel"></i> Export Semua Data Progres
+                </button>
+            </div>
+            </div>
 
         @php
             $list_materi = [

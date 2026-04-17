@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Exports\SiswaExport;
+use App\Exports\ProgresExport;
+use App\Exports\NilaiExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
@@ -32,17 +34,12 @@ class GuruController extends Controller
         return view('guru.datasiswa', compact('data_siswa', 'data_kelas'));
     }
 
-    // [REVISI] Menambahkan fungsi export Excel (.xlsx) menggunakan Maatwebsite
     public function exportExcel(Request $request)
     {
-        // Tangkap parameter kelas dari URL (berisi nama kelas atau 'semua')
         $kelasFilter = $request->query('kelas', 'semua');
-
-        // Penamaan file dinamis
         $namaKelasFile = $kelasFilter === 'semua' ? 'Semua_Kelas' : str_replace(' ', '_', $kelasFilter);
-        $fileName = "Data_Siswa_{$namaKelasFile}.xlsx"; // Ekstensi sudah .xlsx
+        $fileName = "Data_Siswa_{$namaKelasFile}.xlsx";
 
-        // Memanggil library Excel untuk men-download
         return Excel::download(new SiswaExport($kelasFilter), $fileName);
     }
 
@@ -104,13 +101,11 @@ class GuruController extends Controller
     {
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            // [REVISI] Ubah pesan error agar lebih jelas
             'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan, silakan pilih nama atau tahun lain.',
             'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'tahun.max' => 'Tahun tidak boleh lebih dari 255 karakter.'
         ];
 
-        // [REVISI] Mengubah validasi unique agar mengecek kombinasi nama dan tahun
         $validator = Validator::make($request->all(), [
             'nama' => [
                 'required',
@@ -146,13 +141,11 @@ class GuruController extends Controller
 
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            // [REVISI] Ubah pesan error
             'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan, silakan pilih nama atau tahun lain.',
             'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'tahun.max' => 'Tahun tidak boleh lebih dari 255 karakter.'
         ];
 
-        // [REVISI] Mengubah validasi unique dengan kombinasi nama dan tahun, dan ignore ID kelas saat ini
         $validator = Validator::make($request->all(), [
             'nama' => [
                 'required',
@@ -184,9 +177,7 @@ class GuruController extends Controller
         $kelas = Kelas::find($id);
 
         if ($kelas) {
-            // Putuskan relasi siswa dengan kelas yang akan dihapus
             User::where('kelas_id', $id)->update(['kelas_id' => null]);
-
             $kelas->delete();
             return response()->json(['success' => true]);
         }
@@ -209,6 +200,15 @@ class GuruController extends Controller
         return view('guru.progresbelajar', compact('data_siswa', 'data_kelas'));
     }
 
+    public function exportProgresExcel(Request $request)
+    {
+        $kelasFilter = $request->query('kelas', 'semua');
+        $namaKelasFile = $kelasFilter === 'semua' ? 'Semua_Kelas' : str_replace(' ', '_', $kelasFilter);
+        $fileName = "Data_Progres_Siswa_{$namaKelasFile}.xlsx";
+
+        return Excel::download(new ProgresExport($kelasFilter), $fileName);
+    }
+
     // =================================================================
     // MANAJEMEN DATA NILAI
     // =================================================================
@@ -224,6 +224,15 @@ class GuruController extends Controller
         $kkm = PengaturanKkm::first();
 
         return view('guru.datanilai', compact('data_siswa', 'data_kelas', 'kkm'));
+    }
+
+    public function exportNilaiExcel(Request $request)
+    {
+        $kelasFilter = $request->query('kelas', 'semua');
+        $namaKelasFile = $kelasFilter === 'semua' ? 'Semua_Kelas' : str_replace(' ', '_', $kelasFilter);
+        $fileName = "Data_Nilai_Siswa_{$namaKelasFile}.xlsx";
+
+        return Excel::download(new NilaiExport($kelasFilter), $fileName);
     }
 
     public function riwayatNilai($user_id, $jenis_kuis)
@@ -243,7 +252,6 @@ class GuruController extends Controller
             ->orderBy('percobaan_ke', 'asc')
             ->get();
 
-        // Hitung ulang status kelulusan berdasarkan KKM dinamis terbaru
         $pengaturan = PengaturanKkm::first();
         $kkm_sekarang = 70;
 
@@ -263,7 +271,7 @@ class GuruController extends Controller
         return response()->json([
             'success' => true,
             'data' => $riwayat,
-            'kkm' => $kkm_sekarang // [REVISI] Ikut kirim nilai KKM ke Javascript
+            'kkm' => $kkm_sekarang
         ]);
     }
 
