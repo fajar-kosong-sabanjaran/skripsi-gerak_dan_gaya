@@ -476,11 +476,11 @@ body {
     text-decoration: none;
     position: relative;
     transition: 0.3s;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 .top-nav-links a::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 0;
     height: 2px;
@@ -793,9 +793,6 @@ body {
     }
 }
 
-
-
-
 /* Ini file css jarak tempuh dan perpindahan */
 .anim-wrapper {
     width: 100%;
@@ -1105,7 +1102,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .tombol-cek:hover {
@@ -1120,7 +1119,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .tombol-reset:hover {
@@ -1311,7 +1312,7 @@ body {
     .baris-soal > div {
         width: 100%;
     }
-    .isian-sedang, 
+    .isian-sedang,
     .isian-pendek {
         width: 100%;
         flex: 1;
@@ -1320,18 +1321,13 @@ body {
         flex-direction: row;
         justify-content: flex-start;
     }
-    .tombol-cek, 
-    .tombol-reset, 
+    .tombol-cek,
+    .tombol-reset,
     .tombol-unduh {
         width: auto;
         padding: 8px 16px;
     }
 }
-
-
-
-
-
 
 /* File css kelajuan dan kecepatan & css percepatan */
 .quiz-wrapper {
@@ -1437,8 +1433,10 @@ body {
     transform: none;
 }
 
-.rumus-container-kelajuandankecepatan:hover .rumus-card-kelajuandankecepatan.kelajuan,
-.rumus-container-kelajuandankecepatan:hover .rumus-card-kelajuandankecepatan.kecepatan {
+.rumus-container-kelajuandankecepatan:hover
+    .rumus-card-kelajuandankecepatan.kelajuan,
+.rumus-container-kelajuandankecepatan:hover
+    .rumus-card-kelajuandankecepatan.kecepatan {
     background-color: #f8f9fa;
     border-color: #e9ecef;
     color: #adb5bd;
@@ -1732,7 +1730,8 @@ body {
         align-items: stretch;
     }
 
-    #nav-left, #nav-right {
+    #nav-left,
+    #nav-right {
         width: 100%;
     }
 
@@ -1753,9 +1752,6 @@ body {
         flex-wrap: wrap;
     }
 }
-
-
-
 
 /* Resultan Gaya */
 .container-soal {
@@ -1882,7 +1878,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-cek-resultangaya:hover {
@@ -1898,18 +1896,15 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-reset-resultangaya:hover {
     background: #5a6268;
     transform: translateY(-2px);
 }
-
-
-
-
-
 
 /* Pengertian Gaya */
 .kotak-kuis-gaya {
@@ -1985,7 +1980,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-cek-pengertiangaya:hover {
@@ -2001,7 +1998,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-reset-pengertiangaya:hover {
@@ -2012,9 +2011,6 @@ body {
 .hidden {
     display: none !important;
 }
-
-
-
 
 /* Css dari Macam - Macam Gaya */
 .jg-grid-wrapper {
@@ -2094,7 +2090,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-cek-macamgaya:hover {
@@ -2109,7 +2107,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-reset-macamgaya:hover {
@@ -2163,10 +2163,6 @@ body {
     }
 }
 
-
-
-
-
 /* INI MERUPAKAN FILE HUKUM NEWTON */
 .note-box {
     background-color: #fff9c4;
@@ -2185,7 +2181,7 @@ body {
     border-radius: 8px;
     text-align: center;
     margin: 15px auto; /* Margin auto untuk menengahkan kotak yang sudah menciut */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     width: fit-content; /* Revisi: Lebar kotak mengikuti panjang rumus */
 }
 
@@ -2212,7 +2208,7 @@ body {
 .action-container-newton {
     display: flex;
     justify-content: center;
-    gap: 15px; 
+    gap: 15px;
     margin-top: 25px;
     width: 100%;
 }
@@ -2224,7 +2220,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-cek-newton:hover {
@@ -2239,7 +2237,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-reset-newton:hover {
