@@ -29,12 +29,15 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
+            'nomor_induk'  => 'required|string|unique:users,nomor_induk',
             'email'        => 'required|email|unique:users',
             'password'     => 'required|min:6|confirmed', 
             'peran'        => 'required|in:siswa,guru',
             'kelas_id'     => 'required_if:peran,siswa|exists:kelas,id', 
         ], [
             'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'nomor_induk.required'  => 'NIS wajib diisi.',
+            'nomor_induk.unique'    => 'NIS ini sudah terdaftar.',
             'email.required'        => 'Email wajib diisi.',
             'email.email'           => 'Format email tidak valid.',
             'email.unique'          => 'Email ini sudah terdaftar.',
@@ -49,7 +52,7 @@ class AuthController extends Controller
             'email'        => $validated['email'],
             'password'     => Hash::make($validated['password']),
             'peran'        => $validated['peran'],
-            'nomor_induk'  => $request->nomor_induk ?? null, 
+            'nomor_induk'  => $validated['nomor_induk'], 
             'kelas_id'     => $request->kelas_id, 
         ]);
 

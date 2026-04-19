@@ -60,10 +60,10 @@
         /* --- BAGIAN KANAN (Formulir) --- */
         .auth-right { 
             flex: 1; 
-            padding: 40px 80px; 
+            padding: 60px 80px; /* Padding atas diperbesar agar lebih lega */
             display: flex; 
             flex-direction: column; 
-            justify-content: center; 
+            justify-content: flex-start; /* Diubah ke flex-start agar tidak mepet atas saat formulir panjang */
             overflow-y: auto; 
             background-color: #fff;
         }
@@ -189,6 +189,11 @@
                 <div class="form-group">
                     <label>Nama Lengkap</label>
                     <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" value="{{ old('nama_lengkap') }}" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label>NIS (Nomor Induk Siswa)</label>
+                    <input type="text" name="nomor_induk" class="form-control" placeholder="Contoh: 16191130" value="{{ old('nomor_induk') }}" required>
                 </div>
 
                 <div class="form-group">
