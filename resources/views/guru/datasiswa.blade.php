@@ -161,5 +161,4 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/scriptguru.js') }}"></script>
 @endsection
