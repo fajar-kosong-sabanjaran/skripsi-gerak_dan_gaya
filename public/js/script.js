@@ -291,14 +291,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function checkAllLocks() {
         const path = window.location.pathname;
 
-        // Cek kelulusan menggunakan fungsi isLulus (terhubung ke Database)
         function isLulus(kodeMateri) {
             return (
                 window.progresSiswa && window.progresSiswa.includes(kodeMateri)
             );
         }
 
-        // 1. Cek Kelulusan Materi Pengertian Gerak
+        // 1. Kelulusan Materi Pengertian Gerak
         if (isLulus("pengertiangerak_completed")) {
             const navJarak = document.getElementById("nav-jarak");
             if (navJarak) {
@@ -307,13 +306,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("pengertiangerak")) {
-                const btnNextMateri =
-                    document.getElementById("btn-next-materi");
+                const btnNextMateri = document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
 
-        // 2. Cek Kelulusan Materi Jarak Tempuh dan Perpindahan
+        // 2. Kelulusan Materi Jarak Tempuh dan Perpindahan
         if (isLulus("jarak_completed")) {
             const navKelajuan = document.getElementById("nav-kelajuan");
             if (navKelajuan) {
@@ -322,15 +320,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("jaraktempuhdanperpindahan")) {
-                const btnNextMateri =
-                    document.getElementById("btn-next-materi");
-                if (btnNextMateri) {
-                    btnNextMateri.classList.remove("locked");
-                }
+                const btnNextMateri = document.getElementById("btn-next-materi");
+                if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
 
-        // 3. Cek Kelulusan Materi Kelajuan dan Kecepatan
+        // 3. Kelulusan Materi Kelajuan dan Kecepatan
         if (isLulus("kelajuan_completed")) {
             const navPercepatan = document.getElementById("nav-percepatan");
             if (navPercepatan) {
@@ -339,13 +334,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("kelajuandankecepatan")) {
-                const btnNextMateri =
-                    document.getElementById("btn-next-materi");
+                const btnNextMateri = document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
 
-        // 4. Cek Kelulusan Materi Percepatan
+        // 4. Kelulusan Materi Percepatan
         if (isLulus("percepatan_completed")) {
             const navKuis1 = document.getElementById("nav-kuis1");
             if (navKuis1) {
@@ -354,8 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("percepatan")) {
-                const btnNextMateri =
-                    document.getElementById("btn-next-materi");
+                const btnNextMateri = document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
@@ -367,8 +360,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. LOGIKA ANIMASI GERAK MOBIL
     // =========================================================================
     const posA = 0;
-    const posB = 4; // A → B = 4 km
-    const posC = 10; // B → C = 6 km → total A → C = 10 km
+    const posB = 4;
+    const posC = 10;
 
     const segments = [
         { from: posA, to: posB, distance: 4, label: "A → B" },
@@ -379,6 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const car = document.getElementById("car");
     const btnStart = document.getElementById("btn-start");
     const btnReset = document.getElementById("btn-reset");
+    const btnLanjutKuis = document.getElementById("btn-lanjut-kuis"); // Tambahan tombol lanjut kuis
 
     const closeModal = document.getElementById("close-modal");
     const resultModal = document.getElementById("result-modal");
@@ -416,6 +410,8 @@ document.addEventListener("DOMContentLoaded", () => {
             running = false;
             setCarPosition(startPos);
             if (btnStart) btnStart.disabled = false;
+            // Sembunyikan tombol lanjut kuis saat animasi di-reset
+            if (btnLanjutKuis) btnLanjutKuis.style.display = "none";
         }
 
         function step(timestamp) {
@@ -512,6 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const quizFeedback = document.getElementById("quiz-feedback");
     const quizSubmit = document.getElementById("quiz-submit");
     const quizNext = document.getElementById("quiz-next");
+    const quizClose = document.getElementById("quiz-close"); // Tambahan tombol tutup sementara
     const modalText = document.getElementById("modal-text");
 
     const quizData = [
@@ -597,6 +594,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 quizModal.style.display = "none";
                 quizIndex = 0;
 
+                // Sembunyikan tombol lanjut kuis karena semua soal sudah selesai
+                if (btnLanjutKuis) btnLanjutKuis.style.display = "none";
+
                 if (modalText && window.finalSummary) {
                     modalText.innerHTML =
                         "Jarak tempuh total: " +
@@ -609,6 +609,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (resultModal) resultModal.style.display = "flex";
                 }
             }
+        });
+    }
+
+    // Logika untuk tombol Tutup Sementara
+    if (quizClose) {
+        quizClose.addEventListener("click", () => {
+            quizModal.style.display = "none";
+            if (btnLanjutKuis) btnLanjutKuis.style.display = "inline-block";
+        });
+    }
+
+    // Logika untuk tombol Lanjutkan Kuis
+    if (btnLanjutKuis) {
+        btnLanjutKuis.addEventListener("click", () => {
+            quizModal.style.display = "flex";
+            btnLanjutKuis.style.display = "none";
         });
     }
 
@@ -687,7 +703,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // LOGIKA TOMBOL CEK & MODAL
     if (btnCekAdi) {
         btnCekAdi.addEventListener("click", () => {
             let benarCount = 0;
@@ -726,7 +741,6 @@ document.addEventListener("DOMContentLoaded", () => {
             validateInput(inputs.soal4, 550, true);
             validateInput(inputs.soal5, 0, true);
 
-            // CEK APAKAH SEMUA BENAR
             if (benarCount === 5) {
                 // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
                 window.progresSiswa = window.progresSiswa || [];
@@ -735,12 +749,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.progresSiswa.push("jarak_completed");
                 }
 
-                // Panggil fungsi Global
                 if (window.simpanProgresKeDatabase) {
                     window.simpanProgresKeDatabase("jarak_completed");
                 }
 
-                // Buka kunci secara manual via Helper Global
                 if (window.unlockSidebar) {
                     window.unlockSidebar("nav-kelajuan");
                 }
@@ -834,7 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!val) return null;
         const m = val.toString().match(/-?\d+(\.\d+)?/);
         return m ? parseFloat(m[0]) : null;
-    };
+    }
 
     if (btnUnduhAdi) {
         btnUnduhAdi.addEventListener("click", async () => {

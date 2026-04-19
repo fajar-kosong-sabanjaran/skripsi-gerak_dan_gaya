@@ -93,6 +93,7 @@
         <div class="anim-controls">
           <button class="anim-btn" id="btn-start">Mulai Animasi</button>
           <button class="anim-btn secondary" id="btn-reset">Reset</button>
+          <button class="anim-btn btn-lanjut" id="btn-lanjut-kuis" style="display:none;">Lanjutkan Soal</button>
         </div>
       </div>
     </div>
@@ -194,9 +195,10 @@
 
     <p id="quiz-feedback" style="margin-top:10px;"></p>
 
-    <div style="margin-top:15px;">
+    <div class="quiz-modal-actions">
       <button class="anim-btn" id="quiz-submit">Jawab</button>
       <button class="anim-btn" id="quiz-next" style="display:none;">Lanjut</button>
+      <button class="anim-btn secondary" id="quiz-close">Tutup Sementara</button>
     </div>
   </div>
 </div>
