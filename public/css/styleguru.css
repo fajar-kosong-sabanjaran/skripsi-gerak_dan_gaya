@@ -774,6 +774,30 @@ body {
         flex-direction: column;
         gap: 0;
     }
+
+    .swal2-popup {
+        width: 85% !important;
+        padding: 1.2em !important;
+        border-radius: 12px !important;
+    }
+
+    .swal2-title {
+        font-size: 22px !important;
+    }
+
+    .swal2-html-container {
+        font-size: 14px !important;
+        margin: 10px 0 !important;
+    }
+
+    .swal2-icon {
+        zoom: 0.75 !important;
+        margin: 15px auto 10px auto !important;
+    }
+
+    .swal2-actions {
+        margin-top: 15px !important;
+    }
 }
 
 /* =======================================================================

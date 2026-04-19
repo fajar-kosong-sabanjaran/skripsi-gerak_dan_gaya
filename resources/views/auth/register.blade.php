@@ -193,7 +193,7 @@
 
                 <div class="form-group">
                     <label>NIS (Nomor Induk Siswa)</label>
-                    <input type="text" name="nomor_induk" class="form-control" placeholder="Contoh: 16191130" value="{{ old('nomor_induk') }}" required>
+                    <input type="text" name="nomor_induk" class="form-control" placeholder="Contoh: 2016191130" value="{{ old('nomor_induk') }}" required>
                 </div>
 
                 <div class="form-group">

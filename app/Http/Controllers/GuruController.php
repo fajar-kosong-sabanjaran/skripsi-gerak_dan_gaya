@@ -51,12 +51,26 @@ class GuruController extends Controller
             return response()->json(['success' => false, 'message' => 'Siswa tidak ditemukan'], 404);
         }
 
-        $request->validate([
+        $messages = [
+            'nomor_induk.unique' => 'NIS tersebut sudah digunakan oleh siswa lain!',
+            'password.min' => 'Password minimal harus terdiri dari 6 karakter!',
+            'email.unique' => 'Email tersebut sudah terdaftar!',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'nomor_induk' => 'nullable|string',
+            'nomor_induk' => 'nullable|string|unique:users,nomor_induk,' . $id,
             'kelas_id' => 'nullable|exists:kelas,id',
-        ]);
+            'password' => 'nullable|string|min:6',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
 
         $siswa->nama_lengkap = $request->nama_lengkap;
         $siswa->email = $request->email;
