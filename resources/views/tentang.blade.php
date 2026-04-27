@@ -181,6 +181,16 @@
         .detail-table td { display: block; width: 100% !important; padding: 8px 0; } 
         .detail-table td:first-child { padding-top: 15px; border-bottom: none; font-size: 14px; color: #64748b;} 
     }
+
+    /* ================= TAMBAHAN SWEETALERT RESPONSIVE KUSTOM ================= */
+    @media (max-width: 600px) {
+        div:where(.swal2-container) div:where(.swal2-popup) { width: 85% !important; padding: 1em !important; }
+        div:where(.swal2-container) h2:where(.swal2-title) { font-size: 1.4em !important; padding: 0.5em 0 0 !important; }
+        div:where(.swal2-container) div:where(.swal2-html-container) { font-size: 0.95em !important; margin: 1em 0 !important; }
+        div:where(.swal2-container) button:where(.swal2-styled) { padding: 8px 20px !important; font-size: 14px !important; }
+        div:where(.swal2-container) div:where(.swal2-icon) { width: 4em !important; height: 4em !important; margin: 1em auto .5em !important; }
+        div:where(.swal2-container) div:where(.swal2-icon) div:where(.swal2-icon-content) { font-size: 2.5em !important; }
+    }
     </style>
 </head>
 <body>
@@ -209,9 +219,9 @@
                 <div class="user-menu-container">
                     <div class="user-greeting" onclick="toggleDropdown()">Halo, {{ Auth::user()->nama_lengkap }} 👋</div>
                     <div class="dropdown-logout" id="dropdownMenu">
-                        <form action="{{ route('logout') }}" method="POST">
+                        <form id="form-logout" action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-logout">🚪 Keluar</button>
+                            <button type="button" class="btn-logout" onclick="konfirmasiKeluar()">🚪 Keluar</button>
                         </form>
                     </div>
                 </div>
@@ -277,18 +287,61 @@
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         AOS.init({ once: true, offset: 50 });
-        function toggleDropdown() { document.getElementById("dropdownMenu").classList.toggle("show"); }
-        window.onclick = function(event) { if (!event.target.matches('.user-greeting')) { var dropdowns = document.getElementsByClassName("dropdown-logout"); for (var i = 0; i < dropdowns.length; i++) { var openDropdown = dropdowns[i]; if (openDropdown.classList.contains('show')) { openDropdown.classList.remove('show'); } } } }
         
-        // TAMBAHAN REVISI: FUNGSI HAMBURGER MENU
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
+        function toggleDropdown() { 
+            document.getElementById("dropdownMenu").classList.toggle("show"); 
+        }
+        
+        // Logika tutup dropdown user dan menu hamburger saat klik di luar area
+        window.onclick = function(event) { 
+            if (!event.target.matches('.user-greeting')) { 
+                var dropdowns = document.getElementsByClassName("dropdown-logout"); 
+                for (var i = 0; i < dropdowns.length; i++) { 
+                    var openDropdown = dropdowns[i]; 
+                    if (openDropdown.classList.contains('show')) { 
+                        openDropdown.classList.remove('show'); 
+                    } 
+                } 
+            }
+            
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            
+            if (mobileMenu && navLinks && navLinks.classList.contains('active')) {
+                if (!mobileMenu.contains(event.target) && !navLinks.contains(event.target)) {
+                    navLinks.classList.remove('active');
+                }
+            }
+        }
+        
+        // FUNGSI HAMBURGER MENU
+        const mobileMenuBtn = document.getElementById('mobile-menu');
+        const navLinksContainer = document.getElementById('nav-links');
 
-        if (mobileMenu) {
-            mobileMenu.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('active');
+            });
+        }
+
+        // FUNGSI SWEETALERT KONFIRMASI LOGOUT
+        function konfirmasiKeluar() {
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: 'Kamu akan keluar dari akun ini.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f95c50',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Keluar!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-logout').submit();
+                }
             });
         }
     </script>

@@ -16,11 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
             sidebar.classList.remove("active");
             sidebarOverlay.classList.remove("show");
         });
-    }
-
-    // =======================================================================
+    } // =======================================================================
     // ini js guru.blade (Sidebar & Navbar)
     // =======================================================================
+
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     const path = window.location.pathname;
 
@@ -79,11 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 userDropdown.classList.remove("active");
             }
         }
-    });
-
-    // =======================================================================
+    }); // =======================================================================
     // ini js untuk Table (Search, Filter Kelas, Pagination) - Dipakai di semua tabel
     // =======================================================================
+
     const tableBody = document.getElementById("tableBody");
 
     if (tableBody) {
@@ -242,11 +240,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         updateTable();
-    }
-
-    // =======================================================================
+    } // =======================================================================
     // ini js untuk Fitur Export Excel
     // =======================================================================
+
     function updateTextTombolExport() {
         const btnExportExcel = document.getElementById("btnExportExcel");
         const filterKelas = document.getElementById("filterKelas");
@@ -276,6 +273,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+window.konfirmasiKeluar = function () {
+    Swal.fire({
+        title: "Apakah Kamu Yakin?",
+        text: "Anda akan keluar dari Akun ini.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#f95c50",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Ya, Keluar!",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("logout-form").submit();
+        }
+    });
+};
 
 // =======================================================================
 // ini js datasiswa.blade (Fungsi Hapus / Delete)

@@ -32,6 +32,26 @@ window.simpanProgresKeDatabase = function (kodeMateri) {
         });
 };
 
+// =========================================================================
+// FUNGSI KONFIRMASI LOGOUT DENGAN SWEETALERT2
+// =========================================================================
+window.konfirmasiKeluar = function () {
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Kamu akan keluar dari akun ini.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#f95c50",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Ya, Keluar!",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("form-logout").submit();
+        }
+    });
+};
+
 // --- HELPER FUNCTION: UNTUK MEMBUKA SIDEBAR (DIBUAT GLOBAL) ---
 window.unlockSidebar = function (elementId) {
     const el = document.getElementById(elementId);
@@ -55,11 +75,10 @@ window.unlockNextButtonIfPage = function (pageKeyword) {
 // DOM CONTENT LOADED UTAMA
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    const path = window.location.pathname;
-
-    // =========================================================================
+    const path = window.location.pathname; // =========================================================================
     // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
     // =========================================================================
+
     function isLulus(kodeMateri) {
         return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
     }
@@ -81,9 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLulus("percepatan_completed")) {
             window.unlockSidebar("nav-kuis1");
             window.unlockNextButtonIfPage("percepatan");
-        }
+        } // --- BAGIAN B: MODUL GAYA ---
 
-        // --- BAGIAN B: MODUL GAYA ---
         if (isLulus("kuis1_completed")) {
             window.unlockSidebar("nav-gaya-header");
             window.unlockSidebar("nav-pengantar-gaya");
@@ -104,19 +122,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLulus("hukumnewton_completed")) {
             window.unlockSidebar("nav-kuis2");
             window.unlockNextButtonIfPage("hukumnewton");
-        }
+        } // --- BAGIAN C: EVALUASI ---
 
-        // --- BAGIAN C: EVALUASI ---
         if (isLulus("kuis2_completed")) {
             window.unlockSidebar("nav-evaluasi");
         }
     }
 
-    checkAllLocks();
-
-    // =========================================================================
+    checkAllLocks(); // =========================================================================
     // 2. SIDEBAR TOGGLE LOGIC & LAIN-LAIN
     // =========================================================================
+
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     toggleItems.forEach((item) => {
         item.addEventListener("click", () => {
@@ -180,11 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     openDropdown.classList.remove("show");
             }
         }
-    };
-
-    // =========================================================================
+    }; // =========================================================================
     // 3. LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP)
     // =========================================================================
+
     const cards = document.querySelectorAll(".card-item");
     if (cards.length > 0) {
         const zones = document.querySelectorAll(".drop-zone, #card-pool");
@@ -306,7 +321,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("pengertiangerak")) {
-                const btnNextMateri = document.getElementById("btn-next-materi");
+                const btnNextMateri =
+                    document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
@@ -320,7 +336,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("jaraktempuhdanperpindahan")) {
-                const btnNextMateri = document.getElementById("btn-next-materi");
+                const btnNextMateri =
+                    document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
@@ -334,7 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("kelajuandankecepatan")) {
-                const btnNextMateri = document.getElementById("btn-next-materi");
+                const btnNextMateri =
+                    document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
@@ -348,7 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lockIcon) lockIcon.remove();
             }
             if (path.includes("percepatan")) {
-                const btnNextMateri = document.getElementById("btn-next-materi");
+                const btnNextMateri =
+                    document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
@@ -846,7 +865,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!val) return null;
         const m = val.toString().match(/-?\d+(\.\d+)?/);
         return m ? parseFloat(m[0]) : null;
-    }
+    };
 
     if (btnUnduhAdi) {
         btnUnduhAdi.addEventListener("click", async () => {

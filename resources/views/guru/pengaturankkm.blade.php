@@ -1,7 +1,6 @@
 @extends('layouts.guru')
 
 @section('content')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <div class="card-guru">
         <div class="card-header-action kkm-header-container">

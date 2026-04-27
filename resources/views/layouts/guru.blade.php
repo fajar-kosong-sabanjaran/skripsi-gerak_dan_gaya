@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/styleguru.css') }}?v={{ filemtime(public_path('css/styleguru.css')) }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -91,7 +92,7 @@
                         </form>
 
                         <a href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                            onclick="event.preventDefault(); konfirmasiKeluar();"
                             class="dropdown-item-logout">
                             <i class="fas fa-sign-out-alt"></i> Keluar
                         </a>

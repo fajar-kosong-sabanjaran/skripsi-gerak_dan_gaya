@@ -408,6 +408,39 @@
                 font-size: 28px;
             }
         }
+
+        /* ================= TAMBAHAN SWEETALERT RESPONSIVE KUSTOM ================= */
+        @media (max-width: 600px) {
+            div:where(.swal2-container) div:where(.swal2-popup) {
+                width: 85% !important;
+                padding: 1em !important;
+            }
+
+            div:where(.swal2-container) h2:where(.swal2-title) {
+                font-size: 1.4em !important;
+                padding: 0.5em 0 0 !important;
+            }
+
+            div:where(.swal2-container) div:where(.swal2-html-container) {
+                font-size: 0.95em !important;
+                margin: 1em 0 !important;
+            }
+
+            div:where(.swal2-container) button:where(.swal2-styled) {
+                padding: 8px 20px !important;
+                font-size: 14px !important;
+            }
+
+            div:where(.swal2-container) div:where(.swal2-icon) {
+                width: 4em !important;
+                height: 4em !important;
+                margin: 1em auto .5em !important;
+            }
+
+            div:where(.swal2-container) div:where(.swal2-icon) div:where(.swal2-icon-content) {
+                font-size: 2.5em !important;
+            }
+        }
     </style>
 </head>
 
@@ -467,9 +500,9 @@
                 <div class="user-menu-container">
                     <div class="user-greeting" onclick="toggleDropdown()">Halo, {{ Auth::user()->nama_lengkap }} 👋</div>
                     <div class="dropdown-logout" id="dropdownMenu">
-                        <form action="{{ route('logout') }}" method="POST">
+                        <form id="form-logout" action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-logout">🚪 Keluar</button>
+                            <button type="button" class="btn-logout" onclick="konfirmasiKeluar()">🚪 Keluar</button>
                         </form>
                     </div>
                 </div>
@@ -555,10 +588,14 @@
             offset: 50
         });
 
+        // 1. FUNGSI DROPDOWN MENU USER (KLIK)
         function toggleDropdown() {
             document.getElementById("dropdownMenu").classList.toggle("show");
         }
+
+        // 2. TUTUP DROPDOWN DAN MENU HAMBURGER JIKA KLIK DI LUAR
         window.onclick = function(event) {
+            // Logika tutup dropdown user
             if (!event.target.matches('.user-greeting')) {
                 var dropdowns = document.getElementsByClassName("dropdown-logout");
                 for (var i = 0; i < dropdowns.length; i++) {
@@ -566,6 +603,18 @@
                     if (openDropdown.classList.contains('show')) {
                         openDropdown.classList.remove('show');
                     }
+                }
+            }
+
+            // Logika tutup menu hamburger (responsive)
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            
+            // Pastikan elemen ada, dan navLinks sedang terbuka (aktif)
+            if (mobileMenu && navLinks && navLinks.classList.contains('active')) {
+                // Jika klik bukan pada ikon burger dan bukan di dalam area menu itu sendiri
+                if (!mobileMenu.contains(event.target) && !navLinks.contains(event.target)) {
+                    navLinks.classList.remove('active');
                 }
             }
         }
@@ -606,6 +655,24 @@
                 icon: 'warning',
                 confirmButtonColor: '#f95c50',
                 confirmButtonText: 'Oke, Mengerti'
+            });
+        }
+
+        // FUNGSI SWEETALERT KONFIRMASI LOGOUT
+        function konfirmasiKeluar() {
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: 'Kamu akan keluar dari akun ini.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f95c50',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Keluar!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-logout').submit();
+                }
             });
         }
     </script>

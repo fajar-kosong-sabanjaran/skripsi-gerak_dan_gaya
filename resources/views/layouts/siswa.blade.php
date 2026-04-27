@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <title>GERAK DAN GAYA</title>
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
@@ -23,8 +23,10 @@
         MobileDragDrop.polyfill({
             dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
         });
-        
-        window.addEventListener( 'touchmove', function() {}, {passive: false});
+
+        window.addEventListener('touchmove', function() {}, {
+            passive: false
+        });
     </script>
 </head>
 
@@ -114,17 +116,17 @@
 
     <div class="content-area">
         <div class="top-bar">
-            
+
             <div class="top-bar-left">
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
-            
+
             <div class="top-bar-right">
                 {{-- Menu Navigasi Utama --}}
                 <div class="top-nav-links">
-                    @if(Auth::check() && Auth::user()->peran === 'guru')
+                    @if (Auth::check() && Auth::user()->peran === 'guru')
                         <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
                     @endif
                     <a href="{{ url('/') }}">Beranda</a>
@@ -140,9 +142,9 @@
                     </div>
 
                     <div class="dropdown-logout" id="dropdownMenu">
-                        
+
                         <div class="mobile-dropdown-links">
-                            @if(Auth::check() && Auth::user()->peran === 'guru')
+                            @if (Auth::check() && Auth::user()->peran === 'guru')
                                 <a href="{{ url('/guru/datasiswa') }}" class="dropdown-item">Halaman Guru</a>
                             @endif
                             <a href="{{ url('/') }}" class="dropdown-item">Beranda</a>
@@ -152,9 +154,9 @@
                             <div class="dropdown-divider"></div>
                         </div>
 
-                        <form action="{{ route('logout') }}" method="POST">
+                        <form id="form-logout" action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-logout">
+                            <button type="button" class="btn-logout" onclick="konfirmasiKeluar()">
                                 🚪 Keluar
                             </button>
                         </form>
@@ -176,14 +178,14 @@
         // =====================================================================
         // LOGIKA BYPASS KHUSUS GURU
         // =====================================================================
-        @if(Auth::check() && Auth::user()->peran === 'guru')
+        @if (Auth::check() && Auth::user()->peran === 'guru')
             document.addEventListener("DOMContentLoaded", function() {
                 // 1. Hapus semua class 'locked' dari sidebar maupun tombol 'Materi Selanjutnya'
                 const lockedElements = document.querySelectorAll('.locked');
                 lockedElements.forEach(function(el) {
                     el.classList.remove('locked');
                 });
-                
+
                 // 2. Hapus semua icon gembok
                 const lockIcons = document.querySelectorAll('.fa-lock');
                 lockIcons.forEach(function(icon) {
