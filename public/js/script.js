@@ -4001,8 +4001,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 answer: 1,
             },
             {
-                q: "Sebuah balok bermassa 2 kg diberi gaya sebesar 10 N. Besar percepatan yang dialami balok tersebut adalah...",
-                options: ["0,2 m/s²", "5 m/s²", "12 m/s²", "20 m/s²"],
+                q: "Dua buah balok, balok A (2 kg) dan balok B (10 kg), diberikan gaya dorong yang sama besar. Pernyataan yang paling tepat mengenai percepatan kedua balok adalah...",
+                options: ["Balok B bergerak lebih cepat karena massanya besar", 
+                    "Balok A memiliki percepatan lebih besar karena massanya lebih ringan", 
+                    "Kedua balok memiliki percepatan yang sama karena gayanya sama", 
+                    "Balok A tetap diam karena kelembamannya lebih besar"],
                 answer: 1,
             },
             {
