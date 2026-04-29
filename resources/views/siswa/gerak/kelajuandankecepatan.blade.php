@@ -290,35 +290,32 @@
                     <table class="quiz-table" style="text-align: center;">
                         <thead>
                             <tr>
-                                <th style="width: 25%;">Benda</th>
-                                <th style="width: 25%;">Jarak (\(s\))<br><small>dalam cm</small></th>
-                                <th style="width: 25%;">Waktu (\(t\))<br><small>dalam sekon</small></th>
-                                <th style="width: 25%;">Kelajuan (\(v\))<br><small>dalam cm/s</small></th>
+                                {{-- Menghilangkan bold (font-weight: normal) pada <th> --}}
+                                <th style="width: 25%; font-weight: normal;">Benda</th>
+                                <th style="width: 25%; font-weight: normal;">Jarak (\(s\))<br><small>dalam cm</small></th>
+                                <th style="width: 25%; font-weight: normal;">Waktu (\(t\))<br><small>dalam sekon</small></th>
+                                <th style="width: 25%; font-weight: normal;">Kelajuan (\(v\))<br><small>dalam cm/s</small></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Pensil</strong></td>
+                                {{-- Menghapus <strong> --}}
+                                <td>Pensil</td>
                                 <td><input class="isian-ayo" id="prak-s-pensil" placeholder="..."></td>
-                                <td>
-                                    <input class="isian-ayo" id="prak-t-pensil" style="width: 45px; text-align: center;" placeholder="..."> ,93
-                                </td>
+                                {{-- Mengosongkan isian waktu --}}
+                                <td><input class="isian-ayo" id="prak-t-pensil" placeholder="..."></td>
                                 <td><input class="isian-ayo" id="prak-v-pensil" placeholder="..."></td>
                             </tr>
                             <tr>
-                                <td><strong>Pulpen</strong></td>
+                                <td>Pulpen</td>
                                 <td><input class="isian-ayo" id="prak-s-pulpen" placeholder="..."></td>
-                                <td>
-                                    <input class="isian-ayo" id="prak-t-pulpen" style="width: 45px; text-align: center;" placeholder="..."> ,09
-                                </td>
+                                <td><input class="isian-ayo" id="prak-t-pulpen" placeholder="..."></td>
                                 <td><input class="isian-ayo" id="prak-v-pulpen" placeholder="..."></td>
                             </tr>
                             <tr>
-                                <td><strong>Lem Stik</strong></td>
+                                <td>Lem Stik</td>
                                 <td><input class="isian-ayo" id="prak-s-lem" placeholder="..."></td>
-                                <td>
-                                    <input class="isian-ayo" id="prak-t-lem" style="width: 45px; text-align: center;" placeholder="..."> ,65
-                                </td>
+                                <td><input class="isian-ayo" id="prak-t-lem" placeholder="..."></td>
                                 <td><input class="isian-ayo" id="prak-v-lem" placeholder="..."></td>
                             </tr>
                         </tbody>

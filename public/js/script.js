@@ -1120,7 +1120,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // INI MERUPAKAN FILE KELAJUAN DAN KECEPATAN
 // Kunci Jawaban Latihan Soal Isian
 const kunciLatihan = [
-    // ===== KELAJUAN =====
     { id: "s1", jawaban: "120" },
     { id: "s2", jawaban: "40" },
     { id: "s-total", jawaban: "160" },
@@ -1129,7 +1128,6 @@ const kunciLatihan = [
     { id: "v-bawah", jawaban: "20" },
     { id: "v-hasil", jawaban: "8" },
 
-    // ===== KECEPATAN =====
     { id: "x0", jawaban: "40" },
     { id: "xt", jawaban: "120" },
     { id: "delta-s", jawaban: "80" },
@@ -1139,22 +1137,19 @@ const kunciLatihan = [
     { id: "v2-hasil", jawaban: "4" },
 ];
 
-// Kunci Jawaban Praktik Video
+// Kunci Jawaban Praktik Video (Mendukung Multi-Jawaban)
 const kunciPraktik = [
-    // Percobaan 1: Pensil (s = 10, t = 1,93)
-    { id: "prak-s-pensil", jawaban: "10" },
-    { id: "prak-t-pensil", jawaban: "1" },
-    { id: "prak-v-pensil", jawaban: "5,18" },
+    { id: "prak-s-pensil", jawaban: ["10"] },
+    { id: "prak-t-pensil", jawaban: ["1,93", "1,9"] },
+    { id: "prak-v-pensil", jawaban: ["5,18"] },
 
-    // Percobaan 2: Pulpen (s = 20, t = 4,09)
-    { id: "prak-s-pulpen", jawaban: "20" },
-    { id: "prak-t-pulpen", jawaban: "4" },
-    { id: "prak-v-pulpen", jawaban: "4,89" },
+    { id: "prak-s-pulpen", jawaban: ["20"] },
+    { id: "prak-t-pulpen", jawaban: ["4,09", "4,9"] },
+    { id: "prak-v-pulpen", jawaban: ["4,89"] },
 
-    // Percobaan 3: Lem Stik (s = 25, t = 8,65)
-    { id: "prak-s-lem", jawaban: "25" },
-    { id: "prak-t-lem", jawaban: "8" },
-    { id: "prak-v-lem", jawaban: "2,89" },
+    { id: "prak-s-lem", jawaban: ["25"] },
+    { id: "prak-t-lem", jawaban: ["8,65", "8,6"] },
+    { id: "prak-v-lem", jawaban: ["2,89"] },
 ];
 
 function tutupPopupQuiz() {
@@ -1178,7 +1173,6 @@ window.cobaLagiLatihan = function () {
     const popup = document.getElementById("popup-latihan");
     const title = popup ? popup.querySelector("h3").innerText : "";
 
-    // Cek popup mana yang sedang aktif berdasarkan judul
     if (title === "Hasil Evaluasi Praktik") {
         kunciPraktik.forEach((item) => {
             const input = document.getElementById(item.id);
@@ -1187,10 +1181,7 @@ window.cobaLagiLatihan = function () {
                 input.classList.remove("benar", "salah");
             }
         });
-        // Kembalikan judul aslinya jika popup ditutup
-        if (popup) {
-            popup.querySelector("h3").innerText = "Hasil Latihan";
-        }
+        if (popup) popup.querySelector("h3").innerText = "Hasil Latihan";
     } else {
         kunciLatihan.forEach((item) => {
             const input = document.getElementById(item.id);
@@ -1204,20 +1195,14 @@ window.cobaLagiLatihan = function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    // =========================================================================
     // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
-    // =========================================================================
     function checkAllLocks() {
         const path = window.location.pathname;
 
-        // Fungsi pembantu untuk mengecek database
         function isLulus(kodeMateri) {
-            return (
-                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
-            );
+            return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
         }
 
-        // 1. Cek Kelulusan Materi Sebelumnya (Jarak Tempuh)
         if (isLulus("jarak_completed")) {
             const navKelajuan = document.getElementById("nav-kelajuan");
             if (navKelajuan) {
@@ -1227,7 +1212,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // 2. Cek Kelulusan Materi INI (Kelajuan dan Kecepatan)
         if (isLulus("kelajuan_completed")) {
             const navPercepatan = document.getElementById("nav-percepatan");
             if (navPercepatan) {
@@ -1237,20 +1221,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (path.includes("kelajuandankecepatan")) {
-                const btnNextMateri =
-                    document.getElementById("btn-next-materi");
-                if (btnNextMateri) {
-                    btnNextMateri.classList.remove("locked");
-                }
+                const btnNextMateri = document.getElementById("btn-next-materi");
+                if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
     }
 
     checkAllLocks();
 
-    // =========================================================================
     // 1. LOGIKA KUIS KELAJUAN vs KECEPATAN
-    // =========================================================================
     const checks = document.querySelectorAll(".quiz-check");
     const btnCekQuiz = document.getElementById("btn-cek-quiz");
     const btnResetQuiz = document.getElementById("btn-reset-quiz");
@@ -1294,20 +1273,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     '.quiz-check[data-row="' + row + '"][data-type="kelajuan"]',
                 );
                 const cekKecepatan = document.querySelector(
-                    '.quiz-check[data-row="' +
-                        row +
-                        '"][data-type="kecepatan"]',
+                    '.quiz-check[data-row="' + row + '"][data-type="kecepatan"]',
                 );
 
                 const dipilih =
                     (cekKelajuan.checked ? "kelajuan" : "") ||
                     (cekKecepatan.checked ? "kecepatan" : "");
 
-                if (!dipilih) {
-                    belumDiisi++;
-                } else if (dipilih === benarTipe) {
-                    benar++;
-                }
+                if (!dipilih) belumDiisi++;
+                else if (dipilih === benarTipe) benar++;
             });
 
             const salah = total - benar - belumDiisi;
@@ -1332,19 +1306,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // =========================================================================
-    // LOGIKA TIMESTAMP VIDEO PRAKTIK - REVISI parseFloat
-    // =========================================================================
+    // LOGIKA TIMESTAMP VIDEO PRAKTIK
     const videoPraktik = document.getElementById("video-praktik");
     const timeButtons = document.querySelectorAll(".btn-time");
 
     if (videoPraktik && timeButtons.length > 0) {
         timeButtons.forEach((btn) => {
             btn.addEventListener("click", function () {
-                // Ambil detik dari atribut data-time dan ubah jadi float/angka
                 const targetTime = parseFloat(this.getAttribute("data-time"));
-
-                // Ubah waktu video dan mainkan
                 if (!isNaN(targetTime)) {
                     videoPraktik.currentTime = targetTime;
                     videoPraktik.play();
@@ -1353,9 +1322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // =========================================================================
-    // LOGIKA PRAKTIK VIDEO (Menghitung Kelajuan) - BARU DITAMBAHKAN
-    // =========================================================================
+    // LOGIKA PRAKTIK VIDEO (Menghitung Kelajuan)
     const btnCekPraktik = document.getElementById("btn-cek-praktik");
     const btnResetPraktik = document.getElementById("btn-reset-praktik");
 
@@ -1373,7 +1340,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (nilai === "") {
                         belumDiisi++;
-                    } else if (nilai === item.jawaban) {
+                    } else if (item.jawaban.includes(nilai)) { 
+                        // Metode pengecekan berubah menjadi array includes
                         benar++;
                         input.classList.add("benar");
                     } else {
@@ -1383,7 +1351,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Re-use popup latihan untuk menampilkan hasil
             if (benar === kunciPraktik.length) {
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -1394,9 +1361,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    alert(
-                        "Kerja Bagus! Semua perhitungan dari video praktik sudah tepat!",
-                    );
+                    alert("Kerja Bagus! Semua perhitungan dari video praktik sudah tepat!");
                 }
             } else {
                 const popupText = document.getElementById("popup-latihan-text");
@@ -1410,9 +1375,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <span class="pemisah">|</span>
                         <span class="hasil-belum">⏳ Belum diisi : ${belumDiisi}</span>
                     `;
-                    // Ubah judul popup agar sesuai konteks
-                    popup.querySelector("h3").innerText =
-                        "Hasil Evaluasi Praktik";
+                    popup.querySelector("h3").innerText = "Hasil Evaluasi Praktik";
                     popup.classList.add("show");
                 }
             }
@@ -1429,17 +1392,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Kembalikan judul aslinya jika popup direset
             const popup = document.getElementById("popup-latihan");
-            if (popup) {
-                popup.querySelector("h3").innerText = "Hasil Latihan";
-            }
+            if (popup) popup.querySelector("h3").innerText = "Hasil Latihan";
         });
     }
 
-    // =========================================================================
     // 2. LOGIKA LATIHAN SOAL ISIAN
-    // =========================================================================
     const btnCekLatihan = document.getElementById("btn-cek-latihan");
     const btnResetLatihan = document.getElementById("btn-reset-latihan");
 
@@ -1467,21 +1425,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // CEK APAKAH SEMUA JAWABAN BENAR
             if (benar === kunciLatihan.length) {
-                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
                 window.progresSiswa = window.progresSiswa || [];
 
                 if (!window.progresSiswa.includes("kelajuan_completed")) {
                     window.progresSiswa.push("kelajuan_completed");
                 }
 
-                // Panggil fungsi Global
                 if (window.simpanProgresKeDatabase) {
                     window.simpanProgresKeDatabase("kelajuan_completed");
                 }
 
-                // Buka kunci secara manual via Helper Global
                 if (window.unlockSidebar) {
                     window.unlockSidebar("nav-percepatan");
                 }
@@ -1500,9 +1454,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    alert(
-                        "Selamat! Jawaban kamu benar semua. Materi selanjutnya telah terbuka.",
-                    );
+                    alert("Selamat! Jawaban kamu benar semua. Materi selanjutnya telah terbuka.");
                 }
             } else {
                 const popupText = document.getElementById("popup-latihan-text");
@@ -1516,7 +1468,6 @@ document.addEventListener("DOMContentLoaded", function () {
               <span class="pemisah">|</span>
               <span class="hasil-belum">⏳ Belum diisi : ${belumDiisi}</span>
             `;
-                    // Pastikan judul popup benar untuk Latihan
                     popup.querySelector("h3").innerText = "Hasil Latihan";
                     popup.classList.add("show");
                 }
@@ -1528,15 +1479,11 @@ document.addEventListener("DOMContentLoaded", function () {
         btnResetLatihan.addEventListener("click", () => {
             window.cobaLagiLatihan();
             const popup = document.getElementById("popup-latihan");
-            if (popup) {
-                popup.querySelector("h3").innerText = "Hasil Latihan";
-            }
+            if (popup) popup.querySelector("h3").innerText = "Hasil Latihan";
         });
     }
 
-    // =========================================================================
     // 3. LOGIKA UNDUH PDF
-    // =========================================================================
     const btnUnduhLatihan = document.getElementById("btn-unduh-latihan");
 
     const getCompressedImage = (el) => {
@@ -1580,7 +1527,6 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 const doc = new jsPDF("p", "mm", "a4");
                 const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
                 let yPos = 0;
 
                 doc.setFillColor(249, 92, 80);
@@ -1588,31 +1534,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(22);
-                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
-                    align: "center",
-                });
+                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "normal");
-                doc.text("Materi: Kelajuan dan Kecepatan", pageWidth / 2, 28, {
-                    align: "center",
-                });
+                doc.text("Materi: Kelajuan dan Kecepatan", pageWidth / 2, 28, { align: "center" });
 
                 yPos = 55;
-
                 doc.setTextColor(80, 80, 80);
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "italic");
-                const tgl = new Date().toLocaleDateString("id-ID", {
-                    dateStyle: "full",
-                });
+                const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
                 doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
                 yPos += 10;
 
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(11);
                 doc.setTextColor(0, 0, 0);
-                const cerita =
-                    "Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Waktu yang dihabiskan untuk seluruh perjalanan adalah 20 sekon. Tentukan kelajuan dan kecepatan anak tersebut!";
+                const cerita = "Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Waktu yang dihabiskan untuk seluruh perjalanan adalah 20 sekon. Tentukan kelajuan dan kecepatan anak tersebut!";
                 const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
                 doc.text(splitCerita, 20, yPos);
                 yPos += splitCerita.length * 5 + 5;
@@ -1624,24 +1562,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         const imgData = await getCompressedImage(imgElement);
                         const imgProps = doc.getImageProperties(imgData);
                         const imgWidth = 80;
-                        const imgHeight =
-                            (imgProps.height * imgWidth) / imgProps.width;
+                        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
                         const xImg = (pageWidth - imgWidth) / 2;
-                        doc.addImage(
-                            imgData,
-                            "JPEG",
-                            xImg,
-                            yPos,
-                            imgWidth,
-                            imgHeight,
-                        );
+                        doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
                         yPos += imgHeight + 10;
                     } catch (e) {}
                 }
 
-                let countBenar = 0,
-                    countSalah = 0,
-                    countKosong = 0;
+                let countBenar = 0, countSalah = 0, countKosong = 0;
 
                 const drawAnswerBox = (id, x, y, w = 15, h = 7) => {
                     const inputEl = document.getElementById(id);
@@ -1778,16 +1706,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.setDrawColor(0, 0, 0);
                 doc.setFillColor(255, 255, 255);
                 doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-                doc.text(summaryText, pageWidth / 2, yPos + 7, {
-                    align: "center",
-                });
+                doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
 
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(150, 150, 150);
-                doc.text("Kelajuan dan Kecepatan", pageWidth / 2, yPos + 20, {
-                    align: "center",
-                });
+                doc.text("Kelajuan dan Kecepatan", pageWidth / 2, yPos + 20, { align: "center" });
 
                 doc.save("Laporan_Latihan_Kelajuan_Kecepatan.pdf");
             } catch (err) {
@@ -1800,9 +1724,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // =========================================================================
-    // 4. LOGIKA PAGINATION (HALAMAN STEP) - REVISI MENYATU DENGAN BOTTOM NAV
-    // =========================================================================
+    // 4. LOGIKA PAGINATION (HALAMAN STEP)
     const step1 = document.getElementById("step-1");
     const step2 = document.getElementById("step-2");
 
@@ -1816,41 +1738,27 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentStep = 1;
 
     function updateStep() {
-        // Sembunyikan semua step
         if (step1) step1.style.display = "none";
         if (step2) step2.style.display = "none";
 
-        // Update warna tombol angka
         numSteps.forEach((btn) => btn.classList.remove("active"));
-        const activeBtn = document.querySelector(
-            `.num-step[data-step="${currentStep}"]`,
-        );
+        const activeBtn = document.querySelector(`.num-step[data-step="${currentStep}"]`);
         if (activeBtn) activeBtn.classList.add("active");
 
-        // Atur Konten dan Tombol Bawah
         if (currentStep === 1) {
             if (step1) step1.style.display = "block";
-
-            // Kiri: Tampilkan "Materi Sebelumnya", Sembunyikan "Halaman Sebelumnya"
             if (btnPrevMateri) btnPrevMateri.style.display = "inline-block";
             if (btnPrevStep) btnPrevStep.style.display = "none";
-
-            // Kanan: Tampilkan "Halaman Selanjutnya", Sembunyikan "Materi Selanjutnya"
             if (btnNextStep) btnNextStep.style.display = "inline-block";
             if (btnNextMateri) btnNextMateri.style.display = "none";
         } else {
             if (step2) step2.style.display = "block";
-
-            // Kiri: Tampilkan "Halaman Sebelumnya", Sembunyikan "Materi Sebelumnya"
             if (btnPrevMateri) btnPrevMateri.style.display = "none";
             if (btnPrevStep) btnPrevStep.style.display = "inline-block";
-
-            // Kanan: Tampilkan "Materi Selanjutnya", Sembunyikan "Halaman Selanjutnya"
             if (btnNextStep) btnNextStep.style.display = "none";
             if (btnNextMateri) btnNextMateri.style.display = "inline-block";
         }
 
-        // Auto-scroll ke atas saat pindah halaman
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -1876,7 +1784,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Inisialisasi tampilan awal
         updateStep();
     }
 });

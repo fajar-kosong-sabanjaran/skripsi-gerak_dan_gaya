@@ -186,15 +186,16 @@
                     </p>
                     <ul>
                         <li>Tonton video pengujian Hukum Newton di bawah ini dengan saksama.</li>
-                        <li>Gunakan tombol "Lompat ke bagian" untuk melihat masing-perlakuan.</li>
+                        <li>Gunakan tombol "Lompat ke bagian" untuk melihat masing-masing perlakuan.</li>
                         <li>Analisis setiap peristiwa yang terjadi pada video.</li>
                         <li>Jawablah 5 pertanyaan pilihan ganda di bawah video berdasarkan pengamatanmu.</li>
                     </ul>
                 </div>
 
                 <p>
+                    {{-- CATATAN: Pastikan URL video ini merujuk ke lokasi file Gaya.mp4 Anda --}}
                     <video id="video-praktik-gaya" class="content-video" controls preload="auto">
-                        <source src="{{ url('stream-video/praktik_gaya.mp4') }}#t=0.001" type="video/mp4">
+                        <source src="{{ url('stream-video/Gaya.mp4') }}#t=0.001" type="video/mp4">
                         Browser Anda tidak mendukung tag video.
                     </video>
                 </p>
@@ -203,34 +204,60 @@
                 <div class="video-timestamps">
                     <span class="timestamp-label"><i class="fas fa-list-ul"></i> Lompat ke bagian:</span>
                     <div class="timestamp-buttons">
+                        {{-- Tombol disesuaikan dengan waktu (detik) pada video Gaya.mp4 --}}
                         <button type="button" class="btn-time" data-time="7">Tujuan Percobaan</button>
                         <button type="button" class="btn-time" data-time="22">Hukum 1 Newton</button>
                         <button type="button" class="btn-time" data-time="67">Hukum 2 Newton</button>
-                        <button type="button" class="btn-time" data-time="115">Hukum 3 Newton</button>
+                        <button type="button" class="btn-time" data-time="166">Hukum 3 Newton</button>
                     </div>
                 </div>
 
                 <hr><br>
 
+                {{-- KUIS DISESUAIKAN DENGAN ISI VIDEO GAYA.MP4 --}}
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>1.</b> Pada Percobaan 1, saat kertas ditarik dengan sangat cepat, gelas kaca tetap diam di tempatnya dan tidak ikut terbawa kertas. Peristiwa ini merupakan bukti dari...
+                        <b>1.</b> Pada percobaan Hukum I Newton, apa yang terjadi pada gelas saat kertas di bawahnya ditarik dengan sangat cepat?
                     </p>
-                    <div class="grup-opsi" data-soal="1" data-kunci="A">
-                        <button class="tombol-opsi" data-pilihan="A">A. Hukum I Newton</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Hukum II Newton</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Hukum III Newton</button>
+                    <div class="grup-opsi" data-soal="1" data-kunci="B">
+                        <button class="tombol-opsi" data-pilihan="A">A. Gelas ikut bergerak searah tarikan kertas</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Gelas tetap diam di tempat asalnya</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Gelas terlempar ke udara</button>
                     </div>
                 </div>
 
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>2.</b> Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap diam) pada Percobaan 1 disebut dengan...
+                        <b>2.</b> Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap diam) saat kertas ditarik secara cepat disebut dengan...
                     </p>
                     <div class="grup-opsi" data-soal="2" data-kunci="B">
                         <button class="tombol-opsi" data-pilihan="A">A. Percepatan</button>
                         <button class="tombol-opsi" data-pilihan="B">B. Kelembaman (Inersia)</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Gaya Aksi-Reaksi</button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="kotak-kuis">
+                    <p class="teks-soal">
+                        <b>3.</b> Pada percobaan Hukum II Newton, mengapa uang logam yang diluncurkan pada permukaan halus meluncur lebih cepat dibandingkan pada permukaan kasar?
+                    </p>
+                    <div class="grup-opsi" data-soal="3" data-kunci="A">
+                        <button class="tombol-opsi" data-pilihan="A">A. Karena gaya gesek pada permukaan halus lebih kecil</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Karena gaya gesek pada permukaan halus lebih besar</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Karena massa uang logam berubah saat menyentuh permukaan</button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="kotak-kuis">
+                    <p class="teks-soal">
+                        <b>4.</b> Pada percobaan Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan memantul kembali ke atas. Dorongan meja ke atas yang membuat bola memantul dinamakan...
+                    </p>
+                    <div class="grup-opsi" data-soal="4" data-kunci="C">
+                        <button class="tombol-opsi" data-pilihan="A">A. Gaya Gesek</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Gaya Tarik</button>
                         <button class="tombol-opsi" data-pilihan="C">C. Gaya Reaksi</button>
                     </div>
                 </div>
@@ -238,36 +265,12 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>3.</b> Pada Percobaan 2, bola kuning kecil (ringan) melaju lebih cepat dibandingkan bola kuning besar (berat) meskipun didorong dengan gaya yang sama. Sesuai Hukum II Newton, hal ini membuktikan bahwa...
-                    </p>
-                    <div class="grup-opsi" data-soal="3" data-kunci="C">
-                        <button class="tombol-opsi" data-pilihan="A">A. Massa benda berbanding lurus dengan percepatan</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Massa benda tidak berpengaruh pada gerak</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Massa benda berbanding terbalik dengan percepatan</button>
-                    </div>
-                </div>
-
-                <br>
-                <div class="kotak-kuis">
-                    <p class="teks-soal">
-                        <b>4.</b> Pada Percobaan 3, bola dijatuhkan dan menabrak meja ke arah bawah (Gaya Aksi). Meja kemudian mendorong bola kembali ke atas sehingga bola memantul. Dorongan meja ke atas tersebut dinamakan...
-                    </p>
-                    <div class="grup-opsi" data-soal="4" data-kunci="B">
-                        <button class="tombol-opsi" data-pilihan="A">A. Gaya Gesek</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Gaya Reaksi</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Gaya Berat</button>
-                    </div>
-                </div>
-
-                <br>
-                <div class="kotak-kuis">
-                    <p class="teks-soal">
-                        <b>5.</b> Dari ketiga percobaan di video, manakah yang paling jelas membuktikan bahwa gaya selalu muncul berpasangan (ada aksi, ada reaksi)?
+                        <b>5.</b> Dari ketiga percobaan di dalam video, manakah peristiwa yang paling tepat membuktikan Hukum III Newton (Aksi-Reaksi)?
                     </p>
                     <div class="grup-opsi" data-soal="5" data-kunci="C">
-                        <button class="tombol-opsi" data-pilihan="A">A. Percobaan 1 (Gelas dan Kertas)</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Percobaan 2 (Bola Ringan vs Bola Berat)</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Percobaan 3 (Memantulkan Bola)</button>
+                        <button class="tombol-opsi" data-pilihan="A">A. Menarik kertas di bawah gelas secara pelan</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Meluncurkan uang logam di bidang miring</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Memantulkan bola kuning ke meja kayu</button>
                     </div>
                 </div>
 
