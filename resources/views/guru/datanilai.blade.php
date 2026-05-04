@@ -5,7 +5,10 @@
 
     <div class="card-guru">
         <div class="card-header-action nilai-header-margin">
-            <h3>Data Nilai Siswa</h3>
+            <div class="header-title-wrapper" style="margin-bottom: 0;">
+                <h3 style="margin: 0;">Data Nilai Siswa</h3>
+                <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfoNilai()" title="Klik untuk info halaman"></i>
+            </div>
         </div>
 
         <div class="table-controls">

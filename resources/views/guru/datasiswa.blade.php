@@ -5,8 +5,9 @@
 
     <div class="card-guru">
 
-        <div style="margin-bottom: 25px;">
+        <div class="header-title-wrapper">
             <h3>Data Siswa</h3>
+            <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfo()" title="Klik untuk info halaman"></i>
         </div>
 
         <div class="table-controls">

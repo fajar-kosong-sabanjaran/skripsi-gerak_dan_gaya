@@ -7,7 +7,10 @@
 <div class="card-guru">
     
     <div class="card-header-action">
-        <h3>Data Kelas</h3>
+        <div class="header-title-wrapper" style="margin-bottom: 0;">
+            <h3>Data Kelas</h3>
+            <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfoKelas()" title="Klik untuk info halaman"></i>
+        </div>
         <button class="btn-save btn-add-new" onclick="openCreateKelasModal()">
             <i class="fas fa-plus"></i> Tambah Kelas
         </button>

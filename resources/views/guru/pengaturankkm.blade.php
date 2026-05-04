@@ -5,8 +5,10 @@
     <div class="card-guru">
         <div class="card-header-action kkm-header-container">
             <div>
-                <h3><i class="fas fa-cog"></i> Pengaturan KKM</h3>
-                <p class="kkm-subtitle">Atur batas nilai minimal kelulusan (KKM) untuk setiap kuis dan evaluasi.</p>
+                <div class="header-title-wrapper" style="margin-bottom: 5px;">
+                    <h3 style="margin: 0;"><i class="fas fa-cog"></i> Pengaturan KKM</h3>
+                    <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfoKkm()" title="Klik untuk info halaman"></i>
+                </div>
             </div>
         </div>
 

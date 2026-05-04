@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
             sidebar.classList.remove("active");
             sidebarOverlay.classList.remove("show");
         });
-    } // =======================================================================
+    } 
+
+    // =======================================================================
     // ini js guru.blade (Sidebar & Navbar)
     // =======================================================================
 
@@ -78,7 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 userDropdown.classList.remove("active");
             }
         }
-    }); // =======================================================================
+    }); 
+    
+    // =======================================================================
     // ini js untuk Table (Search, Filter Kelas, Pagination) - Dipakai di semua tabel
     // =======================================================================
 
@@ -240,7 +244,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         updateTable();
-    } // =======================================================================
+    } 
+    
+    // =======================================================================
     // ini js untuk Fitur Export Excel
     // =======================================================================
 
@@ -277,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.konfirmasiKeluar = function () {
     Swal.fire({
         title: "Apakah Kamu Yakin?",
-        text: "Anda akan keluar dari Akun ini.",
+        text: "Kamu akan keluar dari Akun ini.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#f95c50",
@@ -297,7 +303,7 @@ window.konfirmasiKeluar = function () {
 
 function confirmDelete(button, id) {
     Swal.fire({
-        title: "Apakah Anda yakin?",
+        title: "Apakah Kamu yakin?",
         text: "Data siswa ini akan dihapus permanen!",
         icon: "warning",
         showCancelButton: true,
@@ -422,6 +428,73 @@ function saveEditData() {
             console.error(error);
             Swal.fire("Error", "Gagal menghubungi server", "error");
         });
+}
+
+// =======================================================================
+// ini js datasiswa.blade (Fungsi Info Halaman)
+// =======================================================================
+
+function showPageInfo() {
+    Swal.fire({
+        title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Data Siswa</div>',
+        html: ` 
+            <div class="swal-info-content">
+                <p>Halaman <b>Data Siswa per Kelas</b> digunakan untuk mengelola daftar siswa yang tergabung dalam setiap kelas.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section blue">
+                    <i class="fas fa-filter"></i> <b>Filter Kelas</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Pilih kelas untuk menampilkan siswa berdasarkan kelas tersebut.</li>
+                    <li>Jika tidak memilih kelas, sistem akan menampilkan seluruh siswa.</li>
+                    <li>Perubahan pilihan kelas akan langsung memuat ulang data.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section green">
+                    <i class="fas fa-table"></i> <b>Tabel Data Siswa</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Menampilkan NIS, nama siswa, kelas, dan email.</li>
+                    <li>Dilengkapi fitur pencarian, pagination, dan responsive.</li>
+                    <li>Nomor baris akan menyesuaikan jumlah data yang tampil.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section orange">
+                    <i class="fas fa-edit"></i> <b>Edit Data Siswa</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Gunakan tombol <b>Edit</b> untuk memperbarui data siswa.</li>
+                    <li>Password bersifat opsional dan dapat dikosongkan jika tidak ingin diubah.</li>
+                    <li>Perubahan akan langsung tersimpan ke database.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section sky">
+                    <i class="fas fa-file-excel"></i> <b>Export Data Siswa</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Export dapat dilakukan untuk seluruh siswa.</li>
+                    <li>Jika kelas dipilih, export hanya berisi siswa dari kelas tersebut.</li>
+                    <li>File hasil export menggunakan format Excel.</li>
+                </ul>
+            </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Tutup, Saya Paham!',
+        confirmButtonColor: '#64748b',
+        customClass: {
+            popup: 'swal-info-popup',
+            htmlContainer: 'swal-info-container'
+        }
+    });
 }
 
 // =======================================================================
@@ -606,6 +679,59 @@ function confirmDeleteKelas(button, id) {
 }
 
 // =======================================================================
+// ini js datakelas.blade (Fungsi Info Halaman)
+// =======================================================================
+
+function showPageInfoKelas() {
+    Swal.fire({
+        title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Data Kelas</div>',
+        html: ` 
+            <div class="swal-info-content">
+                <p>Halaman <b>Data Kelas</b> digunakan untuk mengelola daftar kelas yang tersedia pada sistem pembelajaran.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section blue">
+                    <i class="fas fa-plus-circle"></i> <b>Tambah Kelas</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Gunakan tombol <b>Tambah Kelas</b> untuk memasukkan data kelas baru.</li>
+                    <li>Tahun ajaran bersifat opsional, dapat diisi atau dikosongkan.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section green">
+                    <i class="fas fa-table"></i> <b>Tabel Data Kelas</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Tabel menampilkan Nama Kelas, Tahun Ajaran, dan Jumlah Siswa yang terdaftar.</li>
+                    <li>Dilengkapi fitur pencarian nama kelas dan pagination.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section orange">
+                    <i class="fas fa-edit"></i> <b>Aksi Edit & Hapus</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Gunakan tombol <b>Edit</b> untuk mengubah nama atau tahun ajaran kelas.</li>
+                    <li>Gunakan tombol <b>Hapus</b> untuk menghapus data kelas secara permanen.</li>
+                </ul>
+            </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Tutup, Saya Paham!',
+        confirmButtonColor: '#64748b',
+        customClass: {
+            popup: 'swal-info-popup',
+            htmlContainer: 'swal-info-container'
+        }
+    });
+}
+
+// =======================================================================
 // ini js Progres Belajar
 // =======================================================================
 function updateTextTombolExportProgres() {
@@ -637,6 +763,59 @@ if (btnExportProgres) {
     btnExportProgres.addEventListener("click", function () {
         const kelasPilihan = filterKelas ? filterKelas.value : "semua";
         window.location.href = `/guru/progresbelajar/export?kelas=${encodeURIComponent(kelasPilihan)}`;
+    });
+}
+
+// =======================================================================
+// ini js progresbelajar.blade (Fungsi Info Halaman)
+// =======================================================================
+
+function showPageInfoProgres() {
+    Swal.fire({
+        title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Progres Belajar</div>',
+        html: ` 
+            <div class="swal-info-content">
+                <p>Halaman <b>Progres Belajar Siswa</b> digunakan untuk memantau rincian penyelesaian materi dan kuis oleh setiap siswa.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section blue">
+                    <i class="fas fa-tasks"></i> <b>Keterangan Status</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li><i class="fas fa-check-circle text-green"></i> <b>Sudah Selesai:</b> Siswa telah membaca materi dan mengerjakan kuis ini.</li>
+                    <li><i class="fas fa-times-circle text-red-muted"></i> <b>Belum Selesai:</b> Siswa belum mengakses halaman materi dan kuis ini.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section green">
+                    <i class="fas fa-table"></i> <b>Navigasi Tabel</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Geser (scroll) tabel ke kanan/kiri untuk melihat rincian setiap modul pembelajaran secara lengkap.</li>
+                    <li>Gunakan <b>Pilih Kelas</b> untuk memfilter tampilan hanya untuk kelas tertentu.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section sky">
+                    <i class="fas fa-file-excel"></i> <b>Export Data</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Klik tombol <b>Export Data Progres</b> untuk mengunduh laporan ini ke dalam format Excel.</li>
+                    <li>Data yang di-export akan menyesuaikan dengan filter kelas yang sedang Kamu pilih.</li>
+                </ul>
+            </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Tutup, Saya Paham!',
+        confirmButtonColor: '#64748b',
+        customClass: {
+            popup: 'swal-info-popup',
+            htmlContainer: 'swal-info-container'
+        }
     });
 }
 
@@ -1276,6 +1455,67 @@ function renderTabelRiwayat(dataRiwayat, jenis_kuis) {
 }
 
 // =======================================================================
+// ini js datanilai.blade (Fungsi Info Halaman)
+// =======================================================================
+
+function showPageInfoNilai() {
+    Swal.fire({
+        title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Data Nilai</div>',
+        html: ` 
+            <div class="swal-info-content">
+                <p>Halaman <b>Data Nilai Siswa</b> digunakan untuk memantau rekapitulasi nilai dan riwayat pengerjaan kuis/evaluasi.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section blue">
+                    <i class="fas fa-table"></i> <b>Tabel Nilai Utama</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Menampilkan <b>nilai tertinggi</b> yang pernah diraih siswa pada masing-masing kuis.</li>
+                    <li>Nilai yang berwarna <span class="text-green">hijau</span> berarti memenuhi KKM, sedangkan <span class="text-red">merah</span> berarti di bawah KKM.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section orange">
+                    <i class="fas fa-history"></i> <b>Riwayat Pengerjaan</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Klik tombol <b>Detail</b> untuk melihat seluruh riwayat percobaan siswa secara lengkap.</li>
+                    <li>Di dalam riwayat, terdapat detail untuk setiap nomor soal dengan tanda <span class="text-green">✔</span> (Benar) atau <span class="text-red">✖</span> (Salah).</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section green">
+                    <i class="fas fa-question-circle"></i> <b>Informasi Soal</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Pada tabel modal riwayat, klik ikon <i class="fas fa-info-circle text-blue"></i> di bagian header soal (S1, S2, dst) untuk melihat pratinjau soal dan kunci jawaban.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section sky">
+                    <i class="fas fa-file-excel"></i> <b>Export Data</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Klik tombol <b>Export Data Nilai</b> untuk mengunduh rekapitulasi nilai ini ke dalam format Excel.</li>
+                </ul>
+            </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Tutup, Saya Paham!',
+        confirmButtonColor: '#64748b',
+        customClass: {
+            popup: 'swal-info-popup',
+            htmlContainer: 'swal-info-container'
+        }
+    });
+}
+
+// =======================================================================
 // Ini JS Pengaturan KKM
 // =======================================================================
 document.addEventListener("DOMContentLoaded", function () {
@@ -1294,3 +1534,45 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// =======================================================================
+// ini js pengaturankkm.blade (Fungsi Info Halaman)
+// =======================================================================
+
+function showPageInfoKkm() {
+    Swal.fire({
+        title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Pengaturan KKM</div>',
+        html: ` 
+            <div class="swal-info-content">
+                <p>Halaman <b>Pengaturan KKM</b> digunakan untuk menetapkan standar nilai minimal kelulusan siswa untuk setiap kuis dan evaluasi.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section blue">
+                    <i class="fas fa-sliders-h"></i> <b>Atur Nilai KKM</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Kamu dapat menentukan nilai KKM secara spesifik untuk masing-masing kuis (Gerak & Gaya) maupun Evaluasi Akhir.</li>
+                    <li>Rentang nilai yang dimasukkan adalah antara <b>0 hingga 100</b>.</li>
+                </ul>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section orange">
+                    <i class="fas fa-save"></i> <b>Simpan Perubahan</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Jangan lupa menekan tombol <b>Simpan Perubahan</b> setelah memperbarui KKM.</li>
+                </ul>
+            </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Tutup, Saya Paham!',
+        confirmButtonColor: '#64748b',
+        customClass: {
+            popup: 'swal-info-popup',
+            htmlContainer: 'swal-info-container'
+        }
+    });
+}

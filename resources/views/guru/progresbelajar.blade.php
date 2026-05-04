@@ -4,17 +4,11 @@
     <div class="card-guru">
 
         <div class="page-header">
-            <h3>Progres Belajar Siswa</h3>
-            <p class="page-description">Pantau rincian setiap langkah pembelajaran siswa di sini.</p>
-        </div>
-
-        <div class="legend-container">
-            <div class="legend-item">
-                <i class="fas fa-check-circle legend-icon-success"></i> = Sudah Selesai
+            <div class="header-title-wrapper" style="margin-bottom: 5px;">
+                <h3 style="margin: 0;">Progres Belajar Siswa</h3>
+                <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfoProgres()" title="Klik untuk info halaman"></i>
             </div>
-            <div class="legend-item">
-                <i class="fas fa-times-circle legend-icon-danger"></i> = Belum Selesai
-            </div>
+            <br>
         </div>
 
         <div class="table-controls">
