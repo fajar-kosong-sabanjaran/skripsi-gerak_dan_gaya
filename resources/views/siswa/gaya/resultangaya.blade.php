@@ -99,8 +99,8 @@
                         <span class="judul-soal">Contoh 1</span>
                         <p>
                             Fajar dan Fadhil sedang memindahkan sebuah meja dengan cara mendorongnya.
-                            Gaya yang diberikan Fajar adalah <b>20 N</b>, sedangkan gaya yang diberikan Fadhil adalah <b>35
-                                N</b>.
+                            Gaya yang diberikan Fajar adalah 20 N, sedangkan gaya yang diberikan Fadhil adalah 35
+                                N.
                             Berapakah resultan gaya yang diterima meja?
                         </p>
 
@@ -121,8 +121,8 @@
                         <span class="judul-soal">Contoh 2</span>
                         <p>
                             Fajar dan Fadhil sedang mendorong sebuah meja dengan arah yang berlawanan.
-                            Fajar mendorong ke kanan dengan gaya sebesar <b>10 N</b>, sedangkan Fadhil mendorong ke kiri
-                            dengan gaya sebesar <b>35 N</b>.
+                            Fajar mendorong ke kanan dengan gaya sebesar 10 N, sedangkan Fadhil mendorong ke kiri
+                            dengan gaya sebesar 35 N.
                             Berapakah resultan gaya yang diterima meja?
                         </p>
 
@@ -153,8 +153,8 @@
                         <li>Perhatikan arah gaya pada gambar dan cerita di setiap latihan.</li>
                         <li>Hitung resultan gaya: jumlahkan jika searah, kurangkan jika berlawanan.</li>
                         <li>Isikan jawabanmu berupa angka saja pada kolom yang tersedia (contoh: 40).</li>
-                        <li>Pastikan kamu mengisi semua jawaban, lalu tekan tombol <b>Cek Jawaban</b>.</li>
-                        <li>Jika masih ada jawaban yang salah, gunakan tombol <b>Coba Lagi</b> untuk mengulang.</li>
+                        <li>Pastikan kamu mengisi semua jawaban, lalu tekan tombol Cek Jawaban.</li>
+                        <li>Jika masih ada jawaban yang salah, gunakan tombol Coba Lagi untuk mengulang.</li>
                     </ul>
                 </div>
 

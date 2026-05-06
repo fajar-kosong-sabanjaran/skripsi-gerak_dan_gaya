@@ -178,7 +178,7 @@
             </div>
 
             <div class="inner-box">
-                <h3>Ayo Praktik: Pengamatan Hukum Newton</h3>
+                <h3>Ayo Berlatih</h3>
 
                 <div class="kotak-instruksi">
                     <p>

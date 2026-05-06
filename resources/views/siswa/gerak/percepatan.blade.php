@@ -42,14 +42,14 @@
 
       <ul>
         <li>
-          Gerak Dipercepat
+          <b>Gerak Dipercepat</b>
           <br>
           Terjadi jika kecepatan benda bertambah setiap waktu. Pada kondisi ini, nilai percepatan adalah positif. Contohnya adalah mobil yang awalnya pelan kemudian digas sehingga melaju semakin kencang. 
           <br>
           <i>Sebagai contoh soal,</i> sebuah sepeda awalnya diam, lalu kecepatannya menjadi 10 m/s dalam 5 sekon. Peristiwa ini termasuk gerak dipercepat karena memiliki ciri-ciri nilai percepatan positif dan benda bergerak makin cepat.
         </li>
         <li>
-          Gerak Diperlambat
+          <b>Gerak Diperlambat</b>
           <br>
           Terjadi jika kecepatan benda berkurang setiap waktu. Pada kondisi ini, nilai percepatan adalah negatif atau sering disebut perlambatan. Contohnya adalah mobil yang sedang melaju kencang kemudian mengerem hingga berhenti di lampu merah. 
           <br>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="rumus-keterangan" id="ket-percepatan">
-          <p><b>Keterangan:</b></p>
+          <p>Keterangan:</p>
           <ul>
             <li>\( a \) = percepatan (m/s²)</li>
             <li>\( v_1 \) = kecepatan awal benda (m/s)</li>
@@ -94,9 +94,9 @@
 
       <p>
         Kakak mengendarai sepeda dari rumah menuju persimpangan jalan.
-        Setelah <b>10 sekon</b>, sepeda yang dikendarai kakak mencapai
-        kecepatan <b>10 m/s</b>.
-        Berapakah besar <b>percepatan</b> sepeda tersebut?
+        Setelah 10 sekon, sepeda yang dikendarai kakak mencapai
+        kecepatan 10 m/s.
+        Berapakah besar percepatan sepeda tersebut?
       </p>
 
         <p>
@@ -133,7 +133,7 @@
 
           <p>
             Jadi, besar percepatan sepeda tersebut adalah
-            <b>1 m/s²</b>.
+            1 m/s².
           </p>
         </div>
 
@@ -158,9 +158,9 @@
 
       <p>
         Sebuah sepeda mula-mula berjalan dengan kecepatan
-        <b>10 m/s</b>, kemudian pada detik ke-<b>20</b>
-        kecepatannya menjadi <b>50 m/s</b>.
-        Berapakah <b>percepatan</b> yang dialami sepeda tersebut?
+        10 m/s, kemudian pada detik ke-20
+        kecepatannya menjadi 50 m/s.
+        Berapakah percepatan yang dialami sepeda tersebut?
       </p>
 
         <p>

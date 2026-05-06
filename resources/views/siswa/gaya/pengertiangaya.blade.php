@@ -116,7 +116,7 @@
     </div>
 
     <div class="inner-box">
-      <h3>Kuis Kilat: Pahamkah Kamu?</h3>
+      <h3>Ayo Berlatih</h3>
 
       <div class="kotak-instruksi">
         <p>
@@ -125,9 +125,9 @@
         <ul>
           <li>Baca setiap soal dengan teliti.</li>
           <li>Pilih salah satu jawaban yang menurutmu paling tepat.</li>
-          <li>Pastikan menjawab semua soal, lalu klik tombol <b>Cek Jawaban</b>.</li>
+          <li>Pastikan menjawab semua soal, lalu klik tombol Cek Jawaban.</li>
           <li>Jawaban yang benar akan berwarna hijau, dan yang salah berwarna merah.</li>
-          <li>Jika ada jawaban yang salah, tekan <b>Coba Lagi</b> untuk mengulang kuis.</li>
+          <li>Jika ada jawaban yang salah, tekan Coba Lagi untuk mengulang kuis.</li>
         </ul>
       </div>
 

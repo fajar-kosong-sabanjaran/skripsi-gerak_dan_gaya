@@ -90,7 +90,7 @@
     </div>
 
     <div class="inner-box">
-      <h3>Mari Mencoba</h3>
+      <h3>Ayo Berlatih</h3>
       
       <p>
         Yuk, kita uji pemahamanmu! Di bawah ini terdapat beberapa kartu. 

@@ -70,10 +70,10 @@
                     </p>
                     <ul>
                         <li>
-                            <b>Kelajuan</b> berkaitan dengan jarak tempuh dan waktu tanpa memperhatikan arah (skalar).
+                            Kelajuan berkaitan dengan jarak tempuh dan waktu tanpa memperhatikan arah (skalar).
                         </li>
                         <li>
-                            <b>Kecepatan</b> berkaitan dengan perpindahan, waktu, serta arah gerak benda (vektor).
+                            Kecepatan berkaitan dengan perpindahan, waktu, serta arah gerak benda (vektor).
                         </li>
                     </ul>
 
@@ -84,7 +84,7 @@
                     <p>
                         Setelah memahami pengertian kelajuan dan kecepatan beserta perbedaannya, langkah selanjutnya adalah
                         mempelajari rumus dasar yang digunakan untuk menghitung kelajuan. Untuk menentukan kelajuan,
-                        diperlukan informasi mengenai <b>jarak yang ditempuh</b> dan <b>waktu yang digunakan</b>.
+                        diperlukan informasi mengenai jarak yang ditempuh dan waktu yang digunakan.
                     </p>
                     <p>Berikut adalah rumus-rumus yang berkaitan dengan kelajuan:</p>
 
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="rumus-keterangan">
-                        <p><b>Keterangan:</b></p>
+                        <p>Keterangan:</p>
                         <ul>
                             <li>\( v \) : Kelajuan (m/s)</li>
                             <li>\( s \) : Jarak yang ditempuh (m)</li>
@@ -128,7 +128,7 @@
                     <p>
                         Kecepatan berkaitan dengan perpindahan dan memperhitungkan arah gerak.
                         Oleh karena itu, untuk menentukan kecepatan suatu benda diperlukan informasi
-                        mengenai <b>besar perpindahan</b> dan <b>waktu</b>.
+                        mengenai besar perpindahan dan waktu.
                     </p>
                     <p>Berikut adalah rumus-rumus yang berkaitan dengan kecepatan:</p>
 
@@ -158,7 +158,7 @@
                     </div>
 
                     <div class="rumus-keterangan">
-                        <p><b>Keterangan:</b></p>
+                        <p>Keterangan:</p>
                         <ul>
                             <li>\( \vec{v} \) : Kecepatan (m/s)</li>
                             <li>\( \Delta s \) : Perpindahan (m)</li>
@@ -171,11 +171,11 @@
                 <div class="inner-box">
                     <h3>Ayo, Kita Pahami!</h3>
                     <p>
-                        Sebuah mobil bergerak lurus ke arah timur menuju sekolah sejauh <b>100 m</b>,
-                        kemudian kembali ke arah barat menuju taman sejauh <b>50 m</b>.
+                        Sebuah mobil bergerak lurus ke arah timur menuju sekolah sejauh 100 m,
+                        kemudian kembali ke arah barat menuju taman sejauh 50 m.
                         Waktu yang dibutuhkan untuk seluruh perjalanan tersebut adalah
-                        <b>25 sekon</b>.
-                        Tentukan <b>kelajuan</b> dan <b>kecepatan</b> benda tersebut!
+                        25 sekon.
+                        Tentukan kelajuan dan kecepatan benda tersebut!
                     </p>
 
                     <p>
@@ -206,7 +206,7 @@
                                 \]
                             </div>
                             <p>
-                                Jadi, kelajuan benda tersebut adalah <b>6 m/s</b>.
+                                Jadi, kelajuan benda tersebut adalah 6 m/s.
                             </p>
                         </div>
 
@@ -241,7 +241,7 @@
                             </div>
                             <p>
                                 Jadi, kecepatan benda tersebut adalah
-                                <b>2 m/s ke arah timur</b>.
+                                2 m/s ke arah timur.
                             </p>
                         </div>
                     </div>
@@ -432,11 +432,11 @@
                     </div>
 
                     <p>
-                        Seorang anak bersepeda ke arah <b>selatan</b> menuju toko sejauh <b>120 meter</b>,
-                        kemudian berbalik arah ke <b>utara</b> menuju sekolah sejauh <b>40 meter</b>.
+                        Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter,
+                        kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter.
                         Waktu yang dihabiskan anak tersebut untuk seluruh perjalanan adalah
-                        <b>20 sekon</b>.
-                        Tentukan <b>kelajuan</b> dan <b>kecepatan</b> anak tersebut!
+                        20 sekon.
+                        Tentukan kelajuan dan kecepatan anak tersebut!
                     </p>
 
                     <p>

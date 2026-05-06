@@ -25,15 +25,15 @@
                 <b>Gaya Gesek</b> adalah <b>gaya yang timbul akibat sentuhan langsung antara dua permukaan benda</b>. Arah gaya ini unik karena selalu berlawanan dengan arah gerak benda.
             </p>
             <p>
-                <b>Contohnya</b> adalah <b>gesekan antara kaki meja dan lantai saat meja didorong</b>, atau gesekan antara ban sepeda dengan aspal saat direm.
+                Contohnya adalah gesekan antara kaki meja dan lantai saat meja didorong, atau gesekan antara ban sepeda dengan aspal saat direm.
             </p>
             <p>Gaya ini terbagi menjadi dua jenis:</p>
             <ul>
                 <li>
-                  Gaya Gesek <b>Statis</b>: Bekerja saat benda masih diam. Inilah alasannya mengapa saat kamu baru mulai mendorong meja, rasanya sangat berat.
+                  Gaya Gesek Statis: Bekerja saat benda masih diam. Inilah alasannya mengapa saat kamu baru mulai mendorong meja, rasanya sangat berat.
                 </li>
                 <li>
-                  Gaya Gesek <b>Kinetis</b>: Bekerja saat benda sudah bergerak. Ketika meja tersebut sudah berhasil bergeser (meluncur), gaya geseknya menjadi lebih kecil sehingga doronganmu terasa lebih ringan.
+                  Gaya Gesek Kinetis: Bekerja saat benda sudah bergerak. Ketika meja tersebut sudah berhasil bergeser (meluncur), gaya geseknya menjadi lebih kecil sehingga doronganmu terasa lebih ringan.
                 </li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
                 <b>Gaya Gravitasi</b> adalah <b>gaya tarik bumi yang menyebabkan segala sesuatu jatuh ke bawah menuju pusat bumi</b>.
             </p>
             <p>
-                <b>Contoh</b> paling nyata adalah <b>saat buah matang jatuh dari pohonnya ke tanah</b>. Selain itu, gaya inilah yang menjaga kaki kita tetap menapak di lantai saat berjalan. Tanpa gaya ini, kita semua akan melayang-layang di udara.
+                Contoh paling nyata adalah saat buah matang jatuh dari pohonnya ke tanah. Selain itu, gaya inilah yang menjaga kaki kita tetap menapak di lantai saat berjalan. Tanpa gaya ini, kita semua akan melayang-layang di udara.
             </p>
         </div>
 
@@ -71,7 +71,7 @@
             </p>
             <p>Contoh benda yang menghasilkan gaya pegas:</p>
             <ul>
-                <li><b>Karet ketapel yang ditarik akan melontarkan batu.</b></li>
+                <li>Karet ketapel yang ditarik akan melontarkan batu.</li>
                 <li>Per (pegas) pada kasur spring bed yang memantul saat diduduki.</li>
                 <li>Busur panah yang melengkung saat ditarik.</li>
             </ul>
@@ -92,7 +92,7 @@
             </p>
             <p>Contoh kegiatannya dalam kehidupan sehari-hari:</p>
             <ul>
-                <li><b>Seseorang yang sedang mengangkat beban</b> atau tas sekolah.</li>
+                <li>Seseorang yang sedang mengangkat beban atau tas sekolah.</li>
                 <li>Sekelompok orang yang sedang bermain tarik tambang.</li>
                 <li>Hewan seperti kerbau atau kuda yang membajak sawah.</li>
             </ul>
@@ -102,7 +102,7 @@
     </div>
 
     <div class="inner-box">
-      <h3>Mari Mencoba</h3>
+      <h3>Ayo Berlatih</h3>
 
       <div class="kotak-instruksi">
         <p>
@@ -112,8 +112,8 @@
           <li>Klik dan tahan (drag) kartu pernyataan yang ada di bawah.</li>
           <li>Geser kartu tersebut lalu lepaskan ke dalam kolom jenis gaya yang sesuai.</li>
           <li>Pastikan setiap kartu masuk ke dalam kotak yang benar.</li>
-          <li>Tekan tombol <b>Cek Jawaban</b> untuk melihat hasil kerjamu.</li>
-          <li>Gunakan tombol <b>Coba Lagi</b> jika kamu ingin mengulang permainan.</li>
+          <li>Tekan tombol Cek Jawaban untuk melihat hasil kerjamu.</li>
+          <li>Gunakan tombol Coba Lagi jika kamu ingin mengulang permainan.</li>
           <li>Cocokkan semua kartu dengan benar untuk membuka materi selanjutnya!</li>
         </ul>
       </div>

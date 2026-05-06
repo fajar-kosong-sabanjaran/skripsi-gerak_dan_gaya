@@ -53,8 +53,8 @@
       </div>
 
       <p>
-        Untuk memudahkanmu memahami perbedaan antara <b>jarak tempuh</b> dan
-        <b>perpindahan</b>, perhatikan lintasan gerak pada animasi berikut.
+        Untuk memudahkanmu memahami perbedaan antara jarak tempuh dan
+        perpindahan, perhatikan lintasan gerak pada animasi berikut.
         Mobil akan bergerak dari titik A (Rumah) ke B (Toko), kemudian ke C (Sekolah),
         dan kembali lagi ke B (Toko).
       </p>
@@ -114,8 +114,8 @@
       </div>
 
       <p>
-        Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang <b>110 meter.</b> 
-        Jika Adi mengendarai mobilnya sebanyak <b>5 putaran</b>, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?
+        Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang 110 meter.
+        Jika Adi mengendarai mobilnya sebanyak 5 putaran, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?
       </p>
 
       <img src="{{ asset('aset/sirkuit.png') }}" class="gambar-latihan" alt="Sirkuit Adi">
