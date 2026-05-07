@@ -95,6 +95,11 @@
                 <div class="rumus-box">
                     \[ a = \frac{\sum F}{m} \quad \text{atau} \quad \sum F = m \cdot a \]
                 </div>
+                
+                
+
+[Image of Newton's Second Law F=ma]
+
 
                 <p>Keterangan:</p>
                 <ul class="rumus-legend">
@@ -178,7 +183,7 @@
             </div>
 
             <div class="inner-box">
-                <h3>Ayo Berlatih</h3>
+                <h3>Mari Mencoba</h3>
 
                 <div class="kotak-instruksi">
                     <p>
@@ -193,9 +198,8 @@
                 </div>
 
                 <p>
-                    {{-- CATATAN: Pastikan URL video ini merujuk ke lokasi file Gaya.mp4 Anda --}}
                     <video id="video-praktik-gaya" class="content-video" controls preload="auto">
-                        <source src="{{ url('stream-video/Gaya.mp4') }}#t=0.001" type="video/mp4">
+                        <source src="{{ url('stream-video/gaya - revisi.mp4') }}#t=0.001" type="video/mp4">
                         Browser Anda tidak mendukung tag video.
                     </video>
                 </p>
@@ -204,17 +208,15 @@
                 <div class="video-timestamps">
                     <span class="timestamp-label"><i class="fas fa-list-ul"></i> Lompat ke bagian:</span>
                     <div class="timestamp-buttons">
-                        {{-- Tombol disesuaikan dengan waktu (detik) pada video Gaya.mp4 --}}
                         <button type="button" class="btn-time" data-time="7">Tujuan Percobaan</button>
-                        <button type="button" class="btn-time" data-time="22">Hukum 1 Newton</button>
-                        <button type="button" class="btn-time" data-time="67">Hukum 2 Newton</button>
-                        <button type="button" class="btn-time" data-time="166">Hukum 3 Newton</button>
+                        <button type="button" class="btn-time" data-time="22">Hukum I Newton</button>
+                        <button type="button" class="btn-time" data-time="67">Hukum II Newton</button>
+                        <button type="button" class="btn-time" data-time="142">Hukum III Newton</button>
                     </div>
                 </div>
 
                 <hr><br>
 
-                {{-- KUIS DISESUAIKAN DENGAN ISI VIDEO GAYA.MP4 --}}
                 <div class="kotak-kuis">
                     <p class="teks-soal">
                         <b>1.</b> Pada percobaan Hukum I Newton, apa yang terjadi pada gelas saat kertas di bawahnya ditarik dengan sangat cepat?
@@ -241,36 +243,38 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>3.</b> Pada percobaan Hukum II Newton, mengapa uang logam yang diluncurkan pada permukaan halus meluncur lebih cepat dibandingkan pada permukaan kasar?
+                        <b>3.</b> Bandingkan hasil pada Percobaan 1 dan Percobaan 2. Apa yang terjadi pada pergerakan kereta saat gaya tarik ditambah menjadi 2 beban sementara jumlah beban di kereta tetap?
                     </p>
-                    <div class="grup-opsi" data-soal="3" data-kunci="A">
-                        <button class="tombol-opsi" data-pilihan="A">A. Karena gaya gesek pada permukaan halus lebih kecil</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Karena gaya gesek pada permukaan halus lebih besar</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Karena massa uang logam berubah saat menyentuh permukaan</button>
+                    <div class="grup-opsi" data-soal="3" data-kunci="B">
+                        <button class="tombol-opsi" data-pilihan="A">A. Kereta bergerak lebih lambat karena beban tarik ditambah</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Kereta bergerak lebih cepat, menunjukkan percepatan berbanding lurus dengan gaya</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Tidak ada perubahan kecepatan karena jumlah beban di kereta tidak diubah</button>
+                        <button class="tombol-opsi" data-pilihan="D">D. Kereta berhenti mendadak akibat kelebihan gaya tarik</button>
                     </div>
                 </div>
 
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>4.</b> Pada percobaan Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan memantul kembali ke atas. Dorongan meja ke atas yang membuat bola memantul dinamakan...
+                        <b>4.</b> Perhatikan Percobaan 1 dan Percobaan 3. Ketika gaya tarik tetap (1 beban) namun jumlah beban di kereta ditambah menjadi 2 buah (150 gram), bagaimana pengaruhnya terhadap waktu tempuh kereta?
                     </p>
                     <div class="grup-opsi" data-soal="4" data-kunci="C">
+                        <button class="tombol-opsi" data-pilihan="A">A. Waktu tempuh menjadi lebih singkat karena massa benda bertambah</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Waktu tempuh tetap sama karena gaya tariknya tidak berubah</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Waktu tempuh menjadi lebih lama, membuktikan bahwa massa yang besar memperkecil percepatan</button>
+                        <button class="tombol-opsi" data-pilihan="D">D. Kereta tidak dapat bergerak sama sekali karena beban di kereta terlalu berat</button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="kotak-kuis">
+                    <p class="teks-soal">
+                        <b>5.</b> Pada percobaan Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan memantul kembali ke atas. Dorongan meja ke atas yang membuat bola memantul dinamakan...
+                    </p>
+                    <div class="grup-opsi" data-soal="5" data-kunci="C">
                         <button class="tombol-opsi" data-pilihan="A">A. Gaya Gesek</button>
                         <button class="tombol-opsi" data-pilihan="B">B. Gaya Tarik</button>
                         <button class="tombol-opsi" data-pilihan="C">C. Gaya Reaksi</button>
-                    </div>
-                </div>
-
-                <br>
-                <div class="kotak-kuis">
-                    <p class="teks-soal">
-                        <b>5.</b> Dari ketiga percobaan di dalam video, manakah peristiwa yang paling tepat membuktikan Hukum III Newton (Aksi-Reaksi)?
-                    </p>
-                    <div class="grup-opsi" data-soal="5" data-kunci="C">
-                        <button class="tombol-opsi" data-pilihan="A">A. Menarik kertas di bawah gelas secara pelan</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Meluncurkan uang logam di bidang miring</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Memantulkan bola kuning ke meja kayu</button>
                     </div>
                 </div>
 
