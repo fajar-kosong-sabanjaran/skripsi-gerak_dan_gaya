@@ -1583,6 +1583,7 @@ body {
     gap: 12px;
 }
 
+/* Video - lompat ke bagian */
 .video-timestamps {
     margin: 10px auto 20px;
     max-width: 100%;

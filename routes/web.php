@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\ProgresController;
+use App\Http\Controllers\LatihanSiswaController;
 use App\Http\Middleware\CekGuru;
 
 // =============================================================
-// 1. PUBLIC ROUTES (Bisa diakses siapa saja)
+// 1. PUBLIC ROUTES
 // =============================================================
 
 Route::get('/', function () {
     return view('beranda');
 })->name('home');
 
-// [REVISI] Menambahkan route untuk halaman multi-page baru
 Route::get('/daftar-materi', function () {
     return view('daftarmateri');
 });
@@ -38,19 +38,18 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // =============================================================
-// 2. GROUP ROUTE SISWA & PROGRES (Wajib Login)
+// 2. GROUP ROUTE SISWA & PROGRES
 // =============================================================
 
 Route::middleware(['auth'])->group(function () {
 
-    // Route untuk menyimpan progres belajar via AJAX/Fetch API
     Route::post('/simpan-progres', [ProgresController::class, 'simpanProgres'])->name('simpan.progres');
-
-    // Route khusus untuk menyimpan nilai Kuis/Evaluasi beserta riwayatnya
     Route::post('/simpan-nilai', [ProgresController::class, 'simpanNilai'])->name('simpan.nilai');
 
-    // Route khusus halaman materi siswa (menggunakan prefix /siswa)
     Route::prefix('siswa')->group(function () {
+
+        // Route untuk menyimpan PDF Latihan Otomatis
+        Route::post('simpan-pdf-latihan', [LatihanSiswaController::class, 'simpanPdf']);
 
         // Materi Gerak
         Route::prefix('gerak')->group(function () {
@@ -60,7 +59,6 @@ Route::middleware(['auth'])->group(function () {
             Route::view('kelajuandankecepatan', 'siswa.gerak.kelajuandankecepatan');
             Route::view('percepatan', 'siswa.gerak.percepatan');
             Route::view('petunjukpengerjaan', 'siswa.gerak.petunjukpengerjaan');
-            // [REVISI] Ubah menjadi Route::get yang mengarah ke Controller
             Route::get('kuis1', [ProgresController::class, 'tampilKuis1']);
         });
 
@@ -72,53 +70,52 @@ Route::middleware(['auth'])->group(function () {
             Route::view('macam-macamgaya', 'siswa.gaya.macam-macamgaya');
             Route::view('hukumnewton', 'siswa.gaya.hukumnewton');
             Route::view('petunjukpengerjaan', 'siswa.gaya.petunjukpengerjaan');
-            // [REVISI] Ubah menjadi Route::get yang mengarah ke Controller
             Route::get('kuis2', [ProgresController::class, 'tampilKuis2']);
         });
 
         // Evaluasi
         Route::prefix('evaluasi')->group(function () {
             Route::view('petunjukpengerjaan', 'siswa.evaluasi.petunjukpengerjaan');
-            // [REVISI] Ubah menjadi Route::get yang mengarah ke Controller
             Route::get('mulai', [ProgresController::class, 'tampilEvaluasi']);
         });
     });
 });
 
 // =============================================================
-// 3. GROUP ROUTE GURU (Wajib Login & Wajib Peran GURU)
+// 3. GROUP ROUTE GURU
 // =============================================================
 
 Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
 
-    // --- MANAJEMEN DATA SISWA ---
     Route::get('/datasiswa/export', [GuruController::class, 'exportExcel'])->name('guru.datasiswa.export');
     Route::get('/datasiswa', [GuruController::class, 'index'])->name('guru.datasiswa.index');
     Route::delete('/datasiswa/{id}', [GuruController::class, 'destroy'])->name('guru.datasiswa.destroy');
     Route::put('/datasiswa/{id}', [GuruController::class, 'update'])->name('guru.datasiswa.update');
 
-    // --- MANAJEMEN DATA KELAS ---
     Route::get('/datakelas', [GuruController::class, 'indexKelas'])->name('guru.datakelas.index');
     Route::post('/datakelas', [GuruController::class, 'storeKelas'])->name('guru.datakelas.store');
     Route::put('/datakelas/{id}', [GuruController::class, 'updateKelas'])->name('guru.datakelas.update');
     Route::delete('/datakelas/{id}', [GuruController::class, 'destroyKelas'])->name('guru.datakelas.destroy');
 
-    // --- MANAJEMEN PROGRES BELAJAR ---
     Route::get('/progresbelajar/export', [GuruController::class, 'exportProgresExcel'])->name('guru.progresbelajar.export');
     Route::get('/progresbelajar', [GuruController::class, 'progresBelajar'])->name('guru.progresbelajar');
 
-    // --- MANAJEMEN DATA NILAI ---
-    Route::get('/datanilai/export', [GuruController::class, 'exportNilaiExcel'])->name('guru.datanilai.export'); // [DITAMBAHKAN] Route export nilai
+    // --- MANAJEMEN DATA JAWABAN (PDF) SISWA ---
+    Route::get('/datajawaban', [GuruController::class, 'indexJawaban'])->name('guru.jawaban.index');
+    Route::get('/datajawaban/{kode_materi}', [GuruController::class, 'detailJawaban'])->name('guru.jawaban.detail');
+    // Route untuk membaca PDF secara aman
+    Route::get('/datajawaban/buka-pdf/{id}', [GuruController::class, 'bukaPdf'])->name('guru.jawaban.pdf');
+
+    Route::get('/datanilai/export', [GuruController::class, 'exportNilaiExcel'])->name('guru.datanilai.export');
     Route::get('/datanilai', [GuruController::class, 'dataNilai'])->name('guru.datanilai');
     Route::get('/datanilai/riwayat/{user_id}/{jenis_kuis}', [GuruController::class, 'riwayatNilai'])->name('guru.datanilai.riwayat');
 
-    // --- MANAJEMEN PENGATURAN KKM ---
     Route::get('/pengaturan-kkm', [GuruController::class, 'pengaturanKkm'])->name('guru.pengaturankkm');
     Route::post('/pengaturan-kkm', [GuruController::class, 'updateKkm'])->name('guru.updatekkm');
 });
 
 // =============================================================
-// Route khusus untuk streaming video agar bisa di-seek (digeser/dipercepat)
+// 4. STREAMING VIDEO
 // =============================================================
 Route::get('/stream-video/{filename}', function ($filename) {
     $path = public_path('aset/' . $filename);
@@ -127,6 +124,5 @@ Route::get('/stream-video/{filename}', function ($filename) {
         abort(404);
     }
 
-    // response()->file() otomatis menangani HTTP Range / pemotongan video
     return response()->file($path);
 });

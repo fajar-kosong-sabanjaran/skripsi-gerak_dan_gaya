@@ -36,6 +36,10 @@
             <span><i class="fas fa-tasks"></i> Progres Belajar</span>
         </a>
 
+        <a href="{{ route('guru.jawaban.index') }}" class="menu-item {{ request()->routeIs('guru.jawaban.*') ? 'active' : '' }}">
+            <span><i class="fas fa-file-pdf"></i> Data Jawaban Siswa</span>
+        </a>
+
         <a href="{{ url('guru/datanilai') }}" class="menu-item {{ request()->is('guru/datanilai*') ? 'active' : '' }}">
             <span><i class="fas fa-star"></i> Data Nilai</span>
         </a>

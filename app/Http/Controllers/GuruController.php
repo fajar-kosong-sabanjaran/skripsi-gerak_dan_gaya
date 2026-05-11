@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Nilai;
 use App\Models\RiwayatNilai;
 use App\Models\PengaturanKkm;
+use App\Models\LatihanSiswa;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -125,9 +126,9 @@ class GuruController extends Controller
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('kelas', 'nama')->where(function ($query) use ($request) {
-                    return $query->where('tahun', $request->tahun);
-                })
+                'Rule::unique(\'kelas\', \'nama\')->where(function ($query) use ($request) {
+                    return $query->where(\'tahun\', $request->tahun);
+                })'
             ],
             'tahun' => 'nullable|string|max:255'
         ], $messages);
@@ -165,9 +166,9 @@ class GuruController extends Controller
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('kelas', 'nama')->ignore($id)->where(function ($query) use ($request) {
-                    return $query->where('tahun', $request->tahun);
-                })
+                'Rule::unique(\'kelas\', \'nama\')->ignore($id)->where(function ($query) use ($request) {
+                    return $query->where(\'tahun\', $request->tahun);
+                })'
             ],
             'tahun' => 'nullable|string|max:255'
         ], $messages);
@@ -320,5 +321,58 @@ class GuruController extends Controller
         }
 
         return redirect()->back()->with('success', 'Nilai KKM berhasil diperbarui!');
+    }
+
+    // =================================================================
+    // FITUR: MELIHAT DATA JAWABAN PDF SISWA
+    // =================================================================
+    
+    // Menampilkan halaman kotak-kotak pilihan materi
+    public function indexJawaban()
+    {
+        // Daftar materi yang memiliki fitur Latihan Isian / PDF
+        $daftar_materi = [
+            'jarak_tempuh' => 'Jarak Tempuh & Perpindahan',
+            'kelajuan' => 'Kelajuan & Kecepatan',
+            'percepatan' => 'Percepatan',
+            // Tambahkan kode materi lain di sini jika ada
+        ];
+
+        return view('guru.jawaban.index', compact('daftar_materi'));
+    }
+
+    // Menampilkan tabel siswa berdasarkan materi yang diklik
+    public function detailJawaban($kode_materi)
+    {
+        // Ambil data dari tabel latihan_siswas berdasarkan kode materi
+        // Gunakan 'with' untuk mengambil data relasi user dan kelasnya sekaligus
+        $data_jawaban = LatihanSiswa::with(['user.kelas'])
+                        ->where('kode_materi', $kode_materi)
+                        ->get();
+
+        // Format nama materi untuk judul halaman
+        $judul_materi = ucwords(str_replace('_', ' ', $kode_materi));
+
+        return view('guru.jawaban.detail', compact('data_jawaban', 'judul_materi'));
+    }
+
+    // Membuka PDF secara aman lewat sistem
+    public function bukaPdf($id)
+    {
+        $jawaban = LatihanSiswa::findOrFail($id);
+
+        // Mengecek apakah file fisiknya benar-benar ada di dalam folder storage
+        if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($jawaban->file_pdf)) {
+            // Tampilkan pesan error yang jelas dan rapi
+            return "<div style='text-align: center; margin-top: 100px; font-family: sans-serif;'>
+                        <h1 style='color: #ef4444;'>File PDF Tidak Ditemukan!</h1>
+                        <p style='color: #64748b;'>Data berhasil direkam di database, tetapi file fisik PDF tidak ada di dalam folder komputer:</p>
+                        <code style='background: #f1f5f9; padding: 5px 10px; border-radius: 5px; color: #333;'>storage/app/public/{$jawaban->file_pdf}</code>
+                        <p style='margin-top: 20px;'><b>Solusi:</b> Silakan login sebagai siswa, lalu kerjakan ulang latihan agar file PDF yang baru otomatis terbuat kembali.</p>
+                    </div>";
+        }
+
+        // Membuka file PDF langsung di browser menggunakan fitur sakti Laravel
+        return \Illuminate\Support\Facades\Storage::disk('public')->response($jawaban->file_pdf);
     }
 }

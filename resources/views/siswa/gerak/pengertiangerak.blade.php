@@ -146,6 +146,9 @@
       <div class="quiz-action-container">
           <button type="button" class="btn-check" id="btn-check">Cek Jawaban</button>
           <button type="button" class="btn-reset hidden" id="btn-retry-pengertiangerak">Coba Lagi</button>
+          <button type="button" id="btn-unduh-pengertiangerak" class="tombol-unduh" style="display: none;">
+              <i class="fas fa-file-pdf"></i> Unduh Jawaban
+          </button>
       </div>
 
     </div>

@@ -75,7 +75,9 @@ window.unlockNextButtonIfPage = function (pageKeyword) {
 // DOM CONTENT LOADED UTAMA
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    const path = window.location.pathname; // =========================================================================
+    const path = window.location.pathname; 
+    
+    // =========================================================================
     // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
     // =========================================================================
 
@@ -100,8 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLulus("percepatan_completed")) {
             window.unlockSidebar("nav-kuis1");
             window.unlockNextButtonIfPage("percepatan");
-        } // --- BAGIAN B: MODUL GAYA ---
-
+        } 
+        
+        // --- BAGIAN B: MODUL GAYA ---
         if (isLulus("kuis1_completed")) {
             window.unlockSidebar("nav-gaya-header");
             window.unlockSidebar("nav-pengantar-gaya");
@@ -122,14 +125,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLulus("hukumnewton_completed")) {
             window.unlockSidebar("nav-kuis2");
             window.unlockNextButtonIfPage("hukumnewton");
-        } // --- BAGIAN C: EVALUASI ---
-
+        } 
+        
+        // --- BAGIAN C: EVALUASI ---
         if (isLulus("kuis2_completed")) {
             window.unlockSidebar("nav-evaluasi");
         }
     }
 
-    checkAllLocks(); // =========================================================================
+    checkAllLocks(); 
+    
+    // =========================================================================
     // 2. SIDEBAR TOGGLE LOGIC & LAIN-LAIN
     // =========================================================================
 
@@ -196,9 +202,148 @@ document.addEventListener("DOMContentLoaded", () => {
                     openDropdown.classList.remove("show");
             }
         }
-    }; // =========================================================================
+    }; 
+    
+    // =========================================================================
     // 3. LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP)
     // =========================================================================
+
+    async function generatePDFPengertianGerak(action = 'download') {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) {
+            if (action === 'download') alert("Library PDF belum siap.");
+            return;
+        }
+
+        try {
+            const doc = new jsPDF("p", "mm", "a4");
+            const pageWidth = doc.internal.pageSize.getWidth();
+            let yPos = 0;
+
+            doc.setFillColor(249, 92, 80);
+            doc.rect(0, 0, pageWidth, 40, "F");
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("Materi: Pengertian Gerak", pageWidth / 2, 28, { align: "center" });
+
+            yPos = 55;
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
+            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+            yPos += 10;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+
+            doc.text("Hasil Klasifikasi Gerak Semu dan Gerak Relatif:", 20, yPos);
+            yPos += 10;
+
+            // GERAK SEMU
+            doc.setFont("helvetica", "bold");
+            doc.text("A. Gerak Semu", 20, yPos);
+            yPos += 8;
+            doc.setFont("helvetica", "normal");
+            
+            const semuCards = document.querySelectorAll('#drop-semu .card-item');
+            if (semuCards.length === 0) {
+                doc.text("- Kosong", 25, yPos);
+                yPos += 8;
+            } else {
+                semuCards.forEach((card, index) => {
+                    const text = `${index + 1}. ${card.innerText.trim()}`;
+                    const splitText = doc.splitTextToSize(text, pageWidth - 40);
+                    doc.text(splitText, 25, yPos);
+                    yPos += splitText.length * 6 + 2;
+                });
+            }
+
+            yPos += 5;
+
+            // GERAK RELATIF
+            doc.setFont("helvetica", "bold");
+            doc.text("B. Gerak Relatif", 20, yPos);
+            yPos += 8;
+            doc.setFont("helvetica", "normal");
+            
+            const relatifCards = document.querySelectorAll('#drop-relatif .card-item');
+            if (relatifCards.length === 0) {
+                doc.text("- Kosong", 25, yPos);
+                yPos += 8;
+            } else {
+                relatifCards.forEach((card, index) => {
+                    const text = `${index + 1}. ${card.innerText.trim()}`;
+                    const splitText = doc.splitTextToSize(text, pageWidth - 40);
+                    doc.text(splitText, 25, yPos);
+                    yPos += splitText.length * 6 + 2;
+                });
+            }
+
+            yPos += 15;
+
+            // Kalkulasi Hasil
+            let countBenar = 0;
+            let countSalah = 0;
+            let countKosong = 0;
+            
+            const allCards = document.querySelectorAll('.card-item');
+            allCards.forEach(card => {
+                const kunci = card.dataset.answer;
+                const parentType = card.parentElement.dataset.type;
+                if (parentType === kunci) countBenar++;
+                else if (parentType === "pool") countKosong++;
+                else countSalah++;
+            });
+
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(0, 0, 0);
+            const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+
+            doc.setDrawColor(0, 0, 0);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+            doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+            yPos += 20;
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(150, 150, 150);
+            doc.text("Pengertian Gerak", pageWidth / 2, yPos, { align: "center" });
+
+            // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
+            if (action === 'download') {
+                doc.save("Laporan_Latihan_Pengertian_Gerak.pdf");
+            } else if (action === 'upload') {
+                const pdfBlob = doc.output('blob');
+                const formData = new FormData();
+                formData.append('kode_materi', 'pengertian_gerak'); 
+                formData.append('file_pdf', pdfBlob, 'pengertian_gerak.pdf');
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                fetch('/siswa/simpan-pdf-latihan', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => console.log('Auto-save PDF Pengertian Gerak sukses:', data))
+                .catch(error => console.error('Auto-save PDF error:', error));
+            }
+
+        } catch (err) {
+            console.error(err);
+            if (action === 'download') alert("Gagal membuat PDF.");
+        }
+    }
 
     const cards = document.querySelectorAll(".card-item");
     if (cards.length > 0) {
@@ -206,6 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const cardPool = document.getElementById("card-pool");
         const btnCheck = document.getElementById("btn-check");
         const btnRetry = document.getElementById("btn-retry-pengertiangerak");
+        const btnUnduhPengertian = document.getElementById("btn-unduh-pengertiangerak");
         const STORAGE_KEY = "pengertiangerak_completed";
         let draggedId = null;
 
@@ -265,6 +411,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     window.simpanProgresKeDatabase(STORAGE_KEY);
 
+                    // Memunculkan tombol unduh & Generate PDF ke server
+                    if (btnUnduhPengertian) btnUnduhPengertian.style.display = "inline-block";
+                    generatePDFPengertianGerak('upload');
+
                     Swal.fire({
                         title: "Luar Biasa!",
                         text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
@@ -293,6 +443,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     card.classList.remove("correct", "incorrect");
                 });
                 this.classList.add("hidden");
+            });
+        }
+
+        if (btnUnduhPengertian) {
+            btnUnduhPengertian.addEventListener("click", async () => {
+                const originalText = btnUnduhPengertian.innerHTML;
+                btnUnduhPengertian.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+                btnUnduhPengertian.disabled = true;
+
+                await generatePDFPengertianGerak('download');
+
+                btnUnduhPengertian.innerHTML = originalText;
+                btnUnduhPengertian.disabled = false;
             });
         }
     }
@@ -391,7 +554,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const car = document.getElementById("car");
     const btnStart = document.getElementById("btn-start");
     const btnReset = document.getElementById("btn-reset");
-    const btnLanjutKuis = document.getElementById("btn-lanjut-kuis"); // Tambahan tombol lanjut kuis
+    const btnLanjutKuis = document.getElementById("btn-lanjut-kuis"); 
 
     const closeModal = document.getElementById("close-modal");
     const resultModal = document.getElementById("result-modal");
@@ -429,7 +592,6 @@ document.addEventListener("DOMContentLoaded", () => {
             running = false;
             setCarPosition(startPos);
             if (btnStart) btnStart.disabled = false;
-            // Sembunyikan tombol lanjut kuis saat animasi di-reset
             if (btnLanjutKuis) btnLanjutKuis.style.display = "none";
         }
 
@@ -527,7 +689,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const quizFeedback = document.getElementById("quiz-feedback");
     const quizSubmit = document.getElementById("quiz-submit");
     const quizNext = document.getElementById("quiz-next");
-    const quizClose = document.getElementById("quiz-close"); // Tambahan tombol tutup sementara
+    const quizClose = document.getElementById("quiz-close"); 
     const modalText = document.getElementById("modal-text");
 
     const quizData = [
@@ -613,7 +775,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 quizModal.style.display = "none";
                 quizIndex = 0;
 
-                // Sembunyikan tombol lanjut kuis karena semua soal sudah selesai
                 if (btnLanjutKuis) btnLanjutKuis.style.display = "none";
 
                 if (modalText && window.finalSummary) {
@@ -631,7 +792,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Logika untuk tombol Tutup Sementara
     if (quizClose) {
         quizClose.addEventListener("click", () => {
             quizModal.style.display = "none";
@@ -639,7 +799,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Logika untuk tombol Lanjutkan Kuis
     if (btnLanjutKuis) {
         btnLanjutKuis.addEventListener("click", () => {
             quizModal.style.display = "flex";
@@ -674,6 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnCekAdi = document.getElementById("cek-adi");
     const btnResetAdi = document.getElementById("reset-adi");
+    const btnUnduhAdi = document.getElementById("unduh-adi");
 
     const inputs = {
         soal1: document.getElementById("soal1"),
@@ -761,7 +921,6 @@ document.addEventListener("DOMContentLoaded", () => {
             validateInput(inputs.soal5, 0, true);
 
             if (benarCount === 5) {
-                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
                 window.progresSiswa = window.progresSiswa || [];
 
                 if (!window.progresSiswa.includes("jarak_completed")) {
@@ -782,6 +941,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 checkAllLocks();
 
                 if (modalLatihan) modalLatihan.style.display = "none";
+
+                // Memunculkan tombol unduh & Generate PDF ke server
+                if (btnUnduhAdi) btnUnduhAdi.style.display = "inline-block";
+                generatePDFJarak('upload');
 
                 Swal.fire({
                     title: "Luar Biasa!",
@@ -833,8 +996,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================================================================
     // 4. LOGIKA UNDUH PDF
     // =========================================================================
-    const btnUnduhAdi = document.getElementById("unduh-adi");
-
     const getCompressedImage = (el) => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -867,252 +1028,227 @@ document.addEventListener("DOMContentLoaded", () => {
         return m ? parseFloat(m[0]) : null;
     };
 
-    if (btnUnduhAdi) {
-        btnUnduhAdi.addEventListener("click", async () => {
-            const { jsPDF } = window.jspdf;
-            if (!jsPDF) {
-                alert("Library PDF error.");
-                return;
-            }
+    async function generatePDFJarak(action = 'download') {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) {
+            if (action === 'download') alert("Library PDF error.");
+            return;
+        }
 
-            const originalText = btnUnduhAdi.innerHTML;
-            btnUnduhAdi.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menilai & Membuat PDF...`;
-            btnUnduhAdi.disabled = true;
+        try {
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            let yPos = 0;
 
-            try {
-                const doc = new jsPDF();
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
-                const margin = 20;
-                let yPos = 0;
+            doc.setFillColor(249, 92, 80);
+            doc.rect(0, 0, pageWidth, 40, "F");
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("Materi: Jarak Tempuh dan Perpindahan", pageWidth / 2, 28, { align: "center" });
 
-                doc.setFillColor(249, 92, 80);
-                doc.rect(0, 0, pageWidth, 40, "F");
-                doc.setTextColor(255, 255, 255);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(22);
-                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
-                    align: "center",
-                });
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "normal");
-                doc.text(
-                    "Materi: Jarak Tempuh dan Perpindahan",
-                    pageWidth / 2,
-                    28,
-                    { align: "center" },
-                );
+            yPos = 55;
 
-                yPos = 55;
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
 
-                doc.setTextColor(80, 80, 80);
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "italic");
+            const tgl = new Date().toLocaleDateString("id-ID", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
+            doc.text(`Tanggal Pengerjaan: ${tgl}`, margin, yPos);
+            yPos += 10;
 
-                const tgl = new Date().toLocaleDateString("id-ID", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                });
-                doc.text(`Tanggal Pengerjaan: ${tgl}`, margin, yPos);
-                yPos += 10;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
 
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0);
+            const cerita = "Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang 110 meter. Jika Adi mengendarai mobilnya sebanyak 5 putaran, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?";
 
-                const cerita =
-                    "Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang 110 meter. Jika Adi mengendarai mobilnya sebanyak 5 putaran, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?";
+            const splitCerita = doc.splitTextToSize(cerita, pageWidth - margin * 2);
+            doc.text(splitCerita, margin, yPos);
 
-                const splitCerita = doc.splitTextToSize(
-                    cerita,
-                    pageWidth - margin * 2,
-                );
-                doc.text(splitCerita, margin, yPos);
+            yPos += splitCerita.length * 6 + 5;
 
-                yPos += splitCerita.length * 6 + 5;
+            const imgElement = document.querySelector(".gambar-latihan");
+            if (imgElement) {
+                try {
+                    const imgData = await getCompressedImage(imgElement);
+                    const imgProps = doc.getImageProperties(imgData);
+                    const imgWidth = 100;
+                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                    const xImg = (pageWidth - imgWidth) / 2;
 
-                const imgElement = document.querySelector(".gambar-latihan");
-                if (imgElement) {
-                    try {
-                        const imgData = await getCompressedImage(imgElement);
-                        const imgProps = doc.getImageProperties(imgData);
-                        const imgWidth = 100;
-                        const imgHeight =
-                            (imgProps.height * imgWidth) / imgProps.width;
-                        const xImg = (pageWidth - imgWidth) / 2;
-
-                        if (yPos + imgHeight > pageHeight - 20) {
-                            doc.addPage();
-                            yPos = 20;
-                        }
-
-                        doc.addImage(
-                            imgData,
-                            "JPEG",
-                            xImg,
-                            yPos,
-                            imgWidth,
-                            imgHeight,
-                        );
-                        yPos += imgHeight + 10;
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-
-                const rawAnswers = [
-                    {
-                        q: "1. Di mana posisi awal Adi saat mulai mengemudi?",
-                        el: document.getElementById("soal1"),
-                        key: "A",
-                        isNum: false,
-                        unit: "",
-                    },
-                    {
-                        q: "2. Di titik mana Adi mengakhiri putarannya?",
-                        el: document.getElementById("soal2"),
-                        key: "A",
-                        isNum: false,
-                        unit: "",
-                    },
-                    {
-                        q: "3. Panjang lintasan satu putaran?",
-                        el: document.getElementById("soal3"),
-                        key: 110,
-                        isNum: true,
-                        unit: "meter",
-                    },
-                    {
-                        q: "4. Total jarak tempuh (5 putaran)?",
-                        el: document.getElementById("soal4"),
-                        key: 550,
-                        isNum: true,
-                        unit: "meter",
-                    },
-                    {
-                        q: "5. Besar perpindahan Adi?",
-                        el: document.getElementById("soal5"),
-                        key: 0,
-                        isNum: true,
-                        unit: "meter",
-                    },
-                ];
-
-                let countBenar = 0;
-                let countSalah = 0;
-                let countKosong = 0;
-
-                doc.setFontSize(11);
-
-                rawAnswers.forEach((item) => {
-                    const val = item.el.value.trim();
-                    let status = "kosong";
-
-                    if (val !== "") {
-                        if (item.isNum) {
-                            status =
-                                extractNum(val) === item.key
-                                    ? "benar"
-                                    : "salah";
-                        } else {
-                            status =
-                                val.toUpperCase() === item.key
-                                    ? "benar"
-                                    : "salah";
-                        }
-                    }
-
-                    if (status === "benar") countBenar++;
-                    else if (status === "salah") countSalah++;
-                    else countKosong++;
-
-                    if (yPos > pageHeight - 30) {
+                    if (yPos + imgHeight > pageHeight - 20) {
                         doc.addPage();
                         yPos = 20;
                     }
 
-                    doc.setFont("helvetica", "bold");
-                    doc.setTextColor(0, 0, 0);
-                    doc.text(item.q, margin, yPos);
-                    yPos += 6;
+                    doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                    yPos += imgHeight + 10;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
 
-                    if (status === "benar") {
-                        doc.setFillColor(209, 250, 229);
-                        doc.setDrawColor(34, 197, 94);
-                        doc.setTextColor(21, 128, 61);
-                    } else if (status === "salah") {
-                        doc.setFillColor(254, 226, 226);
-                        doc.setDrawColor(239, 68, 68);
-                        doc.setTextColor(185, 28, 28);
+            const rawAnswers = [
+                {
+                    q: "1. Di mana posisi awal Adi saat mulai mengemudi?",
+                    el: document.getElementById("soal1"),
+                    key: "A",
+                    isNum: false,
+                    unit: "",
+                },
+                {
+                    q: "2. Di titik mana Adi mengakhiri putarannya?",
+                    el: document.getElementById("soal2"),
+                    key: "A",
+                    isNum: false,
+                    unit: "",
+                },
+                {
+                    q: "3. Panjang lintasan satu putaran?",
+                    el: document.getElementById("soal3"),
+                    key: 110,
+                    isNum: true,
+                    unit: "meter",
+                },
+                {
+                    q: "4. Total jarak tempuh (5 putaran)?",
+                    el: document.getElementById("soal4"),
+                    key: 550,
+                    isNum: true,
+                    unit: "meter",
+                },
+                {
+                    q: "5. Besar perpindahan Adi?",
+                    el: document.getElementById("soal5"),
+                    key: 0,
+                    isNum: true,
+                    unit: "meter",
+                },
+            ];
+
+            let countBenar = 0;
+            let countSalah = 0;
+            let countKosong = 0;
+
+            doc.setFontSize(11);
+
+            rawAnswers.forEach((item) => {
+                const val = item.el.value.trim();
+                let status = "kosong";
+
+                if (val !== "") {
+                    if (item.isNum) {
+                        status = extractNum(val) === item.key ? "benar" : "salah";
                     } else {
-                        doc.setFillColor(245, 245, 245);
-                        doc.setDrawColor(200, 200, 200);
-                        doc.setTextColor(100, 100, 100);
+                        status = val.toUpperCase() === item.key ? "benar" : "salah";
                     }
+                }
 
-                    doc.roundedRect(
-                        margin,
-                        yPos - 5,
-                        pageWidth - margin * 2,
-                        12,
-                        1,
-                        1,
-                        "FD",
-                    );
+                if (status === "benar") countBenar++;
+                else if (status === "salah") countSalah++;
+                else countKosong++;
 
-                    doc.setFont("helvetica", "normal");
-                    const textAns = val
-                        ? `${val} ${item.unit}`
-                        : "(Tidak dijawab)";
-                    const prefix =
-                        status === "benar"
-                            ? "(BENAR) "
-                            : status === "salah"
-                              ? "(SALAH) "
-                              : "";
-                    doc.text(prefix + textAns, margin + 5, yPos + 3);
+                if (yPos > pageHeight - 30) {
+                    doc.addPage();
+                    yPos = 20;
+                }
 
-                    yPos += 16;
-                });
-
-                yPos += 5;
                 doc.setFont("helvetica", "bold");
                 doc.setTextColor(0, 0, 0);
+                doc.text(item.q, margin, yPos);
+                yPos += 6;
 
-                const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+                if (status === "benar") {
+                    doc.setFillColor(209, 250, 229);
+                    doc.setDrawColor(34, 197, 94);
+                    doc.setTextColor(21, 128, 61);
+                } else if (status === "salah") {
+                    doc.setFillColor(254, 226, 226);
+                    doc.setDrawColor(239, 68, 68);
+                    doc.setTextColor(185, 28, 28);
+                } else {
+                    doc.setFillColor(245, 245, 245);
+                    doc.setDrawColor(200, 200, 200);
+                    doc.setTextColor(100, 100, 100);
+                }
 
-                doc.setDrawColor(0, 0, 0);
-                doc.setFillColor(255, 255, 255);
-                doc.roundedRect(
-                    margin,
-                    yPos - 5,
-                    pageWidth - margin * 2,
-                    10,
-                    1,
-                    1,
-                    "S",
-                );
-                doc.text(summaryText, pageWidth / 2, yPos + 2, {
-                    align: "center",
-                });
+                doc.roundedRect(margin, yPos - 5, pageWidth - margin * 2, 12, 1, 1, "FD");
 
-                yPos += 15;
-                doc.setFontSize(9);
-                doc.setTextColor(150, 150, 150);
-                doc.text("Jarak Tempuh dan Perpindahan", pageWidth / 2, yPos, {
-                    align: "center",
-                });
+                doc.setFont("helvetica", "normal");
+                const textAns = val ? `${val} ${item.unit}` : "(Tidak dijawab)";
+                
+                // BARIS PREFIX SUDAH DIHAPUS DI SINI
+                doc.text(textAns, margin + 5, yPos + 3);
 
-                doc.save("Laporan_Latihan_Jarak tempuh dan perpindahan.pdf");
-            } catch (err) {
-                console.error(err);
-                alert("Gagal membuat PDF.");
-            } finally {
-                btnUnduhAdi.innerHTML = originalText;
-                btnUnduhAdi.disabled = false;
+                yPos += 16;
+            });
+
+            yPos += 5;
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(0, 0, 0);
+
+            const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+
+            doc.setDrawColor(0, 0, 0);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(margin, yPos - 5, pageWidth - margin * 2, 10, 1, 1, "S");
+            doc.text(summaryText, pageWidth / 2, yPos + 2, { align: "center" });
+
+            yPos += 15;
+            doc.setFontSize(9);
+            doc.setTextColor(150, 150, 150);
+            doc.text("Jarak Tempuh dan Perpindahan", pageWidth / 2, yPos, { align: "center" });
+
+            // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
+            if (action === 'download') {
+                doc.save("Laporan_Latihan_Jarak_Tempuh_dan_Perpindahan.pdf");
+            } else if (action === 'upload') {
+                const pdfBlob = doc.output('blob');
+                const formData = new FormData();
+                formData.append('kode_materi', 'jarak_tempuh'); // Kode materi sesuai di Controller
+                formData.append('file_pdf', pdfBlob, 'jarak_tempuh_dan_perpindahan.pdf');
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                fetch('/siswa/simpan-pdf-latihan', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => console.log('Auto-save PDF Jarak Tempuh sukses:', data))
+                .catch(error => console.error('Auto-save PDF error:', error));
             }
+
+        } catch (err) {
+            console.error(err);
+            if (action === 'download') alert("Gagal membuat PDF.");
+        }
+    }
+
+    if (btnUnduhAdi) {
+        btnUnduhAdi.addEventListener("click", async () => {
+            const originalText = btnUnduhAdi.innerHTML;
+            btnUnduhAdi.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menilai & Membuat PDF...`;
+            btnUnduhAdi.disabled = true;
+
+            await generatePDFJarak('download');
+
+            btnUnduhAdi.innerHTML = originalText;
+            btnUnduhAdi.disabled = false;
         });
     }
 });
@@ -1445,6 +1581,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 checkAllLocks();
 
+                // Munculkan tombol unduh & Generate PDF ke server
+                const btnUnduhLatihan = document.getElementById("btn-unduh-latihan");
+                if (btnUnduhLatihan) btnUnduhLatihan.style.display = "inline-block";
+                generatePDFKelajuan('upload');
+
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -1512,215 +1653,241 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
 
-    if (btnUnduhLatihan) {
-        btnUnduhLatihan.addEventListener("click", async () => {
-            const { jsPDF } = window.jspdf;
-            if (!jsPDF) {
-                alert("Library PDF belum siap.");
-                return;
+    async function generatePDFKelajuan(action = 'download') {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) {
+            if (action === 'download') alert("Library PDF belum siap.");
+            return;
+        }
+
+        try {
+            const doc = new jsPDF("p", "mm", "a4");
+            const pageWidth = doc.internal.pageSize.getWidth();
+            let yPos = 0;
+
+            doc.setFillColor(249, 92, 80);
+            doc.rect(0, 0, pageWidth, 40, "F");
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("Materi: Kelajuan dan Kecepatan", pageWidth / 2, 28, { align: "center" });
+
+            yPos = 55;
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
+            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+            yPos += 10;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            const cerita = "Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Waktu yang dihabiskan untuk seluruh perjalanan adalah 20 sekon. Tentukan kelajuan dan kecepatan anak tersebut!";
+            const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
+            doc.text(splitCerita, 20, yPos);
+            yPos += splitCerita.length * 5 + 5;
+
+            const images = document.querySelectorAll(".content-image2");
+            const imgElement = images[images.length - 1];
+            if (imgElement) {
+                try {
+                    const imgData = await getCompressedImage(imgElement);
+                    const imgProps = doc.getImageProperties(imgData);
+                    const imgWidth = 80;
+                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                    const xImg = (pageWidth - imgWidth) / 2;
+                    doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                    yPos += imgHeight + 10;
+                } catch (e) {}
             }
 
+            let countBenar = 0, countSalah = 0, countKosong = 0;
+
+            const drawAnswerBox = (id, x, y, w = 15, h = 7) => {
+                const inputEl = document.getElementById(id);
+                const val = inputEl ? inputEl.value.trim() : "";
+                const kunci = kunciLatihan.find((k) => k.id === id);
+
+                let bgColor = [245, 245, 245];
+                let textColor = [100, 100, 100];
+                let borderColor = [200, 200, 200];
+
+                if (val !== "") {
+                    if (val === kunci.jawaban) {
+                        bgColor = [209, 250, 229];
+                        borderColor = [34, 197, 94];
+                        textColor = [21, 128, 61];
+                        countBenar++;
+                    } else {
+                        bgColor = [254, 226, 226];
+                        borderColor = [239, 68, 68];
+                        textColor = [185, 28, 28];
+                        countSalah++;
+                    }
+                } else {
+                    countKosong++;
+                }
+
+                doc.setFillColor(...bgColor);
+                doc.setDrawColor(...borderColor);
+                doc.roundedRect(x, y, w, h, 1, 1, "FD");
+
+                doc.setFontSize(10);
+                doc.setTextColor(...textColor);
+                const textToShow = val !== "" ? val : "(?)";
+                doc.text(textToShow, x + w / 2, y + 5, { align: "center" });
+
+                doc.setTextColor(0, 0, 0);
+            };
+
+            const startY = yPos;
+            let leftY = startY;
+            let rightY = startY;
+            const colLeft = 20;
+            const colRight = 115;
+
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+
+            // KOLOM KIRI (KELAJUAN)
+            doc.text("A. Kelajuan", colLeft, leftY);
+            leftY += 8;
+            doc.setFont("helvetica", "normal");
+
+            doc.text("Diketahui:", colLeft, leftY);
+            leftY += 6;
+            doc.text("Jarak =", colLeft, leftY);
+            drawAnswerBox("s1", colLeft + 15, leftY - 5, 15);
+            doc.text("+", colLeft + 32, leftY);
+            drawAnswerBox("s2", colLeft + 37, leftY - 5, 15);
+            doc.text("=", colLeft + 54, leftY);
+            drawAnswerBox("s-total", colLeft + 59, leftY - 5, 15);
+            doc.text("m", colLeft + 76, leftY);
+            leftY += 10;
+
+            doc.text("Waktu =", colLeft, leftY);
+            drawAnswerBox("t", colLeft + 15, leftY - 5, 15);
+            doc.text("sekon", colLeft + 32, leftY);
+            leftY += 10;
+
+            doc.text("Ditanya: Kelajuan (v) = ?", colLeft, leftY);
+            leftY += 10;
+
+            doc.text("Dijawab: v = s / t", colLeft, leftY);
+            leftY += 10;
+
+            doc.text("v =", colLeft, leftY + 5);
+            drawAnswerBox("v-atas", colLeft + 10, leftY - 2, 15);
+            doc.line(colLeft + 10, leftY + 6, colLeft + 25, leftY + 6);
+            drawAnswerBox("v-bawah", colLeft + 10, leftY + 7, 15);
+
+            doc.text("=", colLeft + 28, leftY + 5);
+            drawAnswerBox("v-hasil", colLeft + 33, leftY + 2, 15);
+            doc.text("m/s", colLeft + 50, leftY + 5);
+
+            // KOLOM KANAN (KECEPATAN)
+            doc.setFont("helvetica", "bold");
+            doc.text("B. Kecepatan", colRight, rightY);
+            rightY += 8;
+            doc.setFont("helvetica", "normal");
+
+            doc.text("Diketahui:", colRight, rightY);
+            rightY += 6;
+            doc.text("Selatan (x0) =", colRight, rightY);
+            drawAnswerBox("x0", colRight + 25, rightY - 5, 15);
+            doc.text("m", colRight + 42, rightY);
+            rightY += 8;
+
+            doc.text("Utara (xt) =", colRight, rightY);
+            drawAnswerBox("xt", colRight + 25, rightY - 5, 15);
+            doc.text("m", colRight + 42, rightY);
+            rightY += 8;
+
+            doc.text("Waktu =", colRight, rightY);
+            drawAnswerBox("t2", colRight + 15, rightY - 5, 15);
+            doc.text("s", colRight + 32, rightY);
+            rightY += 10;
+
+            doc.text("Ditanya: Kecepatan (v) = ?", colRight, rightY);
+            rightY += 10;
+
+            doc.text("Dijawab: Cari Perpindahan", colRight, rightY);
+            rightY += 8;
+            doc.text("Delta s = xt - x0", colRight, rightY);
+            rightY += 8;
+            doc.text("Delta s =", colRight, rightY);
+            drawAnswerBox("delta-s", colRight + 18, rightY - 5, 15);
+            doc.text("m", colRight + 35, rightY);
+            rightY += 12;
+
+            doc.text("v =", colRight, rightY + 5);
+            drawAnswerBox("v2-atas", colRight + 10, rightY - 2, 15);
+            doc.line(colRight + 10, rightY + 6, colRight + 25, rightY + 6);
+            drawAnswerBox("v2-bawah", colRight + 10, rightY + 7, 15);
+
+            doc.text("=", colRight + 28, rightY + 5);
+            drawAnswerBox("v2-hasil", colRight + 33, rightY + 2, 15);
+            doc.text("m/s", colRight + 50, rightY + 5);
+
+            yPos = Math.max(leftY, rightY) + 25;
+
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(0, 0, 0);
+            const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+
+            doc.setDrawColor(0, 0, 0);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+            doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(150, 150, 150);
+            doc.text("Kelajuan dan Kecepatan", pageWidth / 2, yPos + 20, { align: "center" });
+
+            // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
+            if (action === 'download') {
+                doc.save("Laporan_Latihan_Kelajuan_Kecepatan.pdf");
+            } else if (action === 'upload') {
+                const pdfBlob = doc.output('blob');
+                const formData = new FormData();
+                formData.append('kode_materi', 'kelajuan'); // Kode materi sesuai di Controller
+                formData.append('file_pdf', pdfBlob, 'kelajuan_dan_kecepatan.pdf');
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                fetch('/siswa/simpan-pdf-latihan', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => console.log('Auto-save PDF Kelajuan sukses:', data))
+                .catch(error => console.error('Auto-save PDF error:', error));
+            }
+
+        } catch (err) {
+            console.error(err);
+            if (action === 'download') alert("Gagal membuat PDF.");
+        }
+    }
+
+    if (btnUnduhLatihan) {
+        btnUnduhLatihan.addEventListener("click", async () => {
             const originalText = btnUnduhLatihan.innerHTML;
             btnUnduhLatihan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
             btnUnduhLatihan.disabled = true;
 
-            try {
-                const doc = new jsPDF("p", "mm", "a4");
-                const pageWidth = doc.internal.pageSize.getWidth();
-                let yPos = 0;
+            await generatePDFKelajuan('download');
 
-                doc.setFillColor(249, 92, 80);
-                doc.rect(0, 0, pageWidth, 40, "F");
-                doc.setTextColor(255, 255, 255);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(22);
-                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "normal");
-                doc.text("Materi: Kelajuan dan Kecepatan", pageWidth / 2, 28, { align: "center" });
-
-                yPos = 55;
-                doc.setTextColor(80, 80, 80);
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "italic");
-                const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
-                doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
-                yPos += 10;
-
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(11);
-                doc.setTextColor(0, 0, 0);
-                const cerita = "Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Waktu yang dihabiskan untuk seluruh perjalanan adalah 20 sekon. Tentukan kelajuan dan kecepatan anak tersebut!";
-                const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
-                doc.text(splitCerita, 20, yPos);
-                yPos += splitCerita.length * 5 + 5;
-
-                const images = document.querySelectorAll(".content-image2");
-                const imgElement = images[images.length - 1];
-                if (imgElement) {
-                    try {
-                        const imgData = await getCompressedImage(imgElement);
-                        const imgProps = doc.getImageProperties(imgData);
-                        const imgWidth = 80;
-                        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-                        const xImg = (pageWidth - imgWidth) / 2;
-                        doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
-                        yPos += imgHeight + 10;
-                    } catch (e) {}
-                }
-
-                let countBenar = 0, countSalah = 0, countKosong = 0;
-
-                const drawAnswerBox = (id, x, y, w = 15, h = 7) => {
-                    const inputEl = document.getElementById(id);
-                    const val = inputEl ? inputEl.value.trim() : "";
-                    const kunci = kunciLatihan.find((k) => k.id === id);
-
-                    let bgColor = [245, 245, 245];
-                    let textColor = [100, 100, 100];
-                    let borderColor = [200, 200, 200];
-
-                    if (val !== "") {
-                        if (val === kunci.jawaban) {
-                            bgColor = [209, 250, 229];
-                            borderColor = [34, 197, 94];
-                            textColor = [21, 128, 61];
-                            countBenar++;
-                        } else {
-                            bgColor = [254, 226, 226];
-                            borderColor = [239, 68, 68];
-                            textColor = [185, 28, 28];
-                            countSalah++;
-                        }
-                    } else {
-                        countKosong++;
-                    }
-
-                    doc.setFillColor(...bgColor);
-                    doc.setDrawColor(...borderColor);
-                    doc.roundedRect(x, y, w, h, 1, 1, "FD");
-
-                    doc.setFontSize(10);
-                    doc.setTextColor(...textColor);
-                    const textToShow = val !== "" ? val : "(?)";
-                    doc.text(textToShow, x + w / 2, y + 5, { align: "center" });
-
-                    doc.setTextColor(0, 0, 0);
-                };
-
-                const startY = yPos;
-                let leftY = startY;
-                let rightY = startY;
-                const colLeft = 20;
-                const colRight = 115;
-
-                doc.setFontSize(11);
-                doc.setFont("helvetica", "bold");
-
-                // KOLOM KIRI (KELAJUAN)
-                doc.text("A. Kelajuan", colLeft, leftY);
-                leftY += 8;
-                doc.setFont("helvetica", "normal");
-
-                doc.text("Diketahui:", colLeft, leftY);
-                leftY += 6;
-                doc.text("Jarak =", colLeft, leftY);
-                drawAnswerBox("s1", colLeft + 15, leftY - 5, 15);
-                doc.text("+", colLeft + 32, leftY);
-                drawAnswerBox("s2", colLeft + 37, leftY - 5, 15);
-                doc.text("=", colLeft + 54, leftY);
-                drawAnswerBox("s-total", colLeft + 59, leftY - 5, 15);
-                doc.text("m", colLeft + 76, leftY);
-                leftY += 10;
-
-                doc.text("Waktu =", colLeft, leftY);
-                drawAnswerBox("t", colLeft + 15, leftY - 5, 15);
-                doc.text("sekon", colLeft + 32, leftY);
-                leftY += 10;
-
-                doc.text("Ditanya: Kelajuan (v) = ?", colLeft, leftY);
-                leftY += 10;
-
-                doc.text("Dijawab: v = s / t", colLeft, leftY);
-                leftY += 10;
-
-                doc.text("v =", colLeft, leftY + 5);
-                drawAnswerBox("v-atas", colLeft + 10, leftY - 2, 15);
-                doc.line(colLeft + 10, leftY + 6, colLeft + 25, leftY + 6);
-                drawAnswerBox("v-bawah", colLeft + 10, leftY + 7, 15);
-
-                doc.text("=", colLeft + 28, leftY + 5);
-                drawAnswerBox("v-hasil", colLeft + 33, leftY + 2, 15);
-                doc.text("m/s", colLeft + 50, leftY + 5);
-
-                // KOLOM KANAN (KECEPATAN)
-                doc.setFont("helvetica", "bold");
-                doc.text("B. Kecepatan", colRight, rightY);
-                rightY += 8;
-                doc.setFont("helvetica", "normal");
-
-                doc.text("Diketahui:", colRight, rightY);
-                rightY += 6;
-                doc.text("Selatan (x0) =", colRight, rightY);
-                drawAnswerBox("x0", colRight + 25, rightY - 5, 15);
-                doc.text("m", colRight + 42, rightY);
-                rightY += 8;
-
-                doc.text("Utara (xt) =", colRight, rightY);
-                drawAnswerBox("xt", colRight + 25, rightY - 5, 15);
-                doc.text("m", colRight + 42, rightY);
-                rightY += 8;
-
-                doc.text("Waktu =", colRight, rightY);
-                drawAnswerBox("t2", colRight + 15, rightY - 5, 15);
-                doc.text("s", colRight + 32, rightY);
-                rightY += 10;
-
-                doc.text("Ditanya: Kecepatan (v) = ?", colRight, rightY);
-                rightY += 10;
-
-                doc.text("Dijawab: Cari Perpindahan", colRight, rightY);
-                rightY += 8;
-                doc.text("Delta s = xt - x0", colRight, rightY);
-                rightY += 8;
-                doc.text("Delta s =", colRight, rightY);
-                drawAnswerBox("delta-s", colRight + 18, rightY - 5, 15);
-                doc.text("m", colRight + 35, rightY);
-                rightY += 12;
-
-                doc.text("v =", colRight, rightY + 5);
-                drawAnswerBox("v2-atas", colRight + 10, rightY - 2, 15);
-                doc.line(colRight + 10, rightY + 6, colRight + 25, rightY + 6);
-                drawAnswerBox("v2-bawah", colRight + 10, rightY + 7, 15);
-
-                doc.text("=", colRight + 28, rightY + 5);
-                drawAnswerBox("v2-hasil", colRight + 33, rightY + 2, 15);
-                doc.text("m/s", colRight + 50, rightY + 5);
-
-                yPos = Math.max(leftY, rightY) + 25;
-
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(0, 0, 0);
-                const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
-
-                doc.setDrawColor(0, 0, 0);
-                doc.setFillColor(255, 255, 255);
-                doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-                doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
-
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(150, 150, 150);
-                doc.text("Kelajuan dan Kecepatan", pageWidth / 2, yPos + 20, { align: "center" });
-
-                doc.save("Laporan_Latihan_Kelajuan_Kecepatan.pdf");
-            } catch (err) {
-                console.error(err);
-                alert("Gagal membuat PDF.");
-            } finally {
-                btnUnduhLatihan.innerHTML = originalText;
-                btnUnduhLatihan.disabled = false;
-            }
+            btnUnduhLatihan.innerHTML = originalText;
+            btnUnduhLatihan.disabled = false;
         });
     }
 
@@ -1825,9 +1992,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Fungsi pembantu untuk mengecek database
         function isLulus(kodeMateri) {
-            return (
-                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
-            );
+            return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
         }
 
         // 1. Cek Kelulusan Materi Sebelumnya (Kelajuan & Kecepatan)
@@ -1850,8 +2015,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (path.includes("percepatan")) {
-                const btnNextMateri =
-                    document.getElementById("btn-next-materi");
+                const btnNextMateri = document.getElementById("btn-next-materi");
                 if (btnNextMateri) {
                     btnNextMateri.classList.remove("locked");
                 }
@@ -1862,9 +2026,171 @@ document.addEventListener("DOMContentLoaded", function () {
     checkAllLocks();
 
     // =========================================================================
+    // FUNGSI UTAMA: RENDER PDF (BISA UNTUK DOWNLOAD ATAU UPLOAD BACKGROUND)
+    // =========================================================================
+    async function generatePDFPercepatan(action = 'download') {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) {
+            if (action === 'download') alert("Library PDF belum siap.");
+            return;
+        }
+
+        try {
+            const doc = new jsPDF("p", "mm", "a4");
+            const pageWidth = doc.internal.pageSize.getWidth();
+            let yPos = 0;
+
+            doc.setFillColor(249, 92, 80);
+            doc.rect(0, 0, pageWidth, 40, "F");
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("Materi: Percepatan", pageWidth / 2, 28, { align: "center" });
+
+            yPos = 55;
+
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
+            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+            yPos += 10;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            const cerita = "Sebuah sepeda mula-mula berjalan dengan kecepatan 10 m/s, kemudian pada detik ke-20 kecepatannya menjadi 50 m/s. Berapakah percepatan yang dialami sepeda tersebut?";
+            const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
+            doc.text(splitCerita, 20, yPos);
+            yPos += splitCerita.length * 6 + 5;
+
+            const images = document.querySelectorAll(".content-image2");
+            const imgElement = images[images.length - 1];
+
+            if (imgElement) {
+                try {
+                    const imgData = await getCompressedImage(imgElement);
+                    const imgProps = doc.getImageProperties(imgData);
+                    const imgWidth = 80;
+                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                    const xImg = (pageWidth - imgWidth) / 2;
+                    doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                    yPos += imgHeight + 15;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            let countBenar = 0, countSalah = 0, countKosong = 0;
+
+            const drawBox = (id, x, y, w = 15, h = 7) => {
+                const inputEl = document.getElementById(id);
+                const val = inputEl ? inputEl.value.trim() : "";
+                const kunci = kunciPercepatan.find((k) => k.id === id);
+
+                let bg = [245, 245, 245], txt = [100, 100, 100], brd = [200, 200, 200];
+
+                if (val !== "") {
+                    if (val === kunci.jawaban) {
+                        bg = [209, 250, 229]; brd = [34, 197, 94]; txt = [21, 128, 61]; countBenar++;
+                    } else {
+                        bg = [254, 226, 226]; brd = [239, 68, 68]; txt = [185, 28, 28]; countSalah++;
+                    }
+                } else {
+                    countKosong++;
+                }
+
+                doc.setFillColor(...bg);
+                doc.setDrawColor(...brd);
+                doc.roundedRect(x, y, w, h, 1, 1, "FD");
+                doc.setFontSize(10);
+                doc.setTextColor(...txt);
+                doc.text(val !== "" ? val : "(?)", x + w / 2, y + 5, { align: "center" });
+                doc.setTextColor(0, 0, 0);
+            };
+
+            let leftX = 20;
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+
+            doc.text("Diketahui:", leftX, yPos);
+            yPos += 8;
+            doc.text("Kecepatan awal (v1) =", leftX, yPos);
+            drawBox("v1", leftX + 45, yPos - 5, 15);
+            doc.text("m/s", leftX + 62, yPos);
+            yPos += 10;
+
+            doc.text("Kecepatan akhir (v2) =", leftX, yPos);
+            drawBox("v2", leftX + 45, yPos - 5, 15);
+            doc.text("m/s", leftX + 62, yPos);
+            yPos += 10;
+
+            doc.text("Waktu (t) =", leftX, yPos);
+            drawBox("t", leftX + 45, yPos - 5, 15);
+            doc.text("s", leftX + 62, yPos);
+            yPos += 12;
+
+            doc.text("Ditanya: Percepatan (a) = ?", leftX, yPos);
+            yPos += 10;
+            doc.text("Dijawab: a = (v2 - v1) / t", leftX, yPos);
+            yPos += 10;
+            doc.text("a =", leftX, yPos + 5);
+            drawBox("a-atas", leftX + 10, yPos - 2, 15);
+            doc.line(leftX + 10, yPos + 6, leftX + 25, yPos + 6);
+            drawBox("a-bawah", leftX + 10, yPos + 7, 15);
+            doc.text("=", leftX + 28, yPos + 5);
+            drawBox("a-hasil", leftX + 33, yPos + 2, 15);
+            doc.text("m/s²", leftX + 50, yPos + 5);
+
+            yPos += 25;
+
+            const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+            doc.setDrawColor(0, 0, 0);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+            doc.setFont("helvetica", "bold");
+            doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(150, 150, 150);
+            doc.text("Percepatan", pageWidth / 2, yPos + 20, { align: "center" });
+
+            // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
+            if (action === 'download') {
+                doc.save("Laporan_Latihan_Percepatan.pdf");
+            } else if (action === 'upload') {
+                const pdfBlob = doc.output('blob');
+                const formData = new FormData();
+                formData.append('kode_materi', 'percepatan');
+                formData.append('file_pdf', pdfBlob, 'percepatan.pdf');
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                fetch('/siswa/simpan-pdf-latihan', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => console.log('Auto-save PDF sukses:', data))
+                .catch(error => console.error('Auto-save PDF error:', error));
+            }
+
+        } catch (err) {
+            console.error(err);
+            if (action === 'download') alert("Gagal membuat PDF.");
+        }
+    }
+
+    // =========================================================================
     // BAGIAN A: LOGIKA LATIHAN SOAL (INTERAKSI WEBSITE)
     // =========================================================================
-
     const btnCek = document.getElementById("btn-cek-percepatan");
     const btnReset = document.getElementById("btn-reset-percepatan");
     const btnPopupUlang = document.getElementById("btn-popup-ulang-percepatan");
@@ -1893,9 +2219,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnCek) {
         btnCek.addEventListener("click", () => {
-            let benar = 0;
-            let salah = 0;
-            let belum = 0;
+            let benar = 0, salah = 0, belum = 0;
 
             kunciPercepatan.forEach((item) => {
                 const input = document.getElementById(item.id);
@@ -1915,11 +2239,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // LOGIKA BARU: JIKA BENAR SEMUA, BUKA KUNCI DAN SIMPAN KE DATABASE
+            // LOGIKA JIKA BENAR SEMUA
             if (benar === kunciPercepatan.length) {
-                // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
                 window.progresSiswa = window.progresSiswa || [];
-
                 if (!window.progresSiswa.includes("percepatan_completed")) {
                     window.progresSiswa.push("percepatan_completed");
                 }
@@ -1930,14 +2252,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // Buka kunci secara manual via Helper Global
-                if (window.unlockSidebar) {
-                    window.unlockSidebar("nav-kuis1");
-                }
-                if (window.unlockNextButtonIfPage) {
-                    window.unlockNextButtonIfPage("percepatan");
-                }
-
+                if (window.unlockSidebar) window.unlockSidebar("nav-kuis1");
+                if (window.unlockNextButtonIfPage) window.unlockNextButtonIfPage("percepatan");
+                
                 checkAllLocks();
+
+                // Munculkan Tombol Unduh
+                const btnUnduh = document.getElementById("btn-unduh-percepatan");
+                if (btnUnduh) btnUnduh.style.display = "inline-block";
+
+                // Simpan PDF ke Database secara diam-diam
+                generatePDFPercepatan('upload');
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -1948,24 +2273,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    alert(
-                        "Selamat! Jawaban kamu benar semua. Akses ke Kuis 1 telah terbuka.",
-                    );
+                    alert("Selamat! Jawaban kamu benar semua. Akses ke Kuis 1 telah terbuka.");
                 }
             } else {
-                const popupText = document.getElementById(
-                    "popup-percepatan-text",
-                );
+                const popupText = document.getElementById("popup-percepatan-text");
                 const popupBox = document.getElementById("popup-percepatan");
 
                 if (popupText && popupBox) {
                     popupText.innerHTML = `
-              <span class="hasil-benar">✔ Benar : ${benar}</span>
-              <span class="pemisah">|</span>
-              <span class="hasil-salah">✖ Salah : ${salah}</span>
-              <span class="pemisah">|</span>
-              <span class="hasil-belum">⏳ Belum diisi : ${belum}</span>
-            `;
+                        <span class="hasil-benar">✔ Benar : ${benar}</span>
+                        <span class="pemisah">|</span>
+                        <span class="hasil-salah">✖ Salah : ${salah}</span>
+                        <span class="pemisah">|</span>
+                        <span class="hasil-belum">⏳ Belum diisi : ${belum}</span>
+                    `;
                     popupBox.classList.add("show");
                 }
             }
@@ -1982,256 +2303,66 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================================================================
-    // BAGIAN B: LOGIKA UNDUH PDF
+    // BAGIAN B: LOGIKA KLIK MANUAL UNDUH PDF OLEH SISWA
     // =========================================================================
-
     const btnUnduhPercepatan = document.getElementById("btn-unduh-percepatan");
-
     if (btnUnduhPercepatan) {
         btnUnduhPercepatan.addEventListener("click", async () => {
-            const { jsPDF } = window.jspdf;
-            if (!jsPDF) {
-                alert("Library PDF belum siap.");
-                return;
-            }
-
             const originalText = btnUnduhPercepatan.innerHTML;
             btnUnduhPercepatan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
             btnUnduhPercepatan.disabled = true;
 
-            try {
-                const doc = new jsPDF("p", "mm", "a4");
-                const pageWidth = doc.internal.pageSize.getWidth();
-                let yPos = 0;
+            await generatePDFPercepatan('download');
 
-                doc.setFillColor(249, 92, 80);
-                doc.rect(0, 0, pageWidth, 40, "F");
-                doc.setTextColor(255, 255, 255);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(22);
-                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
-                    align: "center",
-                });
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "normal");
-                doc.text("Materi: Percepatan", pageWidth / 2, 28, {
-                    align: "center",
-                });
-
-                yPos = 55;
-
-                doc.setTextColor(80, 80, 80);
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "italic");
-                const tgl = new Date().toLocaleDateString("id-ID", {
-                    dateStyle: "full",
-                });
-                doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
-                yPos += 10;
-
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(11);
-                doc.setTextColor(0, 0, 0);
-                const cerita =
-                    "Sebuah sepeda mula-mula berjalan dengan kecepatan 10 m/s, kemudian pada detik ke-20 kecepatannya menjadi 50 m/s. Berapakah percepatan yang dialami sepeda tersebut?";
-                const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
-                doc.text(splitCerita, 20, yPos);
-                yPos += splitCerita.length * 6 + 5;
-
-                const images = document.querySelectorAll(".content-image2");
-                const imgElement = images[images.length - 1];
-
-                if (imgElement) {
-                    try {
-                        const imgData = await getCompressedImage(imgElement);
-                        const imgProps = doc.getImageProperties(imgData);
-                        const imgWidth = 80;
-                        const imgHeight =
-                            (imgProps.height * imgWidth) / imgProps.width;
-                        const xImg = (pageWidth - imgWidth) / 2;
-                        doc.addImage(
-                            imgData,
-                            "JPEG",
-                            xImg,
-                            yPos,
-                            imgWidth,
-                            imgHeight,
-                        );
-                        yPos += imgHeight + 15;
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-
-                let countBenar = 0,
-                    countSalah = 0,
-                    countKosong = 0;
-
-                const drawBox = (id, x, y, w = 15, h = 7) => {
-                    const inputEl = document.getElementById(id);
-                    const val = inputEl ? inputEl.value.trim() : "";
-                    const kunci = kunciPercepatan.find((k) => k.id === id);
-
-                    let bg = [245, 245, 245],
-                        txt = [100, 100, 100],
-                        brd = [200, 200, 200];
-
-                    if (val !== "") {
-                        if (val === kunci.jawaban) {
-                            bg = [209, 250, 229];
-                            brd = [34, 197, 94];
-                            txt = [21, 128, 61];
-                            countBenar++;
-                        } else {
-                            bg = [254, 226, 226];
-                            brd = [239, 68, 68];
-                            txt = [185, 28, 28];
-                            countSalah++;
-                        }
-                    } else {
-                        countKosong++;
-                    }
-
-                    doc.setFillColor(...bg);
-                    doc.setDrawColor(...brd);
-                    doc.roundedRect(x, y, w, h, 1, 1, "FD");
-                    doc.setFontSize(10);
-                    doc.setTextColor(...txt);
-                    doc.text(val !== "" ? val : "(?)", x + w / 2, y + 5, {
-                        align: "center",
-                    });
-                    doc.setTextColor(0, 0, 0);
-                };
-
-                let leftX = 20;
-                doc.setFontSize(11);
-                doc.setFont("helvetica", "normal");
-
-                doc.text("Diketahui:", leftX, yPos);
-                yPos += 8;
-
-                doc.text("Kecepatan awal (v1) =", leftX, yPos);
-                drawBox("v1", leftX + 45, yPos - 5, 15);
-                doc.text("m/s", leftX + 62, yPos);
-                yPos += 10;
-
-                doc.text("Kecepatan akhir (v2) =", leftX, yPos);
-                drawBox("v2", leftX + 45, yPos - 5, 15);
-                doc.text("m/s", leftX + 62, yPos);
-                yPos += 10;
-
-                doc.text("Waktu (t) =", leftX, yPos);
-                drawBox("t", leftX + 45, yPos - 5, 15);
-                doc.text("s", leftX + 62, yPos);
-                yPos += 12;
-
-                doc.text("Ditanya: Percepatan (a) = ?", leftX, yPos);
-                yPos += 10;
-
-                doc.text("Dijawab: a = (v2 - v1) / t", leftX, yPos);
-                yPos += 10;
-
-                doc.text("a =", leftX, yPos + 5);
-
-                drawBox("a-atas", leftX + 10, yPos - 2, 15);
-                doc.line(leftX + 10, yPos + 6, leftX + 25, yPos + 6);
-                drawBox("a-bawah", leftX + 10, yPos + 7, 15);
-
-                doc.text("=", leftX + 28, yPos + 5);
-                drawBox("a-hasil", leftX + 33, yPos + 2, 15);
-                doc.text("m/s²", leftX + 50, yPos + 5);
-
-                yPos += 25;
-
-                const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
-
-                doc.setDrawColor(0, 0, 0);
-                doc.setFillColor(255, 255, 255);
-                doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-                doc.setFont("helvetica", "bold");
-                doc.text(summaryText, pageWidth / 2, yPos + 7, {
-                    align: "center",
-                });
-
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(150, 150, 150);
-                doc.text("Percepatan", pageWidth / 2, yPos + 20, {
-                    align: "center",
-                });
-
-                doc.save("Laporan_Latihan_Percepatan.pdf");
-            } catch (err) {
-                console.error(err);
-                alert("Gagal membuat PDF.");
-            } finally {
-                btnUnduhPercepatan.innerHTML = originalText;
-                btnUnduhPercepatan.disabled = false;
-            }
+            btnUnduhPercepatan.innerHTML = originalText;
+            btnUnduhPercepatan.disabled = false;
         });
     }
 });
 
-// FILE: SCRIPT KHUSUS MODUL GAYA (Fokus: Locking System & Progres Kuis Kilat)
+// Js Pengantar Gaya & Pengertian Gaya
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // =========================================================================
-    // 1. SISTEM PENGUNCIAN (LOCKING SYSTEM DENGAN DATABASE)
-    // =========================================================================
+    // 1. Cek penguncian materi berdasarkan database
     function checkAllLocks() {
-        // Fungsi pembantu untuk mengecek database
         function isLulus(kodeMateri) {
-            return (
-                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
-            );
+            return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
         }
 
-        // A. Logika Halaman: Pengantar Gaya (Syarat: Lulus Kuis 1)
-        if (isLulus("kuis1_completed")) {
-            if (path.includes("pengantargaya")) {
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) btnNext.classList.remove("locked");
-            }
+        if (isLulus("kuis1_completed") && path.includes("pengantargaya")) {
+            const btnNext = document.getElementById("btn-next-materi");
+            if (btnNext) btnNext.classList.remove("locked");
         }
 
-        // B. Logika Halaman: Pengertian Gaya (Syarat: Lulus Kuis Kilat Ini)
-        if (isLulus("pengertiangaya_completed")) {
-            if (path.includes("pengertiangaya")) {
-                const btnNext = document.getElementById("btn-next-materi");
-                if (btnNext) btnNext.classList.remove("locked");
-            }
+        if (isLulus("pengertiangaya_completed") && path.includes("pengertiangaya")) {
+            const btnNext = document.getElementById("btn-next-materi");
+            if (btnNext) btnNext.classList.remove("locked");
         }
     }
 
     checkAllLocks();
 
-    // =========================================================================
-    // 2. LOGIKA KUIS PILIHAN GANDA: PILIH, KIRIM, DAN COBA LAGI
-    // =========================================================================
-
-    // Fungsi saat opsi diklik (hanya menandai, belum mengecek benar/salah)
+    // 2. Logika interaksi saat siswa memilih tombol opsi (A/B/C)
     window.pilihOpsi = function (tombol, status) {
         const grupTombol = tombol.parentElement;
-
-        // Jika kuis sudah dikirim (terkunci), abaikan klik
         if (grupTombol.getAttribute("data-locked") === "true") return;
 
-        // Bersihkan class 'opsi-terpilih' dan data-status dari semua tombol di grup ini
         const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
         semuaTombol.forEach((btn) => {
             btn.classList.remove("opsi-terpilih");
             btn.removeAttribute("data-status");
         });
 
-        // Tandai tombol yang baru diklik
         tombol.classList.add("opsi-terpilih");
-        tombol.setAttribute("data-status", status); // Simpan status 'benar' atau 'salah'
+        tombol.setAttribute("data-status", status); 
         grupTombol.setAttribute("data-terjawab", "true");
     };
 
-    // Fungsi tombol Kirim Jawaban
+    // 3. Evaluasi jawaban saat menekan "Cek Jawaban"
     const btnSubmitGaya = document.getElementById("btn-submit-pengertiangaya");
+    const btnUnduhGaya = document.getElementById("btn-unduh-pengertiangaya");
+
     if (btnSubmitGaya) {
         btnSubmitGaya.addEventListener("click", function () {
             const semuaGrup = document.querySelectorAll(".grup-opsi");
@@ -2239,14 +2370,11 @@ document.addEventListener("DOMContentLoaded", function () {
             let terjawab = 0;
             let correctCount = 0;
 
-            // Hitung berapa soal yang sudah dipilih
             semuaGrup.forEach((grup) => {
-                if (grup.getAttribute("data-terjawab") === "true") {
-                    terjawab++;
-                }
+                if (grup.getAttribute("data-terjawab") === "true") terjawab++;
             });
 
-            // Cegah pengiriman jika belum dijawab semua
+            // Peringatan jika belum dijawab semua
             if (terjawab < totalQuestions) {
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -2261,24 +2389,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Jika semua sudah dijawab, lakukan evaluasi
+            // Eksekusi penilaian
             semuaGrup.forEach((grup) => {
-                grup.setAttribute("data-locked", "true"); // Kunci kuis
-
-                const opsiTerpilih = grup.querySelector(
-                    ".tombol-opsi.opsi-terpilih",
-                );
+                grup.setAttribute("data-locked", "true");
+                const opsiTerpilih = grup.querySelector(".tombol-opsi.opsi-terpilih");
                 const semuaTombol = grup.querySelectorAll(".tombol-opsi");
 
-                // Matikan fungsi klik agar tidak bisa diubah lagi
-                semuaTombol.forEach(
-                    (btn) => (btn.style.pointerEvents = "none"),
-                );
+                semuaTombol.forEach((btn) => (btn.style.pointerEvents = "none"));
 
                 if (opsiTerpilih) {
                     const status = opsiTerpilih.getAttribute("data-status");
-
-                    // Ganti efek biru (opsi-terpilih) menjadi merah/hijau sesuai jawaban
                     opsiTerpilih.classList.remove("opsi-terpilih");
 
                     if (status === "benar") {
@@ -2290,9 +2410,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Penentuan Lulus atau Gagal
+            // Logika jika semua jawaban benar
             if (correctCount === totalQuestions) {
-                // Berhasil: Simpan DB & Buka Materi
                 window.progresSiswa = window.progresSiswa || [];
                 if (!window.progresSiswa.includes("pengertiangaya_completed")) {
                     window.progresSiswa.push("pengertiangaya_completed");
@@ -2304,10 +2423,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
 
-                // [REVISI]: Buka juga gembok di Sidebar secara langsung
-                if (window.unlockSidebar) {
-                    window.unlockSidebar("nav-resultan-gaya");
-                }
+                if (window.unlockSidebar) window.unlockSidebar("nav-resultan-gaya");
+
+                if (btnUnduhGaya) btnUnduhGaya.style.display = "inline-block";
+                generatePDFPengertianGaya('upload');
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -2319,7 +2438,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             } else {
-                // Ada yang salah
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Masih Ada yang Kurang Tepat",
@@ -2333,38 +2451,187 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Fungsi tombol Coba Lagi
+    // 4. Logika tombol "Coba Lagi"
     const btnRetryGaya = document.getElementById("btn-retry-pengertiangaya");
     if (btnRetryGaya) {
         btnRetryGaya.addEventListener("click", function () {
             const semuaKotak = document.querySelectorAll(".kotak-kuis-gaya");
-
             semuaKotak.forEach((kotak) => {
                 const grupTombol = kotak.querySelector(".grup-opsi");
                 const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
 
-                // Hapus penguncian dan status terjawab
                 grupTombol.removeAttribute("data-terjawab");
                 grupTombol.removeAttribute("data-locked");
 
-                // Kembalikan semua tombol ke kondisi netral
                 semuaTombol.forEach((btn) => {
-                    btn.classList.remove(
-                        "opsi-terpilih",
-                        "jawaban-benar",
-                        "jawaban-salah",
-                    );
+                    btn.classList.remove("opsi-terpilih", "jawaban-benar", "jawaban-salah");
                     btn.removeAttribute("data-status");
                     btn.style.pointerEvents = "auto";
                 });
             });
         });
     }
+
+    // 5. Fungsi membuat dan Auto-save/Download PDF
+    async function generatePDFPengertianGaya(action = 'download') {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) {
+            if (action === 'download') alert("Library PDF belum siap.");
+            return;
+        }
+
+        try {
+            const doc = new jsPDF("p", "mm", "a4");
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            let yPos = 0;
+
+            doc.setFillColor(249, 92, 80);
+            doc.rect(0, 0, pageWidth, 40, "F");
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("Materi: Pengertian Gaya", pageWidth / 2, 28, { align: "center" });
+
+            yPos = 55;
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
+            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+            yPos += 10;
+
+            let countBenar = 0;
+            let countSalah = 0;
+            let countKosong = 0;
+
+            const semuaKotak = document.querySelectorAll(".kotak-kuis-gaya");
+
+            // Looping soal untuk dirender ke dalam PDF
+            semuaKotak.forEach((kotak) => {
+                const soalText = kotak.querySelector(".teks-soal").innerText;
+                const terpilih = kotak.querySelector(".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.opsi-terpilih");
+                
+                let status = "kosong";
+                let teksJawaban = "(Tidak dijawab)";
+
+                if (terpilih) {
+                    teksJawaban = terpilih.innerText.trim();
+                    if (terpilih.getAttribute("data-status") === "benar" || terpilih.classList.contains("jawaban-benar")) {
+                        status = "benar";
+                        countBenar++;
+                    } else {
+                        status = "salah";
+                        countSalah++;
+                    }
+                } else {
+                    countKosong++;
+                }
+
+                if (yPos > pageHeight - 35) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(0, 0, 0);
+                const splitSoal = doc.splitTextToSize(soalText, pageWidth - 40);
+                doc.text(splitSoal, 20, yPos);
+                yPos += splitSoal.length * 6;
+
+                // Pengaturan warna kotak jawaban PDF
+                if (status === "benar") {
+                    doc.setFillColor(209, 250, 229);
+                    doc.setDrawColor(34, 197, 94);
+                    doc.setTextColor(21, 128, 61);
+                } else if (status === "salah") {
+                    doc.setFillColor(254, 226, 226);
+                    doc.setDrawColor(239, 68, 68);
+                    doc.setTextColor(185, 28, 28);
+                } else {
+                    doc.setFillColor(245, 245, 245);
+                    doc.setDrawColor(200, 200, 200);
+                    doc.setTextColor(100, 100, 100);
+                }
+
+                const splitAns = doc.splitTextToSize(teksJawaban, pageWidth - 50);
+                const rectHeight = (splitAns.length * 5) + 6;
+
+                doc.roundedRect(20, yPos - 5, pageWidth - 40, rectHeight, 1, 1, "FD");
+                doc.setFont("helvetica", "normal");
+                doc.text(splitAns, 25, yPos + 1);
+
+                yPos += rectHeight + 8;
+            });
+
+            if (yPos > pageHeight - 30) {
+                doc.addPage();
+                yPos = 20;
+            }
+
+            // Render Kotak Ringkasan Akhir
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(0, 0, 0);
+            const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+
+            doc.setDrawColor(0, 0, 0);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+            doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+            yPos += 20;
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(150, 150, 150);
+            doc.text("Pengertian Gaya", pageWidth / 2, yPos, { align: "center" });
+
+            // Pengiriman via Fetch untuk Auto-save atau Unduh Langsung
+            if (action === 'download') {
+                doc.save("Laporan_Latihan_Pengertian_Gaya.pdf");
+            } else if (action === 'upload') {
+                const pdfBlob = doc.output('blob');
+                const formData = new FormData();
+                formData.append('kode_materi', 'pengertian_gaya');
+                formData.append('file_pdf', pdfBlob, 'pengertian_gaya.pdf');
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                fetch('/siswa/simpan-pdf-latihan', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => console.log('Auto-save PDF Pengertian Gaya sukses:', data))
+                .catch(error => console.error('Auto-save PDF error:', error));
+            }
+
+        } catch (err) {
+            console.error(err);
+            if (action === 'download') alert("Gagal membuat PDF.");
+        }
+    }
+
+    if (btnUnduhGaya) {
+        btnUnduhGaya.addEventListener("click", async () => {
+            const originalText = btnUnduhGaya.innerHTML;
+            btnUnduhGaya.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+            btnUnduhGaya.disabled = true;
+
+            await generatePDFPengertianGaya('download');
+
+            btnUnduhGaya.innerHTML = originalText;
+            btnUnduhGaya.disabled = false;
+        });
+    }
 });
 
-// =========================================================================
-// FILE: RESULTAN GAYA
-// =========================================================================
+// Js Resultan Gaya
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 

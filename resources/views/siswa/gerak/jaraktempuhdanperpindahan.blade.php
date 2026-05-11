@@ -163,7 +163,7 @@
         <button class="tombol-cek" id="cek-adi">Cek Jawaban</button>
         <button class="tombol-reset" id="reset-adi">Coba Lagi</button>
         
-        <button class="tombol-unduh" id="unduh-adi">
+        <button class="tombol-unduh" id="unduh-adi" style="display: none;">
           <i class="fas fa-file-pdf"></i> Unduh Jawaban
         </button>
       </div>

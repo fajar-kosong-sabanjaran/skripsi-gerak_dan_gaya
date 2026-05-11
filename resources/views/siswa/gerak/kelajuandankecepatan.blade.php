@@ -532,7 +532,7 @@
                         <button type="button" id="btn-cek-latihan" class="btn-cek">Cek Jawaban</button>
                         <button type="button" id="btn-reset-latihan" class="btn-reset">Coba Lagi</button>
 
-                        <button type="button" id="btn-unduh-latihan" class="tombol-unduh">
+                        <button type="button" id="btn-unduh-latihan" class="tombol-unduh" style="display: none;">
                             <i class="fas fa-file-pdf"></i> Unduh Jawaban
                         </button>
                     </div>

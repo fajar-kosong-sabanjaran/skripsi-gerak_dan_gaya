@@ -132,7 +132,7 @@
       </div>
 
       <div class="kotak-kuis-gaya">
-        <p class="teks-soal">1. Apa yang dimaksud dengan gaya dalam ilmu fisika?</p>
+        <p class="teks-soal">1. Apa yang dimaksud dengan gaya?</p>
         <div class="grup-opsi">
           <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Energi yang membuat benda menjadi panas</button>
           <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">B. Tarikan atau dorongan yang menyebabkan benda bergerak</button>
@@ -167,9 +167,12 @@
         </div>
       </div>
       
-      <div class="action-container-pengertiangaya">
+      <div class="action-container-pengertiangaya" style="display: flex; gap: 10px; margin-top: 20px;">
           <button type="button" class="btn-cek-pengertiangaya" id="btn-submit-pengertiangaya">Cek Jawaban</button>
           <button type="button" class="btn-reset-pengertiangaya" id="btn-retry-pengertiangaya">Coba Lagi</button>
+          <button type="button" id="btn-unduh-pengertiangaya" class="tombol-unduh" style="display: none;">
+              <i class="fas fa-file-pdf"></i> Unduh Jawaban
+          </button>
       </div>
 
     </div>

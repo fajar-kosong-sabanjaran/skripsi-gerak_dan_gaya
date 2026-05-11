@@ -213,7 +213,7 @@
         <button class="btn-cek" id="btn-cek-percepatan">Cek Jawaban</button>
         <button class="btn-reset" id="btn-reset-percepatan">Coba Lagi</button>
         
-        <button class="tombol-unduh" id="btn-unduh-percepatan">
+        <button class="tombol-unduh" id="btn-unduh-percepatan" style="display: none;">
            <i class="fas fa-file-pdf"></i> Unduh Jawaban
         </button>
       </div>
