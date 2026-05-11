@@ -553,8 +553,8 @@
                 <ul>
                     <li>Pengantar Gaya</li>
                     <li>Pengertian Gaya</li>
-                    <li>Macam-macam Gaya</li>
                     <li>Resultan Gaya</li>
+                    <li>Macam-macam Gaya</li>
                     <li>Hukum Newton</li>
                     <li>Kuis 2 (Gaya)</li>
                 </ul>

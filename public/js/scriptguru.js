@@ -775,7 +775,7 @@ function showPageInfoProgres() {
         title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Progres Belajar</div>',
         html: ` 
             <div class="swal-info-content">
-                <p>Halaman <b>Progres Belajar Siswa</b> digunakan untuk memantau rincian penyelesaian materi dan kuis oleh setiap siswa.</p>
+                <p>Halaman <b>Progres Belajar Siswa</b> digunakan untuk memantau rincian penyelesaian materi dan latihan / kuis oleh setiap siswa.</p>
 
                 <div class="swal-info-divider"></div>
 
@@ -783,8 +783,8 @@ function showPageInfoProgres() {
                     <i class="fas fa-tasks"></i> <b>Keterangan Status</b>
                 </div>
                 <ul class="swal-info-list">
-                    <li><i class="fas fa-check-circle text-green"></i> <b>Sudah Selesai:</b> Siswa telah membaca materi dan mengerjakan kuis ini.</li>
-                    <li><i class="fas fa-times-circle text-red-muted"></i> <b>Belum Selesai:</b> Siswa belum mengakses halaman materi dan kuis ini.</li>
+                    <li><i class="fas fa-check-circle text-green"></i> <b>Sudah Selesai:</b> Siswa telah membaca materi dan mengerjakan latihan / kuis ini.</li>
+                    <li><i class="fas fa-times-circle text-red-muted"></i> <b>Belum Selesai:</b> Siswa belum mengakses halaman materi dan latihan / kuis ini.</li>
                 </ul>
 
                 <div class="swal-info-divider"></div>
@@ -805,6 +805,39 @@ function showPageInfoProgres() {
                 <ul class="swal-info-list">
                     <li>Klik tombol <b>Export Data Progres</b> untuk mengunduh laporan ini ke dalam format Excel.</li>
                     <li>Data yang di-export akan menyesuaikan dengan filter kelas yang sedang Kamu pilih.</li>
+                </ul>
+            </div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Tutup, Saya Paham!',
+        confirmButtonColor: '#64748b',
+        customClass: {
+            popup: 'swal-info-popup',
+            htmlContainer: 'swal-info-container'
+        }
+    });
+}
+
+// =======================================================================
+// ini js data jawaban siswa / folder jawaban
+// =======================================================================
+function showPageInfoJawaban() {
+    Swal.fire({
+        title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Data Jawaban</div>',
+        html: ` 
+            <div class="swal-info-content">
+                <p>Halaman <b>Data Jawaban Latihan Siswa</b> digunakan untuk melihat hasil jawaban siswa yang dikerjakan pada setiap akhir materi.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section green">
+                    <i class="fas fa-mouse-pointer"></i> <b>Cara Penggunaan</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Klik pada salah satu <b>Kotak Materi</b> di bawah ini (misal: "Kelajuan & Kecepatan").</li>
+                    <li>Sistem akan menampilkan tabel berisi daftar siswa yang <b>sudah menyelesaikan</b> latihan tersebut.</li>
+                    <li>Klik tombol hijau <b>Lihat PDF</b> pada baris nama siswa untuk membuka berkas hasil latihan mereka dalam bentuk PDF.</li>
                 </ul>
             </div>
         `,

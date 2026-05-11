@@ -2,32 +2,106 @@
 
 @section('content')
     <div class="card-guru">
-        <div class="header-title-wrapper">
-            <h3>Data Jawaban Latihan Siswa</h3>
-        </div>
         
-        <p style="color: #64748b; margin-bottom: 25px;">
-            Silakan pilih materi di bawah ini untuk melihat file PDF jawaban yang telah diselesaikan oleh siswa.
-        </p>
+        <div class="page-header">
+            <div class="header-title-wrapper" style="margin-bottom: 5px;">
+                <h3 style="margin: 0;">Data Jawaban Latihan Siswa</h3>
+                <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfoJawaban()" title="Klik untuk info halaman"></i>
+            </div>
+            <br>
+        </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+        <h4 class="kategori-materi-title"></i> Materi Gerak</h4>
+        <div class="grid-materi-jawaban">
             
-            @foreach ($daftar_materi as $kode => $judul)
-                <a href="{{ route('guru.jawaban.detail', $kode) }}" style="text-decoration: none; color: inherit;">
-                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px 20px; text-align: center; transition: all 0.3s ease; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02);" 
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.08)'; this.style.borderColor='#f95c50';" 
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.02)'; this.style.borderColor='#e2e8f0';">
-                        
-                        <div style="width: 60px; height: 60px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
-                            <i class="fas fa-book-open" style="font-size: 24px; color: #ef4444;"></i>
-                        </div>
-                        
-                        <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: #1e293b;">{{ $judul }}</h4>
-                        <p style="margin: 8px 0 0 0; font-size: 13px; color: #64748b;">Klik untuk melihat PDF</p>
+            <a href="{{ route('guru.jawaban.detail', 'pengertian_gerak') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-car-side"></i>
                     </div>
-                </a>
-            @endforeach
+                    <h4>Pengertian Gerak</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+            <a href="{{ route('guru.jawaban.detail', 'jarak_tempuh') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h4>Jarak Tempuh & Perpindahan</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+            <a href="{{ route('guru.jawaban.detail', 'kelajuan') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h4>Kelajuan & Kecepatan</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+            <a href="{{ route('guru.jawaban.detail', 'percepatan') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h4>Percepatan</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
 
         </div>
+
+        <br><br>
+
+        <h4 class="kategori-materi-title"></i> Materi Gaya</h4>
+        <div class="grid-materi-jawaban">
+
+            <a href="{{ route('guru.jawaban.detail', 'pengertian_gaya') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-people-arrows"></i>
+                    </div>
+                    <h4>Pengertian Gaya</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+            <a href="{{ route('guru.jawaban.detail', 'resultan_gaya') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </div>
+                    <h4>Resultan Gaya</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+            <a href="{{ route('guru.jawaban.detail', 'macam_macam_gaya') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h4>Macam-Macam Gaya</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+            <a href="{{ route('guru.jawaban.detail', 'hukum_newton') }}" class="card-materi-link">
+                <div class="card-materi-jawaban">
+                    <div class="icon-materi-wrapper">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h4>Hukum Newton</h4>
+                    <p>Klik untuk melihat PDF</p>
+                </div>
+            </a>
+
+        </div>
+
     </div>
 @endsection

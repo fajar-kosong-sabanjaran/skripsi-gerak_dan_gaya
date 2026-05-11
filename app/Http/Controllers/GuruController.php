@@ -329,19 +329,7 @@ class GuruController extends Controller
     
     public function indexJawaban()
     {
-        // Daftar materi yang memiliki fitur Latihan PDF
-        $daftar_materi = [
-            'pengertian_gerak' => 'Pengertian Gerak',
-            'jarak_tempuh' => 'Jarak Tempuh & Perpindahan',
-            'kelajuan' => 'Kelajuan & Kecepatan',
-            'percepatan' => 'Percepatan',
-            'pengertian_gaya' => 'Pengertian Gaya',
-            'resultan_gaya' => 'Resultan Gaya',
-            'macam_macam_gaya' => 'Macam-Macam Gaya',
-            'hukum_newton' => 'Hukum Newton',
-        ];
-
-        return view('guru.jawaban.index', compact('daftar_materi'));
+        return view('guru.jawaban.index');
     }
 
     public function detailJawaban($kode_materi)
@@ -350,7 +338,6 @@ class GuruController extends Controller
                         ->where('kode_materi', $kode_materi)
                         ->get();
 
-        // Format nama materi untuk judul halaman
         $judul_materi = ucwords(str_replace('_', ' ', $kode_materi));
 
         return view('guru.jawaban.detail', compact('data_jawaban', 'judul_materi'));
@@ -360,7 +347,6 @@ class GuruController extends Controller
     {
         $jawaban = LatihanSiswa::findOrFail($id);
 
-        // Cek ketersediaan file fisik di folder storage
         if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($jawaban->file_pdf)) {
             return "<div style='text-align: center; margin-top: 100px; font-family: sans-serif;'>
                         <h1 style='color: #ef4444;'>File PDF Tidak Ditemukan!</h1>
@@ -370,7 +356,6 @@ class GuruController extends Controller
                     </div>";
         }
 
-        // Tampilkan file PDF langsung di browser
         return \Illuminate\Support\Facades\Storage::disk('public')->response($jawaban->file_pdf);
     }
 }
