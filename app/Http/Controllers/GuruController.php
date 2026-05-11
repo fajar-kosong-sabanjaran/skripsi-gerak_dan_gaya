@@ -116,7 +116,7 @@ class GuruController extends Controller
     {
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan, silakan pilih nama atau tahun lain.',
+            'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan.',
             'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'tahun.max' => 'Tahun tidak boleh lebih dari 255 karakter.'
         ];
@@ -126,9 +126,9 @@ class GuruController extends Controller
                 'required',
                 'string',
                 'max:50',
-                'Rule::unique(\'kelas\', \'nama\')->where(function ($query) use ($request) {
-                    return $query->where(\'tahun\', $request->tahun);
-                })'
+                Rule::unique('kelas', 'nama')->where(function ($query) use ($request) {
+                    return $query->where('tahun', $request->tahun);
+                })
             ],
             'tahun' => 'nullable|string|max:255'
         ], $messages);
@@ -156,7 +156,7 @@ class GuruController extends Controller
 
         $messages = [
             'nama.required' => 'Nama kelas wajib diisi!',
-            'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan, silakan pilih nama atau tahun lain.',
+            'nama.unique' => 'Nama kelas pada tahun ajaran tersebut sudah digunakan.',
             'nama.max' => 'Nama kelas maksimal 50 karakter.',
             'tahun.max' => 'Tahun tidak boleh lebih dari 255 karakter.'
         ];
@@ -166,9 +166,9 @@ class GuruController extends Controller
                 'required',
                 'string',
                 'max:50',
-                'Rule::unique(\'kelas\', \'nama\')->ignore($id)->where(function ($query) use ($request) {
-                    return $query->where(\'tahun\', $request->tahun);
-                })'
+                Rule::unique('kelas', 'nama')->ignore($id)->where(function ($query) use ($request) {
+                    return $query->where('tahun', $request->tahun);
+                })
             ],
             'tahun' => 'nullable|string|max:255'
         ], $messages);
@@ -327,25 +327,25 @@ class GuruController extends Controller
     // FITUR: MELIHAT DATA JAWABAN PDF SISWA
     // =================================================================
     
-    // Menampilkan halaman kotak-kotak pilihan materi
     public function indexJawaban()
     {
-        // Daftar materi yang memiliki fitur Latihan Isian / PDF
+        // Daftar materi yang memiliki fitur Latihan PDF
         $daftar_materi = [
+            'pengertian_gerak' => 'Pengertian Gerak',
             'jarak_tempuh' => 'Jarak Tempuh & Perpindahan',
             'kelajuan' => 'Kelajuan & Kecepatan',
             'percepatan' => 'Percepatan',
-            // Tambahkan kode materi lain di sini jika ada
+            'pengertian_gaya' => 'Pengertian Gaya',
+            'resultan_gaya' => 'Resultan Gaya',
+            'macam_macam_gaya' => 'Macam-Macam Gaya',
+            'hukum_newton' => 'Hukum Newton',
         ];
 
         return view('guru.jawaban.index', compact('daftar_materi'));
     }
 
-    // Menampilkan tabel siswa berdasarkan materi yang diklik
     public function detailJawaban($kode_materi)
     {
-        // Ambil data dari tabel latihan_siswas berdasarkan kode materi
-        // Gunakan 'with' untuk mengambil data relasi user dan kelasnya sekaligus
         $data_jawaban = LatihanSiswa::with(['user.kelas'])
                         ->where('kode_materi', $kode_materi)
                         ->get();
@@ -356,14 +356,12 @@ class GuruController extends Controller
         return view('guru.jawaban.detail', compact('data_jawaban', 'judul_materi'));
     }
 
-    // Membuka PDF secara aman lewat sistem
     public function bukaPdf($id)
     {
         $jawaban = LatihanSiswa::findOrFail($id);
 
-        // Mengecek apakah file fisiknya benar-benar ada di dalam folder storage
+        // Cek ketersediaan file fisik di folder storage
         if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($jawaban->file_pdf)) {
-            // Tampilkan pesan error yang jelas dan rapi
             return "<div style='text-align: center; margin-top: 100px; font-family: sans-serif;'>
                         <h1 style='color: #ef4444;'>File PDF Tidak Ditemukan!</h1>
                         <p style='color: #64748b;'>Data berhasil direkam di database, tetapi file fisik PDF tidak ada di dalam folder komputer:</p>
@@ -372,7 +370,7 @@ class GuruController extends Controller
                     </div>";
         }
 
-        // Membuka file PDF langsung di browser menggunakan fitur sakti Laravel
+        // Tampilkan file PDF langsung di browser
         return \Illuminate\Support\Facades\Storage::disk('public')->response($jawaban->file_pdf);
     }
 }

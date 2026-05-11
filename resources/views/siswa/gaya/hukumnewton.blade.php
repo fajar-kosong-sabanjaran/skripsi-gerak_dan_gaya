@@ -96,11 +96,6 @@
                     \[ a = \frac{\sum F}{m} \quad \text{atau} \quad \sum F = m \cdot a \]
                 </div>
                 
-                
-
-[Image of Newton's Second Law F=ma]
-
-
                 <p>Keterangan:</p>
                 <ul class="rumus-legend">
                     <li>\( \sum F \) : Resultan gaya (Newton/N)</li>
@@ -249,7 +244,6 @@
                         <button class="tombol-opsi" data-pilihan="A">A. Kereta bergerak lebih lambat karena beban tarik ditambah</button>
                         <button class="tombol-opsi" data-pilihan="B">B. Kereta bergerak lebih cepat, menunjukkan percepatan berbanding lurus dengan gaya</button>
                         <button class="tombol-opsi" data-pilihan="C">C. Tidak ada perubahan kecepatan karena jumlah beban di kereta tidak diubah</button>
-                        <button class="tombol-opsi" data-pilihan="D">D. Kereta berhenti mendadak akibat kelebihan gaya tarik</button>
                     </div>
                 </div>
 
@@ -262,7 +256,6 @@
                         <button class="tombol-opsi" data-pilihan="A">A. Waktu tempuh menjadi lebih singkat karena massa benda bertambah</button>
                         <button class="tombol-opsi" data-pilihan="B">B. Waktu tempuh tetap sama karena gaya tariknya tidak berubah</button>
                         <button class="tombol-opsi" data-pilihan="C">C. Waktu tempuh menjadi lebih lama, membuktikan bahwa massa yang besar memperkecil percepatan</button>
-                        <button class="tombol-opsi" data-pilihan="D">D. Kereta tidak dapat bergerak sama sekali karena beban di kereta terlalu berat</button>
                     </div>
                 </div>
 
@@ -278,9 +271,12 @@
                     </div>
                 </div>
 
-                <div class="action-container-newton">
+                <div class="action-container-newton" style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="button" class="btn-cek-newton" id="btn-cek-newton">Cek Jawaban</button>
                     <button type="button" class="btn-reset-newton" id="btn-reset-newton">Coba Lagi</button>
+                    <button type="button" id="btn-unduh-newton" class="tombol-unduh" style="display: none;">
+                        <i class="fas fa-file-pdf"></i> Unduh Jawaban
+                    </button>
                 </div>
             </div>
 

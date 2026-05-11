@@ -202,13 +202,11 @@
                 </div>
 
                 <div class="action-container-resultangaya">
-                    <div class="action-left">
-                        <button type="button" class="btn-cek-resultangaya" id="btn-submit-resultangaya">Cek
-                            Jawaban</button>
-                    </div>
-                    <div class="action-right">
-                        <button type="button" class="btn-reset-resultangaya" id="btn-retry-resultangaya">Coba Lagi</button>
-                    </div>
+                    <button type="button" class="btn-cek-resultangaya" id="btn-submit-resultangaya">Cek Jawaban</button>
+                    <button type="button" class="btn-reset-resultangaya" id="btn-retry-resultangaya">Coba Lagi</button>
+                    <button type="button" id="btn-unduh-resultangaya" class="tombol-unduh" style="display: none;">
+                        <i class="fas fa-file-pdf"></i> Unduh Jawaban
+                    </button>
                 </div>
 
             </div>
@@ -218,8 +216,7 @@
         <div class="bottom-nav">
             <a href="{{ url('siswa/gaya/pengertiangaya') }}" class="nav-btn prev">« Materi Sebelumnya</a>
 
-            <a href="{{ url('siswa/gaya/macam-macamgaya') }}" id="btn-next-materi" class="nav-btn next locked">Materi
-                Selanjutnya »</a>
+            <a href="{{ url('siswa/gaya/macam-macamgaya') }}" id="btn-next-materi" class="nav-btn next locked">Materi Selanjutnya »</a>
         </div>
 
     </div>

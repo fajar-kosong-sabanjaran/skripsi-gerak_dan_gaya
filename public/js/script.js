@@ -2635,32 +2635,25 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // ISOLASI: Kode ini HANYA JALAN di halaman Resultan Gaya
     if (path.includes("resultangaya")) {
-        const btnSubmitResultan = document.getElementById(
-            "btn-submit-resultangaya",
-        );
-        const btnRetryResultan = document.getElementById(
-            "btn-retry-resultangaya",
-        );
+        const btnSubmitResultan = document.getElementById("btn-submit-resultangaya");
+        const btnRetryResultan = document.getElementById("btn-retry-resultangaya");
+        const btnUnduhResultan = document.getElementById("btn-unduh-resultangaya");
         const btnNext = document.getElementById("btn-next-materi");
 
-        // =========================================================================
-        // KUNCI TOMBOL NEXT SECARA MUTLAK (VISUAL & FUNGSI)
-        // =========================================================================
         let originalHref = "";
+        
+        // Logika Gembok Tombol Navigasi
         if (btnNext) {
             originalHref = btnNext.getAttribute("href") || "";
 
-            // Jika saat halaman dimuat tombol berstatus 'locked', matikan total fungsinya
             if (btnNext.classList.contains("locked")) {
-                btnNext.removeAttribute("href"); // Cabut link agar mustahil pindah halaman
-                btnNext.style.backgroundColor = "#6c757d"; // Ubah warna jadi abu-abu
+                btnNext.removeAttribute("href"); 
+                btnNext.style.backgroundColor = "#6c757d"; 
                 btnNext.style.borderColor = "#6c757d";
                 btnNext.style.cursor = "not-allowed";
             }
 
-            // Tampilkan peringatan SweetAlert jika tombol abu-abu ini diklik
             btnNext.addEventListener("click", function (e) {
                 if (this.classList.contains("locked")) {
                     e.preventDefault();
@@ -2676,14 +2669,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
-        // LOGIKA KUIS RESULTAN GAYA: ISI SEMUA, CEK JAWABAN, COBA LAGI
-        // =========================================================================
         const kunciJawaban = {
-            1: 40, // Latihan 1: 15 + 25
-            2: 0, // Latihan 2: 35 + (-35)
+            1: 40, 
+            2: 0, 
         };
 
+        // Evaluasi Jawaban Latihan
         if (btnSubmitResultan) {
             btnSubmitResultan.addEventListener("click", function () {
                 const input1 = document.getElementById("jawaban1");
@@ -2694,7 +2685,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const val1 = input1.value.trim();
                 const val2 = input2.value.trim();
 
-                // Cek apakah ada yang masih kosong
                 if (val1 === "" || val2 === "") {
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
@@ -2709,13 +2699,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                // Kunci input agar tidak bisa diubah
                 input1.readOnly = true;
                 input2.readOnly = true;
 
                 let correctCount = 0;
 
-                // Evaluasi Latihan 1
                 if (Number(val1) === kunciJawaban[1]) {
                     input1.classList.add("jawaban-benar");
                     correctCount++;
@@ -2723,7 +2711,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     input1.classList.add("jawaban-salah");
                 }
 
-                // Evaluasi Latihan 2
                 if (Number(val2) === kunciJawaban[2]) {
                     input2.classList.add("jawaban-benar");
                     correctCount++;
@@ -2731,34 +2718,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     input2.classList.add("jawaban-salah");
                 }
 
-                // Cek kelulusan
                 if (correctCount === 2) {
-                    // Berhasil
                     window.progresSiswa = window.progresSiswa || [];
-                    if (
-                        !window.progresSiswa.includes("resultangaya_completed")
-                    ) {
+                    if (!window.progresSiswa.includes("resultangaya_completed")) {
                         window.progresSiswa.push("resultangaya_completed");
                     }
 
                     if (window.simpanProgresKeDatabase) {
-                        window.simpanProgresKeDatabase(
-                            "resultangaya_completed",
-                        );
+                        window.simpanProgresKeDatabase("resultangaya_completed");
                     }
 
                     if (window.unlockSidebar) {
                         window.unlockSidebar("nav-macam-gaya");
                     }
 
-                    // BUKA TOMBOL NEXT SAAT BERHASIL MENJAWAB
                     if (btnNext) {
                         btnNext.classList.remove("locked");
-                        btnNext.setAttribute("href", originalHref); // Pasang kembali link halaman berikutnya
-                        btnNext.style.backgroundColor = ""; // Kembalikan ke warna aslinya
+                        btnNext.setAttribute("href", originalHref); 
+                        btnNext.style.backgroundColor = ""; 
                         btnNext.style.borderColor = "";
                         btnNext.style.cursor = "pointer";
                     }
+
+                    // Tampilkan Tombol PDF & Upload Otomatis
+                    if (btnUnduhResultan) btnUnduhResultan.style.display = "inline-block";
+                    generatePDFResultanGaya('upload');
 
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
@@ -2770,7 +2754,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
                 } else {
-                    // Ada yang salah
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
                             title: "Masih Ada yang Kurang Tepat",
@@ -2784,60 +2767,223 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
-        // FUNGSI TOMBOL COBA LAGI (RESET KUIS RESULTAN GAYA)
-        // =========================================================================
         if (btnRetryResultan) {
             btnRetryResultan.addEventListener("click", function () {
                 const input1 = document.getElementById("jawaban1");
                 const input2 = document.getElementById("jawaban2");
 
                 if (input1) {
-                    input1.readOnly = false; // Buka kunci input
-                    input1.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
-                    input1.value = ""; // Mengosongkan jawaban
+                    input1.readOnly = false; 
+                    input1.classList.remove("jawaban-benar", "jawaban-salah"); 
+                    input1.value = ""; 
                 }
                 if (input2) {
-                    input2.readOnly = false; // Buka kunci input
-                    input2.classList.remove("jawaban-benar", "jawaban-salah"); // Hilangkan warna
-                    input2.value = ""; // Mengosongkan jawaban
+                    input2.readOnly = false; 
+                    input2.classList.remove("jawaban-benar", "jawaban-salah"); 
+                    input2.value = ""; 
                 }
+            });
+        }
+
+        // Helper Ekstraksi Gambar
+        const getCompressedImage = (el) => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.setAttribute("crossOrigin", "anonymous");
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const maxWidth = 800;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.fillStyle = "#FFFFFF";
+                    ctx.fillRect(0, 0, width, height);
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL("image/jpeg", 0.7));
+                };
+                img.onerror = (err) => reject(err);
+                img.src = el.src;
+            });
+        };
+
+        // Pembuatan Dokumen PDF
+        async function generatePDFResultanGaya(action = 'download') {
+            const { jsPDF } = window.jspdf;
+            if (!jsPDF) return;
+
+            try {
+                const doc = new jsPDF("p", "mm", "a4");
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                let yPos = 0;
+
+                doc.setFillColor(249, 92, 80);
+                doc.rect(0, 0, pageWidth, 40, "F");
+                doc.setTextColor(255, 255, 255);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(22);
+                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "normal");
+                doc.text("Materi: Resultan Gaya", pageWidth / 2, 28, { align: "center" });
+
+                yPos = 55;
+                doc.setTextColor(80, 80, 80);
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "italic");
+                const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+                doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+                yPos += 10;
+
+                const images = document.querySelectorAll(".gambar-soal");
+                
+                // Fungsi perender blok soal
+                const drawSoal = async (num, soalText, imgEl, inputId, expectedKey) => {
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(11);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(`Latihan ${num}`, 20, yPos);
+                    yPos += 6;
+                    
+                    doc.setFont("helvetica", "normal");
+                    const splitText = doc.splitTextToSize(soalText, pageWidth - 40);
+                    doc.text(splitText, 20, yPos);
+                    yPos += splitText.length * 5 + 5;
+
+                    if (imgEl) {
+                        try {
+                            const imgData = await getCompressedImage(imgEl);
+                            const imgProps = doc.getImageProperties(imgData);
+                            const imgWidth = 80;
+                            const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                            const xImg = (pageWidth - imgWidth) / 2;
+                            doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                            yPos += imgHeight + 10;
+                        } catch (e) {}
+                    }
+
+                    const inputEl = document.getElementById(inputId);
+                    const val = inputEl ? inputEl.value.trim() : "";
+                    const isBenar = Number(val) === expectedKey && val !== "";
+                    
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Penyelesaian:", 20, yPos);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("Resultan Gaya (N) =", 50, yPos);
+                    
+                    let bgColor = val === "" ? [245, 245, 245] : (isBenar ? [209, 250, 229] : [254, 226, 226]);
+                    let borderColor = val === "" ? [200, 200, 200] : (isBenar ? [34, 197, 94] : [239, 68, 68]);
+                    let textColor = val === "" ? [100, 100, 100] : (isBenar ? [21, 128, 61] : [185, 28, 28]);
+
+                    doc.setFillColor(...bgColor);
+                    doc.setDrawColor(...borderColor);
+                    doc.roundedRect(85, yPos - 4, 30, 7, 1, 1, "FD");
+                    
+                    doc.setTextColor(...textColor);
+                    doc.text(val || "(?)", 100, yPos + 1, { align: "center" });
+                    doc.setTextColor(0, 0, 0);
+                    
+                    yPos += 15;
+                };
+
+                await drawSoal(1, "Alif dan Fajar sedang memindahkan sebuah kotak. Alif berusaha mendorongnya dengan gaya 15 N, sedangkan Fajar berusaha menariknya dengan gaya 25 N. Berapakah resultan gaya yang diterima kotak?", images[0], "jawaban1", 40);
+                await drawSoal(2, "Fajar dan Fadhil memberi gaya yang sama besar yaitu 30 N dengan arah yang berlawanan. Berapakah gaya yang diterima meja?", images[1], "jawaban2", 0);
+
+                const input1 = document.getElementById("jawaban1");
+                const input2 = document.getElementById("jawaban2");
+                let countBenar = 0, countSalah = 0, countKosong = 0;
+                
+                [input1, input2].forEach((inp, idx) => {
+                    let val = inp ? inp.value.trim() : "";
+                    if (val === "") countKosong++;
+                    else if (Number(val) === kunciJawaban[idx+1]) countBenar++;
+                    else countSalah++;
+                });
+
+                if (yPos > pageHeight - 30) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                doc.setFont("helvetica", "bold");
+                const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+                doc.setDrawColor(0, 0, 0);
+                doc.setFillColor(255, 255, 255);
+                doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+                doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+                yPos += 20;
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(150, 150, 150);
+                doc.text("Resultan Gaya", pageWidth / 2, yPos, { align: "center" });
+
+                if (action === 'download') {
+                    doc.save("Laporan_Latihan_Resultan_Gaya.pdf");
+                } else if (action === 'upload') {
+                    const pdfBlob = doc.output('blob');
+                    const formData = new FormData();
+                    formData.append('kode_materi', 'resultan_gaya');
+                    formData.append('file_pdf', pdfBlob, 'resultan_gaya.pdf');
+
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    fetch('/siswa/simpan-pdf-latihan', {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': csrfToken },
+                        body: formData
+                    }).catch(console.error);
+                }
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        if (btnUnduhResultan) {
+            btnUnduhResultan.addEventListener("click", async () => {
+                const originalText = btnUnduhResultan.innerHTML;
+                btnUnduhResultan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+                btnUnduhResultan.disabled = true;
+                
+                await generatePDFResultanGaya('download');
+                
+                btnUnduhResultan.innerHTML = originalText;
+                btnUnduhResultan.disabled = false;
             });
         }
     }
 });
 
-// =========================================================================
-// FILE: MACAM - MACAM GAYA (LOGIKA DRAG & DROP)
-// =========================================================================
+// Js Macam - macam Gaya
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // ISOLASI: Kode ini HANYA JALAN di halaman Macam-Macam Gaya
     if (path.includes("macam-macamgaya")) {
         const containerMacam = document.getElementById("drag-container-macam");
         const poolMacam = document.getElementById("card-pool-macam");
         const btnCekMacam = document.getElementById("btn-cek-macam");
         const btnRetryMacam = document.getElementById("btn-retry-macam");
+        const btnUnduhMacam = document.getElementById("btn-unduh-macam");
         const btnNext = document.getElementById("btn-next-materi");
 
-        // =========================================================================
-        // KUNCI TOMBOL NEXT SECARA MUTLAK (VISUAL & FUNGSI)
-        // =========================================================================
         let originalHref = "";
+
         if (btnNext) {
-            // Simpan link tujuan asli ke dalam memori
             originalHref = btnNext.getAttribute("href") || "";
 
-            // Jika saat halaman dimuat tombol berstatus 'locked', matikan total fungsinya
             if (btnNext.classList.contains("locked")) {
-                btnNext.removeAttribute("href"); // Cabut link agar mustahil pindah halaman
-                btnNext.style.backgroundColor = "#6c757d"; // Ubah warna jadi abu-abu
+                btnNext.removeAttribute("href");
+                btnNext.style.backgroundColor = "#6c757d";
                 btnNext.style.borderColor = "#6c757d";
                 btnNext.style.cursor = "not-allowed";
             }
 
-            // Tampilkan peringatan SweetAlert jika tombol abu-abu ini diklik
             btnNext.addEventListener("click", function (e) {
                 if (this.classList.contains("locked")) {
                     e.preventDefault();
@@ -2853,16 +2999,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
-        // LOGIKA DRAG & DROP
-        // =========================================================================
+        // Logika Drag and Drop
         if (containerMacam && poolMacam && btnCekMacam) {
-            const zones = document.querySelectorAll(
-                "#drag-container-macam .drop-zone, #card-pool-macam",
-            );
-            const cards = document.querySelectorAll(
-                "#card-pool-macam .card-item",
-            );
+            const zones = document.querySelectorAll("#drag-container-macam .drop-zone, #card-pool-macam");
+            const cards = document.querySelectorAll("#card-pool-macam .card-item");
             const modal = document.getElementById("modal-macam");
             const modalText = document.getElementById("modal-text-macam");
             const closeModal = document.getElementById("close-modal-macam");
@@ -2902,6 +3042,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
+            // Evaluasi Latihan
             btnCekMacam.addEventListener("click", function () {
                 let benar = 0;
                 const total = cards.length;
@@ -2926,7 +3067,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const salah = total - benar;
 
                 if (benar === total) {
-                    // LULUS LATIHAN: SIMPAN PROGRES
                     window.progresSiswa = window.progresSiswa || [];
                     if (!window.progresSiswa.includes("macamgaya_completed")) {
                         window.progresSiswa.push("macamgaya_completed");
@@ -2936,20 +3076,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.simpanProgresKeDatabase("macamgaya_completed");
                     }
 
-                    if (window.unlockSidebar) {
-                        window.unlockSidebar("nav-newton");
-                    }
+                    if (window.unlockSidebar) window.unlockSidebar("nav-newton");
 
-                    // =========================================================================
-                    // BUKA TOMBOL NEXT SAAT BERHASIL MENJAWAB
-                    // =========================================================================
                     if (btnNext) {
                         btnNext.classList.remove("locked");
-                        btnNext.setAttribute("href", originalHref); // Pasang kembali link halaman berikutnya
-                        btnNext.style.backgroundColor = ""; // Kembalikan ke warna aslinya
+                        btnNext.setAttribute("href", originalHref);
+                        btnNext.style.backgroundColor = "";
                         btnNext.style.borderColor = "";
                         btnNext.style.cursor = "pointer";
                     }
+
+                    if (btnUnduhMacam) btnUnduhMacam.style.display = "inline-block";
+                    generatePDFMacamGaya('upload');
 
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
@@ -2995,46 +3133,158 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             window.addEventListener("click", function (e) {
-                if (e.target === modal) {
-                    modal.style.display = "none";
-                }
+                if (e.target === modal) modal.style.display = "none";
             });
+
+            // Fungsi Generate PDF
+            async function generatePDFMacamGaya(action = 'download') {
+                const { jsPDF } = window.jspdf;
+                if (!jsPDF) return;
+
+                try {
+                    const doc = new jsPDF("p", "mm", "a4");
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    let yPos = 0;
+
+                    doc.setFillColor(249, 92, 80);
+                    doc.rect(0, 0, pageWidth, 40, "F");
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(22);
+                    doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("Materi: Macam-Macam Gaya", pageWidth / 2, 28, { align: "center" });
+
+                    yPos = 55;
+                    doc.setTextColor(80, 80, 80);
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "italic");
+                    const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+                    doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+                    yPos += 10;
+
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(11);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text("Hasil Klasifikasi Macam-Macam Gaya:", 20, yPos);
+                    yPos += 10;
+
+                    const printCategory = (title, selector) => {
+                        if (yPos > pageHeight - 30) { doc.addPage(); yPos = 20; }
+                        doc.setFont("helvetica", "bold");
+                        doc.text(title, 20, yPos);
+                        yPos += 8;
+                        doc.setFont("helvetica", "normal");
+                        
+                        const dropCards = document.querySelectorAll(`${selector} .card-item`);
+                        if (dropCards.length === 0) {
+                            doc.text("- Kosong", 25, yPos);
+                            yPos += 8;
+                        } else {
+                            dropCards.forEach((card, index) => {
+                                const text = `${index + 1}. ${card.innerText.trim()}`;
+                                const splitText = doc.splitTextToSize(text, pageWidth - 40);
+                                doc.text(splitText, 25, yPos);
+                                yPos += splitText.length * 6 + 2;
+                            });
+                        }
+                        yPos += 5;
+                    };
+
+                    printCategory("A. Gaya Gesek", '.drop-zone[data-type="gesek"]');
+                    printCategory("B. Gaya Gravitasi", '.drop-zone[data-type="gravitasi"]');
+                    printCategory("C. Gaya Pegas", '.drop-zone[data-type="pegas"]');
+                    printCategory("D. Gaya Otot", '.drop-zone[data-type="otot"]');
+
+                    let countBenar = 0, countSalah = 0, countKosong = 0;
+                    const allCards = document.querySelectorAll('#drag-container-macam .card-item, #card-pool-macam .card-item');
+                    
+                    allCards.forEach(card => {
+                        const kunci = card.dataset.answer;
+                        const parentType = card.parentElement.dataset.type;
+                        if (parentType === kunci) countBenar++;
+                        else if (parentType === "pool") countKosong++;
+                        else countSalah++;
+                    });
+
+                    if (yPos > pageHeight - 30) { doc.addPage(); yPos = 20; }
+
+                    doc.setFont("helvetica", "bold");
+                    doc.setTextColor(0, 0, 0);
+                    const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+                    doc.setDrawColor(0, 0, 0);
+                    doc.setFillColor(255, 255, 255);
+                    doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+                    doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+                    yPos += 20;
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(150, 150, 150);
+                    doc.text("Macam-Macam Gaya", pageWidth / 2, yPos, { align: "center" });
+
+                    if (action === 'download') {
+                        doc.save("Laporan_Latihan_Macam_Macam_Gaya.pdf");
+                    } else if (action === 'upload') {
+                        const pdfBlob = doc.output('blob');
+                        const formData = new FormData();
+                        formData.append('kode_materi', 'macam_macam_gaya');
+                        formData.append('file_pdf', pdfBlob, 'macam_macam_gaya.pdf');
+
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                        fetch('/siswa/simpan-pdf-latihan', {
+                            method: 'POST',
+                            headers: { 'X-CSRF-TOKEN': csrfToken },
+                            body: formData
+                        }).catch(console.error);
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            if (btnUnduhMacam) {
+                btnUnduhMacam.addEventListener("click", async () => {
+                    const originalText = btnUnduhMacam.innerHTML;
+                    btnUnduhMacam.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+                    btnUnduhMacam.disabled = true;
+
+                    await generatePDFMacamGaya('download');
+
+                    btnUnduhMacam.innerHTML = originalText;
+                    btnUnduhMacam.disabled = false;
+                });
+            }
         }
     }
 });
 
-// =========================================================================
-// FILE: HUKUM NEWTON
-// =========================================================================
+// Js Hukum Newton
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
-    // ISOLASI: Kode ini HANYA JALAN di halaman Hukum Newton
     if (path.includes("hukumnewton")) {
         const videoPraktikGaya = document.getElementById("video-praktik-gaya");
         const timeButtonsGaya = document.querySelectorAll(".btn-time");
         const btnCekNewton = document.getElementById("btn-cek-newton");
         const btnResetNewton = document.getElementById("btn-reset-newton");
         const btnTutupNewton = document.getElementById("btn-tutup-newton");
+        const btnUnduhNewton = document.getElementById("btn-unduh-newton");
         const btnNext = document.getElementById("btn-next-materi");
 
-        // =========================================================================
-        // BUG FIX: KUNCI TOMBOL NEXT SECARA MUTLAK (VISUAL & FUNGSI)
-        // =========================================================================
         let originalHref = "";
         if (btnNext) {
-            // Simpan link tujuan asli ke dalam memori
             originalHref = btnNext.getAttribute("href") || "";
 
-            // Jika saat halaman dimuat tombol berstatus 'locked', matikan total fungsinya
             if (btnNext.classList.contains("locked")) {
                 btnNext.removeAttribute("href");
-                btnNext.style.backgroundColor = "#6c757d"; // Warna abu-abu
+                btnNext.style.backgroundColor = "#6c757d";
                 btnNext.style.borderColor = "#6c757d";
                 btnNext.style.cursor = "not-allowed";
             }
 
-            // Tampilkan peringatan SweetAlert jika tombol abu-abu ini diklik
             btnNext.addEventListener("click", function (e) {
                 if (this.classList.contains("locked")) {
                     e.preventDefault();
@@ -3050,13 +3300,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
-        // CEK STATUS DATABASE: BUKA KUNCI JIKA SUDAH PERNAH LULUS
-        // =========================================================================
-        if (
-            window.progresSiswa &&
-            window.progresSiswa.includes("hukumnewton_completed")
-        ) {
+        if (window.progresSiswa && window.progresSiswa.includes("hukumnewton_completed")) {
             if (btnNext) {
                 btnNext.classList.remove("locked");
                 btnNext.setAttribute("href", originalHref);
@@ -3066,15 +3310,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // =========================================================================
-        // LOGIKA KONTROL VIDEO
-        // =========================================================================
         if (videoPraktikGaya && timeButtonsGaya.length > 0) {
             timeButtonsGaya.forEach((btn) => {
                 btn.addEventListener("click", function () {
-                    const targetTime = parseFloat(
-                        this.getAttribute("data-time"),
-                    );
+                    const targetTime = parseFloat(this.getAttribute("data-time"));
                     if (!isNaN(targetTime)) {
                         videoPraktikGaya.currentTime = targetTime;
                         videoPraktikGaya.play();
@@ -3083,29 +3322,21 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
-        // LOGIKA KUIS HUKUM NEWTON
-        // =========================================================================
         if (btnCekNewton) {
-            // Logika memilih opsi ganda
-            document
-                .querySelectorAll(".grup-opsi .tombol-opsi")
-                .forEach((btn) => {
-                    btn.addEventListener("click", () => {
-                        const grup = btn.parentElement;
+            document.querySelectorAll(".grup-opsi .tombol-opsi").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const grup = btn.parentElement;
+                    if (grup.classList.contains("terkunci")) return;
 
-                        if (grup.classList.contains("terkunci")) return;
+                    grup.querySelectorAll(".tombol-opsi").forEach((b) =>
+                        b.classList.remove("dipilih"),
+                    );
 
-                        grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                            b.classList.remove("dipilih"),
-                        );
-
-                        btn.classList.add("dipilih");
-                        grup.dataset.jawaban = btn.dataset.pilihan;
-                    });
+                    btn.classList.add("dipilih");
+                    grup.dataset.jawaban = btn.dataset.pilihan;
                 });
+            });
 
-            // Logika cek jawaban
             btnCekNewton.addEventListener("click", () => {
                 let benar = 0;
                 let totalSoal = 0;
@@ -3134,20 +3365,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     const kunci = grup.dataset.kunci;
 
                     grup.classList.add("terkunci");
-
                     grup.querySelectorAll(".tombol-opsi").forEach((b) =>
                         b.classList.remove("jawaban-benar", "jawaban-salah"),
                     );
 
                     if (jawabanSiswa === kunci) {
                         benar++;
-                        grup.querySelector(
-                            `[data-pilihan="${jawabanSiswa}"]`,
-                        ).classList.add("jawaban-benar");
+                        grup.querySelector(`[data-pilihan="${jawabanSiswa}"]`).classList.add("jawaban-benar");
                     } else {
-                        const btnSalah = grup.querySelector(
-                            `[data-pilihan="${jawabanSiswa}"]`,
-                        );
+                        const btnSalah = grup.querySelector(`[data-pilihan="${jawabanSiswa}"]`);
                         if (btnSalah) btnSalah.classList.add("jawaban-salah");
                     }
                 });
@@ -3166,11 +3392,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 if (benar === totalSoal) {
-                    // LULUS LATIHAN: SIMPAN PROGRES
                     window.progresSiswa = window.progresSiswa || [];
-                    if (
-                        !window.progresSiswa.includes("hukumnewton_completed")
-                    ) {
+                    if (!window.progresSiswa.includes("hukumnewton_completed")) {
                         window.progresSiswa.push("hukumnewton_completed");
                     }
 
@@ -3178,15 +3401,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.simpanProgresKeDatabase("hukumnewton_completed");
                     }
 
-                    if (window.unlockSidebar) {
-                        window.unlockSidebar("nav-kuis2");
-                    }
+                    if (window.unlockSidebar) window.unlockSidebar("nav-kuis2");
 
-                    // BUKA KUNCI TOMBOL NEXT SECARA VISUAL & FUNGSI
                     if (btnNext) {
                         btnNext.classList.remove("locked");
-                        btnNext.setAttribute("href", originalHref); // Pasang kembali link halaman berikutnya
-                        btnNext.style.backgroundColor = ""; // Kembalikan ke warna aslinya
+                        btnNext.setAttribute("href", originalHref);
+                        btnNext.style.backgroundColor = "";
                         btnNext.style.borderColor = "";
                         btnNext.style.cursor = "pointer";
 
@@ -3203,20 +3423,18 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         }, 1200);
                     }
+
+                    if (btnUnduhNewton) btnUnduhNewton.style.display = "inline-block";
+                    generatePDFHukumNewton('upload');
                 }
             });
 
-            // Logika reset form
             btnResetNewton.addEventListener("click", () => {
                 document.querySelectorAll(".grup-opsi").forEach((grup) => {
                     delete grup.dataset.jawaban;
                     grup.classList.remove("terkunci");
                     grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                        b.classList.remove(
-                            "dipilih",
-                            "jawaban-benar",
-                            "jawaban-salah",
-                        ),
+                        b.classList.remove("dipilih", "jawaban-benar", "jawaban-salah"),
                     );
                 });
 
@@ -3228,6 +3446,148 @@ document.addEventListener("DOMContentLoaded", function () {
                 btnTutupNewton.addEventListener("click", () => {
                     const popupBox = document.getElementById("popup-newton");
                     if (popupBox) popupBox.classList.remove("show");
+                });
+            }
+
+            // Fungsi Auto-save dan Download PDF
+            async function generatePDFHukumNewton(action = 'download') {
+                const { jsPDF } = window.jspdf;
+                if (!jsPDF) return;
+
+                try {
+                    const doc = new jsPDF("p", "mm", "a4");
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    let yPos = 0;
+
+                    doc.setFillColor(249, 92, 80);
+                    doc.rect(0, 0, pageWidth, 40, "F");
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(22);
+                    doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("Materi: Hukum Newton", pageWidth / 2, 28, { align: "center" });
+
+                    yPos = 55;
+                    doc.setTextColor(80, 80, 80);
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "italic");
+                    const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+                    doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
+                    yPos += 10;
+
+                    let countBenar = 0, countSalah = 0, countKosong = 0;
+                    const semuaKotak = document.querySelectorAll(".kotak-kuis");
+
+                    semuaKotak.forEach((kotak) => {
+                        const soalText = kotak.querySelector(".teks-soal").innerText;
+                        const terpilih = kotak.querySelector(".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.dipilih");
+                        
+                        let status = "kosong";
+                        let teksJawaban = "(Tidak dijawab)";
+
+                        if (terpilih) {
+                            teksJawaban = terpilih.innerText.trim();
+                            if (terpilih.classList.contains("jawaban-benar")) {
+                                status = "benar";
+                                countBenar++;
+                            } else {
+                                status = "salah";
+                                countSalah++;
+                            }
+                        } else {
+                            countKosong++;
+                        }
+
+                        if (yPos > pageHeight - 35) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+
+                        doc.setFont("helvetica", "bold");
+                        doc.setTextColor(0, 0, 0);
+                        const splitSoal = doc.splitTextToSize(soalText, pageWidth - 40);
+                        doc.text(splitSoal, 20, yPos);
+                        yPos += splitSoal.length * 6;
+
+                        if (status === "benar") {
+                            doc.setFillColor(209, 250, 229);
+                            doc.setDrawColor(34, 197, 94);
+                            doc.setTextColor(21, 128, 61);
+                        } else if (status === "salah") {
+                            doc.setFillColor(254, 226, 226);
+                            doc.setDrawColor(239, 68, 68);
+                            doc.setTextColor(185, 28, 28);
+                        } else {
+                            doc.setFillColor(245, 245, 245);
+                            doc.setDrawColor(200, 200, 200);
+                            doc.setTextColor(100, 100, 100);
+                        }
+
+                        const splitAns = doc.splitTextToSize(teksJawaban, pageWidth - 50);
+                        const rectHeight = (splitAns.length * 5) + 6;
+
+                        doc.roundedRect(20, yPos - 5, pageWidth - 40, rectHeight, 1, 1, "FD");
+                        doc.setFont("helvetica", "normal");
+                        doc.text(splitAns, 25, yPos + 1);
+
+                        yPos += rectHeight + 8;
+                    });
+
+                    if (yPos > pageHeight - 30) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    doc.setFont("helvetica", "bold");
+                    doc.setTextColor(0, 0, 0);
+                    const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
+
+                    doc.setDrawColor(0, 0, 0);
+                    doc.setFillColor(255, 255, 255);
+                    doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
+                    doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+
+                    yPos += 20;
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(150, 150, 150);
+                    doc.text("Hukum Newton", pageWidth / 2, yPos, { align: "center" });
+
+                    if (action === 'download') {
+                        doc.save("Laporan_Latihan_Hukum_Newton.pdf");
+                    } else if (action === 'upload') {
+                        const pdfBlob = doc.output('blob');
+                        const formData = new FormData();
+                        formData.append('kode_materi', 'hukum_newton'); // Kode materi GuruController
+                        formData.append('file_pdf', pdfBlob, 'hukum_newton.pdf');
+
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                        fetch('/siswa/simpan-pdf-latihan', {
+                            method: 'POST',
+                            headers: { 'X-CSRF-TOKEN': csrfToken },
+                            body: formData
+                        }).catch(console.error);
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            if (btnUnduhNewton) {
+                btnUnduhNewton.addEventListener("click", async () => {
+                    const originalText = btnUnduhNewton.innerHTML;
+                    btnUnduhNewton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+                    btnUnduhNewton.disabled = true;
+
+                    await generatePDFHukumNewton('download');
+
+                    btnUnduhNewton.innerHTML = originalText;
+                    btnUnduhNewton.disabled = false;
                 });
             }
         }

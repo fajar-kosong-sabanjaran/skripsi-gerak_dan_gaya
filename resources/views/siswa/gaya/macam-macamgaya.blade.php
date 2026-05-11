@@ -157,9 +157,12 @@
         </div>
       </div>
 
-      <div class="action-container-macamgaya">
+      <div class="action-container-macamgaya" style="display: flex; gap: 10px;">
           <button type="button" class="btn-cek-macamgaya" id="btn-cek-macam">Cek Jawaban</button>
           <button type="button" class="btn-reset-macamgaya" id="btn-retry-macam">Coba Lagi</button>
+          <button type="button" id="btn-unduh-macam" class="tombol-unduh" style="display: none;">
+              <i class="fas fa-file-pdf"></i> Unduh Jawaban
+          </button>
       </div>
 
     </div>

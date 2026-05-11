@@ -1754,7 +1754,7 @@ body {
     }
 }
 
-/* Resultan Gaya */
+/* CSS Resultan Gaya */
 .container-soal {
     display: flex;
     flex-wrap: wrap;
@@ -1821,7 +1821,6 @@ body {
     display: block;
 }
 
-/* Resultan Gaya - Latihan */
 .input-jawaban {
     width: 100%;
     padding: 8px;
@@ -1836,7 +1835,6 @@ body {
     border-color: #2196f3;
 }
 
-/* Warna saat jawaban dievaluasi */
 .input-jawaban.jawaban-benar {
     background-color: #d4edda;
     border-color: #28a745;
@@ -1851,27 +1849,14 @@ body {
     font-weight: bold;
 }
 
-/* KELAS UNIK: Kontainer agar tombol presisi di tengah belahan kotak */
 .action-container-resultangaya {
     display: flex;
-    gap: 20px; /* Samakan dengan gap di .container-soal */
-    margin-top: 25px;
+    gap: 10px; 
+    margin-top: 20px;
     width: 100%;
+    justify-content: flex-start;
 }
 
-.action-left {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end; /* Tombol Cek di dorong ke dekat garis tengah */
-}
-
-.action-right {
-    flex: 1;
-    display: flex;
-    justify-content: flex-start; /* Tombol Coba Lagi di dorong ke dekat garis tengah */
-}
-
-/* KELAS UNIK: Tombol Cek Jawaban Resultan Gaya */
 .btn-cek-resultangaya {
     padding: 8px 16px;
     background: #f95c50;
@@ -1879,9 +1864,7 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition:
-        background 0.15s ease,
-        transform 0.08s ease;
+    transition: background 0.15s ease, transform 0.08s ease;
 }
 
 .btn-cek-resultangaya:hover {
@@ -1889,7 +1872,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* KELAS UNIK: Tombol Coba Lagi Resultan Gaya */
 .btn-reset-resultangaya {
     padding: 8px 16px;
     background: #6c757d;
@@ -1897,9 +1879,7 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition:
-        background 0.15s ease,
-        transform 0.08s ease;
+    transition: background 0.15s ease, transform 0.08s ease;
 }
 
 .btn-reset-resultangaya:hover {
