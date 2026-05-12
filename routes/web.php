@@ -126,3 +126,13 @@ Route::get('/stream-video/{filename}', function ($filename) {
 
     return response()->file($path);
 });
+
+// =============================================================
+// 5. SETUP SERVER (Akses route ini sekali untuk reset cache di hosting)
+// =============================================================
+Route::get('/setup-server', function() {
+    \Illuminate\Support\Facades\Artisan::call('package:discover');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return "Konfigurasi server dan cache berhasil di-reset!";
+});
