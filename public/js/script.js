@@ -3595,21 +3595,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// FILE: KUIS 1 (GERAK)
+// Js Kuis 1 (Materi Gerak)
 document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".body-kuis-fullscreen")) {
-        // =========================================================================
-        // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
-        // =========================================================================
+        
+        // FUNGSI MENYIMPAN NILAI KE DATABASE
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute("content");
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error(
-                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
-                );
+                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
                 return;
             }
 
@@ -3627,14 +3622,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then((data) => console.log(data.message))
-                .catch((error) =>
-                    console.error("Error menyimpan nilai:", error),
-                );
+                .catch((error) => console.error("Error menyimpan nilai:", error));
         }
 
-        // =========================================================================
         // 1. DATA SOAL KUIS 1
-        // =========================================================================
         const questions = [
             {
                 q: "Suatu benda dikatakan bergerak apabila …",
@@ -3728,9 +3719,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         ];
 
-        // =========================================================================
         // 2. STATE & DOM ELEMENTS
-        // =========================================================================
         let currentIndex = 0;
         const userAnswers = new Array(questions.length).fill(null);
         let lastResultTuntas = false;
@@ -3744,9 +3733,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn");
         const timerEl = document.getElementById("timer");
 
-        // =========================================================================
         // 3. FUNGSI LOGIKA KUIS
-        // =========================================================================
         function renderNav() {
             navSoal.innerHTML = "";
             questions.forEach((_, i) => {
@@ -3794,10 +3781,18 @@ document.addEventListener("DOMContentLoaded", function () {
             renderNav();
 
             prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex === questions.length - 1;
             prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
-            nextBtn.style.opacity =
-                currentIndex === questions.length - 1 ? "0.5" : "1";
+
+            // Modifikasi tombol di soal terakhir
+            if (currentIndex === questions.length - 1) {
+                nextBtn.innerHTML = '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
+                nextBtn.style.backgroundColor = "#2ecc71";
+                nextBtn.style.borderColor = "#2ecc71";
+            } else {
+                nextBtn.innerHTML = '<span class="nav-text-hide">Selanjutnya</span> →';
+                nextBtn.style.backgroundColor = "";
+                nextBtn.style.borderColor = "";
+            }
         }
 
         optionsList.addEventListener("change", function (e) {
@@ -3818,12 +3813,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (currentIndex < questions.length - 1) {
                 currentIndex++;
                 loadQuestion();
+            } else {
+                finishBtn.click(); // Memicu tombol selesaikan kuis jika di soal terakhir
             }
         });
 
-        // =========================================================================
         // 4. HASIL KUIS & PENYIMPANAN PROGRES
-        // =========================================================================
         function showSweetAlertResult(tuntas, score100, scoreAsli, totalSoal) {
             lastResultTuntas = tuntas;
 
@@ -3838,9 +3833,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: titleText,
                 html: messageHtml,
                 icon: iconType,
-                confirmButtonText: tuntas
-                    ? "Lanjut Materi Berikutnya 🚀"
-                    : "Belajar Ulang 📚",
+                confirmButtonText: tuntas ? "Lanjut Materi Berikutnya 🚀" : "Belajar Ulang 📚",
                 confirmButtonColor: tuntas ? "#f95c50" : "#65676b",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,123,0.4)`,
@@ -3867,7 +3860,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function hitungDanKirimNilai() {
             let score = 0;
-            let arrayDetail = []; // Menyimpan true/false per jawaban
+            let arrayDetail = []; 
 
             questions.forEach((q, i) => {
                 let isBenar = userAnswers[i] === q.answer;
@@ -3875,17 +3868,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 arrayDetail.push(isBenar);
             });
 
-            // Konversi ke skala 100
             let score100 = Math.round((score / questions.length) * 100);
-
-            // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
             const nilaiKkm = window.KKM_KUIS || 70;
             const tuntas = score100 >= nilaiKkm;
 
-            // Kirim ke database (Kuis 1)
             simpanNilaiKeDatabase("Kuis 1", score100, arrayDetail);
-
-            // Tampilkan popup
             showSweetAlertResult(tuntas, score100, score, questions.length);
         }
 
@@ -3912,16 +3899,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 cancelButtonText: "Cek lagi",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    clearInterval(timerInterval); // Hentikan timer
+                    clearInterval(timerInterval);
                     hitungDanKirimNilai();
                 }
             });
         });
 
-        // =========================================================================
         // 5. TIMER KUIS
-        // =========================================================================
-        let timeLeft = 2 * 60; // 2 Menit
+        let timeLeft = 20 * 60; // 20 Menit
 
         const timerInterval = setInterval(() => {
             const m = Math.floor(timeLeft / 60);
@@ -3951,25 +3936,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// INI MERUPAKAN FILE KUIS 2
+// Js Kuis 2 (Materi Gaya)
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. CEK IDENTITAS HALAMAN (Target ID di Body)
+    // 1. CEK IDENTITAS HALAMAN
     const halamanKuis2 = document.getElementById("halaman-kuis-2");
 
-    // Jika elemen ini ada, berarti kita sedang di halaman Kuis 2
     if (halamanKuis2) {
-        // =========================================================================
-        // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
-        // =========================================================================
+        
+        // FUNGSI MENYIMPAN NILAI KE DATABASE
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute("content");
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error(
-                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
-                );
+                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
                 return;
             }
 
@@ -3987,9 +3966,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then((data) => console.log(data.message))
-                .catch((error) =>
-                    console.error("Error menyimpan nilai:", error),
-                );
+                .catch((error) => console.error("Error menyimpan nilai:", error));
         }
 
         // 2. DATA SOAL
@@ -4108,14 +4085,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 5. FUNGSI RENDER NAVIGASI
         function renderNav() {
-            // Safety check: jika elemen tidak ada, hentikan
             if (!navSoal) return;
 
             navSoal.innerHTML = "";
             questions.forEach((_, i) => {
                 const btn = document.createElement("button");
                 btn.textContent = i + 1;
-                // Gunakan class CSS yang sesuai: kuis2-btn-num
                 btn.classList.add("kuis2-btn-num");
 
                 if (i === currentIndex) {
@@ -4135,7 +4110,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 6. FUNGSI LOAD SOAL
         function loadQuestion() {
-            // Safety check
             if (!questionText || !optionsList) return;
 
             const q = questions[currentIndex];
@@ -4150,7 +4124,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const isChecked = userAnswers[currentIndex] === idx;
                 const checkedAttr = isChecked ? "checked" : "";
 
-                // Menggunakan class CSS baru: kuis2-option-label, dll
                 li.innerHTML = `
           <label class="kuis2-option-label">
             <input type="radio" name="option-kuis2" value="${idx}" ${checkedAttr}>
@@ -4169,15 +4142,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
             }
             if (nextBtn) {
-                nextBtn.disabled = currentIndex === questions.length - 1;
-                nextBtn.style.opacity =
-                    currentIndex === questions.length - 1 ? "0.5" : "1";
+                if (currentIndex === questions.length - 1) {
+                    nextBtn.innerHTML = '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
+                    nextBtn.style.backgroundColor = "#2ecc71";
+                    nextBtn.style.borderColor = "#2ecc71";
+                } else {
+                    nextBtn.innerHTML = '<span class="nav-text-hide">Selanjutnya</span> →';
+                    nextBtn.style.backgroundColor = "";
+                    nextBtn.style.borderColor = "";
+                }
             }
         }
 
         // 7. EVENT HANDLERS
-
-        // Saat Opsi Dipilih
         if (optionsList) {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-kuis2") {
@@ -4187,7 +4164,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Tombol Prev
         if (prevBtn) {
             prevBtn.addEventListener("click", () => {
                 if (currentIndex > 0) {
@@ -4197,12 +4173,13 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Tombol Next
         if (nextBtn) {
             nextBtn.addEventListener("click", () => {
                 if (currentIndex < questions.length - 1) {
                     currentIndex++;
                     loadQuestion();
+                } else {
+                    if (finishBtn) finishBtn.click();
                 }
             });
         }
@@ -4217,8 +4194,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score100}</b><br><br>Selamat! Materi Gaya Selesai.`
                 : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Nilai belum mencapai target. Yuk, pelajari lagi!`;
 
-            // Mengambil URL dari variabel global Blade
-            // Fallback url jika variabel window tidak terbaca
             const urlLulus = window.NEXT_PAGE || "/siswa/dashboard";
             const urlGagal = window.RETRY_PAGE || "/siswa/gaya/pengertiangaya";
 
@@ -4226,16 +4201,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: titleText,
                 html: messageHtml,
                 icon: iconType,
-                confirmButtonText: tuntas
-                    ? "Lanjut ke Dashboard 🏠"
-                    : "Pelajari Ulang 📚",
+                confirmButtonText: tuntas ? "Lanjut ke Dashboard 🏠" : "Pelajari Ulang 📚",
                 confirmButtonColor: tuntas ? "#2ecc71" : "#65676b",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,123,0.4)`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (tuntas) {
-                        // --- PERBAIKAN: SIMPAN STATUS LULUS AGAR SIDEBAR TERBUKA ---
                         window.progresSiswa = window.progresSiswa || [];
                         if (!window.progresSiswa.includes("kuis2_completed")) {
                             window.progresSiswa.push("kuis2_completed");
@@ -4244,7 +4216,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (window.simpanProgresKeDatabase) {
                             window.simpanProgresKeDatabase("kuis2_completed");
                         }
-                        // -----------------------------------------------------------
                         window.location.href = urlLulus;
                     } else {
                         window.location.href = urlGagal;
@@ -4253,10 +4224,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // [REVISI] Fungsi untuk menghitung nilai, konversi ke skala 100, dan simpan ke DB
         function hitungDanTampilkanNilai() {
             let score = 0;
-            let arrayDetail = []; // Menyimpan true/false per jawaban
+            let arrayDetail = []; 
 
             questions.forEach((q, i) => {
                 let isBenar = userAnswers[i] === q.answer;
@@ -4264,24 +4234,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 arrayDetail.push(isBenar);
             });
 
-            // Konversi ke skala 100
             let score100 = Math.round((score / questions.length) * 100);
-
-            // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
             const nilaiKkm = window.KKM_KUIS || 70;
             const tuntas = score100 >= nilaiKkm;
 
-            // Kirim ke database (Kuis 2)
             simpanNilaiKeDatabase("Kuis 2", score100, arrayDetail);
-
-            // Tampilkan popup hasil
             showSweetAlertResult(tuntas, score100, score, questions.length);
         }
 
-        // Tombol Selesai
         if (finishBtn) {
             finishBtn.addEventListener("click", () => {
-                // Cek jawaban kosong
                 if (userAnswers.includes(null)) {
                     Swal.fire({
                         title: "Belum Selesai!",
@@ -4304,17 +4266,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     cancelButtonColor: "#d33",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        clearInterval(timerInterval); // Hentikan timer
+                        clearInterval(timerInterval);
                         hitungDanTampilkanNilai();
                     }
                 });
             });
         }
 
-        // 9. TIMER (10 Menit) - TETAP 2 MENIT SESUAI PERMINTAAN
-        let timeLeft = 2 * 60;
+        // 9. TIMER
+        let timeLeft = 20 * 60; // Diubah ke 20 Menit
         const timerInterval = setInterval(() => {
-            // Cek apakah elemen timer ada (untuk menghindari error di console)
             if (!timerEl) {
                 clearInterval(timerInterval);
                 return;
@@ -4347,23 +4308,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// FILE: EVALUASI AKHIR (GERAK DAN GAYA)
+// Js Evaluasi
 document.addEventListener("DOMContentLoaded", function () {
     const halamanEvaluasi = document.getElementById("halaman-evaluasi");
 
     if (halamanEvaluasi) {
-        // =========================================================================
-        // FUNGSI BARU: MENYIMPAN NILAI KE DATABASE
-        // =========================================================================
+        
+        // FUNGSI MENYIMPAN NILAI KE DATABASE
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute("content");
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error(
-                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
-                );
+                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
                 return;
             }
 
@@ -4381,14 +4337,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then((data) => console.log(data.message))
-                .catch((error) =>
-                    console.error("Error menyimpan nilai:", error),
-                );
+                .catch((error) => console.error("Error menyimpan nilai:", error));
         }
 
-        // =========================================================================
         // 1. DATA SOAL EVALUASI
-        // =========================================================================
         const questions = [
             {
                 q: "Seorang peserta didik sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika terminal dianggap sebagai titik acuan, maka pernyataan yang benar adalah...",
@@ -4537,10 +4489,12 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             {
                 q: "Dua buah balok, balok A (2 kg) dan balok B (10 kg), diberikan gaya dorong yang sama besar. Pernyataan yang paling tepat mengenai percepatan kedua balok adalah...",
-                options: ["Balok B bergerak lebih cepat karena massanya besar", 
+                options: [
+                    "Balok B bergerak lebih cepat karena massanya besar", 
                     "Balok A memiliki percepatan lebih besar karena massanya lebih ringan", 
                     "Kedua balok memiliki percepatan yang sama karena gayanya sama", 
-                    "Balok A tetap diam karena kelembamannya lebih besar"],
+                    "Balok A tetap diam karena kelembamannya lebih besar"
+                ],
                 answer: 1,
             },
             {
@@ -4580,17 +4534,13 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         ];
 
-        // =========================================================================
         // 2. STATE & DOM ELEMENTS
-        // =========================================================================
         let currentIndex = 0;
         const userAnswers = new Array(questions.length).fill(null);
         const scorePerSoal = 5;
 
         const navSoal = document.getElementById("navSoal-evaluasi");
-        const questionNumber = document.getElementById(
-            "questionNumber-evaluasi",
-        );
+        const questionNumber = document.getElementById("questionNumber-evaluasi");
         const questionText = document.getElementById("questionText-evaluasi");
         const optionsList = document.getElementById("optionsList-evaluasi");
         const prevBtn = document.getElementById("prevBtn-evaluasi");
@@ -4598,9 +4548,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn-evaluasi");
         const timerEl = document.getElementById("timer-evaluasi");
 
-        // =========================================================================
         // 3. FUNGSI RENDER NAVIGASI
-        // =========================================================================
         function renderNav() {
             if (!navSoal) return;
 
@@ -4625,9 +4573,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
         // 4. FUNGSI LOAD SOAL
-        // =========================================================================
         function loadQuestion() {
             if (!questionText || !optionsList) return;
 
@@ -4663,15 +4609,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
             }
             if (nextBtn) {
-                nextBtn.disabled = currentIndex === questions.length - 1;
-                nextBtn.style.opacity =
-                    currentIndex === questions.length - 1 ? "0.5" : "1";
+                if (currentIndex === questions.length - 1) {
+                    nextBtn.innerHTML = '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
+                    nextBtn.style.backgroundColor = "#2ecc71";
+                    nextBtn.style.borderColor = "#2ecc71";
+                } else {
+                    nextBtn.innerHTML = '<span class="nav-text-hide">Selanjutnya</span> →';
+                    nextBtn.style.backgroundColor = "";
+                    nextBtn.style.borderColor = "";
+                }
             }
         }
 
-        // =========================================================================
         // 5. EVENT HANDLERS
-        // =========================================================================
         if (optionsList) {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-evaluasi") {
@@ -4695,13 +4645,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (currentIndex < questions.length - 1) {
                     currentIndex++;
                     loadQuestion();
+                } else {
+                    if (finishBtn) finishBtn.click();
                 }
             });
         }
 
-        // =========================================================================
         // 6. LOGIKA HASIL (SIMPAN KE DB)
-        // =========================================================================
         function tampilkanHasilAkhir(score, totalScore) {
             const urlKeluar = window.EXIT_PAGE || "/";
 
@@ -4726,7 +4676,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function hitungNilai() {
             let jumlahBenar = 0;
-            let arrayDetail = []; // Array riwayat tiap soal
+            let arrayDetail = []; 
 
             questions.forEach((q, i) => {
                 let isBenar = userAnswers[i] === q.answer;
@@ -4734,21 +4684,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 arrayDetail.push(isBenar);
             });
 
-            // Hitung skor akhir untuk ditampilkan (benar * 5)
             const finalScore = jumlahBenar * scorePerSoal;
             const maxScore = questions.length * scorePerSoal;
 
-            // Konversi ke persentase (skala 100) untuk dikirim ke Database
             let score100 = Math.round((jumlahBenar / questions.length) * 100);
 
-            // [REVISI] Ambil KKM Dinamis dari Database (Fallback 70 jika gagal dimuat)
             const nilaiKkm = window.KKM_KUIS || 70;
             const tuntas = score100 >= nilaiKkm;
 
-            // [PERBAIKAN]: Pastikan array eksis sebelum di-push untuk mencegah JS Crash
             window.progresSiswa = window.progresSiswa || [];
 
-            // Simpan status lulus evaluasi ke DB progres jika nilai memenuhi KKM
             if (tuntas) {
                 if (!window.progresSiswa.includes("evaluasi_completed")) {
                     window.progresSiswa.push("evaluasi_completed");
@@ -4758,13 +4703,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
-            // SIMPAN NILAI KE DATABASE LOG/RIWAYAT
             simpanNilaiKeDatabase("Evaluasi", score100, arrayDetail);
 
             tampilkanHasilAkhir(finalScore, maxScore);
         }
 
-        // Tombol Selesai
         if (finishBtn) {
             finishBtn.addEventListener("click", () => {
                 if (userAnswers.includes(null)) {
@@ -4796,10 +4739,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // =========================================================================
         // 7. TIMER
-        // =========================================================================
-        let timeLeft = 10 * 60; // 10 menit dalam detik
+        let timeLeft = 30 * 60; // Diubah ke 20 Menit
 
         const timerInterval = setInterval(() => {
             if (!timerEl) {

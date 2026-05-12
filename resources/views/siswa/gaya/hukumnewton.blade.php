@@ -215,7 +215,7 @@
 
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>1.</b> Pada percobaan Hukum I Newton, apa yang terjadi pada gelas saat kertas di bawahnya ditarik
+                        <b>1.</b> Pada video Hukum I Newton, apa yang terjadi pada gelas saat kertas di bawahnya ditarik
                         dengan sangat cepat?
                     </p>
                     <div class="grup-opsi" data-soal="1" data-kunci="B">
@@ -228,7 +228,7 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>2.</b> Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap
+                        <b>2.</b> Pada video Hukum I Newton, Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap
                         diam) saat kertas ditarik secara cepat disebut dengan...
                     </p>
                     <div class="grup-opsi" data-soal="2" data-kunci="B">
@@ -241,7 +241,7 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>3.</b> Bandingkan hasil pada Percobaan 1 dan Percobaan 2. Apa yang terjadi pada pergerakan kereta
+                        <b>3.</b> Bandingkan hasil pada Percobaan 1 dan Percobaan 2 di video Hukum II Newton. Apa yang terjadi pada pergerakan kereta
                         saat gaya tarik ditambah menjadi 2 beban sementara jumlah beban di kereta tetap?
                     </p>
                     <div class="grup-opsi" data-soal="3" data-kunci="B">
@@ -257,7 +257,7 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>4.</b> Perhatikan Percobaan 1 dan Percobaan 3. Ketika gaya tarik tetap (1 beban) namun jumlah
+                        <b>4.</b> Perhatikan Percobaan 1 dan Percobaan 3 di video Hukum II Newton. Ketika gaya tarik tetap (1 beban) namun jumlah
                         beban di kereta ditambah menjadi 2 buah (150 gram), bagaimana pengaruhnya terhadap waktu tempuh
                         kereta?
                     </p>
@@ -274,7 +274,7 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>5.</b> Pada percobaan Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan
+                        <b>5.</b> Pada video Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan
                         memantul kembali ke atas. Dorongan meja ke atas yang membuat bola memantul dinamakan...
                     </p>
                     <div class="grup-opsi" data-soal="5" data-kunci="C">

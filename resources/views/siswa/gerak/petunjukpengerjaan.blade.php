@@ -22,7 +22,7 @@
     <ol>
       <li>Kuis ini terdiri dari <b>10 soal pilihan ganda</b>.</li>
       <li>Setiap soal memiliki bobot nilai yang sama.</li>
-      <li>Waktu pengerjaan kuis adalah <b>30 menit</b>.</li>
+      <li>Waktu pengerjaan kuis adalah <b>20 menit</b>.</li>
       <li>Bacalah setiap soal dengan teliti sebelum memilih jawaban.</li>
       <li>Setelah semua soal dijawab, klik tombol <b>“Kirim Jawaban”</b> untuk melihat hasil skor.</li>
       <li>Jika nilai belum tuntas, kamu akan diminta kembali ke materi <b>Gerak</b> untuk belajar ulang.</li>
