@@ -95,7 +95,7 @@
                 <div class="rumus-box">
                     \[ a = \frac{\sum F}{m} \quad \text{atau} \quad \sum F = m \cdot a \]
                 </div>
-                
+
                 <p>Keterangan:</p>
                 <ul class="rumus-legend">
                     <li>\( \sum F \) : Resultan gaya (Newton/N)</li>
@@ -185,10 +185,11 @@
                         <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                     </p>
                     <ul>
-                        <li>Tonton video pengujian Hukum Newton di bawah ini dengan saksama.</li>
-                        <li>Gunakan tombol "Lompat ke bagian" untuk melihat masing-masing perlakuan.</li>
-                        <li>Analisis setiap peristiwa yang terjadi pada video.</li>
-                        <li>Jawablah 5 pertanyaan pilihan ganda di bawah video berdasarkan pengamatanmu.</li>
+                        <li>Tonton video Hukum Newton dengan saksama dan gunakan menu 'Lompat ke bagian' untuk mencari bagian yang diinginkan.</li>
+                        <li>Pilih salah satu jawaban yang menurutmu paling tepat.</li>
+                        <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
+                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                        <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
 
@@ -214,7 +215,8 @@
 
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>1.</b> Pada percobaan Hukum I Newton, apa yang terjadi pada gelas saat kertas di bawahnya ditarik dengan sangat cepat?
+                        <b>1.</b> Pada percobaan Hukum I Newton, apa yang terjadi pada gelas saat kertas di bawahnya ditarik
+                        dengan sangat cepat?
                     </p>
                     <div class="grup-opsi" data-soal="1" data-kunci="B">
                         <button class="tombol-opsi" data-pilihan="A">A. Gelas ikut bergerak searah tarikan kertas</button>
@@ -226,7 +228,8 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>2.</b> Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap diam) saat kertas ditarik secara cepat disebut dengan...
+                        <b>2.</b> Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap
+                        diam) saat kertas ditarik secara cepat disebut dengan...
                     </p>
                     <div class="grup-opsi" data-soal="2" data-kunci="B">
                         <button class="tombol-opsi" data-pilihan="A">A. Percepatan</button>
@@ -238,31 +241,41 @@
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>3.</b> Bandingkan hasil pada Percobaan 1 dan Percobaan 2. Apa yang terjadi pada pergerakan kereta saat gaya tarik ditambah menjadi 2 beban sementara jumlah beban di kereta tetap?
+                        <b>3.</b> Bandingkan hasil pada Percobaan 1 dan Percobaan 2. Apa yang terjadi pada pergerakan kereta
+                        saat gaya tarik ditambah menjadi 2 beban sementara jumlah beban di kereta tetap?
                     </p>
                     <div class="grup-opsi" data-soal="3" data-kunci="B">
-                        <button class="tombol-opsi" data-pilihan="A">A. Kereta bergerak lebih lambat karena beban tarik ditambah</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Kereta bergerak lebih cepat, menunjukkan percepatan berbanding lurus dengan gaya</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Tidak ada perubahan kecepatan karena jumlah beban di kereta tidak diubah</button>
+                        <button class="tombol-opsi" data-pilihan="A">A. Kereta bergerak lebih lambat karena beban tarik
+                            ditambah</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Kereta bergerak lebih cepat, menunjukkan percepatan
+                            berbanding lurus dengan gaya</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Tidak ada perubahan kecepatan karena jumlah beban di
+                            kereta tidak diubah</button>
                     </div>
                 </div>
 
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>4.</b> Perhatikan Percobaan 1 dan Percobaan 3. Ketika gaya tarik tetap (1 beban) namun jumlah beban di kereta ditambah menjadi 2 buah (150 gram), bagaimana pengaruhnya terhadap waktu tempuh kereta?
+                        <b>4.</b> Perhatikan Percobaan 1 dan Percobaan 3. Ketika gaya tarik tetap (1 beban) namun jumlah
+                        beban di kereta ditambah menjadi 2 buah (150 gram), bagaimana pengaruhnya terhadap waktu tempuh
+                        kereta?
                     </p>
                     <div class="grup-opsi" data-soal="4" data-kunci="C">
-                        <button class="tombol-opsi" data-pilihan="A">A. Waktu tempuh menjadi lebih singkat karena massa benda bertambah</button>
-                        <button class="tombol-opsi" data-pilihan="B">B. Waktu tempuh tetap sama karena gaya tariknya tidak berubah</button>
-                        <button class="tombol-opsi" data-pilihan="C">C. Waktu tempuh menjadi lebih lama, membuktikan bahwa massa yang besar memperkecil percepatan</button>
+                        <button class="tombol-opsi" data-pilihan="A">A. Waktu tempuh menjadi lebih singkat karena massa
+                            benda bertambah</button>
+                        <button class="tombol-opsi" data-pilihan="B">B. Waktu tempuh tetap sama karena gaya tariknya tidak
+                            berubah</button>
+                        <button class="tombol-opsi" data-pilihan="C">C. Waktu tempuh menjadi lebih lama, membuktikan bahwa
+                            massa yang besar memperkecil percepatan</button>
                     </div>
                 </div>
 
                 <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
-                        <b>5.</b> Pada percobaan Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan memantul kembali ke atas. Dorongan meja ke atas yang membuat bola memantul dinamakan...
+                        <b>5.</b> Pada percobaan Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan
+                        memantul kembali ke atas. Dorongan meja ke atas yang membuat bola memantul dinamakan...
                     </p>
                     <div class="grup-opsi" data-soal="5" data-kunci="C">
                         <button class="tombol-opsi" data-pilihan="A">A. Gaya Gesek</button>
@@ -295,7 +308,8 @@
         <div class="bottom-nav">
             <a href="{{ url('siswa/gaya/macam-macamgaya') }}" class="nav-btn prev">« Materi Sebelumnya</a>
 
-            <a href="{{ url('siswa/gaya/petunjukpengerjaan') }}" id="btn-next-materi" class="nav-btn next locked">Ke Kuis 2
+            <a href="{{ url('siswa/gaya/petunjukpengerjaan') }}" id="btn-next-materi" class="nav-btn next locked">Ke Kuis
+                2
                 »</a>
         </div>
 

@@ -1,6 +1,4 @@
-/* =======================================================================
-   RESET & DASAR
-   ======================================================================= */
+/* Reset & Dasar */
 * {
     margin: 0;
     padding: 0;
@@ -13,20 +11,18 @@ body {
     min-height: 100vh;
 }
 
-/* =======================================================================
-   SIDEBAR
-   ======================================================================= */
+/* Sidebar */
 .sidebar {
     width: 260px;
     background-image: linear-gradient(180deg, #f95c50 0%, #e84a3e 100%);
     color: #fff;
-    display: flex;
-    flex-direction: column;
+    display: block; /* Fix untuk bug scroll di HP */
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Scroll mulus di iOS/HP */
     padding: 16px 14px;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -41,7 +37,6 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* MENU ITEM UTAMA */
 .menu-item {
     margin-top: 10px;
     border-radius: 12px;
@@ -82,7 +77,6 @@ body {
     transform: rotate(90deg);
 }
 
-/* SUBMENU */
 .submenu {
     background-color: #ff7b70;
     display: none;
@@ -115,7 +109,6 @@ body {
     background-color: #ff9b91;
 }
 
-/* STATUS TERKUNCI */
 .locked {
     opacity: 0.6;
     cursor: not-allowed;
@@ -128,7 +121,7 @@ body {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* AREA KONTEN */
+/* Area Konten Utama */
 .content-area {
     margin-left: 260px;
     width: calc(100% - 260px);
@@ -137,7 +130,6 @@ body {
     min-height: 100vh;
 }
 
-/* TOP BAR */
 .top-bar {
     height: 60px;
     display: flex;
@@ -180,7 +172,6 @@ body {
     background: #fff5f3;
 }
 
-/* DROPDOWN LOGOUT */
 .dropdown-logout {
     display: none;
     position: absolute;
@@ -257,7 +248,6 @@ body {
     margin: 5px 0;
 }
 
-/* PEMBUNGKUS KONTEN */
 .content-wrapper {
     padding: 30px 40px;
     background-color: #e2e8f0;
@@ -296,7 +286,6 @@ body {
     border-radius: 2px;
 }
 
-/* KOTAK MATERI (INNER BOX) */
 .inner-box {
     background-color: #ffe7e3;
     border: 1px solid #ffbfb7;
@@ -336,7 +325,7 @@ body {
     font-size: 15px;
 }
 
-/* MEDIA (GAMBAR & VIDEO) */
+/* Media (Gambar & Video) */
 .content-image,
 .content-image2,
 .content-image3,
@@ -349,18 +338,10 @@ body {
     margin: 10px auto;
 }
 
-.content-image {
-    max-width: 20%;
-}
-.content-image2 {
-    max-width: 50%;
-}
-.content-image3 {
-    max-width: 40%;
-}
-.content-image4 {
-    max-width: 40%;
-}
+.content-image { max-width: 20%; }
+.content-image2 { max-width: 50%; }
+.content-image3 { max-width: 40%; }
+.content-image4 { max-width: 40%; }
 
 .content-video {
     width: 50%;
@@ -417,7 +398,7 @@ body {
     margin-top: 2px;
 }
 
-/* TOMBOL NAVIGASI BAWAH */
+/* Tombol Navigasi Bawah */
 .bottom-nav {
     margin-top: 14px;
     display: flex;
@@ -498,9 +479,7 @@ body {
     width: 100%;
 }
 
-/* =======================================================================
-   RESPONSIVE (Mobile & Tablet)
-   ======================================================================= */
+/* Responsive Mobile */
 .mobile-menu-btn {
     display: none;
     background: none;

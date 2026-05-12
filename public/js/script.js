@@ -2999,7 +2999,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Logika Drag and Drop
         if (containerMacam && poolMacam && btnCekMacam) {
             const zones = document.querySelectorAll("#drag-container-macam .drop-zone, #card-pool-macam");
             const cards = document.querySelectorAll("#card-pool-macam .card-item");
@@ -3007,17 +3006,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const modalText = document.getElementById("modal-text-macam");
             const closeModal = document.getElementById("close-modal-macam");
 
-            let draggedCard = null;
+            let draggedIdMacam = null;
 
             cards.forEach((card) => {
-                card.addEventListener("dragstart", function () {
-                    draggedCard = this;
+                card.addEventListener("dragstart", function (e) {
+                    draggedIdMacam = this.id;
+                    e.dataTransfer.setData("text/plain", this.id);
                     setTimeout(() => (this.style.opacity = "0.5"), 0);
                 });
 
                 card.addEventListener("dragend", function () {
                     this.style.opacity = "1";
-                    draggedCard = null;
+                    draggedIdMacam = null;
                 });
             });
 
@@ -3035,14 +3035,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.classList.remove("over");
 
-                    if (draggedCard) {
-                        this.appendChild(draggedCard);
-                        draggedCard.classList.remove("correct", "incorrect");
+                    const id = e.dataTransfer.getData("text/plain") || draggedIdMacam;
+                    const card = document.getElementById(id);
+
+                    if (card) {
+                        this.appendChild(card);
+                        card.classList.remove("correct", "incorrect");
                     }
                 });
             });
 
-            // Evaluasi Latihan
             btnCekMacam.addEventListener("click", function () {
                 let benar = 0;
                 const total = cards.length;
@@ -3136,7 +3138,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (e.target === modal) modal.style.display = "none";
             });
 
-            // Fungsi Generate PDF
             async function generatePDFMacamGaya(action = 'download') {
                 const { jsPDF } = window.jspdf;
                 if (!jsPDF) return;

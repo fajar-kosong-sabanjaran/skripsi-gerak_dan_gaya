@@ -100,7 +100,7 @@
                         <p>
                             Fajar dan Fadhil sedang memindahkan sebuah meja dengan cara mendorongnya.
                             Gaya yang diberikan Fajar adalah 20 N, sedangkan gaya yang diberikan Fadhil adalah 35
-                                N.
+                            N.
                             Berapakah resultan gaya yang diterima meja?
                         </p>
 
@@ -150,11 +150,12 @@
                         <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                     </p>
                     <ul>
-                        <li>Perhatikan arah gaya pada gambar dan cerita di setiap latihan.</li>
-                        <li>Hitung resultan gaya: jumlahkan jika searah, kurangkan jika berlawanan.</li>
+                        <li>Perhatikan arah gaya pada gambar dan cerita, lalu hitung resultan gayanya (jumlahkan jika
+                            searah, kurangkan jika berlawanan).</li>
                         <li>Isikan jawabanmu berupa angka saja pada kolom yang tersedia (contoh: 40).</li>
-                        <li>Pastikan kamu mengisi semua jawaban, lalu tekan tombol Cek Jawaban.</li>
-                        <li>Jika masih ada jawaban yang salah, gunakan tombol Coba Lagi untuk mengulang.</li>
+                        <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
+                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                        <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
 
@@ -216,7 +217,8 @@
         <div class="bottom-nav">
             <a href="{{ url('siswa/gaya/pengertiangaya') }}" class="nav-btn prev">« Materi Sebelumnya</a>
 
-            <a href="{{ url('siswa/gaya/macam-macamgaya') }}" id="btn-next-materi" class="nav-btn next locked">Materi Selanjutnya »</a>
+            <a href="{{ url('siswa/gaya/macam-macamgaya') }}" id="btn-next-materi" class="nav-btn next locked">Materi
+                Selanjutnya »</a>
         </div>
 
     </div>

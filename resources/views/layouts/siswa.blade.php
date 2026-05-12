@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>GERAK DAN GAYA</title>
@@ -23,10 +22,7 @@
         MobileDragDrop.polyfill({
             dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
         });
-
-        window.addEventListener('touchmove', function() {}, {
-            passive: false
-        });
+        window.addEventListener('touchmove', function() {}, { passive: false });
     </script>
 </head>
 
@@ -45,27 +41,22 @@
                 class="{{ request()->is('siswa/gerak/pengantargerak') ? 'active' : '' }}">
                 Pengantar
             </a>
-
             <a href="{{ url('siswa/gerak/pengertiangerak') }}" id="nav-pengertian"
                 class="{{ request()->is('siswa/gerak/pengertiangerak') ? 'active' : '' }}">
                 Pengertian Gerak
             </a>
-
             <a href="{{ url('siswa/gerak/jaraktempuhdanperpindahan') }}" id="nav-jarak"
                 class="locked {{ request()->is('siswa/gerak/jaraktempuhdanperpindahan') ? 'active' : '' }}">
                 Jarak Tempuh dan Perpindahan <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gerak/kelajuandankecepatan') }}" id="nav-kelajuan"
                 class="locked {{ request()->is('siswa/gerak/kelajuandankecepatan') ? 'active' : '' }}">
                 Kelajuan & Kecepatan <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gerak/percepatan') }}" id="nav-percepatan"
                 class="locked {{ request()->is('siswa/gerak/percepatan') ? 'active' : '' }}">
                 Percepatan <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gerak/petunjukpengerjaan') }}" id="nav-kuis1"
                 class="menu-link locked {{ request()->is('siswa/gerak/petunjukpengerjaan') || request()->is('siswa/gerak/kuis1') ? 'active' : '' }}">
                 Kuis 1 <i class="fas fa-lock"></i>
@@ -80,27 +71,22 @@
                 class="locked {{ request()->is('siswa/gaya/pengantargaya') ? 'active' : '' }}">
                 Pengantar <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gaya/pengertiangaya') }}" id="nav-pengertian-gaya"
                 class="locked {{ request()->is('siswa/gaya/pengertiangaya') ? 'active' : '' }}">
                 Pengertian Gaya <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gaya/resultangaya') }}" id="nav-resultan-gaya"
                 class="locked {{ request()->is('siswa/gaya/resultangaya') ? 'active' : '' }}">
                 Resultan Gaya <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gaya/macam-macamgaya') }}" id="nav-macam-gaya"
                 class="locked {{ request()->is('siswa/gaya/macam-macamgaya') ? 'active' : '' }}">
                 Macam-Macam Gaya <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gaya/hukumnewton') }}" id="nav-newton"
                 class="locked {{ request()->is('siswa/gaya/hukumnewton') ? 'active' : '' }}">
                 Hukum Newton <i class="fas fa-lock"></i>
             </a>
-
             <a href="{{ url('siswa/gaya/petunjukpengerjaan') }}" id="nav-kuis2"
                 class="locked {{ request()->is('siswa/gaya/petunjukpengerjaan') || request()->is('siswa/gaya/kuis2') ? 'active' : '' }}">
                 Kuis 2 <i class="fas fa-lock"></i>
@@ -116,7 +102,6 @@
 
     <div class="content-area">
         <div class="top-bar">
-
             <div class="top-bar-left">
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
@@ -124,7 +109,6 @@
             </div>
 
             <div class="top-bar-right">
-                {{-- Menu Navigasi Utama --}}
                 <div class="top-nav-links">
                     @if (Auth::check() && Auth::user()->peran === 'guru')
                         <a href="{{ url('/guru/datasiswa') }}">Halaman Guru</a>
@@ -135,14 +119,12 @@
                     <a href="{{ url('/tentang') }}">Tentang</a>
                 </div>
 
-                {{-- Bagian User Menu --}}
                 <div class="user-menu-container">
                     <div class="user-greeting" onclick="toggleDropdown()">
                         Halo, {{ Auth::user()->nama_lengkap }} 👋
                     </div>
 
                     <div class="dropdown-logout" id="dropdownMenu">
-
                         <div class="mobile-dropdown-links">
                             @if (Auth::check() && Auth::user()->peran === 'guru')
                                 <a href="{{ url('/guru/datasiswa') }}" class="dropdown-item">Halaman Guru</a>
@@ -171,22 +153,17 @@
     </div>
 
     <script>
-        // Mengambil data progres dari database dan menjadikannya array di JavaScript (untuk siswa)
-        // Ditambahkan pengecekan agar tidak error jika relasi progres kosong (biasanya pada Guru)
+        // Set Data Progres Siswa
         window.progresSiswa = @json(Auth::check() && Auth::user()->progres ? Auth::user()->progres->pluck('kode_materi')->toArray() : []);
 
-        // =====================================================================
-        // LOGIKA BYPASS KHUSUS GURU
-        // =====================================================================
+        // Bypass Lock Khusus Akun Guru
         @if (Auth::check() && Auth::user()->peran === 'guru')
             document.addEventListener("DOMContentLoaded", function() {
-                // 1. Hapus semua class 'locked' dari sidebar maupun tombol 'Materi Selanjutnya'
                 const lockedElements = document.querySelectorAll('.locked');
                 lockedElements.forEach(function(el) {
                     el.classList.remove('locked');
                 });
 
-                // 2. Hapus semua icon gembok
                 const lockIcons = document.querySelectorAll('.fa-lock');
                 lockIcons.forEach(function(icon) {
                     icon.remove();
@@ -194,7 +171,7 @@
             });
         @endif
 
-        // Logika Hamburger Menu Mobile
+        // Sidebar Mobile Toggle
         document.addEventListener("DOMContentLoaded", function() {
             const mobileMenuBtn = document.getElementById("mobileMenuBtn");
             const sidebar = document.querySelector(".sidebar");

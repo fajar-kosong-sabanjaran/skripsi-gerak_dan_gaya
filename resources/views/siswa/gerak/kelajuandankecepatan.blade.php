@@ -10,10 +10,14 @@
                     <h3>Kelajuan dan Kecepatan</h3>
 
                     <p>
-                        <b>Kelajuan adalah besaran yang menyatakan seberapa cepat suatu benda menempuh jarak dalam selang waktu
-                            tertentu tanpa memperhitungkan arah geraknya.</b> Ketika membahas kelajuan, kita hanya fokus pada
-                        jarak yang ditempuh dan waktu yang diperlukan, tanpa memedulikan ke arah mana benda tersebut bergerak.
-                        Oleh karena itu, <b>kelajuan termasuk besaran skalar, yaitu besaran yang hanya memiliki nilai dan satuan
+                        <b>Kelajuan adalah besaran yang menyatakan seberapa cepat suatu benda menempuh jarak dalam selang
+                            waktu
+                            tertentu tanpa memperhitungkan arah geraknya.</b> Ketika membahas kelajuan, kita hanya fokus
+                        pada
+                        jarak yang ditempuh dan waktu yang diperlukan, tanpa memedulikan ke arah mana benda tersebut
+                        bergerak.
+                        Oleh karena itu, <b>kelajuan termasuk besaran skalar, yaitu besaran yang hanya memiliki nilai dan
+                            satuan
                             tanpa arah.</b>
                     </p>
 
@@ -30,8 +34,10 @@
                     <p class="image-caption">Video Kelajuan</p>
 
                     <p>
-                        Berdasarkan video di atas, terlihat sebuah bus melaju dengan kelajuan 60 km/jam. Angka tersebut hanya
-                        menunjukkan seberapa cepat bus itu bergerak, tanpa memberikan informasi ke mana arah tujuannya. Inilah
+                        Berdasarkan video di atas, terlihat sebuah bus melaju dengan kelajuan 60 km/jam. Angka tersebut
+                        hanya
+                        menunjukkan seberapa cepat bus itu bergerak, tanpa memberikan informasi ke mana arah tujuannya.
+                        Inilah
                         yang disebut kelajuan, di mana informasi arah tidak diperlukan.
                     </p>
 
@@ -39,8 +45,10 @@
 
                     <p>
                         Sementara itu, <b>kecepatan adalah besaran yang menyatakan besarnya perpindahan yang terjadi dalam
-                            setiap satuan waktu.</b> Berbeda dengan kelajuan, kecepatan tidak hanya menunjukkan seberapa cepat
-                        benda bergerak, tetapi juga ke arah mana benda tersebut bergerak. Oleh karena itu, <b>kecepatan termasuk
+                            setiap satuan waktu.</b> Berbeda dengan kelajuan, kecepatan tidak hanya menunjukkan seberapa
+                        cepat
+                        benda bergerak, tetapi juga ke arah mana benda tersebut bergerak. Oleh karena itu, <b>kecepatan
+                            termasuk
                             besaran vektor, yaitu besaran yang memiliki nilai, satuan, dan arah.</b>
                     </p>
 
@@ -179,7 +187,8 @@
                     </p>
 
                     <p>
-                        <img src="{{ asset('aset/25.jpg') }}" alt="Contoh soal kelajuan dan kecepatan" class="content-image2">
+                        <img src="{{ asset('aset/25.jpg') }}" alt="Contoh soal kelajuan dan kecepatan"
+                            class="content-image2">
                     </p>
                     <p class="image-caption">Contoh soal kelajuan dan kecepatan</p>
 
@@ -249,16 +258,20 @@
 
                 <div class="inner-box">
                     <h3>Ayo Praktik: Menghitung Kelajuan</h3>
-                    
+
                     <div class="kotak-instruksi">
                         <p>
                             <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                         </p>
                         <ul>
-                            <li>Tonton video pengujian kelajuan benda di bawah ini dengan saksama.</li>
-                            <li>Amati dan catat jarak tempuh serta waktu yang dibutuhkan oleh setiap benda (Pensil, Pulpen, dan Lem Stik).</li>
-                            <li>Gunakan rumus kelajuan \((v = \frac{s}{t})\) untuk menghitung kelajuan masing-masing benda.</li>
-                            <li>Isi tabel di bawah dengan angka saja (dalam satuan cm dan sekon).</li>
+                            <li>Tonton video praktik kelajuan dengan saksama, lalu catat jarak dan waktu tempuh untuk setiap
+                                benda (Pensil, Pulpen, dan Lem Stik).</li>
+                            <li>Gunakan menu 'Lompat ke bagian' agar lebih mudah menemukan bagian video yang kamu inginkan.</li>
+                            <li>Hitung kelajuan setiap benda menggunakan rumus \((v = \frac{s}{t})\) lalu isi tabel hanya
+                                dengan angka dalam satuan cm dan sekon.
+                            </li>
+                            <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
+                                    style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang.</li>
                         </ul>
                     </div>
 
@@ -282,9 +295,10 @@
                     </div>
 
                     <hr><br>
-                    
+
                     <p style="font-size: 14px; color: #666; font-style: italic; margin-bottom: 10px;">
-                        *Catatan: Hitunglah kelajuan (v) dengan pembulatan 2 angka di belakang koma. Gunakan tanda koma ( , ) bukan titik. Contoh: 5,18
+                        *Catatan: Hitunglah kelajuan (v) dengan pembulatan 2 angka di belakang koma. Gunakan tanda koma ( ,
+                        ) bukan titik. Contoh: 5,18
                     </p>
 
                     <table class="quiz-table" style="text-align: center;">
@@ -293,8 +307,10 @@
                                 {{-- Menghilangkan bold (font-weight: normal) pada <th> --}}
                                 <th style="width: 25%; font-weight: normal;">Benda</th>
                                 <th style="width: 25%; font-weight: normal;">Jarak (\(s\))<br><small>dalam cm</small></th>
-                                <th style="width: 25%; font-weight: normal;">Waktu (\(t\))<br><small>dalam sekon</small></th>
-                                <th style="width: 25%; font-weight: normal;">Kelajuan (\(v\))<br><small>dalam cm/s</small></th>
+                                <th style="width: 25%; font-weight: normal;">Waktu (\(t\))<br><small>dalam sekon</small>
+                                </th>
+                                <th style="width: 25%; font-weight: normal;">Kelajuan (\(v\))<br><small>dalam cm/s</small>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -334,7 +350,6 @@
                             <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                         </p>
                         <ul>
-                            <li>Baca setiap pernyataan dengan seksama.</li>
                             <li>Tentukan apakah pernyataan tersebut termasuk ciri Kelajuan atau Kecepatan.</li>
                             <li>Berikan tanda centang (✔) pada kolom yang sesuai.</li>
                             <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu, atau tombol "Coba Lagi" jika ingin
@@ -423,11 +438,11 @@
                             <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                         </p>
                         <ul>
-                            <li>Baca soal cerita tentang perjalanan anak bersepeda dengan teliti.</li>
                             <li>Isikan jawabanmu pada kolom yang tersedia (titik-titik).</li>
                             <li>Gunakan angka saja untuk mengisi jawaban (contoh: 120, bukan 120 m).</li>
-                            <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu, atau tombol "Coba Lagi" jika ingin
-                                mengulang.</li>
+                            <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
+                                    style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                            <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                         </ul>
                     </div>
 
@@ -538,12 +553,15 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="bottom-nav">
-                
+
                 <div id="nav-left">
-                    <a href="{{ url('siswa/gerak/jaraktempuhdanperpindahan') }}" id="btn-prev-materi" class="nav-btn prev">« Materi Sebelumnya</a>
-                    <button type="button" id="btn-prev-step" class="nav-btn prev" style="display: none; border:none; cursor:pointer; font-family:inherit;">« Halaman Sebelumnya</button>
+                    <a href="{{ url('siswa/gerak/jaraktempuhdanperpindahan') }}" id="btn-prev-materi"
+                        class="nav-btn prev">« Materi Sebelumnya</a>
+                    <button type="button" id="btn-prev-step" class="nav-btn prev"
+                        style="display: none; border:none; cursor:pointer; font-family:inherit;">« Halaman
+                        Sebelumnya</button>
                 </div>
 
                 <div class="pagination-container" style="display: flex; gap: 8px; margin: 0;">
@@ -552,8 +570,10 @@
                 </div>
 
                 <div id="nav-right">
-                    <button type="button" id="btn-next-step" class="nav-btn next" style="border:none; cursor:pointer; font-family:inherit;">Halaman Selanjutnya »</button>
-                    <a href="{{ url('siswa/gerak/percepatan') }}" id="btn-next-materi" class="nav-btn next locked" style="display: none;">Materi Selanjutnya »</a>
+                    <button type="button" id="btn-next-step" class="nav-btn next"
+                        style="border:none; cursor:pointer; font-family:inherit;">Halaman Selanjutnya »</button>
+                    <a href="{{ url('siswa/gerak/percepatan') }}" id="btn-next-materi" class="nav-btn next locked"
+                        style="display: none;">Materi Selanjutnya »</a>
                 </div>
 
             </div>
