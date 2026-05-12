@@ -336,6 +336,9 @@ class GuruController extends Controller
     {
         $data_jawaban = LatihanSiswa::with(['user.kelas'])
                         ->where('kode_materi', $kode_materi)
+                        ->whereHas('user', function($query) {
+                            $query->where('peran', 'siswa');
+                        })
                         ->get();
 
         $judul_materi = ucwords(str_replace('_', ' ', $kode_materi));
