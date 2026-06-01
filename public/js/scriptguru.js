@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sidebar.classList.remove("active");
             sidebarOverlay.classList.remove("show");
         });
-    } 
+    }
 
     // =======================================================================
     // ini js guru.blade (Sidebar & Navbar)
@@ -80,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 userDropdown.classList.remove("active");
             }
         }
-    }); 
-    
+    });
+
     // =======================================================================
     // ini js untuk Table (Search, Filter Kelas, Pagination) - Dipakai di semua tabel
     // =======================================================================
@@ -244,8 +244,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         updateTable();
-    } 
-    
+    }
+
     // =======================================================================
     // ini js untuk Fitur Export Excel
     // =======================================================================
@@ -488,12 +488,12 @@ function showPageInfo() {
         `,
         showCloseButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Tutup, Saya Paham!',
-        confirmButtonColor: '#64748b',
+        confirmButtonText: "Tutup, Saya Paham!",
+        confirmButtonColor: "#64748b",
         customClass: {
-            popup: 'swal-info-popup',
-            htmlContainer: 'swal-info-container'
-        }
+            popup: "swal-info-popup",
+            htmlContainer: "swal-info-container",
+        },
     });
 }
 
@@ -722,12 +722,12 @@ function showPageInfoKelas() {
         `,
         showCloseButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Tutup, Saya Paham!',
-        confirmButtonColor: '#64748b',
+        confirmButtonText: "Tutup, Saya Paham!",
+        confirmButtonColor: "#64748b",
         customClass: {
-            popup: 'swal-info-popup',
-            htmlContainer: 'swal-info-container'
-        }
+            popup: "swal-info-popup",
+            htmlContainer: "swal-info-container",
+        },
     });
 }
 
@@ -810,12 +810,12 @@ function showPageInfoProgres() {
         `,
         showCloseButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Tutup, Saya Paham!',
-        confirmButtonColor: '#64748b',
+        confirmButtonText: "Tutup, Saya Paham!",
+        confirmButtonColor: "#64748b",
         customClass: {
-            popup: 'swal-info-popup',
-            htmlContainer: 'swal-info-container'
-        }
+            popup: "swal-info-popup",
+            htmlContainer: "swal-info-container",
+        },
     });
 }
 
@@ -843,12 +843,12 @@ function showPageInfoJawaban() {
         `,
         showCloseButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Tutup, Saya Paham!',
-        confirmButtonColor: '#64748b',
+        confirmButtonText: "Tutup, Saya Paham!",
+        confirmButtonColor: "#64748b",
         customClass: {
-            popup: 'swal-info-popup',
-            htmlContainer: 'swal-info-container'
-        }
+            popup: "swal-info-popup",
+            htmlContainer: "swal-info-container",
+        },
     });
 }
 
@@ -1049,27 +1049,27 @@ const bankSoal = {
     ],
     Evaluasi: [
         {
-            q: "Seorang peserta didik sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika terminal dianggap sebagai titik acuan, maka pernyataan yang benar adalah...",
+            q: "Seorang anak sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika kita menggunakan terminal sebagai titik acuannya, maka pernyataan yang paling tepat di bawah ini adalah...",
             options: [
                 "Bus diam terhadap terminal",
-                "Peserta didik diam terhadap terminal",
-                "Peserta didik bergerak terhadap bus",
-                "Terminal bergerak menjauhi bus (gerak semu)",
+                "Anak tersebut diam terhadap terminal",
+                "Anak tersebut bergerak terhadap bus",
+                "Terminal bergerak menjauhi bus (terjadi gerak semu)",
             ],
             answer: 3,
         },
         {
-            q: "Saat melakukan perjalanan jauh dengan mobil, Andi melihat deretan tiang listrik di pinggir jalan seolah-olah berlari ke arah belakang mobil. Peristiwa ini membuktikan bahwa...",
+            q: "Saat kamu naik mobil di jalan raya, kamu akan melihat tiang-tiang listrik di pinggir jalan seolah-olah bergerak berlari ke arah belakang mobil. Fenomena ini membuktikan bahwa...",
             options: [
-                "Tiang listrik mengalami gerak relatif terhadap bumi",
-                "Terjadi gerak semu karena Andi berada di dalam bingkai acuan yang bergerak",
-                "Mobil Andi diam terhadap tiang listrik",
-                "Kecepatan tiang listrik lebih besar dari kecepatan mobil",
+                "Tiang listrik sebenarnya bergerak aktif terhadap bumi",
+                "Terjadi gerak semu karena kamu berada di dalam mobil (acuan) yang bergerak",
+                "Mobil kamu sebenarnya diam terhadap tiang listrik tersebut",
+                "Kecepatan tiang listrik jauh lebih besar daripada kecepatan mobil kamu",
             ],
             answer: 1,
         },
         {
-            q: "Seekor kucing berlari ke arah timur sejauh 9 meter, kemudian berbalik arah ke barat sejauh 4 meter. Total jarak dan besar perpindahan kucing tersebut secara berturut-turut adalah...",
+            q: "Seekor kucing berlari ke arah timur sejauh 9 meter, lalu tiba-tiba berbalik arah ke barat sejauh 4 meter. Total jarak dan besar perpindahan yang dialami kucing tersebut secara berturut-turut adalah...",
             options: [
                 "13 meter dan 5 meter",
                 "13 meter dan 13 meter",
@@ -1079,27 +1079,27 @@ const bankSoal = {
             answer: 0,
         },
         {
-            q: "Seorang pelari maraton menempuh lintasan lari yang berbentuk lingkaran dengan keliling 400 meter. Jika ia berhasil menyelesaikan tepat 2 putaran dan kembali ke posisi start, maka...",
+            q: "Seorang pelari maraton menempuh lintasan lari yang berbentuk lingkaran dengan keliling tepat 400 meter. Jika ia berhasil menyelesaikan 2 putaran penuh dan kembali lagi ke posisi start, maka...",
             options: [
                 "Jarak yang ditempuh adalah 0 meter",
                 "Perpindahannya adalah 800 meter",
                 "Jarak yang ditempuh 800 meter dan perpindahannya 0 meter",
-                "Pelari tersebut tidak mengalami gerak karena kembali ke awal",
+                "Pelari tersebut tidak dianggap bergerak karena kembali ke awal",
             ],
             answer: 2,
         },
         {
-            q: "Perbedaan utama yang menjadikan kecepatan sebagai besaran vektor, sedangkan kelajuan sebagai besaran skalar adalah...",
+            q: "Di dalam IPA, kita mengenal istilah kelajuan dan kecepatan. Hal utama yang membedakan antara kecepatan (besaran vektor) dengan kelajuan (besaran skalar) adalah...",
             options: [
-                "Kecepatan hanya memiliki nilai tanpa arah",
-                "Kecepatan sangat bergantung pada arah perpindahan benda",
+                "Kecepatan hanya memiliki nilai saja tanpa arah",
+                "Kecepatan sangat bergantung pada nilai dan arah perpindahan benda",
                 "Kelajuan dihitung berdasarkan posisi awal dan akhir saja",
                 "Kelajuan selalu bernilai negatif jika benda berbalik arah",
             ],
             answer: 1,
         },
         {
-            q: "Sebuah motor bergerak dengan kecepatan tetap 20 m/s ke arah utara selama 10 sekon. Besar perpindahan yang dialami motor tersebut adalah...",
+            q: "Sebuah sepeda motor bergerak lurus dengan kecepatan tetap sebesar 20 m/s ke arah utara. Setelah motor tersebut bergerak selama 10 sekon, besar perpindahan yang dialaminya adalah...",
             options: [
                 "2 meter ke arah utara",
                 "30 meter ke arah utara",
@@ -1109,7 +1109,7 @@ const bankSoal = {
             answer: 2,
         },
         {
-            q: "Perhatikan fenomena berikut:\n(1) Buah kelapa jatuh dari pohonnya ke tanah.\n(2) Mobil yang sedang melaju kencang tiba-tiba direm hingga berhenti.\n(3) Pesawat lepas landas hingga mencapai ketinggian tertentu.\n\nPeristiwa yang menunjukkan terjadinya percepatan positif (gerak dipercepat) ditunjukkan oleh nomor...",
+            q: "Perhatikan beberapa peristiwa berikut ini:\n(1) Buah kelapa jatuh bebas dari pohonnya menuju tanah.\n(2) Mobil yang melaju kencang tiba-tiba direm hingga berhenti di depan lampu merah.\n(3) Pesawat terbang bergerak semakin cepat saat lepas landas (take off).\n\nPeristiwa yang menunjukkan terjadinya percepatan positif (gerak dipercepat) ditunjukkan oleh nomor...",
             options: [
                 "(1) dan (2)",
                 "(1) dan (3)",
@@ -1119,118 +1119,118 @@ const bankSoal = {
             answer: 1,
         },
         {
-            q: "Sebuah sepeda yang awalnya bergerak dengan kecepatan 2 m/s dipercepat hingga kecepatannya menjadi 10 m/s dalam waktu 4 sekon. Besar percepatan sepeda tersebut adalah...",
+            q: "Sebuah sepeda yang awalnya bergerak santai dengan kecepatan 2 m/s, kemudian dikayuh lebih kencang hingga kecepatannya menjadi 10 m/s dalam waktu 4 sekon. Besar percepatan sepeda tersebut adalah...",
             options: ["2 m/s²", "4 m/s²", "8 m/s²", "12 m/s²"],
             answer: 0,
         },
         {
-            q: "Manakah dari peristiwa berikut yang merupakan pengaruh gaya terhadap perubahan bentuk benda?",
+            q: "Gaya dapat memberikan beberapa pengaruh terhadap suatu benda. Peristiwa di bawah ini yang menunjukkan pengaruh gaya berupa perubahan bentuk benda adalah...",
             options: [
-                "Menepis bola voli yang sedang melambung",
-                "Mengerem sepeda saat mendekati lampu merah",
-                "Menekan kaleng minuman bekas hingga penyok",
-                "Menendang bola hingga menggelinding jauh",
+                "Menepis bola voli yang sedang melambung di udara",
+                "Mengerem sepeda saat jalanan sedang ramai",
+                "Meremas kaleng minuman bekas hingga penyok",
+                "Menendang bola plastik hingga menggelinding jauh",
             ],
             answer: 2,
         },
         {
-            q: "Dua orang anak, Rian dan Dino, sedang mendorong lemari kayu. Rian mendorong ke kanan dengan gaya 50 N, sedangkan Dino menarik dari arah berlawanan (ke arah kiri) dengan gaya 30 N. Resultan gaya yang bekerja pada lemari adalah...",
+            q: "Rian dan Dino sedang mencoba memindahkan sebuah lemari kayu. Rian mendorong lemari ke arah kanan dengan gaya 50 N. Di saat yang sama, Dino menahan lemari tersebut dengan mendorongnya dari arah berlawanan (ke arah kiri) dengan gaya 30 N. Resultan gaya yang bekerja pada lemari adalah...",
             options: [
                 "80 N ke arah kanan",
                 "20 N ke arah kanan",
                 "20 N ke arah kiri",
-                "0 N (lemari diam)",
+                "0 N (lemari tidak bergerak)",
             ],
             answer: 1,
         },
         {
-            q: "Tiga buah gaya bekerja pada sebuah kotak: ke kanan, ke kanan, dan ke kiri. Keadaan kotak tersebut adalah...",
+            q: "Tiga buah gaya bekerja pada sebuah kotak kayu yang berada di atas lantai. Gaya pertama sebesar 20 N ke arah kanan, gaya kedua sebesar 30 N ke arah kanan, dan gaya ketiga sebesar 50 N ke arah kiri. Berdasarkan analisis kamu, keadaan kotak tersebut adalah...",
             options: [
-                "Bergerak ke kanan dengan gaya 80 N",
-                "Bergerak ke kiri dengan gaya 10 N",
-                "Tetap diam karena resultan gayanya nol",
-                "Bergerak ke kanan dengan gaya 40 N",
+                "Bergerak ke arah kanan karena ditarik oleh dua gaya sekaligus",
+                "Bergerak ke arah kiri karena gaya kirinya memiliki angka paling besar",
+                "Tetap diam di tempatnya karena total resultan gayanya sama dengan nol",
+                "Bergerak bolak-balik karena gaya di kanan dan kiri saling tarik-menarik",
             ],
             answer: 2,
         },
         {
-            q: "Mengapa lantai di gedung olahraga sering kali memiliki permukaan yang agak kasar atau menggunakan sepatu beralas karet bagi pemainnya?",
+            q: "Mengapa lantai di gedung olahraga sengaja dibuat agak kasar dan para pemain basket disarankan menggunakan sepatu beralas karet?",
             options: [
-                "Untuk memperkecil gaya gesek agar pemain mudah terpeleset",
-                "Untuk memperbesar gaya gesek agar pemain tidak mudah jatuh saat berlari",
-                "Agar gaya gravitasi bumi terhadap pemain berkurang",
-                "Untuk mengubah gaya gesek kinetis menjadi gaya pegas",
+                "Untuk memperkecil gaya gesek agar pemain mudah meluncur",
+                "Untuk memperbesar gaya gesek agar pemain tidak mudah terpeleset saat berlari",
+                "Agar gaya gravitasi bumi yang diterima oleh pemain berkurang",
+                "Untuk mengubah gaya gesek kinetis menjadi gaya pegas yang elastis",
             ],
             answer: 1,
         },
         {
-            q: "Seorang pemanah menarik tali busur sehingga melengkung sebelum melepaskan anak panah. Gaya yang menyebabkan anak panah tersebut melesat ke depan adalah...",
+            q: "Ketika seorang atlet panahan menarik tali busur hingga melengkung lalu melepaskannya, anak panah akan melesat maju dengan kencang. Jenis gaya yang menyebabkan anak panah tersebut dapat melesat ke depan adalah...",
             options: [
-                "Gaya Otot",
-                "Gaya Gesek",
-                "Gaya Pegas",
-                "Gaya Gravitasi",
+                "Gaya otot",
+                "Gaya gesek",
+                "Gaya pegas",
+                "Gaya gravitasi",
             ],
             answer: 2,
         },
         {
-            q: "Berdasarkan Hukum I Newton, jika sebuah kertas di bawah gelas ditarik secara sangat cepat dan mendatar, maka gelas akan tetap diam di posisinya. Hal ini terjadi karena...",
+            q: "Berdasarkan Hukum I Newton, jika selembar kertas yang berada di bawah gelas kaca ditarik secara sangat cepat dan mendatar, maka gelas akan tetap diam di posisinya semula. Hal ini terjadi karena...",
             options: [
-                "Gelas memiliki sifat inersia (kelembaman)",
-                "Gaya tarik kertas lebih kecil dari gaya berat gelas",
-                "Terjadi gaya aksi-reaksi antara gelas dan kertas",
-                "Gelas mengalami percepatan yang sangat tinggi",
+                "Gelas memiliki sifat inersia (kelembaman) untuk mempertahankan posisinya",
+                "Gaya tarik pada kertas jauh lebih kecil dari gaya berat yang dimiliki gelas",
+                "Terjadi gaya aksi-reaksi yang seimbang antara permukaan gelas dan kertas",
+                "Gelas mengalami percepatan yang sangat tinggi sehingga tidak sempat pindah",
             ],
             answer: 0,
         },
         {
-            q: "Perhatikan dua buah benda: Benda A massanya 5 kg dan Benda B massanya 20 kg. Jika keduanya diberi gaya dorong yang sama besar, maka...",
+            q: "Perhatikan dua buah benda di laboratorium sekolah: Benda A memiliki massa 5 kg dan Benda B memiliki massa 20 kg. Jika kedua benda tersebut didorong dengan besar gaya yang sama, maka kesimpulan yang paling tepat adalah...",
             options: [
-                "Benda B akan melaju lebih cepat karena massanya besar",
-                "Benda A akan memiliki percepatan lebih besar karena massanya kecil",
-                "Percepatan kedua benda akan sama karena gayanya sama",
-                "Benda A akan sulit bergerak karena kelembamannya kecil",
+                "Benda B akan melaju lebih cepat karena massanya yang besar memberikan dorongan ekstra",
+                "Benda A akan memiliki percepatan yang lebih besar karena massanya lebih ringan",
+                "Percepatan kedua benda akan persis sama karena gaya dorong yang diberikan tidak berbeda",
+                "Benda A akan lebih sulit untuk digerakkan karena sifat kelembamannya sangat kecil",
             ],
             answer: 1,
         },
         {
-            q: "Sebuah balok bermassa 2 kg diberi gaya sebesar 10 N. Besar percepatan yang dialami balok tersebut adalah...",
-            options: ["0,2 m/s²", "5 m/s²", "12 m/s²", "20 m/s²"],
-            answer: 1,
+            q: "Sebuah balok bermassa 2 kg diletakkan di atas lantai yang licin. Balok tersebut ditarik dengan gaya yang berubah-ubah sehingga menghasilkan data percepatan sebagai berikut: Saat gaya sebesar 4 N diberikan, percepatannya adalah 2 m/s². Saat gaya sebesar 8 N diberikan, percepatannya adalah 4 m/s². Berdasarkan analisis data di atas, berapakah percepatan yang akan dialami balok jika gaya yang diberikan diperbesar menjadi 12 N?",
+            options: ["2 m/s²", "4 m/s²", "6 m/s²", "8 m/s²"],
+            answer: 2,
         },
         {
-            q: "Contoh penerapan Hukum III Newton (Aksi-Reaksi) yang benar dalam kehidupan sehari-hari adalah...",
+            q: "Hukum III Newton menjelaskan tentang adanya pasangan gaya aksi dan reaksi. Contoh penerapan Hukum III Newton yang benar dalam kehidupan sehari-hari di bawah ini adalah...",
             options: [
-                "Tubuh terdorong ke depan saat bus direm mendadak",
-                "Meja tetap diam meskipun tidak ada yang menyentuhnya",
-                "Tangan terasa sakit saat memukul tembok dengan keras",
-                "Kelereng berhenti menggelinding karena gesekan lantai",
+                "Tubuh kita otomatis terdorong ke depan saat bus yang kita tumpangi direm mendadak",
+                "Sebuah meja belajar tetap diam di kamar meskipun tidak ada orang yang menyentuhnya",
+                "Telapak tangan kita terasa sakit atau panas setelah memukul tembok rumah dengan keras",
+                "Kelereng yang menggelinding lama-kelamaan berhenti sendiri karena bergesekan dengan lantai",
             ],
             answer: 2,
         },
         {
-            q: "Saat kita mendayung perahu, kita mendorong air ke arah belakang menggunakan dayung. Akibatnya, perahu bergerak maju ke depan. Hal ini menunjukkan bahwa...",
+            q: "Saat kita mendayung perahu di sungai, kita menggerakkan dayung untuk mendorong air ke arah belakang. Akibatnya, perahu justru bergerak maju ke arah depan. Analisis yang paling tepat mengenai peristiwa ini adalah...",
             options: [
-                "Gaya aksi (dorongan air ke belakang) menghasilkan gaya reaksi (perahu maju ke depan)",
-                "Perahu bergerak karena gaya gravitasi air lebih besar",
-                "Dayung menghilangkan gaya gesek antara perahu dan air",
-                "Resultan gaya pada perahu selalu nol saat mendayung",
+                "Gaya aksi (dorongan dayung ke belakang) menghasilkan gaya reaksi (perahu terdorong maju)",
+                "Perahu dapat bergerak maju karena gaya gravitasi air jauh lebih besar dari gaya berat perahu",
+                "Dayung tersebut berhasil menghilangkan seluruh gaya gesek antara perahu dan permukaan air",
+                "Resultan gaya yang bekerja pada perahu selalu bernilai nol sehingga perahu bisa meluncur bebas",
             ],
             answer: 0,
         },
         {
-            q: "Seorang anak melempar bola kasti ke arah tembok. Bola tersebut memantul kembali ke arah anak tersebut. Pasangan aksi-reaksi pada peristiwa ini adalah...",
+            q: "Sebuah bola basket dijatuhkan di atas meja hingga bola tersebut memantul kembali ke atas. Pasangan gaya aksi dan reaksi yang tepat pada fenomena tersebut adalah...",
             options: [
-                "Berat bola dan gaya tarik bumi",
-                "Gaya dorong bola ke tembok dan gaya dorong balik tembok ke bola",
-                "Gaya gesek udara dan kecepatan bola",
-                "Kecepatan bola saat dilempar dan saat memantul",
+                "Berat bola menekan ke bawah karena gravitasi dan gaya tarik bumi menarik meja ke bawah.",
+                "Bola memberikan gaya aksi ke arah bawah terhadap meja dan meja memberikan gaya reaksi ke atas terhadap bola.",
+                "Gaya gesek udara menahan bola ke arah atas dan kecepatan memantul bola bertambah besar.",
+                "Bola mendorong udara di sekitarnya ke bawah dan meja menarik bola kembali ke bawah.",
             ],
             answer: 1,
         },
         {
-            q: "Sebuah mobil mula-mula diam, kemudian digas sehingga bergerak dengan percepatan 2 m/s². Jika massa mobil adalah 1.000 kg, maka besar gaya mesin yang bekerja pada mobil tersebut adalah...",
-            options: ["500 N", "1.002 N", "2.000 N", "2.000 m/s"],
+            q: "Sebuah mobil bermassa 1.000 kg mula-mula diam di depan lampu merah. Saat lampu hijau menyala, mobil tersebut digas hingga bergerak dengan percepatan tetap sebesar 2 m/s². Besar gaya mesin yang bekerja untuk menggerakkan mobil tersebut adalah...",
+            options: ["500 N", "1.002 N", "2.000 N", "4.000 N"],
             answer: 2,
         },
     ],
@@ -1539,12 +1539,12 @@ function showPageInfoNilai() {
         `,
         showCloseButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Tutup, Saya Paham!',
-        confirmButtonColor: '#64748b',
+        confirmButtonText: "Tutup, Saya Paham!",
+        confirmButtonColor: "#64748b",
         customClass: {
-            popup: 'swal-info-popup',
-            htmlContainer: 'swal-info-container'
-        }
+            popup: "swal-info-popup",
+            htmlContainer: "swal-info-container",
+        },
     });
 }
 
@@ -1601,11 +1601,11 @@ function showPageInfoKkm() {
         `,
         showCloseButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Tutup, Saya Paham!',
-        confirmButtonColor: '#64748b',
+        confirmButtonText: "Tutup, Saya Paham!",
+        confirmButtonColor: "#64748b",
         customClass: {
-            popup: 'swal-info-popup',
-            htmlContainer: 'swal-info-container'
-        }
+            popup: "swal-info-popup",
+            htmlContainer: "swal-info-container",
+        },
     });
 }

@@ -75,8 +75,8 @@ window.unlockNextButtonIfPage = function (pageKeyword) {
 // DOM CONTENT LOADED UTAMA
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    const path = window.location.pathname; 
-    
+    const path = window.location.pathname;
+
     // =========================================================================
     // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
     // =========================================================================
@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLulus("percepatan_completed")) {
             window.unlockSidebar("nav-kuis1");
             window.unlockNextButtonIfPage("percepatan");
-        } 
-        
+        }
+
         // --- BAGIAN B: MODUL GAYA ---
         if (isLulus("kuis1_completed")) {
             window.unlockSidebar("nav-gaya-header");
@@ -125,16 +125,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLulus("hukumnewton_completed")) {
             window.unlockSidebar("nav-kuis2");
             window.unlockNextButtonIfPage("hukumnewton");
-        } 
-        
+        }
+
         // --- BAGIAN C: EVALUASI ---
         if (isLulus("kuis2_completed")) {
             window.unlockSidebar("nav-evaluasi");
         }
     }
 
-    checkAllLocks(); 
-    
+    checkAllLocks();
+
     // =========================================================================
     // 2. SIDEBAR TOGGLE LOGIC & LAIN-LAIN
     // =========================================================================
@@ -202,16 +202,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     openDropdown.classList.remove("show");
             }
         }
-    }; 
-    
+    };
+
     // =========================================================================
     // 3. LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP)
     // =========================================================================
 
-    async function generatePDFPengertianGerak(action = 'download') {
+    async function generatePDFPengertianGerak(action = "download") {
         const { jsPDF } = window.jspdf;
         if (!jsPDF) {
-            if (action === 'download') alert("Library PDF belum siap.");
+            if (action === "download") alert("Library PDF belum siap.");
             return;
         }
 
@@ -225,16 +225,22 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                align: "center",
+            });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Pengertian Gerak", pageWidth / 2, 28, { align: "center" });
+            doc.text("Materi: Pengertian Gerak", pageWidth / 2, 28, {
+                align: "center",
+            });
 
             yPos = 55;
             doc.setTextColor(80, 80, 80);
             doc.setFontSize(9);
             doc.setFont("helvetica", "italic");
-            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            const tgl = new Date().toLocaleDateString("id-ID", {
+                dateStyle: "full",
+            });
             doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
             yPos += 10;
 
@@ -242,7 +248,11 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.setFontSize(11);
             doc.setTextColor(0, 0, 0);
 
-            doc.text("Hasil Klasifikasi Gerak Semu dan Gerak Relatif:", 20, yPos);
+            doc.text(
+                "Hasil Klasifikasi Gerak Semu dan Gerak Relatif:",
+                20,
+                yPos,
+            );
             yPos += 10;
 
             // GERAK SEMU
@@ -250,8 +260,10 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.text("A. Gerak Semu", 20, yPos);
             yPos += 8;
             doc.setFont("helvetica", "normal");
-            
-            const semuCards = document.querySelectorAll('#drop-semu .card-item');
+
+            const semuCards = document.querySelectorAll(
+                "#drop-semu .card-item",
+            );
             if (semuCards.length === 0) {
                 doc.text("- Kosong", 25, yPos);
                 yPos += 8;
@@ -271,8 +283,10 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.text("B. Gerak Relatif", 20, yPos);
             yPos += 8;
             doc.setFont("helvetica", "normal");
-            
-            const relatifCards = document.querySelectorAll('#drop-relatif .card-item');
+
+            const relatifCards = document.querySelectorAll(
+                "#drop-relatif .card-item",
+            );
             if (relatifCards.length === 0) {
                 doc.text("- Kosong", 25, yPos);
                 yPos += 8;
@@ -291,9 +305,9 @@ document.addEventListener("DOMContentLoaded", () => {
             let countBenar = 0;
             let countSalah = 0;
             let countKosong = 0;
-            
-            const allCards = document.querySelectorAll('.card-item');
-            allCards.forEach(card => {
+
+            const allCards = document.querySelectorAll(".card-item");
+            allCards.forEach((card) => {
                 const kunci = card.dataset.answer;
                 const parentType = card.parentElement.dataset.type;
                 if (parentType === kunci) countBenar++;
@@ -314,34 +328,44 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
             doc.setTextColor(150, 150, 150);
-            doc.text("Pengertian Gerak", pageWidth / 2, yPos, { align: "center" });
+            doc.text("Pengertian Gerak", pageWidth / 2, yPos, {
+                align: "center",
+            });
 
             // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
-            if (action === 'download') {
+            if (action === "download") {
                 doc.save("Laporan_Latihan_Pengertian_Gerak.pdf");
-            } else if (action === 'upload') {
-                const pdfBlob = doc.output('blob');
+            } else if (action === "upload") {
+                const pdfBlob = doc.output("blob");
                 const formData = new FormData();
-                formData.append('kode_materi', 'pengertian_gerak'); 
-                formData.append('file_pdf', pdfBlob, 'pengertian_gerak.pdf');
+                formData.append("kode_materi", "pengertian_gerak");
+                formData.append("file_pdf", pdfBlob, "pengertian_gerak.pdf");
 
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const csrfToken = document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute("content");
 
-                fetch('/siswa/simpan-pdf-latihan', {
-                    method: 'POST',
+                fetch("/siswa/simpan-pdf-latihan", {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken
+                        "X-CSRF-TOKEN": csrfToken,
                     },
-                    body: formData
+                    body: formData,
                 })
-                .then(response => response.json())
-                .then(data => console.log('Auto-save PDF Pengertian Gerak sukses:', data))
-                .catch(error => console.error('Auto-save PDF error:', error));
+                    .then((response) => response.json())
+                    .then((data) =>
+                        console.log(
+                            "Auto-save PDF Pengertian Gerak sukses:",
+                            data,
+                        ),
+                    )
+                    .catch((error) =>
+                        console.error("Auto-save PDF error:", error),
+                    );
             }
-
         } catch (err) {
             console.error(err);
-            if (action === 'download') alert("Gagal membuat PDF.");
+            if (action === "download") alert("Gagal membuat PDF.");
         }
     }
 
@@ -351,7 +375,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const cardPool = document.getElementById("card-pool");
         const btnCheck = document.getElementById("btn-check");
         const btnRetry = document.getElementById("btn-retry-pengertiangerak");
-        const btnUnduhPengertian = document.getElementById("btn-unduh-pengertiangerak");
+        const btnUnduhPengertian = document.getElementById(
+            "btn-unduh-pengertiangerak",
+        );
         const STORAGE_KEY = "pengertiangerak_completed";
         let draggedId = null;
 
@@ -412,8 +438,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.simpanProgresKeDatabase(STORAGE_KEY);
 
                     // Memunculkan tombol unduh & Generate PDF ke server
-                    if (btnUnduhPengertian) btnUnduhPengertian.style.display = "inline-block";
-                    generatePDFPengertianGerak('upload');
+                    if (btnUnduhPengertian)
+                        btnUnduhPengertian.style.display = "inline-block";
+                    generatePDFPengertianGerak("upload");
 
                     Swal.fire({
                         title: "Luar Biasa!",
@@ -452,7 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 btnUnduhPengertian.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
                 btnUnduhPengertian.disabled = true;
 
-                await generatePDFPengertianGerak('download');
+                await generatePDFPengertianGerak("download");
 
                 btnUnduhPengertian.innerHTML = originalText;
                 btnUnduhPengertian.disabled = false;
@@ -554,7 +581,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const car = document.getElementById("car");
     const btnStart = document.getElementById("btn-start");
     const btnReset = document.getElementById("btn-reset");
-    const btnLanjutKuis = document.getElementById("btn-lanjut-kuis"); 
+    const btnLanjutKuis = document.getElementById("btn-lanjut-kuis");
 
     const closeModal = document.getElementById("close-modal");
     const resultModal = document.getElementById("result-modal");
@@ -689,7 +716,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const quizFeedback = document.getElementById("quiz-feedback");
     const quizSubmit = document.getElementById("quiz-submit");
     const quizNext = document.getElementById("quiz-next");
-    const quizClose = document.getElementById("quiz-close"); 
+    const quizClose = document.getElementById("quiz-close");
     const modalText = document.getElementById("modal-text");
 
     const quizData = [
@@ -944,7 +971,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Memunculkan tombol unduh & Generate PDF ke server
                 if (btnUnduhAdi) btnUnduhAdi.style.display = "inline-block";
-                generatePDFJarak('upload');
+                generatePDFJarak("upload");
 
                 Swal.fire({
                     title: "Luar Biasa!",
@@ -1028,10 +1055,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return m ? parseFloat(m[0]) : null;
     };
 
-    async function generatePDFJarak(action = 'download') {
+    async function generatePDFJarak(action = "download") {
         const { jsPDF } = window.jspdf;
         if (!jsPDF) {
-            if (action === 'download') alert("Library PDF error.");
+            if (action === "download") alert("Library PDF error.");
             return;
         }
 
@@ -1047,10 +1074,17 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                align: "center",
+            });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Jarak Tempuh dan Perpindahan", pageWidth / 2, 28, { align: "center" });
+            doc.text(
+                "Materi: Jarak Tempuh dan Perpindahan",
+                pageWidth / 2,
+                28,
+                { align: "center" },
+            );
 
             yPos = 55;
 
@@ -1071,9 +1105,13 @@ document.addEventListener("DOMContentLoaded", () => {
             doc.setFontSize(12);
             doc.setTextColor(0, 0, 0);
 
-            const cerita = "Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang 110 meter. Jika Adi mengendarai mobilnya sebanyak 5 putaran, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?";
+            const cerita =
+                "Adi sedang mempersiapkan diri untuk mengikuti lomba balap mobil di sirkuit. Satu putaran lintasan memiliki panjang 110 meter. Jika Adi mengendarai mobilnya sebanyak 5 putaran, maka berapakah total jarak yang ditempuh dan berapa besar perpindahannya?";
 
-            const splitCerita = doc.splitTextToSize(cerita, pageWidth - margin * 2);
+            const splitCerita = doc.splitTextToSize(
+                cerita,
+                pageWidth - margin * 2,
+            );
             doc.text(splitCerita, margin, yPos);
 
             yPos += splitCerita.length * 6 + 5;
@@ -1084,7 +1122,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     const imgData = await getCompressedImage(imgElement);
                     const imgProps = doc.getImageProperties(imgData);
                     const imgWidth = 100;
-                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                    const imgHeight =
+                        (imgProps.height * imgWidth) / imgProps.width;
                     const xImg = (pageWidth - imgWidth) / 2;
 
                     if (yPos + imgHeight > pageHeight - 20) {
@@ -1092,7 +1131,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         yPos = 20;
                     }
 
-                    doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                    doc.addImage(
+                        imgData,
+                        "JPEG",
+                        xImg,
+                        yPos,
+                        imgWidth,
+                        imgHeight,
+                    );
                     yPos += imgHeight + 10;
                 } catch (e) {
                     console.log(e);
@@ -1149,9 +1195,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (val !== "") {
                     if (item.isNum) {
-                        status = extractNum(val) === item.key ? "benar" : "salah";
+                        status =
+                            extractNum(val) === item.key ? "benar" : "salah";
                     } else {
-                        status = val.toUpperCase() === item.key ? "benar" : "salah";
+                        status =
+                            val.toUpperCase() === item.key ? "benar" : "salah";
                     }
                 }
 
@@ -1183,11 +1231,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     doc.setTextColor(100, 100, 100);
                 }
 
-                doc.roundedRect(margin, yPos - 5, pageWidth - margin * 2, 12, 1, 1, "FD");
+                doc.roundedRect(
+                    margin,
+                    yPos - 5,
+                    pageWidth - margin * 2,
+                    12,
+                    1,
+                    1,
+                    "FD",
+                );
 
                 doc.setFont("helvetica", "normal");
                 const textAns = val ? `${val} ${item.unit}` : "(Tidak dijawab)";
-                
+
                 // BARIS PREFIX SUDAH DIHAPUS DI SINI
                 doc.text(textAns, margin + 5, yPos + 3);
 
@@ -1202,40 +1258,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
             doc.setDrawColor(0, 0, 0);
             doc.setFillColor(255, 255, 255);
-            doc.roundedRect(margin, yPos - 5, pageWidth - margin * 2, 10, 1, 1, "S");
+            doc.roundedRect(
+                margin,
+                yPos - 5,
+                pageWidth - margin * 2,
+                10,
+                1,
+                1,
+                "S",
+            );
             doc.text(summaryText, pageWidth / 2, yPos + 2, { align: "center" });
 
             yPos += 15;
             doc.setFontSize(9);
             doc.setTextColor(150, 150, 150);
-            doc.text("Jarak Tempuh dan Perpindahan", pageWidth / 2, yPos, { align: "center" });
+            doc.text("Jarak Tempuh dan Perpindahan", pageWidth / 2, yPos, {
+                align: "center",
+            });
 
             // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
-            if (action === 'download') {
+            if (action === "download") {
                 doc.save("Laporan_Latihan_Jarak_Tempuh_dan_Perpindahan.pdf");
-            } else if (action === 'upload') {
-                const pdfBlob = doc.output('blob');
+            } else if (action === "upload") {
+                const pdfBlob = doc.output("blob");
                 const formData = new FormData();
-                formData.append('kode_materi', 'jarak_tempuh'); // Kode materi sesuai di Controller
-                formData.append('file_pdf', pdfBlob, 'jarak_tempuh_dan_perpindahan.pdf');
+                formData.append("kode_materi", "jarak_tempuh"); // Kode materi sesuai di Controller
+                formData.append(
+                    "file_pdf",
+                    pdfBlob,
+                    "jarak_tempuh_dan_perpindahan.pdf",
+                );
 
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const csrfToken = document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute("content");
 
-                fetch('/siswa/simpan-pdf-latihan', {
-                    method: 'POST',
+                fetch("/siswa/simpan-pdf-latihan", {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken
+                        "X-CSRF-TOKEN": csrfToken,
                     },
-                    body: formData
+                    body: formData,
                 })
-                .then(response => response.json())
-                .then(data => console.log('Auto-save PDF Jarak Tempuh sukses:', data))
-                .catch(error => console.error('Auto-save PDF error:', error));
+                    .then((response) => response.json())
+                    .then((data) =>
+                        console.log("Auto-save PDF Jarak Tempuh sukses:", data),
+                    )
+                    .catch((error) =>
+                        console.error("Auto-save PDF error:", error),
+                    );
             }
-
         } catch (err) {
             console.error(err);
-            if (action === 'download') alert("Gagal membuat PDF.");
+            if (action === "download") alert("Gagal membuat PDF.");
         }
     }
 
@@ -1245,7 +1320,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btnUnduhAdi.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menilai & Membuat PDF...`;
             btnUnduhAdi.disabled = true;
 
-            await generatePDFJarak('download');
+            await generatePDFJarak("download");
 
             btnUnduhAdi.innerHTML = originalText;
             btnUnduhAdi.disabled = false;
@@ -1336,7 +1411,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const path = window.location.pathname;
 
         function isLulus(kodeMateri) {
-            return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
         }
 
         if (isLulus("jarak_completed")) {
@@ -1357,7 +1434,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (path.includes("kelajuandankecepatan")) {
-                const btnNextMateri = document.getElementById("btn-next-materi");
+                const btnNextMateri =
+                    document.getElementById("btn-next-materi");
                 if (btnNextMateri) btnNextMateri.classList.remove("locked");
             }
         }
@@ -1409,7 +1487,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     '.quiz-check[data-row="' + row + '"][data-type="kelajuan"]',
                 );
                 const cekKecepatan = document.querySelector(
-                    '.quiz-check[data-row="' + row + '"][data-type="kecepatan"]',
+                    '.quiz-check[data-row="' +
+                        row +
+                        '"][data-type="kecepatan"]',
                 );
 
                 const dipilih =
@@ -1476,7 +1556,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (nilai === "") {
                         belumDiisi++;
-                    } else if (item.jawaban.includes(nilai)) { 
+                    } else if (item.jawaban.includes(nilai)) {
                         // Metode pengecekan berubah menjadi array includes
                         benar++;
                         input.classList.add("benar");
@@ -1497,7 +1577,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    alert("Kerja Bagus! Semua perhitungan dari video praktik sudah tepat!");
+                    alert(
+                        "Kerja Bagus! Semua perhitungan dari video praktik sudah tepat!",
+                    );
                 }
             } else {
                 const popupText = document.getElementById("popup-latihan-text");
@@ -1511,7 +1593,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         <span class="pemisah">|</span>
                         <span class="hasil-belum">⏳ Belum diisi : ${belumDiisi}</span>
                     `;
-                    popup.querySelector("h3").innerText = "Hasil Evaluasi Praktik";
+                    popup.querySelector("h3").innerText =
+                        "Hasil Evaluasi Praktik";
                     popup.classList.add("show");
                 }
             }
@@ -1582,9 +1665,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 checkAllLocks();
 
                 // Munculkan tombol unduh & Generate PDF ke server
-                const btnUnduhLatihan = document.getElementById("btn-unduh-latihan");
-                if (btnUnduhLatihan) btnUnduhLatihan.style.display = "inline-block";
-                generatePDFKelajuan('upload');
+                const btnUnduhLatihan =
+                    document.getElementById("btn-unduh-latihan");
+                if (btnUnduhLatihan)
+                    btnUnduhLatihan.style.display = "inline-block";
+                generatePDFKelajuan("upload");
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -1595,7 +1680,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    alert("Selamat! Jawaban kamu benar semua. Materi selanjutnya telah terbuka.");
+                    alert(
+                        "Selamat! Jawaban kamu benar semua. Materi selanjutnya telah terbuka.",
+                    );
                 }
             } else {
                 const popupText = document.getElementById("popup-latihan-text");
@@ -1653,10 +1740,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
 
-    async function generatePDFKelajuan(action = 'download') {
+    async function generatePDFKelajuan(action = "download") {
         const { jsPDF } = window.jspdf;
         if (!jsPDF) {
-            if (action === 'download') alert("Library PDF belum siap.");
+            if (action === "download") alert("Library PDF belum siap.");
             return;
         }
 
@@ -1670,23 +1757,30 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                align: "center",
+            });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Kelajuan dan Kecepatan", pageWidth / 2, 28, { align: "center" });
+            doc.text("Materi: Kelajuan dan Kecepatan", pageWidth / 2, 28, {
+                align: "center",
+            });
 
             yPos = 55;
             doc.setTextColor(80, 80, 80);
             doc.setFontSize(9);
             doc.setFont("helvetica", "italic");
-            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            const tgl = new Date().toLocaleDateString("id-ID", {
+                dateStyle: "full",
+            });
             doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
             yPos += 10;
 
             doc.setFont("helvetica", "normal");
             doc.setFontSize(11);
             doc.setTextColor(0, 0, 0);
-            const cerita = "Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Waktu yang dihabiskan untuk seluruh perjalanan adalah 20 sekon. Tentukan kelajuan dan kecepatan anak tersebut!";
+            const cerita =
+                "Seorang anak bersepeda ke arah selatan menuju toko sejauh 120 meter, kemudian berbalik arah ke utara menuju sekolah sejauh 40 meter. Waktu yang dihabiskan untuk seluruh perjalanan adalah 20 sekon. Tentukan kelajuan dan kecepatan anak tersebut!";
             const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
             doc.text(splitCerita, 20, yPos);
             yPos += splitCerita.length * 5 + 5;
@@ -1698,14 +1792,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     const imgData = await getCompressedImage(imgElement);
                     const imgProps = doc.getImageProperties(imgData);
                     const imgWidth = 80;
-                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                    const imgHeight =
+                        (imgProps.height * imgWidth) / imgProps.width;
                     const xImg = (pageWidth - imgWidth) / 2;
-                    doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                    doc.addImage(
+                        imgData,
+                        "JPEG",
+                        xImg,
+                        yPos,
+                        imgWidth,
+                        imgHeight,
+                    );
                     yPos += imgHeight + 10;
                 } catch (e) {}
             }
 
-            let countBenar = 0, countSalah = 0, countKosong = 0;
+            let countBenar = 0,
+                countSalah = 0,
+                countKosong = 0;
 
             const drawAnswerBox = (id, x, y, w = 15, h = 7) => {
                 const inputEl = document.getElementById(id);
@@ -1847,34 +1951,45 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
             doc.setTextColor(150, 150, 150);
-            doc.text("Kelajuan dan Kecepatan", pageWidth / 2, yPos + 20, { align: "center" });
+            doc.text("Kelajuan dan Kecepatan", pageWidth / 2, yPos + 20, {
+                align: "center",
+            });
 
             // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
-            if (action === 'download') {
+            if (action === "download") {
                 doc.save("Laporan_Latihan_Kelajuan_Kecepatan.pdf");
-            } else if (action === 'upload') {
-                const pdfBlob = doc.output('blob');
+            } else if (action === "upload") {
+                const pdfBlob = doc.output("blob");
                 const formData = new FormData();
-                formData.append('kode_materi', 'kelajuan'); // Kode materi sesuai di Controller
-                formData.append('file_pdf', pdfBlob, 'kelajuan_dan_kecepatan.pdf');
+                formData.append("kode_materi", "kelajuan"); // Kode materi sesuai di Controller
+                formData.append(
+                    "file_pdf",
+                    pdfBlob,
+                    "kelajuan_dan_kecepatan.pdf",
+                );
 
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const csrfToken = document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute("content");
 
-                fetch('/siswa/simpan-pdf-latihan', {
-                    method: 'POST',
+                fetch("/siswa/simpan-pdf-latihan", {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken
+                        "X-CSRF-TOKEN": csrfToken,
                     },
-                    body: formData
+                    body: formData,
                 })
-                .then(response => response.json())
-                .then(data => console.log('Auto-save PDF Kelajuan sukses:', data))
-                .catch(error => console.error('Auto-save PDF error:', error));
+                    .then((response) => response.json())
+                    .then((data) =>
+                        console.log("Auto-save PDF Kelajuan sukses:", data),
+                    )
+                    .catch((error) =>
+                        console.error("Auto-save PDF error:", error),
+                    );
             }
-
         } catch (err) {
             console.error(err);
-            if (action === 'download') alert("Gagal membuat PDF.");
+            if (action === "download") alert("Gagal membuat PDF.");
         }
     }
 
@@ -1884,7 +1999,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnUnduhLatihan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
             btnUnduhLatihan.disabled = true;
 
-            await generatePDFKelajuan('download');
+            await generatePDFKelajuan("download");
 
             btnUnduhLatihan.innerHTML = originalText;
             btnUnduhLatihan.disabled = false;
@@ -1909,7 +2024,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (step2) step2.style.display = "none";
 
         numSteps.forEach((btn) => btn.classList.remove("active"));
-        const activeBtn = document.querySelector(`.num-step[data-step="${currentStep}"]`);
+        const activeBtn = document.querySelector(
+            `.num-step[data-step="${currentStep}"]`,
+        );
         if (activeBtn) activeBtn.classList.add("active");
 
         if (currentStep === 1) {
@@ -1992,7 +2109,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Fungsi pembantu untuk mengecek database
         function isLulus(kodeMateri) {
-            return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
         }
 
         // 1. Cek Kelulusan Materi Sebelumnya (Kelajuan & Kecepatan)
@@ -2015,7 +2134,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (path.includes("percepatan")) {
-                const btnNextMateri = document.getElementById("btn-next-materi");
+                const btnNextMateri =
+                    document.getElementById("btn-next-materi");
                 if (btnNextMateri) {
                     btnNextMateri.classList.remove("locked");
                 }
@@ -2028,10 +2148,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================================
     // FUNGSI UTAMA: RENDER PDF (BISA UNTUK DOWNLOAD ATAU UPLOAD BACKGROUND)
     // =========================================================================
-    async function generatePDFPercepatan(action = 'download') {
+    async function generatePDFPercepatan(action = "download") {
         const { jsPDF } = window.jspdf;
         if (!jsPDF) {
-            if (action === 'download') alert("Library PDF belum siap.");
+            if (action === "download") alert("Library PDF belum siap.");
             return;
         }
 
@@ -2045,24 +2165,31 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                align: "center",
+            });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Percepatan", pageWidth / 2, 28, { align: "center" });
+            doc.text("Materi: Percepatan", pageWidth / 2, 28, {
+                align: "center",
+            });
 
             yPos = 55;
 
             doc.setTextColor(80, 80, 80);
             doc.setFontSize(9);
             doc.setFont("helvetica", "italic");
-            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            const tgl = new Date().toLocaleDateString("id-ID", {
+                dateStyle: "full",
+            });
             doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
             yPos += 10;
 
             doc.setFont("helvetica", "normal");
             doc.setFontSize(11);
             doc.setTextColor(0, 0, 0);
-            const cerita = "Sebuah sepeda mula-mula berjalan dengan kecepatan 10 m/s, kemudian pada detik ke-20 kecepatannya menjadi 50 m/s. Berapakah percepatan yang dialami sepeda tersebut?";
+            const cerita =
+                "Sebuah sepeda mula-mula berjalan dengan kecepatan 10 m/s, kemudian pada detik ke-20 kecepatannya menjadi 50 m/s. Berapakah percepatan yang dialami sepeda tersebut?";
             const splitCerita = doc.splitTextToSize(cerita, pageWidth - 40);
             doc.text(splitCerita, 20, yPos);
             yPos += splitCerita.length * 6 + 5;
@@ -2075,29 +2202,47 @@ document.addEventListener("DOMContentLoaded", function () {
                     const imgData = await getCompressedImage(imgElement);
                     const imgProps = doc.getImageProperties(imgData);
                     const imgWidth = 80;
-                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                    const imgHeight =
+                        (imgProps.height * imgWidth) / imgProps.width;
                     const xImg = (pageWidth - imgWidth) / 2;
-                    doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                    doc.addImage(
+                        imgData,
+                        "JPEG",
+                        xImg,
+                        yPos,
+                        imgWidth,
+                        imgHeight,
+                    );
                     yPos += imgHeight + 15;
                 } catch (e) {
                     console.log(e);
                 }
             }
 
-            let countBenar = 0, countSalah = 0, countKosong = 0;
+            let countBenar = 0,
+                countSalah = 0,
+                countKosong = 0;
 
             const drawBox = (id, x, y, w = 15, h = 7) => {
                 const inputEl = document.getElementById(id);
                 const val = inputEl ? inputEl.value.trim() : "";
                 const kunci = kunciPercepatan.find((k) => k.id === id);
 
-                let bg = [245, 245, 245], txt = [100, 100, 100], brd = [200, 200, 200];
+                let bg = [245, 245, 245],
+                    txt = [100, 100, 100],
+                    brd = [200, 200, 200];
 
                 if (val !== "") {
                     if (val === kunci.jawaban) {
-                        bg = [209, 250, 229]; brd = [34, 197, 94]; txt = [21, 128, 61]; countBenar++;
+                        bg = [209, 250, 229];
+                        brd = [34, 197, 94];
+                        txt = [21, 128, 61];
+                        countBenar++;
                     } else {
-                        bg = [254, 226, 226]; brd = [239, 68, 68]; txt = [185, 28, 28]; countSalah++;
+                        bg = [254, 226, 226];
+                        brd = [239, 68, 68];
+                        txt = [185, 28, 28];
+                        countSalah++;
                     }
                 } else {
                     countKosong++;
@@ -2108,7 +2253,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.roundedRect(x, y, w, h, 1, 1, "FD");
                 doc.setFontSize(10);
                 doc.setTextColor(...txt);
-                doc.text(val !== "" ? val : "(?)", x + w / 2, y + 5, { align: "center" });
+                doc.text(val !== "" ? val : "(?)", x + w / 2, y + 5, {
+                    align: "center",
+                });
                 doc.setTextColor(0, 0, 0);
             };
 
@@ -2157,34 +2304,39 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
             doc.setTextColor(150, 150, 150);
-            doc.text("Percepatan", pageWidth / 2, yPos + 20, { align: "center" });
+            doc.text("Percepatan", pageWidth / 2, yPos + 20, {
+                align: "center",
+            });
 
             // LOGIKA PENCABANGAN: DOWNLOAD vs UPLOAD KE SERVER
-            if (action === 'download') {
+            if (action === "download") {
                 doc.save("Laporan_Latihan_Percepatan.pdf");
-            } else if (action === 'upload') {
-                const pdfBlob = doc.output('blob');
+            } else if (action === "upload") {
+                const pdfBlob = doc.output("blob");
                 const formData = new FormData();
-                formData.append('kode_materi', 'percepatan');
-                formData.append('file_pdf', pdfBlob, 'percepatan.pdf');
+                formData.append("kode_materi", "percepatan");
+                formData.append("file_pdf", pdfBlob, "percepatan.pdf");
 
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const csrfToken = document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute("content");
 
-                fetch('/siswa/simpan-pdf-latihan', {
-                    method: 'POST',
+                fetch("/siswa/simpan-pdf-latihan", {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken
+                        "X-CSRF-TOKEN": csrfToken,
                     },
-                    body: formData
+                    body: formData,
                 })
-                .then(response => response.json())
-                .then(data => console.log('Auto-save PDF sukses:', data))
-                .catch(error => console.error('Auto-save PDF error:', error));
+                    .then((response) => response.json())
+                    .then((data) => console.log("Auto-save PDF sukses:", data))
+                    .catch((error) =>
+                        console.error("Auto-save PDF error:", error),
+                    );
             }
-
         } catch (err) {
             console.error(err);
-            if (action === 'download') alert("Gagal membuat PDF.");
+            if (action === "download") alert("Gagal membuat PDF.");
         }
     }
 
@@ -2219,7 +2371,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnCek) {
         btnCek.addEventListener("click", () => {
-            let benar = 0, salah = 0, belum = 0;
+            let benar = 0,
+                salah = 0,
+                belum = 0;
 
             kunciPercepatan.forEach((item) => {
                 const input = document.getElementById(item.id);
@@ -2253,16 +2407,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Buka kunci secara manual via Helper Global
                 if (window.unlockSidebar) window.unlockSidebar("nav-kuis1");
-                if (window.unlockNextButtonIfPage) window.unlockNextButtonIfPage("percepatan");
-                
+                if (window.unlockNextButtonIfPage)
+                    window.unlockNextButtonIfPage("percepatan");
+
                 checkAllLocks();
 
                 // Munculkan Tombol Unduh
-                const btnUnduh = document.getElementById("btn-unduh-percepatan");
+                const btnUnduh = document.getElementById(
+                    "btn-unduh-percepatan",
+                );
                 if (btnUnduh) btnUnduh.style.display = "inline-block";
 
                 // Simpan PDF ke Database secara diam-diam
-                generatePDFPercepatan('upload');
+                generatePDFPercepatan("upload");
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -2273,10 +2430,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         confirmButtonColor: "#2ecc71",
                     });
                 } else {
-                    alert("Selamat! Jawaban kamu benar semua. Akses ke Kuis 1 telah terbuka.");
+                    alert(
+                        "Selamat! Jawaban kamu benar semua. Akses ke Kuis 1 telah terbuka.",
+                    );
                 }
             } else {
-                const popupText = document.getElementById("popup-percepatan-text");
+                const popupText = document.getElementById(
+                    "popup-percepatan-text",
+                );
                 const popupBox = document.getElementById("popup-percepatan");
 
                 if (popupText && popupBox) {
@@ -2312,7 +2473,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnUnduhPercepatan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
             btnUnduhPercepatan.disabled = true;
 
-            await generatePDFPercepatan('download');
+            await generatePDFPercepatan("download");
 
             btnUnduhPercepatan.innerHTML = originalText;
             btnUnduhPercepatan.disabled = false;
@@ -2327,7 +2488,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. Cek penguncian materi berdasarkan database
     function checkAllLocks() {
         function isLulus(kodeMateri) {
-            return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
+            return (
+                window.progresSiswa && window.progresSiswa.includes(kodeMateri)
+            );
         }
 
         if (isLulus("kuis1_completed") && path.includes("pengantargaya")) {
@@ -2335,7 +2498,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if (btnNext) btnNext.classList.remove("locked");
         }
 
-        if (isLulus("pengertiangaya_completed") && path.includes("pengertiangaya")) {
+        if (
+            isLulus("pengertiangaya_completed") &&
+            path.includes("pengertiangaya")
+        ) {
             const btnNext = document.getElementById("btn-next-materi");
             if (btnNext) btnNext.classList.remove("locked");
         }
@@ -2355,7 +2521,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         tombol.classList.add("opsi-terpilih");
-        tombol.setAttribute("data-status", status); 
+        tombol.setAttribute("data-status", status);
         grupTombol.setAttribute("data-terjawab", "true");
     };
 
@@ -2392,10 +2558,14 @@ document.addEventListener("DOMContentLoaded", function () {
             // Eksekusi penilaian
             semuaGrup.forEach((grup) => {
                 grup.setAttribute("data-locked", "true");
-                const opsiTerpilih = grup.querySelector(".tombol-opsi.opsi-terpilih");
+                const opsiTerpilih = grup.querySelector(
+                    ".tombol-opsi.opsi-terpilih",
+                );
                 const semuaTombol = grup.querySelectorAll(".tombol-opsi");
 
-                semuaTombol.forEach((btn) => (btn.style.pointerEvents = "none"));
+                semuaTombol.forEach(
+                    (btn) => (btn.style.pointerEvents = "none"),
+                );
 
                 if (opsiTerpilih) {
                     const status = opsiTerpilih.getAttribute("data-status");
@@ -2423,10 +2593,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
 
-                if (window.unlockSidebar) window.unlockSidebar("nav-resultan-gaya");
+                if (window.unlockSidebar)
+                    window.unlockSidebar("nav-resultan-gaya");
 
                 if (btnUnduhGaya) btnUnduhGaya.style.display = "inline-block";
-                generatePDFPengertianGaya('upload');
+                generatePDFPengertianGaya("upload");
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
@@ -2464,7 +2635,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 grupTombol.removeAttribute("data-locked");
 
                 semuaTombol.forEach((btn) => {
-                    btn.classList.remove("opsi-terpilih", "jawaban-benar", "jawaban-salah");
+                    btn.classList.remove(
+                        "opsi-terpilih",
+                        "jawaban-benar",
+                        "jawaban-salah",
+                    );
                     btn.removeAttribute("data-status");
                     btn.style.pointerEvents = "auto";
                 });
@@ -2473,10 +2648,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 5. Fungsi membuat dan Auto-save/Download PDF
-    async function generatePDFPengertianGaya(action = 'download') {
+    async function generatePDFPengertianGaya(action = "download") {
         const { jsPDF } = window.jspdf;
         if (!jsPDF) {
-            if (action === 'download') alert("Library PDF belum siap.");
+            if (action === "download") alert("Library PDF belum siap.");
             return;
         }
 
@@ -2491,16 +2666,22 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                align: "center",
+            });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Pengertian Gaya", pageWidth / 2, 28, { align: "center" });
+            doc.text("Materi: Pengertian Gaya", pageWidth / 2, 28, {
+                align: "center",
+            });
 
             yPos = 55;
             doc.setTextColor(80, 80, 80);
             doc.setFontSize(9);
             doc.setFont("helvetica", "italic");
-            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            const tgl = new Date().toLocaleDateString("id-ID", {
+                dateStyle: "full",
+            });
             doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
             yPos += 10;
 
@@ -2513,14 +2694,19 @@ document.addEventListener("DOMContentLoaded", function () {
             // Looping soal untuk dirender ke dalam PDF
             semuaKotak.forEach((kotak) => {
                 const soalText = kotak.querySelector(".teks-soal").innerText;
-                const terpilih = kotak.querySelector(".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.opsi-terpilih");
-                
+                const terpilih = kotak.querySelector(
+                    ".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.opsi-terpilih",
+                );
+
                 let status = "kosong";
                 let teksJawaban = "(Tidak dijawab)";
 
                 if (terpilih) {
                     teksJawaban = terpilih.innerText.trim();
-                    if (terpilih.getAttribute("data-status") === "benar" || terpilih.classList.contains("jawaban-benar")) {
+                    if (
+                        terpilih.getAttribute("data-status") === "benar" ||
+                        terpilih.classList.contains("jawaban-benar")
+                    ) {
                         status = "benar";
                         countBenar++;
                     } else {
@@ -2557,10 +2743,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     doc.setTextColor(100, 100, 100);
                 }
 
-                const splitAns = doc.splitTextToSize(teksJawaban, pageWidth - 50);
-                const rectHeight = (splitAns.length * 5) + 6;
+                const splitAns = doc.splitTextToSize(
+                    teksJawaban,
+                    pageWidth - 50,
+                );
+                const rectHeight = splitAns.length * 5 + 6;
 
-                doc.roundedRect(20, yPos - 5, pageWidth - 40, rectHeight, 1, 1, "FD");
+                doc.roundedRect(
+                    20,
+                    yPos - 5,
+                    pageWidth - 40,
+                    rectHeight,
+                    1,
+                    1,
+                    "FD",
+                );
                 doc.setFont("helvetica", "normal");
                 doc.text(splitAns, 25, yPos + 1);
 
@@ -2586,34 +2783,44 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
             doc.setTextColor(150, 150, 150);
-            doc.text("Pengertian Gaya", pageWidth / 2, yPos, { align: "center" });
+            doc.text("Pengertian Gaya", pageWidth / 2, yPos, {
+                align: "center",
+            });
 
             // Pengiriman via Fetch untuk Auto-save atau Unduh Langsung
-            if (action === 'download') {
+            if (action === "download") {
                 doc.save("Laporan_Latihan_Pengertian_Gaya.pdf");
-            } else if (action === 'upload') {
-                const pdfBlob = doc.output('blob');
+            } else if (action === "upload") {
+                const pdfBlob = doc.output("blob");
                 const formData = new FormData();
-                formData.append('kode_materi', 'pengertian_gaya');
-                formData.append('file_pdf', pdfBlob, 'pengertian_gaya.pdf');
+                formData.append("kode_materi", "pengertian_gaya");
+                formData.append("file_pdf", pdfBlob, "pengertian_gaya.pdf");
 
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const csrfToken = document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute("content");
 
-                fetch('/siswa/simpan-pdf-latihan', {
-                    method: 'POST',
+                fetch("/siswa/simpan-pdf-latihan", {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken
+                        "X-CSRF-TOKEN": csrfToken,
                     },
-                    body: formData
+                    body: formData,
                 })
-                .then(response => response.json())
-                .then(data => console.log('Auto-save PDF Pengertian Gaya sukses:', data))
-                .catch(error => console.error('Auto-save PDF error:', error));
+                    .then((response) => response.json())
+                    .then((data) =>
+                        console.log(
+                            "Auto-save PDF Pengertian Gaya sukses:",
+                            data,
+                        ),
+                    )
+                    .catch((error) =>
+                        console.error("Auto-save PDF error:", error),
+                    );
             }
-
         } catch (err) {
             console.error(err);
-            if (action === 'download') alert("Gagal membuat PDF.");
+            if (action === "download") alert("Gagal membuat PDF.");
         }
     }
 
@@ -2623,7 +2830,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnUnduhGaya.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
             btnUnduhGaya.disabled = true;
 
-            await generatePDFPengertianGaya('download');
+            await generatePDFPengertianGaya("download");
 
             btnUnduhGaya.innerHTML = originalText;
             btnUnduhGaya.disabled = false;
@@ -2636,20 +2843,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
 
     if (path.includes("resultangaya")) {
-        const btnSubmitResultan = document.getElementById("btn-submit-resultangaya");
-        const btnRetryResultan = document.getElementById("btn-retry-resultangaya");
-        const btnUnduhResultan = document.getElementById("btn-unduh-resultangaya");
+        const btnSubmitResultan = document.getElementById(
+            "btn-submit-resultangaya",
+        );
+        const btnRetryResultan = document.getElementById(
+            "btn-retry-resultangaya",
+        );
+        const btnUnduhResultan = document.getElementById(
+            "btn-unduh-resultangaya",
+        );
         const btnNext = document.getElementById("btn-next-materi");
 
         let originalHref = "";
-        
+
         // Logika Gembok Tombol Navigasi
         if (btnNext) {
             originalHref = btnNext.getAttribute("href") || "";
 
             if (btnNext.classList.contains("locked")) {
-                btnNext.removeAttribute("href"); 
-                btnNext.style.backgroundColor = "#6c757d"; 
+                btnNext.removeAttribute("href");
+                btnNext.style.backgroundColor = "#6c757d";
                 btnNext.style.borderColor = "#6c757d";
                 btnNext.style.cursor = "not-allowed";
             }
@@ -2670,8 +2883,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const kunciJawaban = {
-            1: 40, 
-            2: 0, 
+            1: 40,
+            2: 0,
         };
 
         // Evaluasi Jawaban Latihan
@@ -2720,12 +2933,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (correctCount === 2) {
                     window.progresSiswa = window.progresSiswa || [];
-                    if (!window.progresSiswa.includes("resultangaya_completed")) {
+                    if (
+                        !window.progresSiswa.includes("resultangaya_completed")
+                    ) {
                         window.progresSiswa.push("resultangaya_completed");
                     }
 
                     if (window.simpanProgresKeDatabase) {
-                        window.simpanProgresKeDatabase("resultangaya_completed");
+                        window.simpanProgresKeDatabase(
+                            "resultangaya_completed",
+                        );
                     }
 
                     if (window.unlockSidebar) {
@@ -2734,15 +2951,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (btnNext) {
                         btnNext.classList.remove("locked");
-                        btnNext.setAttribute("href", originalHref); 
-                        btnNext.style.backgroundColor = ""; 
+                        btnNext.setAttribute("href", originalHref);
+                        btnNext.style.backgroundColor = "";
                         btnNext.style.borderColor = "";
                         btnNext.style.cursor = "pointer";
                     }
 
                     // Tampilkan Tombol PDF & Upload Otomatis
-                    if (btnUnduhResultan) btnUnduhResultan.style.display = "inline-block";
-                    generatePDFResultanGaya('upload');
+                    if (btnUnduhResultan)
+                        btnUnduhResultan.style.display = "inline-block";
+                    generatePDFResultanGaya("upload");
 
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
@@ -2773,14 +2991,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 const input2 = document.getElementById("jawaban2");
 
                 if (input1) {
-                    input1.readOnly = false; 
-                    input1.classList.remove("jawaban-benar", "jawaban-salah"); 
-                    input1.value = ""; 
+                    input1.readOnly = false;
+                    input1.classList.remove("jawaban-benar", "jawaban-salah");
+                    input1.value = "";
                 }
                 if (input2) {
-                    input2.readOnly = false; 
-                    input2.classList.remove("jawaban-benar", "jawaban-salah"); 
-                    input2.value = ""; 
+                    input2.readOnly = false;
+                    input2.classList.remove("jawaban-benar", "jawaban-salah");
+                    input2.value = "";
                 }
             });
         }
@@ -2813,7 +3031,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Pembuatan Dokumen PDF
-        async function generatePDFResultanGaya(action = 'download') {
+        async function generatePDFResultanGaya(action = "download") {
             const { jsPDF } = window.jspdf;
             if (!jsPDF) return;
 
@@ -2828,31 +3046,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(22);
-                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+                doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                    align: "center",
+                });
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "normal");
-                doc.text("Materi: Resultan Gaya", pageWidth / 2, 28, { align: "center" });
+                doc.text("Materi: Resultan Gaya", pageWidth / 2, 28, {
+                    align: "center",
+                });
 
                 yPos = 55;
                 doc.setTextColor(80, 80, 80);
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "italic");
-                const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+                const tgl = new Date().toLocaleDateString("id-ID", {
+                    dateStyle: "full",
+                });
                 doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
                 yPos += 10;
 
                 const images = document.querySelectorAll(".gambar-soal");
-                
+
                 // Fungsi perender blok soal
-                const drawSoal = async (num, soalText, imgEl, inputId, expectedKey) => {
+                const drawSoal = async (
+                    num,
+                    soalText,
+                    imgEl,
+                    inputId,
+                    expectedKey,
+                ) => {
                     doc.setFont("helvetica", "bold");
                     doc.setFontSize(11);
                     doc.setTextColor(0, 0, 0);
                     doc.text(`Latihan ${num}`, 20, yPos);
                     yPos += 6;
-                    
+
                     doc.setFont("helvetica", "normal");
-                    const splitText = doc.splitTextToSize(soalText, pageWidth - 40);
+                    const splitText = doc.splitTextToSize(
+                        soalText,
+                        pageWidth - 40,
+                    );
                     doc.text(splitText, 20, yPos);
                     yPos += splitText.length * 5 + 5;
 
@@ -2861,9 +3094,17 @@ document.addEventListener("DOMContentLoaded", function () {
                             const imgData = await getCompressedImage(imgEl);
                             const imgProps = doc.getImageProperties(imgData);
                             const imgWidth = 80;
-                            const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                            const imgHeight =
+                                (imgProps.height * imgWidth) / imgProps.width;
                             const xImg = (pageWidth - imgWidth) / 2;
-                            doc.addImage(imgData, "JPEG", xImg, yPos, imgWidth, imgHeight);
+                            doc.addImage(
+                                imgData,
+                                "JPEG",
+                                xImg,
+                                yPos,
+                                imgWidth,
+                                imgHeight,
+                            );
                             yPos += imgHeight + 10;
                         } catch (e) {}
                     }
@@ -2871,38 +3112,68 @@ document.addEventListener("DOMContentLoaded", function () {
                     const inputEl = document.getElementById(inputId);
                     const val = inputEl ? inputEl.value.trim() : "";
                     const isBenar = Number(val) === expectedKey && val !== "";
-                    
+
                     doc.setFont("helvetica", "bold");
                     doc.text("Penyelesaian:", 20, yPos);
                     doc.setFont("helvetica", "normal");
                     doc.text("Resultan Gaya (N) =", 50, yPos);
-                    
-                    let bgColor = val === "" ? [245, 245, 245] : (isBenar ? [209, 250, 229] : [254, 226, 226]);
-                    let borderColor = val === "" ? [200, 200, 200] : (isBenar ? [34, 197, 94] : [239, 68, 68]);
-                    let textColor = val === "" ? [100, 100, 100] : (isBenar ? [21, 128, 61] : [185, 28, 28]);
+
+                    let bgColor =
+                        val === ""
+                            ? [245, 245, 245]
+                            : isBenar
+                              ? [209, 250, 229]
+                              : [254, 226, 226];
+                    let borderColor =
+                        val === ""
+                            ? [200, 200, 200]
+                            : isBenar
+                              ? [34, 197, 94]
+                              : [239, 68, 68];
+                    let textColor =
+                        val === ""
+                            ? [100, 100, 100]
+                            : isBenar
+                              ? [21, 128, 61]
+                              : [185, 28, 28];
 
                     doc.setFillColor(...bgColor);
                     doc.setDrawColor(...borderColor);
                     doc.roundedRect(85, yPos - 4, 30, 7, 1, 1, "FD");
-                    
+
                     doc.setTextColor(...textColor);
                     doc.text(val || "(?)", 100, yPos + 1, { align: "center" });
                     doc.setTextColor(0, 0, 0);
-                    
+
                     yPos += 15;
                 };
 
-                await drawSoal(1, "Alif dan Fajar sedang memindahkan sebuah kotak. Alif berusaha mendorongnya dengan gaya 15 N, sedangkan Fajar berusaha menariknya dengan gaya 25 N. Berapakah resultan gaya yang diterima kotak?", images[0], "jawaban1", 40);
-                await drawSoal(2, "Fajar dan Fadhil memberi gaya yang sama besar yaitu 30 N dengan arah yang berlawanan. Berapakah gaya yang diterima meja?", images[1], "jawaban2", 0);
+                await drawSoal(
+                    1,
+                    "Alif dan Fajar sedang memindahkan sebuah kotak. Alif berusaha mendorongnya dengan gaya 15 N, sedangkan Fajar berusaha menariknya dengan gaya 25 N. Berapakah resultan gaya yang diterima kotak?",
+                    images[0],
+                    "jawaban1",
+                    40,
+                );
+                await drawSoal(
+                    2,
+                    "Fajar dan Fadhil memberi gaya yang sama besar yaitu 30 N dengan arah yang berlawanan. Berapakah gaya yang diterima meja?",
+                    images[1],
+                    "jawaban2",
+                    0,
+                );
 
                 const input1 = document.getElementById("jawaban1");
                 const input2 = document.getElementById("jawaban2");
-                let countBenar = 0, countSalah = 0, countKosong = 0;
-                
+                let countBenar = 0,
+                    countSalah = 0,
+                    countKosong = 0;
+
                 [input1, input2].forEach((inp, idx) => {
                     let val = inp ? inp.value.trim() : "";
                     if (val === "") countKosong++;
-                    else if (Number(val) === kunciJawaban[idx+1]) countBenar++;
+                    else if (Number(val) === kunciJawaban[idx + 1])
+                        countBenar++;
                     else countSalah++;
                 });
 
@@ -2916,30 +3187,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 doc.setDrawColor(0, 0, 0);
                 doc.setFillColor(255, 255, 255);
                 doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-                doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+                doc.text(summaryText, pageWidth / 2, yPos + 7, {
+                    align: "center",
+                });
 
                 yPos += 20;
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(150, 150, 150);
-                doc.text("Resultan Gaya", pageWidth / 2, yPos, { align: "center" });
+                doc.text("Resultan Gaya", pageWidth / 2, yPos, {
+                    align: "center",
+                });
 
-                if (action === 'download') {
+                if (action === "download") {
                     doc.save("Laporan_Latihan_Resultan_Gaya.pdf");
-                } else if (action === 'upload') {
-                    const pdfBlob = doc.output('blob');
+                } else if (action === "upload") {
+                    const pdfBlob = doc.output("blob");
                     const formData = new FormData();
-                    formData.append('kode_materi', 'resultan_gaya');
-                    formData.append('file_pdf', pdfBlob, 'resultan_gaya.pdf');
+                    formData.append("kode_materi", "resultan_gaya");
+                    formData.append("file_pdf", pdfBlob, "resultan_gaya.pdf");
 
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                    fetch('/siswa/simpan-pdf-latihan', {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': csrfToken },
-                        body: formData
+                    const csrfToken = document
+                        .querySelector('meta[name="csrf-token"]')
+                        ?.getAttribute("content");
+                    fetch("/siswa/simpan-pdf-latihan", {
+                        method: "POST",
+                        headers: { "X-CSRF-TOKEN": csrfToken },
+                        body: formData,
                     }).catch(console.error);
                 }
-
             } catch (err) {
                 console.error(err);
             }
@@ -2950,9 +3226,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const originalText = btnUnduhResultan.innerHTML;
                 btnUnduhResultan.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
                 btnUnduhResultan.disabled = true;
-                
-                await generatePDFResultanGaya('download');
-                
+
+                await generatePDFResultanGaya("download");
+
                 btnUnduhResultan.innerHTML = originalText;
                 btnUnduhResultan.disabled = false;
             });
@@ -3000,8 +3276,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (containerMacam && poolMacam && btnCekMacam) {
-            const zones = document.querySelectorAll("#drag-container-macam .drop-zone, #card-pool-macam");
-            const cards = document.querySelectorAll("#card-pool-macam .card-item");
+            const zones = document.querySelectorAll(
+                "#drag-container-macam .drop-zone, #card-pool-macam",
+            );
+            const cards = document.querySelectorAll(
+                "#card-pool-macam .card-item",
+            );
             const modal = document.getElementById("modal-macam");
             const modalText = document.getElementById("modal-text-macam");
             const closeModal = document.getElementById("close-modal-macam");
@@ -3035,7 +3315,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.classList.remove("over");
 
-                    const id = e.dataTransfer.getData("text/plain") || draggedIdMacam;
+                    const id =
+                        e.dataTransfer.getData("text/plain") || draggedIdMacam;
                     const card = document.getElementById(id);
 
                     if (card) {
@@ -3078,7 +3359,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.simpanProgresKeDatabase("macamgaya_completed");
                     }
 
-                    if (window.unlockSidebar) window.unlockSidebar("nav-newton");
+                    if (window.unlockSidebar)
+                        window.unlockSidebar("nav-newton");
 
                     if (btnNext) {
                         btnNext.classList.remove("locked");
@@ -3088,8 +3370,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         btnNext.style.cursor = "pointer";
                     }
 
-                    if (btnUnduhMacam) btnUnduhMacam.style.display = "inline-block";
-                    generatePDFMacamGaya('upload');
+                    if (btnUnduhMacam)
+                        btnUnduhMacam.style.display = "inline-block";
+                    generatePDFMacamGaya("upload");
 
                     if (typeof Swal !== "undefined") {
                         Swal.fire({
@@ -3138,7 +3421,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (e.target === modal) modal.style.display = "none";
             });
 
-            async function generatePDFMacamGaya(action = 'download') {
+            async function generatePDFMacamGaya(action = "download") {
                 const { jsPDF } = window.jspdf;
                 if (!jsPDF) return;
 
@@ -3153,16 +3436,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     doc.setTextColor(255, 255, 255);
                     doc.setFont("helvetica", "bold");
                     doc.setFontSize(22);
-                    doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+                    doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                        align: "center",
+                    });
                     doc.setFontSize(12);
                     doc.setFont("helvetica", "normal");
-                    doc.text("Materi: Macam-Macam Gaya", pageWidth / 2, 28, { align: "center" });
+                    doc.text("Materi: Macam-Macam Gaya", pageWidth / 2, 28, {
+                        align: "center",
+                    });
 
                     yPos = 55;
                     doc.setTextColor(80, 80, 80);
                     doc.setFontSize(9);
                     doc.setFont("helvetica", "italic");
-                    const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+                    const tgl = new Date().toLocaleDateString("id-ID", {
+                        dateStyle: "full",
+                    });
                     doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
                     yPos += 10;
 
@@ -3173,20 +3462,28 @@ document.addEventListener("DOMContentLoaded", function () {
                     yPos += 10;
 
                     const printCategory = (title, selector) => {
-                        if (yPos > pageHeight - 30) { doc.addPage(); yPos = 20; }
+                        if (yPos > pageHeight - 30) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
                         doc.setFont("helvetica", "bold");
                         doc.text(title, 20, yPos);
                         yPos += 8;
                         doc.setFont("helvetica", "normal");
-                        
-                        const dropCards = document.querySelectorAll(`${selector} .card-item`);
+
+                        const dropCards = document.querySelectorAll(
+                            `${selector} .card-item`,
+                        );
                         if (dropCards.length === 0) {
                             doc.text("- Kosong", 25, yPos);
                             yPos += 8;
                         } else {
                             dropCards.forEach((card, index) => {
                                 const text = `${index + 1}. ${card.innerText.trim()}`;
-                                const splitText = doc.splitTextToSize(text, pageWidth - 40);
+                                const splitText = doc.splitTextToSize(
+                                    text,
+                                    pageWidth - 40,
+                                );
                                 doc.text(splitText, 25, yPos);
                                 yPos += splitText.length * 6 + 2;
                             });
@@ -3194,15 +3491,31 @@ document.addEventListener("DOMContentLoaded", function () {
                         yPos += 5;
                     };
 
-                    printCategory("A. Gaya Gesek", '.drop-zone[data-type="gesek"]');
-                    printCategory("B. Gaya Gravitasi", '.drop-zone[data-type="gravitasi"]');
-                    printCategory("C. Gaya Pegas", '.drop-zone[data-type="pegas"]');
-                    printCategory("D. Gaya Otot", '.drop-zone[data-type="otot"]');
+                    printCategory(
+                        "A. Gaya Gesek",
+                        '.drop-zone[data-type="gesek"]',
+                    );
+                    printCategory(
+                        "B. Gaya Gravitasi",
+                        '.drop-zone[data-type="gravitasi"]',
+                    );
+                    printCategory(
+                        "C. Gaya Pegas",
+                        '.drop-zone[data-type="pegas"]',
+                    );
+                    printCategory(
+                        "D. Gaya Otot",
+                        '.drop-zone[data-type="otot"]',
+                    );
 
-                    let countBenar = 0, countSalah = 0, countKosong = 0;
-                    const allCards = document.querySelectorAll('#drag-container-macam .card-item, #card-pool-macam .card-item');
-                    
-                    allCards.forEach(card => {
+                    let countBenar = 0,
+                        countSalah = 0,
+                        countKosong = 0;
+                    const allCards = document.querySelectorAll(
+                        "#drag-container-macam .card-item, #card-pool-macam .card-item",
+                    );
+
+                    allCards.forEach((card) => {
                         const kunci = card.dataset.answer;
                         const parentType = card.parentElement.dataset.type;
                         if (parentType === kunci) countBenar++;
@@ -3210,7 +3523,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         else countSalah++;
                     });
 
-                    if (yPos > pageHeight - 30) { doc.addPage(); yPos = 20; }
+                    if (yPos > pageHeight - 30) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
 
                     doc.setFont("helvetica", "bold");
                     doc.setTextColor(0, 0, 0);
@@ -3218,27 +3534,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     doc.setDrawColor(0, 0, 0);
                     doc.setFillColor(255, 255, 255);
                     doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-                    doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+                    doc.text(summaryText, pageWidth / 2, yPos + 7, {
+                        align: "center",
+                    });
 
                     yPos += 20;
                     doc.setFontSize(9);
                     doc.setFont("helvetica", "normal");
                     doc.setTextColor(150, 150, 150);
-                    doc.text("Macam-Macam Gaya", pageWidth / 2, yPos, { align: "center" });
+                    doc.text("Macam-Macam Gaya", pageWidth / 2, yPos, {
+                        align: "center",
+                    });
 
-                    if (action === 'download') {
+                    if (action === "download") {
                         doc.save("Laporan_Latihan_Macam_Macam_Gaya.pdf");
-                    } else if (action === 'upload') {
-                        const pdfBlob = doc.output('blob');
+                    } else if (action === "upload") {
+                        const pdfBlob = doc.output("blob");
                         const formData = new FormData();
-                        formData.append('kode_materi', 'macam_macam_gaya');
-                        formData.append('file_pdf', pdfBlob, 'macam_macam_gaya.pdf');
+                        formData.append("kode_materi", "macam_macam_gaya");
+                        formData.append(
+                            "file_pdf",
+                            pdfBlob,
+                            "macam_macam_gaya.pdf",
+                        );
 
-                        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                        fetch('/siswa/simpan-pdf-latihan', {
-                            method: 'POST',
-                            headers: { 'X-CSRF-TOKEN': csrfToken },
-                            body: formData
+                        const csrfToken = document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute("content");
+                        fetch("/siswa/simpan-pdf-latihan", {
+                            method: "POST",
+                            headers: { "X-CSRF-TOKEN": csrfToken },
+                            body: formData,
                         }).catch(console.error);
                     }
                 } catch (err) {
@@ -3252,7 +3578,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     btnUnduhMacam.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
                     btnUnduhMacam.disabled = true;
 
-                    await generatePDFMacamGaya('download');
+                    await generatePDFMacamGaya("download");
 
                     btnUnduhMacam.innerHTML = originalText;
                     btnUnduhMacam.disabled = false;
@@ -3301,7 +3627,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        if (window.progresSiswa && window.progresSiswa.includes("hukumnewton_completed")) {
+        if (
+            window.progresSiswa &&
+            window.progresSiswa.includes("hukumnewton_completed")
+        ) {
             if (btnNext) {
                 btnNext.classList.remove("locked");
                 btnNext.setAttribute("href", originalHref);
@@ -3314,7 +3643,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (videoPraktikGaya && timeButtonsGaya.length > 0) {
             timeButtonsGaya.forEach((btn) => {
                 btn.addEventListener("click", function () {
-                    const targetTime = parseFloat(this.getAttribute("data-time"));
+                    const targetTime = parseFloat(
+                        this.getAttribute("data-time"),
+                    );
                     if (!isNaN(targetTime)) {
                         videoPraktikGaya.currentTime = targetTime;
                         videoPraktikGaya.play();
@@ -3324,19 +3655,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (btnCekNewton) {
-            document.querySelectorAll(".grup-opsi .tombol-opsi").forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    const grup = btn.parentElement;
-                    if (grup.classList.contains("terkunci")) return;
+            document
+                .querySelectorAll(".grup-opsi .tombol-opsi")
+                .forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const grup = btn.parentElement;
+                        if (grup.classList.contains("terkunci")) return;
 
-                    grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                        b.classList.remove("dipilih"),
-                    );
+                        grup.querySelectorAll(".tombol-opsi").forEach((b) =>
+                            b.classList.remove("dipilih"),
+                        );
 
-                    btn.classList.add("dipilih");
-                    grup.dataset.jawaban = btn.dataset.pilihan;
+                        btn.classList.add("dipilih");
+                        grup.dataset.jawaban = btn.dataset.pilihan;
+                    });
                 });
-            });
 
             btnCekNewton.addEventListener("click", () => {
                 let benar = 0;
@@ -3372,9 +3705,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (jawabanSiswa === kunci) {
                         benar++;
-                        grup.querySelector(`[data-pilihan="${jawabanSiswa}"]`).classList.add("jawaban-benar");
+                        grup.querySelector(
+                            `[data-pilihan="${jawabanSiswa}"]`,
+                        ).classList.add("jawaban-benar");
                     } else {
-                        const btnSalah = grup.querySelector(`[data-pilihan="${jawabanSiswa}"]`);
+                        const btnSalah = grup.querySelector(
+                            `[data-pilihan="${jawabanSiswa}"]`,
+                        );
                         if (btnSalah) btnSalah.classList.add("jawaban-salah");
                     }
                 });
@@ -3394,7 +3731,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (benar === totalSoal) {
                     window.progresSiswa = window.progresSiswa || [];
-                    if (!window.progresSiswa.includes("hukumnewton_completed")) {
+                    if (
+                        !window.progresSiswa.includes("hukumnewton_completed")
+                    ) {
                         window.progresSiswa.push("hukumnewton_completed");
                     }
 
@@ -3425,8 +3764,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         }, 1200);
                     }
 
-                    if (btnUnduhNewton) btnUnduhNewton.style.display = "inline-block";
-                    generatePDFHukumNewton('upload');
+                    if (btnUnduhNewton)
+                        btnUnduhNewton.style.display = "inline-block";
+                    generatePDFHukumNewton("upload");
                 }
             });
 
@@ -3435,7 +3775,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     delete grup.dataset.jawaban;
                     grup.classList.remove("terkunci");
                     grup.querySelectorAll(".tombol-opsi").forEach((b) =>
-                        b.classList.remove("dipilih", "jawaban-benar", "jawaban-salah"),
+                        b.classList.remove(
+                            "dipilih",
+                            "jawaban-benar",
+                            "jawaban-salah",
+                        ),
                     );
                 });
 
@@ -3451,7 +3795,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Fungsi Auto-save dan Download PDF
-            async function generatePDFHukumNewton(action = 'download') {
+            async function generatePDFHukumNewton(action = "download") {
                 const { jsPDF } = window.jspdf;
                 if (!jsPDF) return;
 
@@ -3466,26 +3810,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     doc.setTextColor(255, 255, 255);
                     doc.setFont("helvetica", "bold");
                     doc.setFontSize(22);
-                    doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, { align: "center" });
+                    doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
+                        align: "center",
+                    });
                     doc.setFontSize(12);
                     doc.setFont("helvetica", "normal");
-                    doc.text("Materi: Hukum Newton", pageWidth / 2, 28, { align: "center" });
+                    doc.text("Materi: Hukum Newton", pageWidth / 2, 28, {
+                        align: "center",
+                    });
 
                     yPos = 55;
                     doc.setTextColor(80, 80, 80);
                     doc.setFontSize(9);
                     doc.setFont("helvetica", "italic");
-                    const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+                    const tgl = new Date().toLocaleDateString("id-ID", {
+                        dateStyle: "full",
+                    });
                     doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
                     yPos += 10;
 
-                    let countBenar = 0, countSalah = 0, countKosong = 0;
+                    let countBenar = 0,
+                        countSalah = 0,
+                        countKosong = 0;
                     const semuaKotak = document.querySelectorAll(".kotak-kuis");
 
                     semuaKotak.forEach((kotak) => {
-                        const soalText = kotak.querySelector(".teks-soal").innerText;
-                        const terpilih = kotak.querySelector(".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.dipilih");
-                        
+                        const soalText =
+                            kotak.querySelector(".teks-soal").innerText;
+                        const terpilih = kotak.querySelector(
+                            ".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.dipilih",
+                        );
+
                         let status = "kosong";
                         let teksJawaban = "(Tidak dijawab)";
 
@@ -3509,7 +3864,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         doc.setFont("helvetica", "bold");
                         doc.setTextColor(0, 0, 0);
-                        const splitSoal = doc.splitTextToSize(soalText, pageWidth - 40);
+                        const splitSoal = doc.splitTextToSize(
+                            soalText,
+                            pageWidth - 40,
+                        );
                         doc.text(splitSoal, 20, yPos);
                         yPos += splitSoal.length * 6;
 
@@ -3527,10 +3885,21 @@ document.addEventListener("DOMContentLoaded", function () {
                             doc.setTextColor(100, 100, 100);
                         }
 
-                        const splitAns = doc.splitTextToSize(teksJawaban, pageWidth - 50);
-                        const rectHeight = (splitAns.length * 5) + 6;
+                        const splitAns = doc.splitTextToSize(
+                            teksJawaban,
+                            pageWidth - 50,
+                        );
+                        const rectHeight = splitAns.length * 5 + 6;
 
-                        doc.roundedRect(20, yPos - 5, pageWidth - 40, rectHeight, 1, 1, "FD");
+                        doc.roundedRect(
+                            20,
+                            yPos - 5,
+                            pageWidth - 40,
+                            rectHeight,
+                            1,
+                            1,
+                            "FD",
+                        );
                         doc.setFont("helvetica", "normal");
                         doc.text(splitAns, 25, yPos + 1);
 
@@ -3549,31 +3918,40 @@ document.addEventListener("DOMContentLoaded", function () {
                     doc.setDrawColor(0, 0, 0);
                     doc.setFillColor(255, 255, 255);
                     doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-                    doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
+                    doc.text(summaryText, pageWidth / 2, yPos + 7, {
+                        align: "center",
+                    });
 
                     yPos += 20;
                     doc.setFontSize(9);
                     doc.setFont("helvetica", "normal");
                     doc.setTextColor(150, 150, 150);
-                    doc.text("Hukum Newton", pageWidth / 2, yPos, { align: "center" });
+                    doc.text("Hukum Newton", pageWidth / 2, yPos, {
+                        align: "center",
+                    });
 
-                    if (action === 'download') {
+                    if (action === "download") {
                         doc.save("Laporan_Latihan_Hukum_Newton.pdf");
-                    } else if (action === 'upload') {
-                        const pdfBlob = doc.output('blob');
+                    } else if (action === "upload") {
+                        const pdfBlob = doc.output("blob");
                         const formData = new FormData();
-                        formData.append('kode_materi', 'hukum_newton'); // Kode materi GuruController
-                        formData.append('file_pdf', pdfBlob, 'hukum_newton.pdf');
+                        formData.append("kode_materi", "hukum_newton"); // Kode materi GuruController
+                        formData.append(
+                            "file_pdf",
+                            pdfBlob,
+                            "hukum_newton.pdf",
+                        );
 
-                        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                        const csrfToken = document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute("content");
 
-                        fetch('/siswa/simpan-pdf-latihan', {
-                            method: 'POST',
-                            headers: { 'X-CSRF-TOKEN': csrfToken },
-                            body: formData
+                        fetch("/siswa/simpan-pdf-latihan", {
+                            method: "POST",
+                            headers: { "X-CSRF-TOKEN": csrfToken },
+                            body: formData,
                         }).catch(console.error);
                     }
-
                 } catch (err) {
                     console.error(err);
                 }
@@ -3585,7 +3963,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     btnUnduhNewton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
                     btnUnduhNewton.disabled = true;
 
-                    await generatePDFHukumNewton('download');
+                    await generatePDFHukumNewton("download");
 
                     btnUnduhNewton.innerHTML = originalText;
                     btnUnduhNewton.disabled = false;
@@ -3598,13 +3976,16 @@ document.addEventListener("DOMContentLoaded", function () {
 // Js Kuis 1 (Materi Gerak)
 document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".body-kuis-fullscreen")) {
-        
         // FUNGSI MENYIMPAN NILAI KE DATABASE
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                console.error(
+                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
+                );
                 return;
             }
 
@@ -3622,7 +4003,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then((data) => console.log(data.message))
-                .catch((error) => console.error("Error menyimpan nilai:", error));
+                .catch((error) =>
+                    console.error("Error menyimpan nilai:", error),
+                );
         }
 
         // 1. DATA SOAL KUIS 1
@@ -3785,11 +4168,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Modifikasi tombol di soal terakhir
             if (currentIndex === questions.length - 1) {
-                nextBtn.innerHTML = '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
+                nextBtn.innerHTML =
+                    '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
                 nextBtn.style.backgroundColor = "#2ecc71";
                 nextBtn.style.borderColor = "#2ecc71";
             } else {
-                nextBtn.innerHTML = '<span class="nav-text-hide">Selanjutnya</span> →';
+                nextBtn.innerHTML =
+                    '<span class="nav-text-hide">Selanjutnya</span> →';
                 nextBtn.style.backgroundColor = "";
                 nextBtn.style.borderColor = "";
             }
@@ -3833,7 +4218,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: titleText,
                 html: messageHtml,
                 icon: iconType,
-                confirmButtonText: tuntas ? "Lanjut Materi Berikutnya 🚀" : "Belajar Ulang 📚",
+                confirmButtonText: tuntas
+                    ? "Lanjut Materi Berikutnya 🚀"
+                    : "Belajar Ulang 📚",
                 confirmButtonColor: tuntas ? "#f95c50" : "#65676b",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,123,0.4)`,
@@ -3860,7 +4247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function hitungDanKirimNilai() {
             let score = 0;
-            let arrayDetail = []; 
+            let arrayDetail = [];
 
             questions.forEach((q, i) => {
                 let isBenar = userAnswers[i] === q.answer;
@@ -3942,13 +4329,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const halamanKuis2 = document.getElementById("halaman-kuis-2");
 
     if (halamanKuis2) {
-        
         // FUNGSI MENYIMPAN NILAI KE DATABASE
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                console.error(
+                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
+                );
                 return;
             }
 
@@ -3966,7 +4356,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then((data) => console.log(data.message))
-                .catch((error) => console.error("Error menyimpan nilai:", error));
+                .catch((error) =>
+                    console.error("Error menyimpan nilai:", error),
+                );
         }
 
         // 2. DATA SOAL
@@ -4143,11 +4535,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             if (nextBtn) {
                 if (currentIndex === questions.length - 1) {
-                    nextBtn.innerHTML = '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
+                    nextBtn.innerHTML =
+                        '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
                     nextBtn.style.backgroundColor = "#2ecc71";
                     nextBtn.style.borderColor = "#2ecc71";
                 } else {
-                    nextBtn.innerHTML = '<span class="nav-text-hide">Selanjutnya</span> →';
+                    nextBtn.innerHTML =
+                        '<span class="nav-text-hide">Selanjutnya</span> →';
                     nextBtn.style.backgroundColor = "";
                     nextBtn.style.borderColor = "";
                 }
@@ -4201,7 +4595,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: titleText,
                 html: messageHtml,
                 icon: iconType,
-                confirmButtonText: tuntas ? "Lanjut ke Dashboard 🏠" : "Pelajari Ulang 📚",
+                confirmButtonText: tuntas
+                    ? "Lanjut ke Dashboard 🏠"
+                    : "Pelajari Ulang 📚",
                 confirmButtonColor: tuntas ? "#2ecc71" : "#65676b",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,123,0.4)`,
@@ -4226,7 +4622,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function hitungDanTampilkanNilai() {
             let score = 0;
-            let arrayDetail = []; 
+            let arrayDetail = [];
 
             questions.forEach((q, i) => {
                 let isBenar = userAnswers[i] === q.answer;
@@ -4313,13 +4709,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const halamanEvaluasi = document.getElementById("halaman-evaluasi");
 
     if (halamanEvaluasi) {
-        
         // FUNGSI MENYIMPAN NILAI KE DATABASE
         function simpanNilaiKeDatabase(jenisKuis, nilaiSkala100, arrayDetail) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute("content");
 
             if (!csrfToken) {
-                console.error("CSRF Token tidak ditemukan. Nilai gagal disimpan.");
+                console.error(
+                    "CSRF Token tidak ditemukan. Nilai gagal disimpan.",
+                );
                 return;
             }
 
@@ -4337,33 +4736,35 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then((data) => console.log(data.message))
-                .catch((error) => console.error("Error menyimpan nilai:", error));
+                .catch((error) =>
+                    console.error("Error menyimpan nilai:", error),
+                );
         }
 
         // 1. DATA SOAL EVALUASI
         const questions = [
             {
-                q: "Seorang peserta didik sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika terminal dianggap sebagai titik acuan, maka pernyataan yang benar adalah...",
+                q: "Seorang anak sedang duduk di dalam bus yang melaju meninggalkan terminal. Jika kita menggunakan terminal sebagai titik acuannya, maka pernyataan yang paling tepat di bawah ini adalah...",
                 options: [
                     "Bus diam terhadap terminal",
-                    "Peserta didik diam terhadap terminal",
-                    "Peserta didik bergerak terhadap bus",
-                    "Terminal bergerak menjauhi bus (gerak semu)",
+                    "Anak tersebut diam terhadap terminal",
+                    "Anak tersebut bergerak terhadap bus",
+                    "Terminal bergerak menjauhi bus (terjadi gerak semu)",
                 ],
                 answer: 3,
             },
             {
-                q: "Saat melakukan perjalanan jauh dengan mobil, Andi melihat deretan tiang listrik di pinggir jalan seolah-olah berlari ke arah belakang mobil. Peristiwa ini membuktikan bahwa...",
+                q: "Saat kamu naik mobil di jalan raya, kamu akan melihat tiang-tiang listrik di pinggir jalan seolah-olah bergerak berlari ke arah belakang mobil. Fenomena ini membuktikan bahwa...",
                 options: [
-                    "Tiang listrik mengalami gerak relatif terhadap bumi",
-                    "Terjadi gerak semu karena Andi berada di dalam bingkai acuan yang bergerak",
-                    "Mobil Andi diam terhadap tiang listrik",
-                    "Kecepatan tiang listrik lebih besar dari kecepatan mobil",
+                    "Tiang listrik sebenarnya bergerak aktif terhadap bumi",
+                    "Terjadi gerak semu karena kamu berada di dalam mobil (acuan) yang bergerak",
+                    "Mobil kamu sebenarnya diam terhadap tiang listrik tersebut",
+                    "Kecepatan tiang listrik jauh lebih besar daripada kecepatan mobil kamu",
                 ],
                 answer: 1,
             },
             {
-                q: "Seekor kucing berlari ke arah timur sejauh 9 meter, kemudian berbalik arah ke barat sejauh 4 meter. Total jarak dan besar perpindahan kucing tersebut secara berturut-turut adalah...",
+                q: "Seekor kucing berlari ke arah timur sejauh 9 meter, lalu tiba-tiba berbalik arah ke barat sejauh 4 meter. Total jarak dan besar perpindahan yang dialami kucing tersebut secara berturut-turut adalah...",
                 options: [
                     "13 meter dan 5 meter",
                     "13 meter dan 13 meter",
@@ -4373,27 +4774,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 answer: 0,
             },
             {
-                q: "Seorang pelari maraton menempuh lintasan lari yang berbentuk lingkaran dengan keliling 400 meter. Jika ia berhasil menyelesaikan tepat 2 putaran dan kembali ke posisi start, maka...",
+                q: "Seorang pelari maraton menempuh lintasan lari yang berbentuk lingkaran dengan keliling tepat 400 meter. Jika ia berhasil menyelesaikan 2 putaran penuh dan kembali lagi ke posisi start, maka...",
                 options: [
                     "Jarak yang ditempuh adalah 0 meter",
                     "Perpindahannya adalah 800 meter",
                     "Jarak yang ditempuh 800 meter dan perpindahannya 0 meter",
-                    "Pelari tersebut tidak mengalami gerak karena kembali ke awal",
+                    "Pelari tersebut tidak dianggap bergerak karena kembali ke awal",
                 ],
                 answer: 2,
             },
             {
-                q: "Perbedaan utama yang menjadikan kecepatan sebagai besaran vektor, sedangkan kelajuan sebagai besaran skalar adalah...",
+                q: "Di dalam IPA, kita mengenal istilah kelajuan dan kecepatan. Hal utama yang membedakan antara kecepatan (besaran vektor) dengan kelajuan (besaran skalar) adalah...",
                 options: [
-                    "Kecepatan hanya memiliki nilai tanpa arah",
-                    "Kecepatan sangat bergantung pada arah perpindahan benda",
+                    "Kecepatan hanya memiliki nilai saja tanpa arah",
+                    "Kecepatan sangat bergantung pada nilai dan arah perpindahan benda",
                     "Kelajuan dihitung berdasarkan posisi awal dan akhir saja",
                     "Kelajuan selalu bernilai negatif jika benda berbalik arah",
                 ],
                 answer: 1,
             },
             {
-                q: "Sebuah motor bergerak dengan kecepatan tetap 20 m/s ke arah utara selama 10 sekon. Besar perpindahan yang dialami motor tersebut adalah...",
+                q: "Sebuah sepeda motor bergerak lurus dengan kecepatan tetap sebesar 20 m/s ke arah utara. Setelah motor tersebut bergerak selama 10 sekon, besar perpindahan yang dialaminya adalah...",
                 options: [
                     "2 meter ke arah utara",
                     "30 meter ke arah utara",
@@ -4403,7 +4804,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 answer: 2,
             },
             {
-                q: "Perhatikan fenomena berikut:\n(1) Buah kelapa jatuh dari pohonnya ke tanah.\n(2) Mobil yang sedang melaju kencang tiba-tiba direm hingga berhenti.\n(3) Pesawat lepas landas hingga mencapai ketinggian tertentu.\n\nPeristiwa yang menunjukkan terjadinya percepatan positif (gerak dipercepat) ditunjukkan oleh nomor...",
+                q: "Perhatikan beberapa peristiwa berikut ini:\n(1) Buah kelapa jatuh bebas dari pohonnya menuju tanah.\n(2) Mobil yang melaju kencang tiba-tiba direm hingga berhenti di depan lampu merah.\n(3) Pesawat terbang bergerak semakin cepat saat lepas landas (take off).\n\nPeristiwa yang menunjukkan terjadinya percepatan positif (gerak dipercepat) ditunjukkan oleh nomor...",
                 options: [
                     "(1) dan (2)",
                     "(1) dan (3)",
@@ -4413,123 +4814,118 @@ document.addEventListener("DOMContentLoaded", function () {
                 answer: 1,
             },
             {
-                q: "Sebuah sepeda yang awalnya bergerak dengan kecepatan 2 m/s dipercepat hingga kecepatannya menjadi 10 m/s dalam waktu 4 sekon. Besar percepatan sepeda tersebut adalah...",
+                q: "Sebuah sepeda yang awalnya bergerak santai dengan kecepatan 2 m/s, kemudian dikayuh lebih kencang hingga kecepatannya menjadi 10 m/s dalam waktu 4 sekon. Besar percepatan sepeda tersebut adalah...",
                 options: ["2 m/s²", "4 m/s²", "8 m/s²", "12 m/s²"],
                 answer: 0,
             },
             {
-                q: "Manakah dari peristiwa berikut yang merupakan pengaruh gaya terhadap perubahan bentuk benda?",
+                q: "Gaya dapat memberikan beberapa pengaruh terhadap suatu benda. Peristiwa di bawah ini yang menunjukkan pengaruh gaya berupa perubahan bentuk benda adalah...",
                 options: [
-                    "Menepis bola voli yang sedang melambung",
-                    "Mengerem sepeda saat mendekati lampu merah",
-                    "Menekan kaleng minuman bekas hingga penyok",
-                    "Menendang bola hingga menggelinding jauh",
+                    "Menepis bola voli yang sedang melambung di udara",
+                    "Mengerem sepeda saat jalanan sedang ramai",
+                    "Meremas kaleng minuman bekas hingga penyok",
+                    "Menendang bola plastik hingga menggelinding jauh",
                 ],
                 answer: 2,
             },
             {
-                q: "Dua orang anak, Rian dan Dino, sedang mendorong lemari kayu. Rian mendorong ke kanan dengan gaya 50 N, sedangkan Dino menarik dari arah berlawanan (ke arah kiri) dengan gaya 30 N. Resultan gaya yang bekerja pada lemari adalah...",
+                q: "Rian dan Dino sedang mencoba memindahkan sebuah lemari kayu. Rian mendorong lemari ke arah kanan dengan gaya 50 N. Di saat yang sama, Dino menahan lemari tersebut dengan mendorongnya dari arah berlawanan (ke arah kiri) dengan gaya 30 N. Resultan gaya yang bekerja pada lemari adalah...",
                 options: [
                     "80 N ke arah kanan",
                     "20 N ke arah kanan",
                     "20 N ke arah kiri",
-                    "0 N (lemari diam)",
+                    "0 N (lemari tidak bergerak)",
                 ],
                 answer: 1,
             },
             {
-                q: "Tiga buah gaya bekerja pada sebuah kotak: ke kanan, ke kanan, dan ke kiri. Keadaan kotak tersebut adalah...",
+                q: "Tiga buah gaya bekerja pada sebuah kotak kayu yang berada di atas lantai. Gaya pertama sebesar 20 N ke arah kanan, gaya kedua sebesar 30 N ke arah kanan, dan gaya ketiga sebesar 50 N ke arah kiri. Berdasarkan analisis kamu, keadaan kotak tersebut adalah...",
                 options: [
-                    "Bergerak ke kanan dengan gaya 80 N",
-                    "Bergerak ke kiri dengan gaya 10 N",
-                    "Tetap diam karena resultan gayanya nol",
-                    "Bergerak ke kanan dengan gaya 40 N",
+                    "Bergerak ke arah kanan karena ditarik oleh dua gaya sekaligus",
+                    "Bergerak ke arah kiri karena gaya kirinya memiliki angka paling besar",
+                    "Tetap diam di tempatnya karena total resultan gayanya sama dengan nol",
+                    "Bergerak bolak-balik karena gaya di kanan dan kiri saling tarik-menarik",
                 ],
                 answer: 2,
             },
             {
-                q: "Mengapa lantai di gedung olahraga sering kali memiliki permukaan yang agak kasar atau menggunakan sepatu beralas karet bagi pemainnya?",
+                q: "Mengapa lantai di gedung olahraga sengaja dibuat agak kasar dan para pemain basket disarankan menggunakan sepatu beralas karet?",
                 options: [
-                    "Untuk memperkecil gaya gesek agar pemain mudah terpeleset",
-                    "Untuk memperbesar gaya gesek agar pemain tidak mudah jatuh saat berlari",
-                    "Agar gaya gravitasi bumi terhadap pemain berkurang",
-                    "Untuk mengubah gaya gesek kinetis menjadi gaya pegas",
+                    "Untuk memperkecil gaya gesek agar pemain mudah meluncur",
+                    "Untuk memperbesar gaya gesek agar pemain tidak mudah terpeleset saat berlari",
+                    "Agar gaya gravitasi bumi yang diterima oleh pemain berkurang",
+                    "Untuk mengubah gaya gesek kinetis menjadi gaya pegas yang elastis",
                 ],
                 answer: 1,
             },
             {
-                q: "Seorang pemanah menarik tali busur sehingga melengkung sebelum melepaskan anak panah. Gaya yang menyebabkan anak panah tersebut melesat ke depan adalah...",
+                q: "Ketika seorang atlet panahan menarik tali busur hingga melengkung lalu melepaskannya, anak panah akan melesat maju dengan kencang. Jenis gaya yang menyebabkan anak panah tersebut dapat melesat ke depan adalah...",
                 options: [
-                    "Gaya Otot",
-                    "Gaya Gesek",
-                    "Gaya Pegas",
-                    "Gaya Gravitasi",
+                    "Gaya otot",
+                    "Gaya gesek",
+                    "Gaya pegas",
+                    "Gaya gravitasi",
                 ],
                 answer: 2,
             },
             {
-                q: "Berdasarkan Hukum I Newton, jika sebuah kertas di bawah gelas ditarik secara sangat cepat dan mendatar, maka gelas akan tetap diam di posisinya. Hal ini terjadi karena...",
+                q: "Berdasarkan Hukum I Newton, jika selembar kertas yang berada di bawah gelas kaca ditarik secara sangat cepat dan mendatar, maka gelas akan tetap diam di posisinya semula. Hal ini terjadi karena...",
                 options: [
-                    "Gelas memiliki sifat inersia (kelembaman)",
-                    "Gaya tarik kertas lebih kecil dari gaya berat gelas",
-                    "Terjadi gaya aksi-reaksi antara gelas dan kertas",
-                    "Gelas mengalami percepatan yang sangat tinggi",
+                    "Gelas memiliki sifat inersia (kelembaman) untuk mempertahankan posisinya",
+                    "Gaya tarik pada kertas jauh lebih kecil dari gaya berat yang dimiliki gelas",
+                    "Terjadi gaya aksi-reaksi yang seimbang antara permukaan gelas dan kertas",
+                    "Gelas mengalami percepatan yang sangat tinggi sehingga tidak sempat pindah",
                 ],
                 answer: 0,
             },
             {
-                q: "Perhatikan dua buah benda: Benda A massanya 5 kg dan Benda B massanya 20 kg. Jika keduanya diberi gaya dorong yang sama besar, maka...",
+                q: "Perhatikan dua buah benda di laboratorium sekolah: Benda A memiliki massa 5 kg dan Benda B memiliki massa 20 kg. Jika kedua benda tersebut didorong dengan besar gaya yang sama, maka kesimpulan yang paling tepat adalah...",
                 options: [
-                    "Benda B akan melaju lebih cepat karena massanya besar",
-                    "Benda A akan memiliki percepatan lebih besar karena massanya kecil",
-                    "Percepatan kedua benda akan sama karena gayanya sama",
-                    "Benda A akan sulit bergerak karena kelembamannya kecil",
+                    "Benda B akan melaju lebih cepat karena massanya yang besar memberikan dorongan ekstra",
+                    "Benda A akan memiliki percepatan yang lebih besar karena massanya lebih ringan",
+                    "Percepatan kedua benda akan persis sama karena gaya dorong yang diberikan tidak berbeda",
+                    "Benda A akan lebih sulit untuk digerakkan karena sifat kelembamannya sangat kecil",
                 ],
                 answer: 1,
             },
             {
-                q: "Dua buah balok, balok A (2 kg) dan balok B (10 kg), diberikan gaya dorong yang sama besar. Pernyataan yang paling tepat mengenai percepatan kedua balok adalah...",
-                options: [
-                    "Balok B bergerak lebih cepat karena massanya besar", 
-                    "Balok A memiliki percepatan lebih besar karena massanya lebih ringan", 
-                    "Kedua balok memiliki percepatan yang sama karena gayanya sama", 
-                    "Balok A tetap diam karena kelembamannya lebih besar"
-                ],
-                answer: 1,
+                q: "Sebuah balok bermassa 2 kg diletakkan di atas lantai yang licin. Balok tersebut ditarik dengan gaya yang berubah-ubah sehingga menghasilkan data percepatan sebagai berikut: Saat gaya sebesar 4 N diberikan, percepatannya adalah 2 m/s². Saat gaya sebesar 8 N diberikan, percepatannya adalah 4 m/s². Berdasarkan analisis data di atas, berapakah percepatan yang akan dialami balok jika gaya yang diberikan diperbesar menjadi 12 N?",
+                options: ["2 m/s²", "4 m/s²", "6 m/s²", "8 m/s²"],
+                answer: 2,
             },
             {
-                q: "Contoh penerapan Hukum III Newton (Aksi-Reaksi) yang benar dalam kehidupan sehari-hari adalah...",
+                q: "Hukum III Newton menjelaskan tentang adanya pasangan gaya aksi dan reaksi. Contoh penerapan Hukum III Newton yang benar dalam kehidupan sehari-hari di bawah ini adalah...",
                 options: [
-                    "Tubuh terdorong ke depan saat bus direm mendadak",
-                    "Meja tetap diam meskipun tidak ada yang menyentuhnya",
-                    "Tangan terasa sakit saat memukul tembok dengan keras",
-                    "Kelereng berhenti menggelinding karena gesekan lantai",
+                    "Tubuh kita otomatis terdorong ke depan saat bus yang kita tumpangi direm mendadak",
+                    "Sebuah meja belajar tetap diam di kamar meskipun tidak ada orang yang menyentuhnya",
+                    "Telapak tangan kita terasa sakit atau panas setelah memukul tembok rumah dengan keras",
+                    "Kelereng yang menggelinding lama-kelamaan berhenti sendiri karena bergesekan dengan lantai",
                 ],
                 answer: 2,
             },
             {
-                q: "Saat kita mendayung perahu, kita mendorong air ke arah belakang menggunakan dayung. Akibatnya, perahu bergerak maju ke depan. Hal ini menunjukkan bahwa...",
+                q: "Saat kita mendayung perahu di sungai, kita menggerakkan dayung untuk mendorong air ke arah belakang. Akibatnya, perahu justru bergerak maju ke arah depan. Analisis yang paling tepat mengenai peristiwa ini adalah...",
                 options: [
-                    "Gaya aksi (dorongan air ke belakang) menghasilkan gaya reaksi (perahu maju ke depan)",
-                    "Perahu bergerak karena gaya gravitasi air lebih besar",
-                    "Dayung menghilangkan gaya gesek antara perahu dan air",
-                    "Resultan gaya pada perahu selalu nol saat mendayung",
+                    "Gaya aksi (dorongan dayung ke belakang) menghasilkan gaya reaksi (perahu terdorong maju)",
+                    "Perahu dapat bergerak maju karena gaya gravitasi air jauh lebih besar dari gaya berat perahu",
+                    "Dayung tersebut berhasil menghilangkan seluruh gaya gesek antara perahu dan permukaan air",
+                    "Resultan gaya yang bekerja pada perahu selalu bernilai nol sehingga perahu bisa meluncur bebas",
                 ],
                 answer: 0,
             },
             {
-                q: "Seorang anak melempar bola kasti ke arah tembok. Bola tersebut memantul kembali ke arah anak tersebut. Pasangan aksi-reaksi pada peristiwa ini adalah...",
+                q: "Sebuah bola basket dijatuhkan di atas meja hingga bola tersebut memantul kembali ke atas. Pasangan gaya aksi dan reaksi yang tepat pada fenomena tersebut adalah...",
                 options: [
-                    "Berat bola dan gaya tarik bumi",
-                    "Gaya dorong bola ke tembok dan gaya dorong balik tembok ke bola",
-                    "Gaya gesek udara dan kecepatan bola",
-                    "Kecepatan bola saat dilempar dan saat memantul",
+                    "Berat bola menekan ke bawah karena gravitasi dan gaya tarik bumi menarik meja ke bawah.",
+                    "Bola memberikan gaya aksi ke arah bawah terhadap meja dan meja memberikan gaya reaksi ke atas terhadap bola.",
+                    "Gaya gesek udara menahan bola ke arah atas dan kecepatan memantul bola bertambah besar.",
+                    "Bola mendorong udara di sekitarnya ke bawah dan meja menarik bola kembali ke bawah.",
                 ],
                 answer: 1,
             },
             {
-                q: "Sebuah mobil mula-mula diam, kemudian digas sehingga bergerak dengan percepatan 2 m/s². Jika massa mobil adalah 1.000 kg, maka besar gaya mesin yang bekerja pada mobil tersebut adalah...",
-                options: ["500 N", "1.002 N", "2.000 N", "2.000 m/s"],
+                q: "Sebuah mobil bermassa 1.000 kg mula-mula diam di depan lampu merah. Saat lampu hijau menyala, mobil tersebut digas hingga bergerak dengan percepatan tetap sebesar 2 m/s². Besar gaya mesin yang bekerja untuk menggerakkan mobil tersebut adalah...",
+                options: ["500 N", "1.002 N", "2.000 N", "4.000 N"],
                 answer: 2,
             },
         ];
@@ -4540,7 +4936,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const scorePerSoal = 5;
 
         const navSoal = document.getElementById("navSoal-evaluasi");
-        const questionNumber = document.getElementById("questionNumber-evaluasi");
+        const questionNumber = document.getElementById(
+            "questionNumber-evaluasi",
+        );
         const questionText = document.getElementById("questionText-evaluasi");
         const optionsList = document.getElementById("optionsList-evaluasi");
         const prevBtn = document.getElementById("prevBtn-evaluasi");
@@ -4610,11 +5008,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             if (nextBtn) {
                 if (currentIndex === questions.length - 1) {
-                    nextBtn.innerHTML = '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
+                    nextBtn.innerHTML =
+                        '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
                     nextBtn.style.backgroundColor = "#2ecc71";
                     nextBtn.style.borderColor = "#2ecc71";
                 } else {
-                    nextBtn.innerHTML = '<span class="nav-text-hide">Selanjutnya</span> →';
+                    nextBtn.innerHTML =
+                        '<span class="nav-text-hide">Selanjutnya</span> →';
                     nextBtn.style.backgroundColor = "";
                     nextBtn.style.borderColor = "";
                 }
@@ -4658,9 +5058,8 @@ document.addEventListener("DOMContentLoaded", function () {
             Swal.fire({
                 title: "Evaluasi Selesai!",
                 html: `
-          <div style="font-size: 1.1rem; margin-bottom: 10px;">Skor Akhir Kamu:</div>
+          <div style="font-size: 1.1rem; margin-bottom: 10px;">Nilai Akhir Kamu:</div>
           <div style="font-size: 3rem; font-weight: bold; color: #ff6b01;">${score}</div>
-          <div style="font-size: 0.9rem; color: #666;">dari total ${totalScore} poin</div>
         `,
                 icon: "info",
                 confirmButtonText: "Kembali ke Beranda 🏠",
@@ -4676,7 +5075,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function hitungNilai() {
             let jumlahBenar = 0;
-            let arrayDetail = []; 
+            let arrayDetail = [];
 
             questions.forEach((q, i) => {
                 let isBenar = userAnswers[i] === q.answer;
