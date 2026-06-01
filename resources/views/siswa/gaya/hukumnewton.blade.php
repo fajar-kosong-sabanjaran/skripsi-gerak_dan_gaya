@@ -178,7 +178,7 @@
             </div>
 
             <div class="inner-box">
-                <h3>Mari Mencoba</h3>
+                <h3>Ayo Berlatih</h3>
 
                 <div class="kotak-instruksi">
                     <p>

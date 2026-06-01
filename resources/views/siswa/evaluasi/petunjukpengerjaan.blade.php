@@ -22,7 +22,7 @@
     <ol>
         <li>Evaluasi ini terdiri dari <b>20 soal pilihan ganda.</b></li>
         <li>Setiap soal memiliki bobot sebanyak <b>5 poin.</b></li>
-        <li>Waktu pengerjaan selama <b>30 menit.</b></li>
+        <li>Waktu pengerjaan selama <b>40 menit.</b></li>
         <li>Jawablah soal dengan <b>benar</b> dan <b>tidak terburu-buru</b>.</li>
         <li>
         Ketika semua soal selesai dijawab, silahkan klik tombol

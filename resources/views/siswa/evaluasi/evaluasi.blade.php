@@ -57,7 +57,7 @@
 
                 <div class="evaluasi-timer-box">
                     <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span
-                        id="timer-evaluasi">45:00</span>
+                        id="timer-evaluasi">40:00</span>
                 </div>
 
                 <button class="evaluasi-btn-finish" id="finishBtn-evaluasi">

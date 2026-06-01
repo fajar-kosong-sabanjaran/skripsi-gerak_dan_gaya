@@ -126,66 +126,95 @@
                         <i class="fas fa-info-circle"></i> Petunjuk Pengerjaan:
                     </p>
                     <ul>
-                        <li>Pilih salah satu jawaban yang menurutmu paling tepat.</li>
-                        <li>Pastikan menjawab semua soal, lalu klik tombol "Cek Jawaban".</li>
+                        <li>Isilah kotak-kotak teka-teki silang berikut sesuai dengan petunjuk mendatar dan menurun.</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
 
-                <div class="kotak-kuis-gaya">
-                    <p class="teks-soal">1. Apa yang dimaksud dengan gaya?</p>
-                    <div class="grup-opsi">
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Energi yang membuat benda menjadi
-                            panas</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">B. Tarikan atau dorongan yang
-                            menyebabkan benda bergerak</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">C. Kemampuan benda untuk diam
-                            selamanya</button>
-                    </div>
-                </div>
+                <div class="tts-container">
+                    <div class="tts-board">
+                        <div class="tts-cell" style="grid-area: 1 / 5;"><span class="tts-num">3</span><input type="text"
+                                maxlength="1" class="tts-input" data-answer="B"></div>
+                        <div class="tts-cell" style="grid-area: 2 / 5;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="E"></div>
 
-                <div class="kotak-kuis-gaya">
-                    <p class="teks-soal">2. Saat kamu bermain tanah liat atau plastisin lalu menekannya menjadi bentuk
-                        pipih, gaya yang kamu berikan menyebabkan...</p>
-                    <div class="grup-opsi">
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Benda berubah arah</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">B. Benda berubah bentuk</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">C. Benda berubah kecepatan</button>
-                    </div>
-                </div>
+                        <div class="tts-cell" style="grid-area: 2 / 3;"><span class="tts-num">2</span><input type="text"
+                                maxlength="1" class="tts-input" data-answer="A"></div>
 
-                <div class="kotak-kuis-gaya">
-                    <p class="teks-soal">3. Kiper menepis bola yang ditendang lawan sehingga bola tidak masuk ke gawang
-                        melainkan melenceng ke samping. Peristiwa ini menunjukkan gaya dapat...</p>
-                    <div class="grup-opsi">
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">A. Mengubah arah gerak benda</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">B. Mengubah bentuk benda</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">C. Menambah massa benda</button>
-                    </div>
-                </div>
+                        <div class="tts-cell" style="grid-area: 3 / 1;"><span class="tts-num">1</span><input type="text"
+                                maxlength="1" class="tts-input" data-answer="D"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 2;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="O"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 3;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="R"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 4;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="O"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 5;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="N"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 6;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="G"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 7;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="A"></div>
+                        <div class="tts-cell" style="grid-area: 3 / 8;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="N"></div>
 
-                <div class="kotak-kuis-gaya">
-                    <p class="teks-soal">4. Ayah menginjak rem mobil saat mendekati lampu merah. Akibat gaya gesek rem
-                        tersebut, mobil mengalami...</p>
-                    <div class="grup-opsi">
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">A. Perubahan bentuk</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'salah')">B. Perubahan arah</button>
-                        <button class="tombol-opsi" onclick="pilihOpsi(this, 'benar')">C. Perubahan kecepatan (menjadi
-                            lambat)</button>
+                        <div class="tts-cell" style="grid-area: 4 / 3;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="A"></div>
+                        <div class="tts-cell" style="grid-area: 5 / 3;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="H"></div>
+
+                        <div class="tts-cell" style="grid-area: 4 / 5;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="T"></div>
+                        <div class="tts-cell" style="grid-area: 5 / 5;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="U"></div>
+
+                        <div class="tts-cell" style="grid-area: 6 / 5;"><span class="tts-num">4</span><input
+                                type="text" maxlength="1" class="tts-input" data-answer="K"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 6;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="E"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 7;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="C"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 8;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="E"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 9;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="P"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 10;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="A"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 11;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="T"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 12;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="A"></div>
+                        <div class="tts-cell" style="grid-area: 6 / 13;"><input type="text" maxlength="1"
+                                class="tts-input" data-answer="N"></div>
+                    </div>
+
+                    <div class="tts-clues">
+                        <div class="clue-col">
+                            <h4>Mendatar</h4>
+                            <p><b>1.</b> Tarikan atau _____ yang menyebabkan benda bergerak.</p>
+                            <p><b>4.</b> Menginjak rem mobil saat mendekati lampu merah mengakibatkan perubahan _____</p>
+                        </div>
+                        <div class="clue-col">
+                            <h4>Menurun</h4>
+                            <p><b>2.</b> Kiper menepis bola yang ditendang lawan sehingga melenceng membuktikan gaya dapat
+                                mengubah _____ gerak benda.</p>
+                            <p><b>3.</b> Saat menekan tanah liat atau plastisin menjadi pipih, gaya menyebabkan perubahan
+                                _____ benda.</p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="action-container-pengertiangaya" style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="button" class="btn-cek-pengertiangaya" id="btn-submit-pengertiangaya">Cek
                         Jawaban</button>
-                    <button type="button" class="btn-reset-pengertiangaya" id="btn-retry-pengertiangaya">Coba Lagi</button>
+                    <button type="button" class="btn-reset-pengertiangaya" id="btn-retry-pengertiangaya">Coba
+                        Lagi</button>
                     <button type="button" id="btn-unduh-pengertiangaya" class="tombol-unduh" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
                     </button>
                 </div>
-
             </div>
 
         </div>

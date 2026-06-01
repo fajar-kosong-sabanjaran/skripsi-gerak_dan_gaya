@@ -2509,79 +2509,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkAllLocks();
 
-    // 2. Logika interaksi saat siswa memilih tombol opsi (A/B/C)
-    window.pilihOpsi = function (tombol, status) {
-        const grupTombol = tombol.parentElement;
-        if (grupTombol.getAttribute("data-locked") === "true") return;
-
-        const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
-        semuaTombol.forEach((btn) => {
-            btn.classList.remove("opsi-terpilih");
-            btn.removeAttribute("data-status");
-        });
-
-        tombol.classList.add("opsi-terpilih");
-        tombol.setAttribute("data-status", status);
-        grupTombol.setAttribute("data-terjawab", "true");
-    };
-
-    // 3. Evaluasi jawaban saat menekan "Cek Jawaban"
+    // 2. Evaluasi jawaban TTS saat menekan "Cek Jawaban"
     const btnSubmitGaya = document.getElementById("btn-submit-pengertiangaya");
     const btnUnduhGaya = document.getElementById("btn-unduh-pengertiangaya");
 
     if (btnSubmitGaya) {
         btnSubmitGaya.addEventListener("click", function () {
-            const semuaGrup = document.querySelectorAll(".grup-opsi");
-            const totalQuestions = 4;
-            let terjawab = 0;
+            const inputs = document.querySelectorAll(".tts-input");
+            let semuaTerisi = true;
             let correctCount = 0;
+            const totalInputs = inputs.length;
 
-            semuaGrup.forEach((grup) => {
-                if (grup.getAttribute("data-terjawab") === "true") terjawab++;
+            inputs.forEach((input) => {
+                if (input.value.trim() === "") {
+                    semuaTerisi = false;
+                }
             });
 
-            // Peringatan jika belum dijawab semua
-            if (terjawab < totalQuestions) {
+            if (!semuaTerisi) {
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         icon: "warning",
                         title: "Belum Lengkap",
-                        text: "Silakan pilih jawaban untuk semua soal terlebih dahulu!",
+                        text: "Silakan isi semua kotak teka-teki silang terlebih dahulu!",
                         confirmButtonColor: "#f95c50",
                     });
                 } else {
-                    alert("Pilih jawaban untuk semua soal terlebih dahulu!");
+                    alert("Isi semua kotak teka-teki silang terlebih dahulu!");
                 }
                 return;
             }
 
-            // Eksekusi penilaian
-            semuaGrup.forEach((grup) => {
-                grup.setAttribute("data-locked", "true");
-                const opsiTerpilih = grup.querySelector(
-                    ".tombol-opsi.opsi-terpilih",
-                );
-                const semuaTombol = grup.querySelectorAll(".tombol-opsi");
+            inputs.forEach((input) => {
+                const jawabanBenar = input.getAttribute("data-answer").toUpperCase();
+                const jawabanSiswa = input.value.toUpperCase();
 
-                semuaTombol.forEach(
-                    (btn) => (btn.style.pointerEvents = "none"),
-                );
+                input.classList.remove("benar", "salah");
 
-                if (opsiTerpilih) {
-                    const status = opsiTerpilih.getAttribute("data-status");
-                    opsiTerpilih.classList.remove("opsi-terpilih");
-
-                    if (status === "benar") {
-                        opsiTerpilih.classList.add("jawaban-benar");
-                        correctCount++;
-                    } else {
-                        opsiTerpilih.classList.add("jawaban-salah");
-                    }
+                if (jawabanSiswa === jawabanBenar) {
+                    input.classList.add("benar");
+                    input.readOnly = true;
+                    correctCount++;
+                } else {
+                    input.classList.add("salah");
                 }
             });
 
-            // Logika jika semua jawaban benar
-            if (correctCount === totalQuestions) {
+            if (correctCount === totalInputs) {
                 window.progresSiswa = window.progresSiswa || [];
                 if (!window.progresSiswa.includes("pengertiangaya_completed")) {
                     window.progresSiswa.push("pengertiangaya_completed");
@@ -2593,16 +2567,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
 
-                if (window.unlockSidebar)
-                    window.unlockSidebar("nav-resultan-gaya");
+                if (window.unlockSidebar) window.unlockSidebar("nav-resultan-gaya");
 
                 if (btnUnduhGaya) btnUnduhGaya.style.display = "inline-block";
+                
                 generatePDFPengertianGaya("upload");
 
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Luar Biasa!",
-                        text: "Semua jawaban benar. Materi selanjutnya telah terbuka!",
+                        text: "Semua kata teka-teki silang berhasil dijawab dengan benar. Materi selanjutnya telah terbuka!",
                         icon: "success",
                         confirmButtonText: "Lanjut",
                         confirmButtonColor: "#2ecc71",
@@ -2612,7 +2586,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (typeof Swal !== "undefined") {
                     Swal.fire({
                         title: "Masih Ada yang Kurang Tepat",
-                        text: `Kamu baru benar ${correctCount} dari ${totalQuestions}. Silakan klik 'Coba Lagi' untuk memperbaiki.`,
+                        text: "Periksa kembali kotak yang berwarna merah dan klik 'Coba Lagi' untuk memperbaiki.",
                         icon: "error",
                         confirmButtonText: "Tutup",
                         confirmButtonColor: "#f95c50",
@@ -2622,30 +2596,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 4. Logika tombol "Coba Lagi"
+    // 3. Logika tombol "Coba Lagi"
     const btnRetryGaya = document.getElementById("btn-retry-pengertiangaya");
     if (btnRetryGaya) {
         btnRetryGaya.addEventListener("click", function () {
-            const semuaKotak = document.querySelectorAll(".kotak-kuis-gaya");
-            semuaKotak.forEach((kotak) => {
-                const grupTombol = kotak.querySelector(".grup-opsi");
-                const semuaTombol = grupTombol.querySelectorAll(".tombol-opsi");
-
-                grupTombol.removeAttribute("data-terjawab");
-                grupTombol.removeAttribute("data-locked");
-
-                semuaTombol.forEach((btn) => {
-                    btn.classList.remove(
-                        "opsi-terpilih",
-                        "jawaban-benar",
-                        "jawaban-salah",
-                    );
-                    btn.removeAttribute("data-status");
-                    btn.style.pointerEvents = "auto";
-                });
+            const inputs = document.querySelectorAll(".tts-input");
+            inputs.forEach((input) => {
+                // REVISI: Reset semua kelas dan isian, agar tombol terasa benar-benar "mengulang"
+                input.classList.remove("salah", "benar");
+                input.value = "";
+                input.readOnly = false;
             });
         });
     }
+
+    // 4. Navigasi TTS (Otomatis pindah ke kotak berikutnya)
+    const ttsInputs = document.querySelectorAll(".tts-input");
+    ttsInputs.forEach((input, index) => {
+        input.addEventListener("input", function() {
+            if (this.value.length === 1 && index < ttsInputs.length - 1) {
+                ttsInputs[index + 1].focus();
+            }
+        });
+    });
 
     // 5. Fungsi membuat dan Auto-save/Download PDF
     async function generatePDFPengertianGaya(action = "download") {
@@ -2666,128 +2639,48 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Latihan", pageWidth / 2, 20, {
-                align: "center",
-            });
+            doc.text("Laporan Hasil Evaluasi", pageWidth / 2, 20, { align: "center" });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Pengertian Gaya", pageWidth / 2, 28, {
-                align: "center",
-            });
+            doc.text("Materi: Pengertian Gaya (Teka-Teki Silang)", pageWidth / 2, 28, { align: "center" });
 
             yPos = 55;
             doc.setTextColor(80, 80, 80);
             doc.setFontSize(9);
             doc.setFont("helvetica", "italic");
-            const tgl = new Date().toLocaleDateString("id-ID", {
-                dateStyle: "full",
-            });
+            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
             doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
-            yPos += 10;
+            yPos += 15;
 
-            let countBenar = 0;
-            let countSalah = 0;
-            let countKosong = 0;
+            const daftarTts = [
+                { q: "1 Mendatar: Tarikan atau ..... yang menyebabkan benda bergerak.", a: "DORONGAN" },
+                { q: "4 Mendatar: Menginjak rem mobil saat mendekati lampu merah mengakibatkan perubahan .....", a: "KECEPATAN" },
+                { q: "2 Menurun: Kiper menepis bola yang ditendang lawan sehingga melenceng membuktikan gaya dapat mengubah ..... gerak benda.", a: "ARAH" },
+                { q: "3 Menurun: Saat menekan tanah liat atau plastisin menjadi pipih, gaya menyebabkan perubahan ..... benda.", a: "BENTUK" }
+            ];
 
-            const semuaKotak = document.querySelectorAll(".kotak-kuis-gaya");
+            doc.setFontSize(11);
+            
+            daftarTts.forEach((item) => {
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(0, 0, 0);
+                const splitSoal = doc.splitTextToSize(item.q, pageWidth - 40);
+                doc.text(splitSoal, 20, yPos);
+                yPos += (splitSoal.length * 6) + 2;
 
-            // Looping soal untuk dirender ke dalam PDF
-            semuaKotak.forEach((kotak) => {
-                const soalText = kotak.querySelector(".teks-soal").innerText;
-                const terpilih = kotak.querySelector(
-                    ".tombol-opsi.jawaban-benar, .tombol-opsi.jawaban-salah, .tombol-opsi.opsi-terpilih",
-                );
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(21, 128, 61);
+                doc.text("Jawaban: " + item.a, 20, yPos);
+                doc.setTextColor(0, 0, 0);
+                
+                yPos += 12;
 
-                let status = "kosong";
-                let teksJawaban = "(Tidak dijawab)";
-
-                if (terpilih) {
-                    teksJawaban = terpilih.innerText.trim();
-                    if (
-                        terpilih.getAttribute("data-status") === "benar" ||
-                        terpilih.classList.contains("jawaban-benar")
-                    ) {
-                        status = "benar";
-                        countBenar++;
-                    } else {
-                        status = "salah";
-                        countSalah++;
-                    }
-                } else {
-                    countKosong++;
-                }
-
-                if (yPos > pageHeight - 35) {
+                if (yPos > pageHeight - 30) {
                     doc.addPage();
                     yPos = 20;
                 }
-
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(0, 0, 0);
-                const splitSoal = doc.splitTextToSize(soalText, pageWidth - 40);
-                doc.text(splitSoal, 20, yPos);
-                yPos += splitSoal.length * 6;
-
-                // Pengaturan warna kotak jawaban PDF
-                if (status === "benar") {
-                    doc.setFillColor(209, 250, 229);
-                    doc.setDrawColor(34, 197, 94);
-                    doc.setTextColor(21, 128, 61);
-                } else if (status === "salah") {
-                    doc.setFillColor(254, 226, 226);
-                    doc.setDrawColor(239, 68, 68);
-                    doc.setTextColor(185, 28, 28);
-                } else {
-                    doc.setFillColor(245, 245, 245);
-                    doc.setDrawColor(200, 200, 200);
-                    doc.setTextColor(100, 100, 100);
-                }
-
-                const splitAns = doc.splitTextToSize(
-                    teksJawaban,
-                    pageWidth - 50,
-                );
-                const rectHeight = splitAns.length * 5 + 6;
-
-                doc.roundedRect(
-                    20,
-                    yPos - 5,
-                    pageWidth - 40,
-                    rectHeight,
-                    1,
-                    1,
-                    "FD",
-                );
-                doc.setFont("helvetica", "normal");
-                doc.text(splitAns, 25, yPos + 1);
-
-                yPos += rectHeight + 8;
             });
 
-            if (yPos > pageHeight - 30) {
-                doc.addPage();
-                yPos = 20;
-            }
-
-            // Render Kotak Ringkasan Akhir
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(0, 0, 0);
-            const summaryText = `Ringkasan: Benar: ${countBenar}  |  Salah: ${countSalah}  |  Belum Dijawab: ${countKosong}`;
-
-            doc.setDrawColor(0, 0, 0);
-            doc.setFillColor(255, 255, 255);
-            doc.roundedRect(20, yPos, pageWidth - 40, 10, 1, 1, "S");
-            doc.text(summaryText, pageWidth / 2, yPos + 7, { align: "center" });
-
-            yPos += 20;
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(150, 150, 150);
-            doc.text("Pengertian Gaya", pageWidth / 2, yPos, {
-                align: "center",
-            });
-
-            // Pengiriman via Fetch untuk Auto-save atau Unduh Langsung
             if (action === "download") {
                 doc.save("Laporan_Latihan_Pengertian_Gaya.pdf");
             } else if (action === "upload") {
@@ -2796,27 +2689,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append("kode_materi", "pengertian_gaya");
                 formData.append("file_pdf", pdfBlob, "pengertian_gaya.pdf");
 
-                const csrfToken = document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute("content");
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
                 fetch("/siswa/simpan-pdf-latihan", {
                     method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": csrfToken,
-                    },
+                    headers: { "X-CSRF-TOKEN": csrfToken },
                     body: formData,
                 })
-                    .then((response) => response.json())
-                    .then((data) =>
-                        console.log(
-                            "Auto-save PDF Pengertian Gaya sukses:",
-                            data,
-                        ),
-                    )
-                    .catch((error) =>
-                        console.error("Auto-save PDF error:", error),
-                    );
+                .then((response) => response.json())
+                .then((data) => console.log("Auto-save PDF Pengertian Gaya sukses:", data))
+                .catch((error) => console.error("Auto-save PDF error:", error));
             }
         } catch (err) {
             console.error(err);
@@ -5139,7 +5021,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 7. TIMER
-        let timeLeft = 30 * 60; // Diubah ke 20 Menit
+        let timeLeft = 40 * 60; // Diubah ke 20 Menit
 
         const timerInterval = setInterval(() => {
             if (!timerEl) {

@@ -56,7 +56,7 @@
 
                 <div class="kuis-timer-box">
                     <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span
-                        id="timer">30:00</span>
+                        id="timer">20:00</span>
                 </div>
 
                 <button class="kuis-btn-finish" id="finishBtn">
