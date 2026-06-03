@@ -3998,6 +3998,58 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn");
         const timerEl = document.getElementById("timer");
 
+        // --- FITUR KEAMANAN ANTI CHEATING ---
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                tampilkanPeringatanCurang();
+            }
+        });
+
+        window.addEventListener("blur", function() {
+            tampilkanPeringatanCurang();
+        });
+
+        function tampilkanPeringatanCurang() {
+            // Mencegah peringatan bertumpuk jika event berjalan bersamaan
+            if (Swal.isVisible()) return;
+
+            Swal.fire({
+                title: "Dilarang Keluar!",
+                text: "Kamu tidak bisa membuka tab atau aplikasi lain saat kuis sedang berlangsung.",
+                icon: "warning",
+                confirmButtonText: "Saya Mengerti",
+                confirmButtonColor: "#d33",
+                allowOutsideClick: false, 
+                allowEscapeKey: false    
+            });
+        }
+
+        // Mencegah tombol navigasi 'Back' di browser
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, document.title, location.href);
+            Swal.fire({
+                title: "Dilarang Kembali!",
+                text: "Kamu tidak bisa menekan tombol kembali saat kuis sedang berlangsung.",
+                icon: "error",
+                confirmButtonColor: "#f95c50"
+            });
+        });
+
+        document.addEventListener("contextmenu", function(e){
+            e.preventDefault();
+        });
+
+        // Mencegah Copy, Cut, Paste, dan tombol keyboard seperti F12 (Inspect)
+        document.addEventListener("keydown", function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+                e.preventDefault();
+            }
+            if (e.key === "F12") {
+                e.preventDefault();
+            }
+        });
+
         // 3. FUNGSI LOGIKA KUIS
         function renderNav() {
             navSoal.innerHTML = "";
@@ -4081,7 +4133,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentIndex++;
                 loadQuestion();
             } else {
-                finishBtn.click(); // Memicu tombol selesaikan kuis jika di soal terakhir
+                finishBtn.click(); 
             }
         });
 
@@ -4175,7 +4227,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // 5. TIMER KUIS
-        let timeLeft = 20 * 60; // 20 Menit
+        let timeLeft = 20 * 60; 
 
         const timerInterval = setInterval(() => {
             const m = Math.floor(timeLeft / 60);
@@ -4207,7 +4259,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Js Kuis 2 (Materi Gaya)
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. CEK IDENTITAS HALAMAN
     const halamanKuis2 = document.getElementById("halaman-kuis-2");
 
     if (halamanKuis2) {
@@ -4243,7 +4294,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
         }
 
-        // 2. DATA SOAL
+        // 1. DATA SOAL
         const questions = [
             {
                 q: "Berdasarkan materi yang telah dipelajari, pengertian gaya adalah...",
@@ -4342,12 +4393,11 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         ];
 
-        // 3. STATE
+        // 2. STATE & DOM ELEMENTS
         let currentIndex = 0;
         const userAnswers = new Array(questions.length).fill(null);
         let lastResultTuntas = false;
 
-        // 4. DOM ELEMENTS (MENGGUNAKAN ID BARU YANG ADA SUFFIX -kuis2)
         const navSoal = document.getElementById("navSoal-kuis2");
         const questionNumber = document.getElementById("questionNumber-kuis2");
         const questionText = document.getElementById("questionText-kuis2");
@@ -4357,7 +4407,64 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn-kuis2");
         const timerEl = document.getElementById("timer-kuis2");
 
-        // 5. FUNGSI RENDER NAVIGASI
+        // --- FITUR KEAMANAN ANTI CHEATING ---
+        
+        // Mendeteksi jika tab disembunyikan (pindah tab lain)
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                tampilkanPeringatanCurang();
+            }
+        });
+
+        // Mendeteksi jika window kehilangan fokus (buka aplikasi lain / klik di luar browser)
+        window.addEventListener("blur", function() {
+            tampilkanPeringatanCurang();
+        });
+
+        function tampilkanPeringatanCurang() {
+            // Mencegah peringatan bertumpuk jika event berjalan bersamaan
+            if (Swal.isVisible()) return;
+
+            Swal.fire({
+                title: "Dilarang Keluar!",
+                text: "Kamu tidak bisa membuka tab atau aplikasi lain saat kuis sedang berlangsung.",
+                icon: "warning",
+                confirmButtonText: "Saya Mengerti",
+                confirmButtonColor: "#d33",
+                allowOutsideClick: false,
+                allowEscapeKey: false    
+            });
+        }
+
+        // Mencegah tombol navigasi 'Back' di browser
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, document.title, location.href);
+            Swal.fire({
+                title: "Dilarang Kembali!",
+                text: "Kamu tidak bisa menekan tombol kembali saat kuis sedang berlangsung.",
+                icon: "error",
+                confirmButtonColor: "#f95c50"
+            });
+        });
+
+        // Mencegah Klik Kanan
+        document.addEventListener("contextmenu", function(e){
+            e.preventDefault();
+        });
+
+        // Mencegah Copy, Cut, Paste, dan tombol keyboard seperti F12 (Inspect)
+        document.addEventListener("keydown", function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+                e.preventDefault();
+            }
+            if (e.key === "F12") {
+                e.preventDefault();
+            }
+        });
+        // --- AKHIR FITUR KEAMANAN ---
+
+        // 3. FUNGSI LOGIKA KUIS
         function renderNav() {
             if (!navSoal) return;
 
@@ -4382,7 +4489,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 6. FUNGSI LOAD SOAL
         function loadQuestion() {
             if (!questionText || !optionsList) return;
 
@@ -4394,7 +4500,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             q.options.forEach((opt, idx) => {
                 const li = document.createElement("li");
-
                 const isChecked = userAnswers[currentIndex] === idx;
                 const checkedAttr = isChecked ? "checked" : "";
 
@@ -4410,12 +4515,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             renderNav();
 
-            // Update tombol Prev/Next
             if (prevBtn) {
                 prevBtn.disabled = currentIndex === 0;
                 prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
             }
             if (nextBtn) {
+                // Modifikasi tombol di soal terakhir
                 if (currentIndex === questions.length - 1) {
                     nextBtn.innerHTML =
                         '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
@@ -4430,7 +4535,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // 7. EVENT HANDLERS
         if (optionsList) {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-kuis2") {
@@ -4460,7 +4564,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 8. LOGIKA HASIL & POPUP
+        // 4. HASIL KUIS & PENYIMPANAN PROGRES
         function showSweetAlertResult(tuntas, score100, scoreAsli, totalSoal) {
             lastResultTuntas = tuntas;
 
@@ -4551,8 +4655,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 9. TIMER
-        let timeLeft = 20 * 60; // Diubah ke 20 Menit
+        // 5. TIMER KUIS
+        let timeLeft = 20 * 60; // 20 Menit
         const timerInterval = setInterval(() => {
             if (!timerEl) {
                 clearInterval(timerInterval);
@@ -4580,7 +4684,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }, 1000);
 
-        // 10. JALANKAN FUNGSI PERTAMA KALI
         renderNav();
         loadQuestion();
     }
@@ -4818,9 +4921,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const scorePerSoal = 5;
 
         const navSoal = document.getElementById("navSoal-evaluasi");
-        const questionNumber = document.getElementById(
-            "questionNumber-evaluasi",
-        );
+        const questionNumber = document.getElementById("questionNumber-evaluasi");
         const questionText = document.getElementById("questionText-evaluasi");
         const optionsList = document.getElementById("optionsList-evaluasi");
         const prevBtn = document.getElementById("prevBtn-evaluasi");
@@ -4828,7 +4929,57 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishBtn = document.getElementById("finishBtn-evaluasi");
         const timerEl = document.getElementById("timer-evaluasi");
 
-        // 3. FUNGSI RENDER NAVIGASI
+        // --- FITUR KEAMANAN ANTI CHEATING ---
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                tampilkanPeringatanCurang();
+            }
+        });
+
+        window.addEventListener("blur", function() {
+            tampilkanPeringatanCurang();
+        });
+
+        function tampilkanPeringatanCurang() {
+            if (Swal.isVisible()) return;
+
+            Swal.fire({
+                title: "Dilarang Keluar!",
+                text: "Kamu tidak bisa membuka tab atau aplikasi lain saat evaluasi sedang berlangsung.",
+                icon: "warning",
+                confirmButtonText: "Saya Mengerti",
+                confirmButtonColor: "#d33",
+                allowOutsideClick: false,
+                allowEscapeKey: false    
+            });
+        }
+
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, document.title, location.href);
+            Swal.fire({
+                title: "Dilarang Kembali!",
+                text: "Kamu tidak bisa menekan tombol kembali saat evaluasi sedang berlangsung.",
+                icon: "error",
+                confirmButtonColor: "#f95c50"
+            });
+        });
+
+        document.addEventListener("contextmenu", function(e){
+            e.preventDefault();
+        });
+
+        document.addEventListener("keydown", function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+                e.preventDefault();
+            }
+            if (e.key === "F12") {
+                e.preventDefault();
+            }
+        });
+        // --- AKHIR FITUR KEAMANAN ---
+
+        // 3. FUNGSI LOGIKA EVALUASI
         function renderNav() {
             if (!navSoal) return;
 
@@ -4853,7 +5004,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 4. FUNGSI LOAD SOAL
         function loadQuestion() {
             if (!questionText || !optionsList) return;
 
@@ -4883,7 +5033,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             renderNav();
 
-            // Update tombol Prev/Next
             if (prevBtn) {
                 prevBtn.disabled = currentIndex === 0;
                 prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
@@ -4903,7 +5052,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // 5. EVENT HANDLERS
         if (optionsList) {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-evaluasi") {
@@ -4933,7 +5081,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 6. LOGIKA HASIL (SIMPAN KE DB)
+        // 4. HASIL EVALUASI & PENYIMPANAN PROGRES
         function tampilkanHasilAkhir(score, totalScore) {
             const urlKeluar = window.EXIT_PAGE || "/";
 
@@ -5020,8 +5168,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 7. TIMER
-        let timeLeft = 40 * 60; // Diubah ke 20 Menit
+        // 5. TIMER EVALUASI
+        let timeLeft = 40 * 60; 
 
         const timerInterval = setInterval(() => {
             if (!timerEl) {
