@@ -43,6 +43,9 @@
                     <div class="kuis-legend-item">
                         <span class="kuis-dot kuis-dot-green"></span> Sudah dijawab
                     </div>
+                    <div class="kuis-legend-item">
+                        <span class="kuis-dot kuis-dot-yellow"></span> Ragu-ragu
+                    </div>
                 </div>
             </div>
         </aside>
@@ -56,7 +59,7 @@
 
                 <div class="kuis-timer-box">
                     <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span
-                        id="timer">20:00</span>
+                        id="timer">--:--</span>
                 </div>
 
                 <button class="kuis-btn-finish" id="finishBtn">
@@ -77,6 +80,9 @@
                     <div class="kuis-nav-actions">
                         <button class="kuis-btn-nav prev" id="prevBtn">← <span
                                 class="nav-text-hide">Sebelumnya</span></button>
+                                
+                        <button class="kuis-btn-ragu" id="raguBtn">Ragu-ragu</button>
+                        
                         <button class="kuis-btn-nav next" id="nextBtn"><span class="nav-text-hide">Selanjutnya</span>
                             →</button>
                     </div>

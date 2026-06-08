@@ -2541,7 +2541,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             inputs.forEach((input) => {
-                const jawabanBenar = input.getAttribute("data-answer").toUpperCase();
+                const jawabanBenar = input
+                    .getAttribute("data-answer")
+                    .toUpperCase();
                 const jawabanSiswa = input.value.toUpperCase();
 
                 input.classList.remove("benar", "salah");
@@ -2567,10 +2569,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const btnNext = document.getElementById("btn-next-materi");
                 if (btnNext) btnNext.classList.remove("locked");
 
-                if (window.unlockSidebar) window.unlockSidebar("nav-resultan-gaya");
+                if (window.unlockSidebar)
+                    window.unlockSidebar("nav-resultan-gaya");
 
                 if (btnUnduhGaya) btnUnduhGaya.style.display = "inline-block";
-                
+
                 generatePDFPengertianGaya("upload");
 
                 if (typeof Swal !== "undefined") {
@@ -2613,7 +2616,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 4. Navigasi TTS (Otomatis pindah ke kotak berikutnya)
     const ttsInputs = document.querySelectorAll(".tts-input");
     ttsInputs.forEach((input, index) => {
-        input.addEventListener("input", function() {
+        input.addEventListener("input", function () {
             if (this.value.length === 1 && index < ttsInputs.length - 1) {
                 ttsInputs[index + 1].focus();
             }
@@ -2639,40 +2642,61 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("Laporan Hasil Evaluasi", pageWidth / 2, 20, { align: "center" });
+            doc.text("Laporan Hasil Evaluasi", pageWidth / 2, 20, {
+                align: "center",
+            });
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-            doc.text("Materi: Pengertian Gaya (Teka-Teki Silang)", pageWidth / 2, 28, { align: "center" });
+            doc.text(
+                "Materi: Pengertian Gaya (Teka-Teki Silang)",
+                pageWidth / 2,
+                28,
+                { align: "center" },
+            );
 
             yPos = 55;
             doc.setTextColor(80, 80, 80);
             doc.setFontSize(9);
             doc.setFont("helvetica", "italic");
-            const tgl = new Date().toLocaleDateString("id-ID", { dateStyle: "full" });
+            const tgl = new Date().toLocaleDateString("id-ID", {
+                dateStyle: "full",
+            });
             doc.text(`Tanggal Pengerjaan: ${tgl}`, 20, yPos);
             yPos += 15;
 
             const daftarTts = [
-                { q: "1 Mendatar: Tarikan atau ..... yang menyebabkan benda bergerak.", a: "DORONGAN" },
-                { q: "4 Mendatar: Menginjak rem mobil saat mendekati lampu merah mengakibatkan perubahan .....", a: "KECEPATAN" },
-                { q: "2 Menurun: Kiper menepis bola yang ditendang lawan sehingga melenceng membuktikan gaya dapat mengubah ..... gerak benda.", a: "ARAH" },
-                { q: "3 Menurun: Saat menekan tanah liat atau plastisin menjadi pipih, gaya menyebabkan perubahan ..... benda.", a: "BENTUK" }
+                {
+                    q: "1 Mendatar: Tarikan atau ..... yang menyebabkan benda bergerak.",
+                    a: "DORONGAN",
+                },
+                {
+                    q: "4 Mendatar: Menginjak rem mobil saat mendekati lampu merah mengakibatkan perubahan .....",
+                    a: "KECEPATAN",
+                },
+                {
+                    q: "2 Menurun: Kiper menepis bola yang ditendang lawan sehingga melenceng membuktikan gaya dapat mengubah ..... gerak benda.",
+                    a: "ARAH",
+                },
+                {
+                    q: "3 Menurun: Saat menekan tanah liat atau plastisin menjadi pipih, gaya menyebabkan perubahan ..... benda.",
+                    a: "BENTUK",
+                },
             ];
 
             doc.setFontSize(11);
-            
+
             daftarTts.forEach((item) => {
                 doc.setFont("helvetica", "bold");
                 doc.setTextColor(0, 0, 0);
                 const splitSoal = doc.splitTextToSize(item.q, pageWidth - 40);
                 doc.text(splitSoal, 20, yPos);
-                yPos += (splitSoal.length * 6) + 2;
+                yPos += splitSoal.length * 6 + 2;
 
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(21, 128, 61);
                 doc.text("Jawaban: " + item.a, 20, yPos);
                 doc.setTextColor(0, 0, 0);
-                
+
                 yPos += 12;
 
                 if (yPos > pageHeight - 30) {
@@ -2689,16 +2713,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 formData.append("kode_materi", "pengertian_gaya");
                 formData.append("file_pdf", pdfBlob, "pengertian_gaya.pdf");
 
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+                const csrfToken = document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute("content");
 
                 fetch("/siswa/simpan-pdf-latihan", {
                     method: "POST",
                     headers: { "X-CSRF-TOKEN": csrfToken },
                     body: formData,
                 })
-                .then((response) => response.json())
-                .then((data) => console.log("Auto-save PDF Pengertian Gaya sukses:", data))
-                .catch((error) => console.error("Auto-save PDF error:", error));
+                    .then((response) => response.json())
+                    .then((data) =>
+                        console.log(
+                            "Auto-save PDF Pengertian Gaya sukses:",
+                            data,
+                        ),
+                    )
+                    .catch((error) =>
+                        console.error("Auto-save PDF error:", error),
+                    );
             }
         } catch (err) {
             console.error(err);
@@ -3986,8 +4019,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 2. STATE & DOM ELEMENTS
         let currentIndex = 0;
-        const userAnswers = new Array(questions.length).fill(null);
+        let userAnswers = new Array(questions.length).fill(null);
+        let doubtfulAnswers = new Array(questions.length).fill(false);
+        let timeLeft = 20 * 60;
         let lastResultTuntas = false;
+
+        function loadState() {
+            const savedState = localStorage.getItem("kuis1_state");
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                currentIndex =
+                    parsed.currentIndex !== undefined ? parsed.currentIndex : 0;
+                userAnswers =
+                    parsed.userAnswers ||
+                    new Array(questions.length).fill(null);
+                doubtfulAnswers =
+                    parsed.doubtfulAnswers ||
+                    new Array(questions.length).fill(false);
+                timeLeft =
+                    parsed.timeLeft !== undefined ? parsed.timeLeft : 20 * 60;
+            }
+        }
+
+        function saveState() {
+            const state = {
+                currentIndex,
+                userAnswers,
+                doubtfulAnswers,
+                timeLeft,
+            };
+            localStorage.setItem("kuis1_state", JSON.stringify(state));
+        }
+
+        function clearState() {
+            localStorage.removeItem("kuis1_state");
+        }
+
+        loadState();
 
         const navSoal = document.getElementById("navSoal");
         const questionNumber = document.getElementById("questionNumber");
@@ -3997,20 +4065,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const nextBtn = document.getElementById("nextBtn");
         const finishBtn = document.getElementById("finishBtn");
         const timerEl = document.getElementById("timer");
+        const raguBtn = document.getElementById("raguBtn");
 
         // --- FITUR KEAMANAN ANTI CHEATING ---
-        document.addEventListener("visibilitychange", function() {
+        document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
                 tampilkanPeringatanCurang();
             }
         });
 
-        window.addEventListener("blur", function() {
+        window.addEventListener("blur", function () {
             tampilkanPeringatanCurang();
         });
 
         function tampilkanPeringatanCurang() {
-            // Mencegah peringatan bertumpuk jika event berjalan bersamaan
             if (Swal.isVisible()) return;
 
             Swal.fire({
@@ -4019,30 +4087,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: "warning",
                 confirmButtonText: "Saya Mengerti",
                 confirmButtonColor: "#d33",
-                allowOutsideClick: false, 
-                allowEscapeKey: false    
+                allowOutsideClick: false,
+                allowEscapeKey: false,
             });
         }
 
-        // Mencegah tombol navigasi 'Back' di browser
         history.pushState(null, document.title, location.href);
-        window.addEventListener('popstate', function (event) {
+        window.addEventListener("popstate", function (event) {
             history.pushState(null, document.title, location.href);
             Swal.fire({
                 title: "Dilarang Kembali!",
                 text: "Kamu tidak bisa menekan tombol kembali saat kuis sedang berlangsung.",
                 icon: "error",
-                confirmButtonColor: "#f95c50"
+                confirmButtonColor: "#f95c50",
             });
         });
 
-        document.addEventListener("contextmenu", function(e){
+        document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
 
-        // Mencegah Copy, Cut, Paste, dan tombol keyboard seperti F12 (Inspect)
-        document.addEventListener("keydown", function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+        document.addEventListener("keydown", function (e) {
+            if (
+                e.ctrlKey &&
+                (e.key === "c" ||
+                    e.key === "v" ||
+                    e.key === "x" ||
+                    e.key === "a")
+            ) {
                 e.preventDefault();
             }
             if (e.key === "F12") {
@@ -4060,12 +4132,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (i === currentIndex) {
                     btn.classList.add("current");
+                }
+
+                if (doubtfulAnswers[i]) {
+                    btn.classList.add("doubtful");
                 } else if (userAnswers[i] !== null) {
                     btn.classList.add("answered");
                 }
 
                 btn.addEventListener("click", () => {
                     currentIndex = i;
+                    saveState();
                     loadQuestion();
                 });
 
@@ -4095,12 +4172,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 optionsList.appendChild(li);
             });
 
+            if (raguBtn) {
+                if (doubtfulAnswers[currentIndex]) {
+                    raguBtn.classList.add("active");
+                } else {
+                    raguBtn.classList.remove("active");
+                }
+            }
+
             renderNav();
 
             prevBtn.disabled = currentIndex === 0;
             prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
 
-            // Modifikasi tombol di soal terakhir
             if (currentIndex === questions.length - 1) {
                 nextBtn.innerHTML =
                     '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
@@ -4117,13 +4201,23 @@ document.addEventListener("DOMContentLoaded", function () {
         optionsList.addEventListener("change", function (e) {
             if (e.target.name === "option") {
                 userAnswers[currentIndex] = Number(e.target.value);
+                saveState();
                 renderNav();
             }
         });
 
+        if (raguBtn) {
+            raguBtn.addEventListener("click", function () {
+                doubtfulAnswers[currentIndex] = !doubtfulAnswers[currentIndex];
+                saveState();
+                loadQuestion();
+            });
+        }
+
         prevBtn.addEventListener("click", () => {
             if (currentIndex > 0) {
                 currentIndex--;
+                saveState();
                 loadQuestion();
             }
         });
@@ -4131,9 +4225,10 @@ document.addEventListener("DOMContentLoaded", function () {
         nextBtn.addEventListener("click", () => {
             if (currentIndex < questions.length - 1) {
                 currentIndex++;
+                saveState();
                 loadQuestion();
             } else {
-                finishBtn.click(); 
+                finishBtn.click();
             }
         });
 
@@ -4193,6 +4288,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const nilaiKkm = window.KKM_KUIS || 70;
             const tuntas = score100 >= nilaiKkm;
 
+            clearState();
+
             simpanNilaiKeDatabase("Kuis 1", score100, arrayDetail);
             showSweetAlertResult(tuntas, score100, score, questions.length);
         }
@@ -4204,6 +4301,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     text: "Masih ada soal yang belum dijawab. Cek nomor yang berwarna putih.",
                     icon: "warning",
                     confirmButtonText: "Oke, saya lengkapi",
+                    confirmButtonColor: "#f95c50",
+                });
+                return;
+            }
+
+            if (doubtfulAnswers.includes(true)) {
+                Swal.fire({
+                    title: "Masih Ada yang Ragu!",
+                    text: "Kamu tidak bisa mengumpulkan kuis karena masih ada jawaban yang ditandai ragu-ragu (warna kuning). Silakan hapus tanda ragu-ragu terlebih dahulu!",
+                    icon: "error",
+                    confirmButtonText: "Oke, Saya Cek Lagi",
                     confirmButtonColor: "#f95c50",
                 });
                 return;
@@ -4227,15 +4335,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // 5. TIMER KUIS
-        let timeLeft = 20 * 60; 
-
-        const timerInterval = setInterval(() => {
+        function updateTimerDisplay() {
             const m = Math.floor(timeLeft / 60);
             const s = timeLeft % 60;
             timerEl.textContent = m + ":" + s.toString().padStart(2, "0");
+        }
 
+        updateTimerDisplay();
+
+        const timerInterval = setInterval(() => {
             if (timeLeft > 0) {
                 timeLeft--;
+                saveState();
+                updateTimerDisplay();
             } else {
                 clearInterval(timerInterval);
 
@@ -4395,8 +4507,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 2. STATE & DOM ELEMENTS
         let currentIndex = 0;
-        const userAnswers = new Array(questions.length).fill(null);
+        let userAnswers = new Array(questions.length).fill(null);
+        let doubtfulAnswers = new Array(questions.length).fill(false);
+        let timeLeft = 20 * 60;
         let lastResultTuntas = false;
+
+        function loadState() {
+            const savedState = localStorage.getItem("kuis2_state");
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                currentIndex =
+                    parsed.currentIndex !== undefined ? parsed.currentIndex : 0;
+                userAnswers =
+                    parsed.userAnswers ||
+                    new Array(questions.length).fill(null);
+                doubtfulAnswers =
+                    parsed.doubtfulAnswers ||
+                    new Array(questions.length).fill(false);
+                timeLeft =
+                    parsed.timeLeft !== undefined ? parsed.timeLeft : 20 * 60;
+            }
+        }
+
+        function saveState() {
+            const state = {
+                currentIndex,
+                userAnswers,
+                doubtfulAnswers,
+                timeLeft,
+            };
+            localStorage.setItem("kuis2_state", JSON.stringify(state));
+        }
+
+        function clearState() {
+            localStorage.removeItem("kuis2_state");
+        }
+
+        loadState();
 
         const navSoal = document.getElementById("navSoal-kuis2");
         const questionNumber = document.getElementById("questionNumber-kuis2");
@@ -4406,18 +4553,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const nextBtn = document.getElementById("nextBtn-kuis2");
         const finishBtn = document.getElementById("finishBtn-kuis2");
         const timerEl = document.getElementById("timer-kuis2");
+        const raguBtn = document.getElementById("raguBtn-kuis2");
 
         // --- FITUR KEAMANAN ANTI CHEATING ---
-        
+
         // Mendeteksi jika tab disembunyikan (pindah tab lain)
-        document.addEventListener("visibilitychange", function() {
+        document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
                 tampilkanPeringatanCurang();
             }
         });
 
         // Mendeteksi jika window kehilangan fokus (buka aplikasi lain / klik di luar browser)
-        window.addEventListener("blur", function() {
+        window.addEventListener("blur", function () {
             tampilkanPeringatanCurang();
         });
 
@@ -4432,30 +4580,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmButtonText: "Saya Mengerti",
                 confirmButtonColor: "#d33",
                 allowOutsideClick: false,
-                allowEscapeKey: false    
+                allowEscapeKey: false,
             });
         }
 
         // Mencegah tombol navigasi 'Back' di browser
         history.pushState(null, document.title, location.href);
-        window.addEventListener('popstate', function (event) {
+        window.addEventListener("popstate", function (event) {
             history.pushState(null, document.title, location.href);
             Swal.fire({
                 title: "Dilarang Kembali!",
                 text: "Kamu tidak bisa menekan tombol kembali saat kuis sedang berlangsung.",
                 icon: "error",
-                confirmButtonColor: "#f95c50"
+                confirmButtonColor: "#f95c50",
             });
         });
 
         // Mencegah Klik Kanan
-        document.addEventListener("contextmenu", function(e){
+        document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
 
         // Mencegah Copy, Cut, Paste, dan tombol keyboard seperti F12 (Inspect)
-        document.addEventListener("keydown", function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+        document.addEventListener("keydown", function (e) {
+            if (
+                e.ctrlKey &&
+                (e.key === "c" ||
+                    e.key === "v" ||
+                    e.key === "x" ||
+                    e.key === "a")
+            ) {
                 e.preventDefault();
             }
             if (e.key === "F12") {
@@ -4476,12 +4630,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (i === currentIndex) {
                     btn.classList.add("current");
+                }
+
+                if (doubtfulAnswers[i]) {
+                    btn.classList.add("doubtful");
                 } else if (userAnswers[i] !== null) {
                     btn.classList.add("answered");
                 }
 
                 btn.addEventListener("click", () => {
                     currentIndex = i;
+                    saveState();
                     loadQuestion();
                 });
 
@@ -4513,6 +4672,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 optionsList.appendChild(li);
             });
 
+            if (raguBtn) {
+                if (doubtfulAnswers[currentIndex]) {
+                    raguBtn.classList.add("active");
+                } else {
+                    raguBtn.classList.remove("active");
+                }
+            }
+
             renderNav();
 
             if (prevBtn) {
@@ -4539,8 +4706,17 @@ document.addEventListener("DOMContentLoaded", function () {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-kuis2") {
                     userAnswers[currentIndex] = Number(e.target.value);
+                    saveState();
                     renderNav();
                 }
+            });
+        }
+
+        if (raguBtn) {
+            raguBtn.addEventListener("click", function () {
+                doubtfulAnswers[currentIndex] = !doubtfulAnswers[currentIndex];
+                saveState();
+                loadQuestion();
             });
         }
 
@@ -4548,6 +4724,7 @@ document.addEventListener("DOMContentLoaded", function () {
             prevBtn.addEventListener("click", () => {
                 if (currentIndex > 0) {
                     currentIndex--;
+                    saveState();
                     loadQuestion();
                 }
             });
@@ -4557,6 +4734,7 @@ document.addEventListener("DOMContentLoaded", function () {
             nextBtn.addEventListener("click", () => {
                 if (currentIndex < questions.length - 1) {
                     currentIndex++;
+                    saveState();
                     loadQuestion();
                 } else {
                     if (finishBtn) finishBtn.click();
@@ -4620,6 +4798,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const nilaiKkm = window.KKM_KUIS || 70;
             const tuntas = score100 >= nilaiKkm;
 
+            clearState();
+
             simpanNilaiKeDatabase("Kuis 2", score100, arrayDetail);
             showSweetAlertResult(tuntas, score100, score, questions.length);
         }
@@ -4632,6 +4812,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         text: "Masih ada soal yang belum dijawab. Cek nomor yang berwarna putih.",
                         icon: "warning",
                         confirmButtonText: "Oke",
+                        confirmButtonColor: "#f95c50",
+                    });
+                    return;
+                }
+
+                if (doubtfulAnswers.includes(true)) {
+                    Swal.fire({
+                        title: "Masih Ada yang Ragu!",
+                        text: "Kamu tidak bisa mengumpulkan kuis karena masih ada jawaban yang ditandai ragu-ragu (warna kuning). Silakan hapus tanda ragu-ragu terlebih dahulu!",
+                        icon: "error",
+                        confirmButtonText: "Oke, Saya Cek Lagi",
                         confirmButtonColor: "#f95c50",
                     });
                     return;
@@ -4656,19 +4847,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 5. TIMER KUIS
-        let timeLeft = 20 * 60; // 20 Menit
+        function updateTimerDisplay() {
+            if (!timerEl) return;
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            timerEl.textContent = m + ":" + s.toString().padStart(2, "0");
+        }
+
+        updateTimerDisplay();
+
         const timerInterval = setInterval(() => {
             if (!timerEl) {
                 clearInterval(timerInterval);
                 return;
             }
 
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            timerEl.textContent = m + ":" + s.toString().padStart(2, "0");
-
             if (timeLeft > 0) {
                 timeLeft--;
+                saveState();
+                updateTimerDisplay();
             } else {
                 clearInterval(timerInterval);
                 Swal.fire({
@@ -4917,26 +5114,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 2. STATE & DOM ELEMENTS
         let currentIndex = 0;
-        const userAnswers = new Array(questions.length).fill(null);
+        let userAnswers = new Array(questions.length).fill(null);
+        let doubtfulAnswers = new Array(questions.length).fill(false);
+        let timeLeft = 40 * 60; // 40 Menit
         const scorePerSoal = 5;
 
+        function loadState() {
+            const savedState = localStorage.getItem("evaluasi_state");
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                currentIndex =
+                    parsed.currentIndex !== undefined ? parsed.currentIndex : 0;
+                userAnswers =
+                    parsed.userAnswers ||
+                    new Array(questions.length).fill(null);
+                doubtfulAnswers =
+                    parsed.doubtfulAnswers ||
+                    new Array(questions.length).fill(false);
+                timeLeft =
+                    parsed.timeLeft !== undefined ? parsed.timeLeft : 40 * 60;
+            }
+        }
+
+        function saveState() {
+            const state = {
+                currentIndex,
+                userAnswers,
+                doubtfulAnswers,
+                timeLeft,
+            };
+            localStorage.setItem("evaluasi_state", JSON.stringify(state));
+        }
+
+        function clearState() {
+            localStorage.removeItem("evaluasi_state");
+        }
+
+        loadState();
+
         const navSoal = document.getElementById("navSoal-evaluasi");
-        const questionNumber = document.getElementById("questionNumber-evaluasi");
+        const questionNumber = document.getElementById(
+            "questionNumber-evaluasi",
+        );
         const questionText = document.getElementById("questionText-evaluasi");
         const optionsList = document.getElementById("optionsList-evaluasi");
         const prevBtn = document.getElementById("prevBtn-evaluasi");
         const nextBtn = document.getElementById("nextBtn-evaluasi");
         const finishBtn = document.getElementById("finishBtn-evaluasi");
         const timerEl = document.getElementById("timer-evaluasi");
+        const raguBtn = document.getElementById("raguBtn-evaluasi");
 
         // --- FITUR KEAMANAN ANTI CHEATING ---
-        document.addEventListener("visibilitychange", function() {
+        document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
                 tampilkanPeringatanCurang();
             }
         });
 
-        window.addEventListener("blur", function() {
+        window.addEventListener("blur", function () {
             tampilkanPeringatanCurang();
         });
 
@@ -4950,27 +5185,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmButtonText: "Saya Mengerti",
                 confirmButtonColor: "#d33",
                 allowOutsideClick: false,
-                allowEscapeKey: false    
+                allowEscapeKey: false,
             });
         }
 
         history.pushState(null, document.title, location.href);
-        window.addEventListener('popstate', function (event) {
+        window.addEventListener("popstate", function (event) {
             history.pushState(null, document.title, location.href);
             Swal.fire({
                 title: "Dilarang Kembali!",
                 text: "Kamu tidak bisa menekan tombol kembali saat evaluasi sedang berlangsung.",
                 icon: "error",
-                confirmButtonColor: "#f95c50"
+                confirmButtonColor: "#ff6b01",
             });
         });
 
-        document.addEventListener("contextmenu", function(e){
+        document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
 
-        document.addEventListener("keydown", function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+        document.addEventListener("keydown", function (e) {
+            if (
+                e.ctrlKey &&
+                (e.key === "c" ||
+                    e.key === "v" ||
+                    e.key === "x" ||
+                    e.key === "a")
+            ) {
                 e.preventDefault();
             }
             if (e.key === "F12") {
@@ -4991,12 +5232,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (i === currentIndex) {
                     btn.classList.add("current");
+                }
+
+                if (doubtfulAnswers[i]) {
+                    btn.classList.add("doubtful");
                 } else if (userAnswers[i] !== null) {
                     btn.classList.add("answered");
                 }
 
                 btn.addEventListener("click", () => {
                     currentIndex = i;
+                    saveState();
                     loadQuestion();
                 });
 
@@ -5031,6 +5277,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 optionsList.appendChild(li);
             });
 
+            if (raguBtn) {
+                if (doubtfulAnswers[currentIndex]) {
+                    raguBtn.classList.add("active");
+                } else {
+                    raguBtn.classList.remove("active");
+                }
+            }
+
             renderNav();
 
             if (prevBtn) {
@@ -5056,8 +5310,17 @@ document.addEventListener("DOMContentLoaded", function () {
             optionsList.addEventListener("change", function (e) {
                 if (e.target.name === "option-evaluasi") {
                     userAnswers[currentIndex] = Number(e.target.value);
+                    saveState();
                     renderNav();
                 }
+            });
+        }
+
+        if (raguBtn) {
+            raguBtn.addEventListener("click", function () {
+                doubtfulAnswers[currentIndex] = !doubtfulAnswers[currentIndex];
+                saveState();
+                loadQuestion();
             });
         }
 
@@ -5065,6 +5328,7 @@ document.addEventListener("DOMContentLoaded", function () {
             prevBtn.addEventListener("click", () => {
                 if (currentIndex > 0) {
                     currentIndex--;
+                    saveState();
                     loadQuestion();
                 }
             });
@@ -5074,6 +5338,7 @@ document.addEventListener("DOMContentLoaded", function () {
             nextBtn.addEventListener("click", () => {
                 if (currentIndex < questions.length - 1) {
                     currentIndex++;
+                    saveState();
                     loadQuestion();
                 } else {
                     if (finishBtn) finishBtn.click();
@@ -5132,6 +5397,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
+            clearState();
+
             simpanNilaiKeDatabase("Evaluasi", score100, arrayDetail);
 
             tampilkanHasilAkhir(finalScore, maxScore);
@@ -5145,7 +5412,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         text: "Masih ada soal yang belum dijawab. Cek nomor yang berwarna putih.",
                         icon: "warning",
                         confirmButtonText: "Oke",
-                        confirmButtonColor: "#f95c50",
+                        confirmButtonColor: "#ff6b01",
+                    });
+                    return;
+                }
+
+                if (doubtfulAnswers.includes(true)) {
+                    Swal.fire({
+                        title: "Masih Ada yang Ragu!",
+                        text: "Kamu tidak bisa mengumpulkan evaluasi karena masih ada jawaban yang ditandai ragu-ragu (warna kuning). Silakan hapus tanda ragu-ragu terlebih dahulu!",
+                        icon: "error",
+                        confirmButtonText: "Oke, Saya Cek Lagi",
+                        confirmButtonColor: "#ff6b01",
                     });
                     return;
                 }
@@ -5169,7 +5447,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 5. TIMER EVALUASI
-        let timeLeft = 40 * 60; 
+        function updateTimerDisplay() {
+            if (!timerEl) return;
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            timerEl.textContent = m + ":" + s.toString().padStart(2, "0");
+        }
+
+        updateTimerDisplay();
 
         const timerInterval = setInterval(() => {
             if (!timerEl) {
@@ -5177,12 +5462,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            timerEl.textContent = m + ":" + s.toString().padStart(2, "0");
-
             if (timeLeft > 0) {
                 timeLeft--;
+                saveState();
+                updateTimerDisplay();
             } else {
                 clearInterval(timerInterval);
                 Swal.fire({

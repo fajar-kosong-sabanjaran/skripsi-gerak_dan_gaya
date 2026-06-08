@@ -44,6 +44,9 @@
                     <div class="evaluasi-legend-item">
                         <span class="evaluasi-dot evaluasi-dot-green"></span> Sudah dijawab
                     </div>
+                    <div class="evaluasi-legend-item">
+                        <span class="evaluasi-dot evaluasi-dot-yellow"></span> Ragu-ragu
+                    </div>
                 </div>
             </div>
         </aside>
@@ -57,7 +60,7 @@
 
                 <div class="evaluasi-timer-box">
                     <i class="fas fa-stopwatch"></i> <span class="timer-text-hide">Sisa Waktu:</span> <span
-                        id="timer-evaluasi">40:00</span>
+                        id="timer-evaluasi">--:--</span>
                 </div>
 
                 <button class="evaluasi-btn-finish" id="finishBtn-evaluasi">
@@ -79,6 +82,9 @@
                     <div class="evaluasi-nav-actions">
                         <button class="evaluasi-btn-nav prev" id="prevBtn-evaluasi">← <span
                                 class="nav-text-hide">Sebelumnya</span></button>
+
+                        <button class="evaluasi-btn-ragu" id="raguBtn-evaluasi">Ragu-ragu</button>
+
                         <button class="evaluasi-btn-nav next" id="nextBtn-evaluasi"><span
                                 class="nav-text-hide">Selanjutnya</span> →</button>
                     </div>

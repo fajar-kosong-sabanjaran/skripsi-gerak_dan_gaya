@@ -338,10 +338,18 @@ body {
     margin: 10px auto;
 }
 
-.content-image { max-width: 20%; }
-.content-image2 { max-width: 50%; }
-.content-image3 { max-width: 40%; }
-.content-image4 { max-width: 40%; }
+.content-image {
+    max-width: 20%;
+}
+.content-image2 {
+    max-width: 50%;
+}
+.content-image3 {
+    max-width: 40%;
+}
+.content-image4 {
+    max-width: 40%;
+}
 
 .content-video {
     width: 50%;
@@ -1830,7 +1838,7 @@ body {
 
 .action-container-resultangaya {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
     margin-top: 20px;
     width: 100%;
     justify-content: flex-start;
@@ -1843,7 +1851,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-cek-resultangaya:hover {
@@ -1858,7 +1868,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-reset-resultangaya:hover {
@@ -1984,7 +1996,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-cek-pengertiangaya:hover {
@@ -1999,7 +2013,9 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.08s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
 }
 
 .btn-reset-pengertiangaya:hover {
@@ -2925,6 +2941,55 @@ body.body-petunjuk {
         padding: 10px 20px;
         font-size: 14px;
     }
+
+    .kuis-nav-actions {
+        align-items: center;
+    }
+
+    .kuis-btn-ragu {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+}
+
+.kuis-dot-yellow {
+    background: #f1c40f;
+    border-color: #f1c40f;
+}
+
+.kuis-btn-num.doubtful {
+    background: #f1c40f;
+    color: white;
+    border-color: #f1c40f;
+}
+
+.kuis-btn-num.doubtful.current {
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+    border: 2px solid #e67e22;
+}
+
+/* Modifikasi Tombol Ragu-ragu (Toggle) */
+.kuis-btn-ragu {
+    background: #fff;
+    border: 2px solid #f1c40f;
+    color: #f39c12;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.kuis-btn-ragu:hover {
+    background: #fdfaf0;
+    transform: translateY(-2px);
+}
+
+.kuis-btn-ragu.active {
+    background: #f1c40f;
+    color: white;
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
 }
 
 /* ============================================================
@@ -3448,6 +3513,54 @@ body.body-petunjuk {
         padding: 10px 20px;
         font-size: 14px;
     }
+
+    .kuis2-nav-actions {
+        align-items: center;
+    }
+
+    .kuis2-btn-ragu {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+}
+
+.kuis2-dot-yellow {
+    background: #f1c40f;
+    border-color: #f1c40f;
+}
+
+.kuis2-btn-num.doubtful {
+    background: #f1c40f;
+    color: white;
+    border-color: #f1c40f;
+}
+
+.kuis2-btn-num.doubtful.current {
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+    border: 2px solid #e67e22;
+}
+
+.kuis2-btn-ragu {
+    background: #fff;
+    border: 2px solid #f1c40f;
+    color: #f39c12;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.kuis2-btn-ragu:hover {
+    background: #fdfaf0;
+    transform: translateY(-2px);
+}
+
+.kuis2-btn-ragu.active {
+    background: #f1c40f;
+    color: white;
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
 }
 
 /* ============================================================
@@ -3936,4 +4049,52 @@ body.body-petunjuk {
         padding: 10px 20px;
         font-size: 14px;
     }
+
+    .evaluasi-nav-actions {
+        align-items: center;
+    }
+
+    .evaluasi-btn-ragu {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+}
+
+.evaluasi-dot-yellow {
+    background: #f1c40f;
+    border-color: #f1c40f;
+}
+
+.evaluasi-btn-num.doubtful {
+    background: #f1c40f;
+    color: white;
+    border-color: #f1c40f;
+}
+
+.evaluasi-btn-num.doubtful.current {
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+    border: 2px solid #e67e22;
+}
+
+.evaluasi-btn-ragu {
+    background: #fff;
+    border: 2px solid #f1c40f;
+    color: #f39c12;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.evaluasi-btn-ragu:hover {
+    background: #fdfaf0;
+    transform: translateY(-2px);
+}
+
+.evaluasi-btn-ragu.active {
+    background: #f1c40f;
+    color: white;
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
 }
