@@ -89,6 +89,7 @@ Route::middleware(['auth', CekGuru::class])->prefix('guru')->group(function () {
 
     Route::get('/datasiswa/export', [GuruController::class, 'exportExcel'])->name('guru.datasiswa.export');
     Route::get('/datasiswa', [GuruController::class, 'index'])->name('guru.datasiswa.index');
+    Route::post('/datasiswa', [GuruController::class, 'storeSiswa'])->name('guru.datasiswa.store');
     Route::delete('/datasiswa/{id}', [GuruController::class, 'destroy'])->name('guru.datasiswa.destroy');
     Route::put('/datasiswa/{id}', [GuruController::class, 'update'])->name('guru.datasiswa.update');
 

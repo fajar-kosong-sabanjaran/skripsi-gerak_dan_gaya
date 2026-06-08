@@ -5,9 +5,14 @@
 
     <div class="card-guru">
 
-        <div class="header-title-wrapper">
-            <h3>Data Siswa</h3>
-            <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfo()" title="Klik untuk info halaman"></i>
+        <div class="card-header-action">
+            <div class="header-title-wrapper">
+                <h3>Data Siswa</h3>
+                <i class="fas fa-info-circle icon-info-halaman" onclick="showPageInfo()" title="Klik untuk info halaman"></i>
+            </div>
+            <button class="btn-save btn-add-new" onclick="openCreateSiswaModal()">
+                <i class="fas fa-plus"></i> Tambah Siswa
+            </button>
         </div>
 
         <div class="table-controls">
@@ -156,6 +161,53 @@
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeEditModal()">Batal</button>
                 <button class="btn-save" onclick="saveEditData()">Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="createSiswaModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4><i class="fas fa-user-plus"></i> Tambah Data Siswa</h4>
+                <span class="close-btn" onclick="closeCreateSiswaModal()">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nama Lengkap <span class="text-danger">*</span></label>
+                    <input type="text" id="createNamaSiswa" class="form-input full-width" placeholder="Masukkan nama lengkap">
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-half">
+                        <label>NIS <span class="text-danger">*</span></label>
+                        <input type="text" id="createNisSiswa" class="form-input full-width" placeholder="Masukkan NIS">
+                    </div>
+                    <div class="col-half">
+                        <label>Kelas <span class="text-danger">*</span></label>
+                        <select id="createKelasSiswa" class="form-select full-width">
+                            <option value="">-- Pilih Kelas --</option>
+                            @foreach ($data_kelas as $k)
+                                <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email <span class="text-danger">*</span></label>
+                    <input type="email" id="createEmailSiswa" class="form-input full-width" placeholder="contoh@gmail.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Password <span class="text-danger">*</span></label>
+                    <input type="password" id="createPasswordSiswa" class="form-input full-width" placeholder="Masukkan password">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeCreateSiswaModal()">Batal</button>
+                <button class="btn-save" onclick="storeSiswaData()">Simpan</button>
             </div>
         </div>
     </div>

@@ -44,6 +44,46 @@ class GuruController extends Controller
         return Excel::download(new SiswaExport($kelasFilter), $fileName);
     }
 
+    public function storeSiswa(Request $request)
+    {
+        $messages = [
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
+            'nomor_induk.required' => 'NIS wajib diisi!',
+            'nomor_induk.unique' => 'NIS tersebut sudah terdaftar, silakan gunakan NIS lain!',
+            'kelas_id.required' => 'Kelas wajib dipilih!',
+            'email.required' => 'Email wajib diisi!',
+            'email.unique' => 'Email tersebut sudah digunakan!',
+            'password.required' => 'Password wajib diisi!',
+            'password.min' => 'Password minimal harus terdiri dari 6 karakter!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'nama_lengkap' => 'required|string|max:255',
+            'nomor_induk' => 'required|string|unique:users,nomor_induk',
+            'kelas_id' => 'required|exists:kelas,id',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $siswa = new User();
+        $siswa->nama_lengkap = $request->nama_lengkap;
+        $siswa->nomor_induk = $request->nomor_induk;
+        $siswa->kelas_id = $request->kelas_id;
+        $siswa->email = $request->email;
+        $siswa->password = Hash::make($request->password);
+        $siswa->peran = 'siswa';
+        $siswa->save();
+
+        return response()->json(['success' => true]);
+    }
+
     public function update(Request $request, $id)
     {
         $siswa = User::find($id);

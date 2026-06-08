@@ -351,6 +351,84 @@ function confirmDelete(button, id) {
 }
 
 // =======================================================================
+// ini js datasiswa.blade (Fungsi Tambah / Create Modal)
+// =======================================================================
+
+const createSiswaModal = document.getElementById("createSiswaModal");
+const createNamaSiswa = document.getElementById("createNamaSiswa");
+const createNisSiswa = document.getElementById("createNisSiswa");
+const createKelasSiswa = document.getElementById("createKelasSiswa");
+const createEmailSiswa = document.getElementById("createEmailSiswa");
+const createPasswordSiswa = document.getElementById("createPasswordSiswa");
+
+function openCreateSiswaModal() {
+    if (createNamaSiswa) createNamaSiswa.value = "";
+    if (createNisSiswa) createNisSiswa.value = "";
+    if (createKelasSiswa) createKelasSiswa.value = "";
+    if (createEmailSiswa) createEmailSiswa.value = "";
+    if (createPasswordSiswa) createPasswordSiswa.value = "";
+
+    if (createSiswaModal) createSiswaModal.classList.add("show");
+}
+
+function closeCreateSiswaModal() {
+    if (createSiswaModal) createSiswaModal.classList.remove("show");
+}
+
+function storeSiswaData() {
+    const tokenElement = document.querySelector('meta[name="csrf-token"]');
+    const token = tokenElement ? tokenElement.getAttribute("content") : "";
+
+    if (!createNamaSiswa.value || !createNisSiswa.value || !createKelasSiswa.value || !createEmailSiswa.value || !createPasswordSiswa.value) {
+        Swal.fire("Peringatan", "Harap isi semua kolom yang wajib diisi (*)", "warning");
+        return;
+    }
+
+    const payload = {
+        nama_lengkap: createNamaSiswa.value,
+        nomor_induk: createNisSiswa.value,
+        kelas_id: createKelasSiswa.value,
+        email: createEmailSiswa.value,
+        password: createPasswordSiswa.value,
+    };
+
+    fetch("/guru/datasiswa", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": token,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body: JSON.stringify(payload),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                closeCreateSiswaModal();
+                Swal.fire({
+                    icon: "success",
+                    title: "Berhasil!",
+                    text: "Data siswa baru berhasil ditambahkan.",
+                    timer: 1500,
+                    showConfirmButton: false,
+                }).then(() => location.reload());
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal!",
+                    text: data.message || "Terjadi kesalahan pada input data.",
+                    confirmButtonColor: "#ef4444",
+                    confirmButtonText: "OK",
+                });
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            Swal.fire("Error", "Gagal menghubungi server.", "error");
+        });
+}
+
+// =======================================================================
 // ini js datasiswa.blade (Fungsi Edit / Update Modal)
 // =======================================================================
 
@@ -440,6 +518,16 @@ function showPageInfo() {
         html: ` 
             <div class="swal-info-content">
                 <p>Halaman <b>Data Siswa per Kelas</b> digunakan untuk mengelola daftar siswa yang tergabung dalam setiap kelas.</p>
+
+                <div class="swal-info-divider"></div>
+
+                <div class="swal-info-section blue">
+                    <i class="fas fa-user-plus"></i> <b>Tambah Siswa</b>
+                </div>
+                <ul class="swal-info-list">
+                    <li>Gunakan tombol <b>Tambah Siswa</b> untuk memasukkan data siswa baru secara manual.</li>
+                    <li>Pastikan nama, NIS, pilihan kelas, email, dan password telah diisi.</li>
+                </ul>
 
                 <div class="swal-info-divider"></div>
 
