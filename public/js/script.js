@@ -452,8 +452,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (btnRetry) btnRetry.classList.add("hidden");
                 } else {
                     Swal.fire({
-                        title: "Masih Ada yang Kurang Tepat",
-                        text: `Kamu baru benar ${benar} dari ${total}.`,
+                        title: "Sedikit Lagi!",
+                        text: `Kamu sudah menjawab ${benar} dari ${total} dengan benar. Ayo teliti lagi, kamu pasti bisa!`,
                         icon: "error",
                         confirmButtonText: "Perbaiki",
                         confirmButtonColor: "#f95c50",

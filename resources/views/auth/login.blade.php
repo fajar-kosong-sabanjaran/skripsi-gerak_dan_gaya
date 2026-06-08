@@ -137,7 +137,7 @@
         }
         .toggle-password:hover { color: var(--primary); }
 
-        /* Kotak Error Global (Untuk Email Salah) */
+        /* Kotak Error Global */
         .error-box {
             background-color: #fff5f5; color: #e74c3c; padding: 15px; 
             border-radius: 10px; margin-bottom: 25px; font-size: 13px; 
@@ -145,7 +145,7 @@
             display: flex; align-items: center; gap: 10px;
         }
 
-        /* Teks Error Kecil (Untuk Password/Kelas Salah) */
+        /* Teks Error Kecil */
         .invalid-feedback {
             color: #e74c3c;
             font-size: 12px;
@@ -178,10 +178,10 @@
                 <p>Silakan masukkan Akun Kamu untuk melanjutkan.</p>
             </div>
 
-            @if ($errors->has('email'))
+            @if ($errors->has('nomor_induk'))
                 <div class="error-box">
                     <i class="fas fa-exclamation-circle"></i> 
-                    <span>{{ $errors->first('email') }}</span>
+                    <span>{{ $errors->first('nomor_induk') }}</span>
                 </div>
             @endif
 
@@ -189,8 +189,8 @@
                 @csrf
                 
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                    <label>Nomor Induk Siswa / Guru</label>
+                    <input type="text" name="nomor_induk" class="form-control @error('nomor_induk') is-invalid @enderror" placeholder="Contoh: 2016191130" value="{{ old('nomor_induk') }}" required>
                 </div>
 
                 <div class="form-group">

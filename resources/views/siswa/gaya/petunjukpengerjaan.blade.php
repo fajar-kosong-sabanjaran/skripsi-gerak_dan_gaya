@@ -10,6 +10,11 @@
 
 <body class="body-petunjuk">
 
+@php
+    $kkm_data = \App\Models\PengaturanKkm::first();
+    $kkm_kuis2 = $kkm_data->kkm_kuis2 ?? 70;
+@endphp
+
 <div class="petunjuk-wrapper">
   <div class="petunjuk-header">
     <div class="icon-circle">i</div>
@@ -24,9 +29,9 @@
       <li>Setiap soal memiliki bobot nilai yang sama.</li>
       <li>Waktu pengerjaan kuis adalah <b>20 menit</b>.</li>
       <li>Bacalah setiap soal dengan teliti sebelum memilih jawaban.</li>
-      <li>Setelah semua soal dijawab, klik tombol <b>“Kirim Jawaban”</b> untuk melihat hasil skor.</li>
-      <li>Jika nilai belum tuntas, kamu akan diminta kembali ke materi <b>Gaya</b> untuk belajar ulang.</li>
-      <li>Jika nilai sudah tuntas, kamu dapat melanjutkan ke materi bagian <b>Evaluasi</b>.</li>
+      <li>Setelah semua soal dijawab, klik tombol <b>“Selesaikan Kuis”</b> untuk melihat hasil skor.</li>
+      <li>Jika nilai belum tuntas (di bawah KKM <b>{{ $kkm_kuis2 }}</b>), kamu akan diminta kembali ke materi <b>Gaya</b> untuk belajar ulang.</li>
+      <li>Jika nilai sudah tuntas (mencapai KKM <b>{{ $kkm_kuis2 }}</b>), kamu dapat melanjutkan ke bagian <b>Evaluasi</b>.</li>
       <li>Tekan "Mulai Kuis" untuk memulai pengerjaan kuis.</li>
     </ol>
 

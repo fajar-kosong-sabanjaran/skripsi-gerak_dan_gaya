@@ -687,10 +687,14 @@ body {
     color: #fff;
     font-size: 13px;
     cursor: pointer;
+    border: 2px solid #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn-check:hover {
     background-color: #e44a3f;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .btn-reset {
@@ -1086,7 +1090,9 @@ body {
     padding: 8px 16px;
     background: #f95c50;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -1097,13 +1103,16 @@ body {
 .tombol-cek:hover {
     background: #e44a3f;
     transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .tombol-reset {
     padding: 8px 16px;
     background: #6b7280;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #4f545f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -1113,6 +1122,7 @@ body {
 
 .tombol-reset:hover {
     background: #4b5563;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
     transform: translateY(-2px);
 }
 
@@ -1407,6 +1417,8 @@ body {
 }
 
 .rumus-card-kelajuandankecepatan .math-expr {
+    font-size: 1.3em;
+    font-weight: bold;
     padding: 2px;
     color: #333;
 }
@@ -1670,7 +1682,9 @@ body {
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 8px;
-    border: none;
+    border: #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
@@ -1679,12 +1693,15 @@ body {
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 8px;
-    border: none;
+    border: #4f545f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
 .btn-cek:hover {
     background: #e44a3f;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .btn-reset:hover {
@@ -1848,7 +1865,9 @@ body {
     padding: 8px 16px;
     background: #f95c50;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -1859,13 +1878,16 @@ body {
 .btn-cek-resultangaya:hover {
     background: #e44a3f;
     transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .btn-reset-resultangaya {
     padding: 8px 16px;
     background: #6c757d;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #4f545f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -1875,6 +1897,7 @@ body {
 
 .btn-reset-resultangaya:hover {
     background: #5a6268;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
     transform: translateY(-2px);
 }
 
@@ -1993,7 +2016,9 @@ body {
     padding: 8px 16px;
     background: #f95c50;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -2003,6 +2028,7 @@ body {
 
 .btn-cek-pengertiangaya:hover {
     background: #e44a3f;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
     transform: translateY(-2px);
 }
 
@@ -2010,7 +2036,9 @@ body {
     padding: 8px 16px;
     background: #6c757d;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #4f545f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -2020,6 +2048,7 @@ body {
 
 .btn-reset-pengertiangaya:hover {
     background: #5a6268;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
     transform: translateY(-2px);
 }
 
@@ -2102,7 +2131,9 @@ body {
     padding: 8px 16px;
     background: #f95c50;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -2113,13 +2144,16 @@ body {
 .btn-cek-macamgaya:hover {
     background: #e44a3f;
     transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .btn-reset-macamgaya {
     padding: 8px 16px;
     background: #6c757d;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #4f545f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -2130,6 +2164,7 @@ body {
 .btn-reset-macamgaya:hover {
     background: #5a6268;
     transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .hasil-benar {
@@ -2190,14 +2225,16 @@ body {
 }
 
 .rumus-box {
+    font-size: 1.3em;
+    font-weight: bold;
     background-color: #f8f9fa;
     border: 2px dashed #cccccc;
     padding: 15px;
     border-radius: 8px;
     text-align: center;
-    margin: 15px auto; /* Margin auto untuk menengahkan kotak yang sudah menciut */
+    margin: 15px auto;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    width: fit-content; /* Revisi: Lebar kotak mengikuti panjang rumus */
+    width: fit-content;
 }
 
 .tombol-opsi.dipilih {
@@ -2232,7 +2269,9 @@ body {
     padding: 8px 16px;
     background: #f95c50;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #e44a3f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -2243,13 +2282,16 @@ body {
 .btn-cek-newton:hover {
     background: #e44a3f;
     transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .btn-reset-newton {
     padding: 8px 16px;
     background: #6c757d;
     border-radius: 6px;
-    border: none;
+    border: 2px solid #4f545f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     transition:
@@ -2260,6 +2302,7 @@ body {
 .btn-reset-newton:hover {
     background: #5a6268;
     transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 /* --- TIMESTAMP VIDEO PRAKTIK --- */

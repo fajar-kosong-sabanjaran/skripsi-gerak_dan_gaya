@@ -67,26 +67,26 @@ class AuthController extends Controller
     }
 
     // =========================================================================
-    // PROSES LOGIN (REVISI FINAL: HANYA EMAIL & PASSWORD)
+    // PROSES LOGIN (REVISI: MENGGUNAKAN NOMOR INDUK & PASSWORD)
     // =========================================================================
     public function login(Request $request)
     {
         // 1. Validasi Input Dasar
         $request->validate([
-            'email'       => 'required|email',
+            'nomor_induk' => 'required|string',
             'password'    => 'required',
         ], [
-            'email.required'       => 'Email wajib diisi.',
+            'nomor_induk.required' => 'Nomor induk wajib diisi.',
             'password.required'    => 'Kata sandi wajib diisi.',
         ]);
 
-        // 2. Cek Email di Database
-        $user = User::where('email', $request->email)->first();
+        // 2. Cek Nomor Induk di Database
+        $user = User::where('nomor_induk', $request->nomor_induk)->first();
 
-        // JIKA EMAIL TIDAK DITEMUKAN
+        // JIKA NOMOR INDUK TIDAK DITEMUKAN
         if (!$user) {
             return back()->withErrors([
-                'email' => 'Email tidak terdaftar dalam sistem.',
+                'nomor_induk' => 'Nomor induk tidak terdaftar dalam sistem.',
             ])->withInput($request->except('password')); 
         }
 

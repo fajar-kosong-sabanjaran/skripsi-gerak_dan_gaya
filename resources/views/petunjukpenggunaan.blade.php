@@ -391,17 +391,8 @@
         .step-list a:hover {
             text-decoration: underline;
         }
-        
-        /* Tambahan khusus untuk judul sub-bagian di dalam accordion */
-        .sub-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            margin-top: 10px;
-        }
 
-        /* ================= TAMBAHAN REVISI RESPONSIVE ================= */
+        /* ================= TAMBAHAN RESPONSIVE ================= */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -650,9 +641,14 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-inner">
+                        @php
+                            $kkm1 = $kkm->kkm_kuis1 ?? 70;
+                            $kkm2 = $kkm->kkm_kuis2 ?? 70;
+                            $kkm3 = $kkm->kkm_evaluasi ?? 70;
+                        @endphp
                         <ul class="step-list">
-                            <li><b>Kuis:</b> Digunakan untuk mengukur pemahaman di setiap akhir Bab (Kuis 1 untuk Gerak, Kuis 2 untuk Gaya).</li>
-                            <li><b>Evaluasi:</b> Merupakan tes keseluruhan yang ada di menu Evaluasi.</li>
+                            <li><b>Kuis:</b> Digunakan untuk mengukur pemahaman di setiap akhir Bab (Kuis 1 untuk Gerak dengan standar KKM <b>{{ $kkm1 }}</b>, Kuis 2 untuk Gaya dengan standar KKM <b>{{ $kkm2 }}</b>).</li>
+                            <li><b>Evaluasi:</b> Merupakan tes keseluruhan yang ada di menu Evaluasi dengan standar KKM <b>{{ $kkm3 }}</b>.</li>
                             <li><b>Syarat Kelulusan:</b> Pastikan nilai kuis kamu memenuhi standar KKM agar bisa melanjutkan ke bab atau tahap berikutnya. Jika gagal, kamu bisa mengulanginya kembali.</li>
                         </ul>
                     </div>

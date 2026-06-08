@@ -174,6 +174,7 @@
                         </ul>
                     </div>
                 </div>
+                
             </div>
             <div class="page-step" id="step-2" style="display: none;">
                 <div class="inner-box">

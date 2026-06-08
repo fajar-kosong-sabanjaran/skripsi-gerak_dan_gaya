@@ -6,6 +6,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\ProgresController;
 use App\Http\Controllers\LatihanSiswaController;
 use App\Http\Middleware\CekGuru;
+use App\Models\PengaturanKkm;
 
 // =============================================================
 // 1. PUBLIC ROUTES
@@ -20,7 +21,8 @@ Route::get('/daftar-materi', function () {
 });
 
 Route::get('/petunjuk', function () {
-    return view('petunjukpenggunaan');
+    $kkm = PengaturanKkm::first();
+    return view('petunjukpenggunaan', compact('kkm'));
 });
 
 Route::get('/tentang', function () {
