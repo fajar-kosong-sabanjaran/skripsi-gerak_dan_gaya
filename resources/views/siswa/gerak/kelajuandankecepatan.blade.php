@@ -271,8 +271,8 @@
                             <li>Hitung kelajuan setiap benda menggunakan rumus \((v = \frac{s}{t})\) lalu isi tabel hanya
                                 dengan angka dalam satuan cm dan sekon.
                             </li>
-                            <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                    style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang.</li>
+                            <li>Klik "Cek Jawaban Praktik" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
+                                    style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         </ul>
                     </div>
 
@@ -340,7 +340,7 @@
 
                     <div class="latihan-actions" style="margin-top: 20px;">
                         <button type="button" id="btn-cek-praktik" class="btn-cek">Cek Jawaban Praktik</button>
-                        <button type="button" id="btn-reset-praktik" class="btn-reset">Coba Lagi</button>
+                        <button type="button" id="btn-reset-praktik" class="btn-reset">Ulangi</button>
                     </div>
                 </div>
                 <div class="inner-box quiz-wrapper">
@@ -353,8 +353,7 @@
                         <ul>
                             <li>Tentukan apakah pernyataan tersebut termasuk ciri Kelajuan atau Kecepatan.</li>
                             <li>Berikan tanda centang (✔) pada kolom yang sesuai.</li>
-                            <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu, atau tombol "Coba Lagi" jika ingin
-                                mengulang.</li>
+                            <li>Tekan tombol "Cek Jawaban" untuk melihat hasil kerjamu, atau tombol "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         </ul>
                     </div>
 
@@ -427,7 +426,7 @@
 
                     <div class="quiz-buttons">
                         <button type="button" class="btn-cek" id="btn-cek-quiz">Cek Jawaban</button>
-                        <button type="button" class="btn-reset" id="btn-reset-quiz">Coba Lagi</button>
+                        <button type="button" class="btn-reset" id="btn-reset-quiz">Ulangi</button>
                     </div>
                 </div>
 
@@ -442,7 +441,7 @@
                             <li>Isikan jawabanmu pada kolom yang tersedia (titik-titik).</li>
                             <li>Gunakan angka saja untuk mengisi jawaban (contoh: 120, bukan 120 m).</li>
                             <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                    style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                    style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                             <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                         </ul>
                     </div>
@@ -546,7 +545,7 @@
 
                     <div class="latihan-actions">
                         <button type="button" id="btn-cek-latihan" class="btn-cek">Cek Jawaban</button>
-                        <button type="button" id="btn-reset-latihan" class="btn-reset">Coba Lagi</button>
+                        <button type="button" id="btn-reset-latihan" class="btn-reset">Ulangi</button>
 
                         <button type="button" id="btn-unduh-latihan" class="tombol-unduh" style="display: none;">
                             <i class="fas fa-file-pdf"></i> Unduh Jawaban
@@ -580,28 +579,5 @@
             </div>
 
         </div>
-
-        <div id="popup-quiz" class="popup">
-            <div class="popup-box">
-                <h3>Hasil Klasifikasi</h3>
-                <div id="popup-quiz-text" class="hasil-ringkas"></div>
-                <div class="popup-actions">
-                    <button type="button" onclick="resetQuizPopup()" class="btn-cek">Coba Lagi</button>
-                    <button type="button" onclick="tutupPopupQuiz()" class="btn-reset">Tutup</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="popup-latihan" class="popup">
-            <div class="popup-box">
-                <h3>Hasil Latihan</h3>
-                <div id="popup-latihan-text" class="hasil-ringkas"></div>
-                <div class="popup-actions">
-                    <button type="button" onclick="cobaLagiLatihan()" class="btn-cek">Coba Lagi</button>
-                    <button type="button" onclick="tutupPopupLatihan()" class="btn-reset">Tutup</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 @endsection

@@ -154,7 +154,7 @@
                             searah, kurangkan jika berlawanan).</li>
                         <li>Isikan jawabanmu berupa angka saja pada kolom yang tersedia (contoh: 40).</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
@@ -204,7 +204,7 @@
 
                 <div class="action-container-resultangaya">
                     <button type="button" class="btn-cek-resultangaya" id="btn-submit-resultangaya">Cek Jawaban</button>
-                    <button type="button" class="btn-reset-resultangaya" id="btn-retry-resultangaya">Coba Lagi</button>
+                    <button type="button" class="btn-reset-resultangaya" id="btn-retry-resultangaya">Ulangi</button>
                     <button type="button" id="btn-unduh-resultangaya" class="tombol-unduh" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
                     </button>

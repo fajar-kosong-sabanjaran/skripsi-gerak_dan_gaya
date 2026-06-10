@@ -121,7 +121,7 @@
                         <li>Klik dan tahan (drag) pernyataan yang ada di bawah</li>
                         <li>Geser pernyataan ke dalam kotak kategori yang sesuai.</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
@@ -167,20 +167,12 @@
 
                 <div class="action-container-macamgaya" style="display: flex; gap: 10px;">
                     <button type="button" class="btn-cek-macamgaya" id="btn-cek-macam">Cek Jawaban</button>
-                    <button type="button" class="btn-reset-macamgaya" id="btn-retry-macam">Coba Lagi</button>
+                    <button type="button" class="btn-reset-macamgaya" id="btn-retry-macam">Ulangi</button>
                     <button type="button" id="btn-unduh-macam" class="tombol-unduh" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
                     </button>
                 </div>
 
-            </div>
-
-            <div id="modal-macam" class="modal">
-                <div class="modal-content">
-                    <h4 style="margin-bottom: 5px;">Hasil Latihan</h4>
-                    <p id="modal-text-macam"></p>
-                    <button type="button" id="close-modal-macam" class="btn-cek-macamgaya">Tutup</button>
-                </div>
             </div>
 
         </div>

@@ -188,7 +188,7 @@
                         <li>Tonton video Hukum Newton dengan saksama dan gunakan menu 'Lompat ke bagian' untuk mencari bagian yang diinginkan.</li>
                         <li>Pilih salah satu jawaban yang menurutmu paling tepat.</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
@@ -211,7 +211,7 @@
                     </div>
                 </div>
 
-                <hr><br>
+                <hr>
 
                 <div class="kotak-kuis">
                     <p class="teks-soal">
@@ -225,7 +225,6 @@
                     </div>
                 </div>
 
-                <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
                         <b>2.</b> Pada video Hukum I Newton, Sifat gelas yang "malas" bergerak dan cenderung mempertahankan keadaan awalnya (tetap
@@ -238,7 +237,6 @@
                     </div>
                 </div>
 
-                <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
                         <b>3.</b> Bandingkan hasil pada Percobaan 1 dan Percobaan 2 di video Hukum II Newton. Apa yang terjadi pada pergerakan kereta
@@ -254,7 +252,6 @@
                     </div>
                 </div>
 
-                <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
                         <b>4.</b> Perhatikan Percobaan 1 dan Percobaan 3 di video Hukum II Newton. Ketika gaya tarik tetap (1 beban) namun jumlah
@@ -271,7 +268,6 @@
                     </div>
                 </div>
 
-                <br>
                 <div class="kotak-kuis">
                     <p class="teks-soal">
                         <b>5.</b> Pada video Hukum III Newton, bola yang dijatuhkan dan menabrak meja (aksi) akan
@@ -286,23 +282,13 @@
 
                 <div class="action-container-newton" style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="button" class="btn-cek-newton" id="btn-cek-newton">Cek Jawaban</button>
-                    <button type="button" class="btn-reset-newton" id="btn-reset-newton">Coba Lagi</button>
+                    <button type="button" class="btn-reset-newton" id="btn-reset-newton">Ulangi</button>
                     <button type="button" id="btn-unduh-newton" class="tombol-unduh" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
                     </button>
                 </div>
             </div>
 
-        </div>
-
-        <div id="popup-newton" class="popup">
-            <div class="popup-box">
-                <h3>Hasil Observasi</h3>
-                <div id="popup-newton-text" class="hasil-ringkas"></div>
-                <div class="popup-actions">
-                    <button class="btn-reset-newton" id="btn-tutup-newton">Tutup</button>
-                </div>
-            </div>
         </div>
 
         <div class="bottom-nav">

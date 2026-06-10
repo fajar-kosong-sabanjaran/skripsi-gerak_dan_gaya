@@ -168,7 +168,7 @@
                         <li>Isikan jawabanmu pada kolom yang tersedia (titik-titik).</li>
                         <li>Gunakan angka saja untuk mengisi jawaban (contoh: 50, bukan 50 m/s).</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
@@ -228,7 +228,7 @@
 
                 <div class="latihan-actions">
                     <button class="btn-cek" id="btn-cek-percepatan">Cek Jawaban</button>
-                    <button class="btn-reset" id="btn-reset-percepatan">Coba Lagi</button>
+                    <button class="btn-reset" id="btn-reset-percepatan">Ulangi</button>
 
                     <button class="tombol-unduh" id="btn-unduh-percepatan" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
@@ -237,20 +237,6 @@
 
             </div>
 
-            <div id="popup-percepatan" class="popup">
-                <div class="popup-box">
-                    <h3>Hasil Latihan</h3>
-                    <div id="popup-percepatan-text" class="hasil-ringkas"></div>
-                    <div class="popup-actions">
-                        <button type="button" id="btn-popup-ulang-percepatan" class="btn-cek">
-                            Coba Lagi
-                        </button>
-                        <button type="button" id="btn-popup-tutup-percepatan" class="btn-reset">
-                            Tutup
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="bottom-nav">

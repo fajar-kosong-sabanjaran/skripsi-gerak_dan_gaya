@@ -128,7 +128,7 @@
                     <ul>
                         <li>Isilah kotak-kotak teka-teki silang berikut sesuai dengan petunjuk mendatar dan menurun.</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang.</li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
@@ -209,8 +209,7 @@
                 <div class="action-container-pengertiangaya" style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="button" class="btn-cek-pengertiangaya" id="btn-submit-pengertiangaya">Cek
                         Jawaban</button>
-                    <button type="button" class="btn-reset-pengertiangaya" id="btn-retry-pengertiangaya">Coba
-                        Lagi</button>
+                    <button type="button" class="btn-reset-pengertiangaya" id="btn-retry-pengertiangaya">Ulangi</button>
                     <button type="button" id="btn-unduh-pengertiangaya" class="tombol-unduh" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
                     </button>

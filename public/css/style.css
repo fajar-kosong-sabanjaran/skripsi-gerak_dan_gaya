@@ -2237,6 +2237,61 @@ body {
     width: fit-content;
 }
 
+/* Kuis dan Opsi Jawaban */
+.kotak-instruksi {
+    background-color: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.kotak-instruksi ul {
+    padding-left: 20px;
+}
+
+.kotak-kuis {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.teks-soal {
+    font-size: 15px;
+    color: #1f2937;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.grup-opsi {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tombol-opsi {
+    text-align: left;
+    padding: 8px 12px;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #374151;
+    width: 100%;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tombol-opsi:hover {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+}
+
 .tombol-opsi.dipilih {
     border: 2px solid #3b82f6 !important;
     background-color: #eff6ff !important;
@@ -2305,7 +2360,7 @@ body {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* --- TIMESTAMP VIDEO PRAKTIK --- */
+/* Timestamp Video */
 .video-timestamps {
     margin: 10px auto 20px;
     max-width: 100%;

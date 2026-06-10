@@ -122,7 +122,7 @@
                         <li>Gunakan huruf kapital (A, B) untuk jawaban posisi dan angka saja untuk jawaban hitungan (contoh:
                             100).</li>
                         <li>Klik "Cek Jawaban" untuk melihat hasil (<b style="color: #16a34a;">Hijau</b>: Benar, <b
-                                style="color: #dc2626;">Merah</b>: Salah) dan Pilih "Coba Lagi" untuk mengulang </li>
+                                style="color: #dc2626;">Merah</b>: Salah) dan pilih "Ulangi" untuk menghapus serta mengulang kembali jawaban.</li>
                         <li>Jika semua jawaban sudah benar, pilih "Unduh Jawaban" untuk menyimpan hasilnya.</li>
                     </ul>
                 </div>
@@ -177,7 +177,7 @@
 
                 <div class="aksi-latihan">
                     <button class="tombol-cek" id="cek-adi">Cek Jawaban</button>
-                    <button class="tombol-reset" id="reset-adi">Coba Lagi</button>
+                    <button class="tombol-reset" id="reset-adi">Ulangi</button>
 
                     <button class="tombol-unduh" id="unduh-adi" style="display: none;">
                         <i class="fas fa-file-pdf"></i> Unduh Jawaban
