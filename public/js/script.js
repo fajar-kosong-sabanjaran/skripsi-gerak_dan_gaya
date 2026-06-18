@@ -1408,7 +1408,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     text: "Semua jawaban klasifikasi benar!",
                     icon: "success",
                     confirmButtonText: "Sip",
-                    confirmButtonColor: "#2ecc71"
+                    confirmButtonColor: "#2ecc71",
                 });
             } else {
                 Swal.fire({
@@ -1531,9 +1531,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     text: "Harap lengkapi semua kotak isian (termasuk langkah-langkah rumus) sebelum mengecek jawaban!",
                     icon: "warning",
                     confirmButtonText: "Mengerti",
-                    confirmButtonColor: "#f59e0b"
+                    confirmButtonColor: "#f59e0b",
                 });
-                return; 
+                return;
             }
 
             // Jika semua terisi, lanjutkan pengecekan benar/salah
@@ -2287,7 +2287,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     text: "Harap lengkapi semua kotak isian (termasuk langkah-langkah rumus) sebelum mengecek jawaban!",
                     icon: "warning",
                     confirmButtonText: "Mengerti",
-                    confirmButtonColor: "#f59e0b"
+                    confirmButtonColor: "#f59e0b",
                 });
                 return;
             }
@@ -5052,7 +5052,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const timerEl = document.getElementById("timer-evaluasi");
         const raguBtn = document.getElementById("raguBtn-evaluasi");
 
-        // --- FITUR KEAMANAN ANTI CHEATING ---
         document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
                 tampilkanPeringatanCurang();
@@ -5106,9 +5105,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
             }
         });
-        // --- AKHIR FITUR KEAMANAN ---
 
-        // 3. FUNGSI LOGIKA EVALUASI
         function renderNav() {
             if (!navSoal) return;
 
@@ -5144,7 +5141,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const q = questions[currentIndex];
             questionNumber.textContent = "Nomor " + (currentIndex + 1);
 
-            // Mengubah \n menjadi <br> agar baris baru terbaca di HTML
             questionText.innerHTML = q.q.replace(/\n/g, "<br>");
 
             optionsList.innerHTML = "";
@@ -5234,26 +5230,76 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 4. HASIL EVALUASI & PENYIMPANAN PROGRES
-        function tampilkanHasilAkhir(score, totalScore) {
+        function tampilkanHasilAkhir(score, maxScore, tuntas, score100) {
             const urlKeluar = window.EXIT_PAGE || "/";
+            const urlMateri = "/siswa/gerak/pengantargerak";
 
-            Swal.fire({
-                title: "Evaluasi Selesai!",
-                html: `
-          <div style="font-size: 1.1rem; margin-bottom: 10px;">Nilai Akhir Kamu:</div>
-          <div style="font-size: 3rem; font-weight: bold; color: #ff6b01;">${score}</div>
-        `,
-                icon: "info",
-                confirmButtonText: "Kembali ke Beranda 🏠",
-                confirmButtonColor: "#ff6b01",
-                allowOutsideClick: false,
-                backdrop: `rgba(0,0,0,0.5)`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = urlKeluar;
-                }
-            });
+            let htmlContent = `
+                <div style="font-size: 1.1rem; margin-bottom: 5px;">Nilai Akhir Kamu:</div>
+                <div style="font-size: 3.5rem; font-weight: bold; color: ${tuntas ? "#2ecc71" : "#dc2626"}; line-height: 1;">${score100}</div>
+            `;
+
+            if (tuntas) {
+                htmlContent += `
+                <div style="margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; text-align: left; max-height: 250px; overflow-y: auto; font-size: 0.9rem; border: 1px solid #ddd; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+                    <h4 style="margin-top: 0; color: #ff6b01; text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 8px;">🎉 Kesimpulan Materi 🎉</h4>
+                    
+                    <p style="margin-top: 8px;"><b>1. Gerak</b></p>
+                    <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
+                        <li><b>Gerak</b> adalah perubahan posisi benda terhadap titik acuan.</li>
+                        <li><b>Jarak</b> adalah total panjang lintasan, sedangkan <b>Perpindahan</b> adalah jarak lurus dari awal ke akhir.</li>
+                        <li><b>Kelajuan</b> tidak memiliki arah, sedangkan <b>Kecepatan</b> memiliki arah gerak.</li>
+                    </ul>
+                    
+                    <p style="margin-top: 8px;"><b>2. Gaya</b></p>
+                    <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 0;">
+                        <li><b>Gaya</b> (tarikan/dorongan) dapat mengubah bentuk, arah, dan kecepatan benda.</li>
+                        <li><b>Resultan Gaya</b> adalah total penjumlahan gaya yang bekerja; dijumlahkan jika searah, dan dikurangkan jika berlawanan arah.</li>
+                        <li><b>Jenis Gaya:</b> Terdapat gaya gesek (akibat permukaan), gaya gravitasi (tarikan bumi), gaya pegas (benda elastis), dan gaya otot (aktivitas fisik).</li>
+                        <li><b>Hukum Newton:</b> Menjelaskan sifat kelembaman benda (Hukum I), hubungan gaya, massa, dan percepatan (Hukum II), serta gaya aksi-reaksi (Hukum III).</li>
+                    </ul>
+                <div style="margin-top: 15px; font-weight: bold; color: #2ecc71;">Hebat! Kamu telah menuntaskan seluruh petualangan ini! 🚀</div>
+                `;
+
+                Swal.fire({
+                    title: "Evaluasi Selesai & Tuntas!",
+                    html: htmlContent,
+                    icon: "success",
+                    confirmButtonText: "Kembali ke Beranda 🏠",
+                    confirmButtonColor: "#2ecc71",
+                    allowOutsideClick: false,
+                    backdrop: `rgba(0,0,0,0.5)`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = urlKeluar;
+                    }
+                });
+            } else {
+                htmlContent += `
+                <div style="margin-top: 15px; color: #dc2626; font-weight: bold;">
+                    Yah, nilai kamu belum mencapai KKM. Yuk, baca ulang materinya dan coba lagi! 💪
+                </div>
+                `;
+
+                Swal.fire({
+                    title: "Evaluasi Selesai!",
+                    html: htmlContent,
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Ulangi Evaluasi 🔄",
+                    cancelButtonText: "Kembali ke Materi 📖",
+                    confirmButtonColor: "#ff6b01",
+                    cancelButtonColor: "#6c757d",
+                    allowOutsideClick: false,
+                    backdrop: `rgba(0,0,0,0.5)`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        window.location.href = urlMateri;
+                    }
+                });
+            }
         }
 
         function hitungNilai() {
@@ -5289,7 +5335,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             simpanNilaiKeDatabase("Evaluasi", score100, arrayDetail);
 
-            tampilkanHasilAkhir(finalScore, maxScore);
+            tampilkanHasilAkhir(finalScore, maxScore, tuntas, score100);
         }
 
         if (finishBtn) {
@@ -5334,7 +5380,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 5. TIMER EVALUASI
         function updateTimerDisplay() {
             if (!timerEl) return;
             const m = Math.floor(timeLeft / 60);
