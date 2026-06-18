@@ -270,6 +270,46 @@ class GuruController extends Controller
 
     public function dataNilai()
     {
+        // =========================================================
+        // SCRIPT AUTO-FIX: MEMPERBAIKI DATA MASA LALU SECARA OTOMATIS
+        // =========================================================
+        $pengaturanKkm = PengaturanKkm::first();
+        foreach (Nilai::all() as $rekap) {
+            $kkmSaatIni = 70;
+            if ($pengaturanKkm) {
+                if ($rekap->jenis_kuis === 'Kuis 1') $kkmSaatIni = $pengaturanKkm->kkm_kuis1;
+                elseif ($rekap->jenis_kuis === 'Kuis 2') $kkmSaatIni = $pengaturanKkm->kkm_kuis2;
+                elseif ($rekap->jenis_kuis === 'Evaluasi') $kkmSaatIni = $pengaturanKkm->kkm_evaluasi;
+            }
+
+            $riwayats = RiwayatNilai::where('nilai_id', $rekap->id)->orderBy('percobaan_ke', 'asc')->get();
+            if ($riwayats->count() > 0) {
+                $pertama = $riwayats->first()->nilai_percobaan;
+                if ($pertama >= $kkmSaatIni) {
+                    $akhir = $pertama;
+                    $status = 'Lulus';
+                } else {
+                    $lulusRem = false;
+                    $tertinggiGagal = $pertama;
+                    foreach ($riwayats as $r) {
+                        if ($r->nilai_percobaan >= $kkmSaatIni) { $lulusRem = true; break; }
+                        if ($r->nilai_percobaan > $tertinggiGagal) { $tertinggiGagal = $r->nilai_percobaan; }
+                    }
+                    $akhir = $lulusRem ? $kkmSaatIni : $tertinggiGagal;
+                    $status = $lulusRem ? 'Lulus' : 'Tidak Lulus';
+                }
+
+                if ($rekap->nilai_tertinggi != $akhir) {
+                    $rekap->nilai_tertinggi = $akhir;
+                    $rekap->status_akhir = $status;
+                    $rekap->save();
+                }
+            }
+        }
+        // =========================================================
+        // BATAS SCRIPT AUTO-FIX
+        // =========================================================
+
         $data_siswa = User::where('peran', 'siswa')
             ->with(['kelas', 'nilais'])
             ->orderBy('nama_lengkap', 'asc')

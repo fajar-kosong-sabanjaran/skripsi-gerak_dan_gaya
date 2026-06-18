@@ -6,22 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\ProgresBelajar;
 use App\Models\Nilai; 
 use App\Models\RiwayatNilai; 
-use App\Models\PengaturanKkm; // [DITAMBAHKAN] Panggil model PengaturanKkm
+use App\Models\PengaturanKkm;
 use Illuminate\Support\Facades\Auth;
 
 class ProgresController extends Controller
 {
     public function simpanProgres(Request $request)
     {
-        // 1. Validasi data yang dikirim dari JavaScript (harus ada 'kode_materi')
         $request->validate([
             'kode_materi' => 'required|string',
         ]);
 
-        // 2. Pastikan user yang mengirim data sudah login
         if (Auth::check()) {
-            
-            // 3. Simpan ke database (updateOrCreate mencegah data duplikat untuk user dan materi yang sama)
+            // Simpan atau update progres belajar agar tidak duplikat
             ProgresBelajar::updateOrCreate(
                 [
                     'user_id' => Auth::id(),
@@ -32,35 +29,32 @@ class ProgresController extends Controller
                 ]
             );
 
-            // 4. Kirim balasan ke JavaScript bahwa penyimpanan sukses
             return response()->json([
                 'success' => true, 
                 'message' => 'Progres ' . $request->kode_materi . ' berhasil disimpan!'
             ]);
         }
 
-        // Jika belum login, kirim pesan error
         return response()->json(['success' => false, 'message' => 'User belum login'], 401);
     }
 
     // =========================================================================
-    // FUNGSI MENYIMPAN NILAI DAN RIWAYAT
+    // FUNGSI MENYIMPAN NILAI DAN RIWAYAT (DENGAN LOGIKA REMEDIAL)
     // =========================================================================
     public function simpanNilai(Request $request)
     {
         $user = Auth::user();
         
-        // 1. Validasi data yang dikirim dari JavaScript
         $request->validate([
             'jenis_kuis'      => 'required|string',
             'nilai_percobaan' => 'required|integer',
             'detail_jawaban'  => 'required|array',
-            // Waktu mulai dan selesai akan kita set otomatis dari controller jika tidak dikirim dari JS
+            // Waktu mulai dan selesai diset otomatis dari controller jika tidak dikirim JS
         ]);
 
-        // [REVISI] Ambil KKM dari database sesuai jenis kuisnya
+        // Ambil KKM dari database sesuai jenis kuis
         $pengaturan = PengaturanKkm::first();
-        $kkm = 70; // Fallback default
+        $kkm = 70; 
         if ($pengaturan) {
             if ($request->jenis_kuis === 'Kuis 1') {
                 $kkm = $pengaturan->kkm_kuis1;
@@ -74,42 +68,83 @@ class ProgresController extends Controller
         $skor = $request->nilai_percobaan;
         $status_percobaan = ($skor >= $kkm) ? 'Lulus' : 'Tidak Lulus';
 
-        // 2. Cek apakah siswa sudah punya tabel rekap (Nilai) untuk kuis ini?
         $rekapNilai = Nilai::where('user_id', $user->id)
                            ->where('jenis_kuis', $request->jenis_kuis)
                            ->first();
 
         if (!$rekapNilai) {
-            // Jika belum pernah mencoba sama sekali, buat baru
             $rekapNilai = new Nilai();
             $rekapNilai->user_id = $user->id;
             $rekapNilai->jenis_kuis = $request->jenis_kuis;
-            $rekapNilai->nilai_tertinggi = $skor;
-            $rekapNilai->status_akhir = $status_percobaan;
-            $rekapNilai->jumlah_percobaan = 1;
-            $rekapNilai->save();
-        } else {
-            // Jika sudah pernah mencoba, update data rekapnya
-            $rekapNilai->jumlah_percobaan += 1; // Tambah jumlah percobaan
-            
-            // Jika nilai sekarang lebih besar dari nilai tertinggi sebelumnya, update!
-            if ($skor > $rekapNilai->nilai_tertinggi) {
-                $rekapNilai->nilai_tertinggi = $skor;
-                $rekapNilai->status_akhir = $status_percobaan;
-            }
+            $rekapNilai->nilai_tertinggi = 0; 
+            $rekapNilai->status_akhir = 'Tidak Lulus'; 
+            $rekapNilai->jumlah_percobaan = 0;
             $rekapNilai->save();
         }
+        
+        $rekapNilai->jumlah_percobaan += 1;
+        $rekapNilai->save();
 
-        // 3. Simpan ke Tabel Riwayat Nilai (Setiap kali klik selesai = buat baris baru)
+        // Simpan ke Tabel Riwayat Nilai TERLEBIH DAHULU agar masuk ke perhitungan remedial
         $riwayat = new RiwayatNilai();
         $riwayat->nilai_id = $rekapNilai->id;
-        $riwayat->percobaan_ke = $rekapNilai->jumlah_percobaan; // Ambil dari jumlah percobaan saat ini
-        $riwayat->waktu_mulai = $request->waktu_mulai ?? now()->subMinutes(10); // Default jika tidak dikirim
-        $riwayat->waktu_selesai = now(); // Waktu saat ini
+        $riwayat->percobaan_ke = $rekapNilai->jumlah_percobaan; 
+        $riwayat->waktu_mulai = $request->waktu_mulai ?? now()->subMinutes(10); 
+        $riwayat->waktu_selesai = now(); 
         $riwayat->nilai_percobaan = $skor;
         $riwayat->status = $status_percobaan;
         $riwayat->detail_jawaban = $request->detail_jawaban; // Disimpan otomatis sebagai JSON oleh model
         $riwayat->save();
+
+        // ============================================================
+        // HITUNG ULANG NILAI AKHIR MENGGUNAKAN LOGIKA REMEDIAL
+        // ============================================================
+        $semuaRiwayat = RiwayatNilai::where('nilai_id', $rekapNilai->id)
+            ->orderBy('percobaan_ke', 'asc')
+            ->get();
+
+        $nilaiAkhir = 0;
+        $statusAkhir = 'Tidak Lulus';
+
+        if ($semuaRiwayat->count() > 0) {
+            $percobaanPertama = $semuaRiwayat->first()->nilai_percobaan;
+
+            if ($percobaanPertama >= $kkm) {
+                // Aturan 1: Langsung lulus di percobaan pertama, ambil nilai aslinya
+                $nilaiAkhir = $percobaanPertama;
+                $statusAkhir = 'Lulus';
+            } else {
+                // Aturan 2 & 3: Siswa gagal di percobaan pertama (Remedial)
+                $lulusRemedial = false;
+                $nilaiTertinggiGagal = $percobaanPertama;
+
+                foreach ($semuaRiwayat as $r) {
+                    if ($r->nilai_percobaan >= $kkm) {
+                        $lulusRemedial = true;
+                        break; 
+                    }
+                    // Cari nilai tertinggi dari percobaan-percobaan yang gagal
+                    if ($r->nilai_percobaan > $nilaiTertinggiGagal) {
+                        $nilaiTertinggiGagal = $r->nilai_percobaan;
+                    }
+                }
+
+                if ($lulusRemedial) {
+                    // Aturan 2: Berhasil remedial, nilai mentok KKM
+                    $nilaiAkhir = $kkm;
+                    $statusAkhir = 'Lulus';
+                } else {
+                    // Aturan 3: Diremedial berkali-kali tetap gagal, ambil tertinggi
+                    $nilaiAkhir = $nilaiTertinggiGagal;
+                    $statusAkhir = 'Tidak Lulus';
+                }
+            }
+        }
+
+        // Update tabel Nilai dengan Nilai Akhir hasil kalkulasi
+        $rekapNilai->nilai_tertinggi = $nilaiAkhir;
+        $rekapNilai->status_akhir = $statusAkhir;
+        $rekapNilai->save();
 
         return response()->json([
             'success' => true,
@@ -127,19 +162,19 @@ class ProgresController extends Controller
     
     public function tampilKuis1()
     {
-        $kkm = PengaturanKkm::first()->kkm_kuis1 ?? 70; // Ambil dari DB atau default 70
+        $kkm = PengaturanKkm::first()->kkm_kuis1 ?? 70;
         return view('siswa.gerak.kuis1', compact('kkm'));
     }
 
     public function tampilKuis2()
     {
-        $kkm = PengaturanKkm::first()->kkm_kuis2 ?? 70; // Ambil dari DB atau default 70
+        $kkm = PengaturanKkm::first()->kkm_kuis2 ?? 70;
         return view('siswa.gaya.kuis2', compact('kkm'));
     }
 
     public function tampilEvaluasi()
     {
-        $kkm = PengaturanKkm::first()->kkm_evaluasi ?? 70; // Ambil dari DB atau default 70
+        $kkm = PengaturanKkm::first()->kkm_evaluasi ?? 70;
         return view('siswa.evaluasi.evaluasi', compact('kkm'));
     }
 }
