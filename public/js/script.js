@@ -4129,16 +4129,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let messageHtml = tuntas
                 ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score100}</b><br><br>Kamu hebat! Materi gerak sudah dikuasai. Siap lanjut ke Gaya?`
-                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Jangan menyerah! Yuk, pelajari ulang materi Gerak agar lebih paham.`;
+                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Jangan menyerah! Yuk, pelajari ulang materi Gerak agar lebih paham, atau kerjakan ulang kuisnya.`;
 
             Swal.fire({
                 title: titleText,
                 html: messageHtml,
                 icon: iconType,
+                showCancelButton: !tuntas, 
                 confirmButtonText: tuntas
                     ? "Lanjut Materi Berikutnya 🚀"
-                    : "Belajar Ulang 📚",
-                confirmButtonColor: tuntas ? "#f95c50" : "#65676b",
+                    : "Ulangi Kuis 🔄",
+                cancelButtonText: "Belajar Ulang 📚",
+                confirmButtonColor: tuntas ? "#f95c50" : "#2ecc71",
+                cancelButtonColor: "#65676b",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,123,0.4)`,
             }).then((result) => {
@@ -4156,8 +4159,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         window.location.href = window.GAYA_PAGE;
                     } else {
-                        window.location.href = window.PENGERTIAN_PAGE;
+                        window.location.reload();
                     }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = window.PENGERTIAN_PAGE;
                 }
             });
         }
@@ -4389,7 +4394,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Dayung menghilangkan gaya gesek antara perahu dan air",
                     "Resultan gaya pada perahu harus selalu bernilai nol agar dapat bergerak lurus",
                 ],
-                answer: 2,
+                answer: 0,
             },
         ];
 
@@ -4444,21 +4449,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const raguBtn = document.getElementById("raguBtn-kuis2");
 
         // --- FITUR KEAMANAN ANTI CHEATING ---
-
-        // Mendeteksi jika tab disembunyikan (pindah tab lain)
         document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
                 tampilkanPeringatanCurang();
             }
         });
 
-        // Mendeteksi jika window kehilangan fokus (buka aplikasi lain / klik di luar browser)
         window.addEventListener("blur", function () {
             tampilkanPeringatanCurang();
         });
 
         function tampilkanPeringatanCurang() {
-            // Mencegah peringatan bertumpuk jika event berjalan bersamaan
             if (Swal.isVisible()) return;
 
             Swal.fire({
@@ -4472,7 +4473,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Mencegah tombol navigasi 'Back' di browser
         history.pushState(null, document.title, location.href);
         window.addEventListener("popstate", function (event) {
             history.pushState(null, document.title, location.href);
@@ -4484,12 +4484,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Mencegah Klik Kanan
         document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
 
-        // Mencegah Copy, Cut, Paste, dan tombol keyboard seperti F12 (Inspect)
         document.addEventListener("keydown", function (e) {
             if (
                 e.ctrlKey &&
@@ -4504,7 +4502,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
             }
         });
-        // --- AKHIR FITUR KEAMANAN ---
 
         // 3. FUNGSI LOGIKA KUIS
         function renderNav() {
@@ -4575,7 +4572,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
             }
             if (nextBtn) {
-                // Modifikasi tombol di soal terakhir
                 if (currentIndex === questions.length - 1) {
                     nextBtn.innerHTML =
                         '<span class="nav-text-hide">Selesaikan Kuis</span> ✓';
@@ -4638,19 +4634,22 @@ document.addEventListener("DOMContentLoaded", function () {
             let iconType = tuntas ? "success" : "error";
             let messageHtml = tuntas
                 ? `Nilai kamu: <b style="font-size: 24px; color: #2ecc71;">${score100}</b><br><br>Selamat! Materi Gaya Selesai.`
-                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Nilai belum mencapai target. Yuk, pelajari lagi!`;
+                : `Nilai kamu: <b style="font-size: 24px; color: #e74c3c;">${score100}</b><br><br>Nilai belum mencapai target. Yuk, pelajari ulang materi, atau kerjakan ulang kuisnya.`;
 
-            const urlLulus = window.NEXT_PAGE || "/siswa/dashboard";
+            const urlLulus = window.NEXT_PAGE || "/siswa/evaluasi/petunjukpengerjaan";
             const urlGagal = window.RETRY_PAGE || "/siswa/gaya/pengertiangaya";
 
             Swal.fire({
                 title: titleText,
                 html: messageHtml,
                 icon: iconType,
+                showCancelButton: !tuntas,
                 confirmButtonText: tuntas
-                    ? "Lanjut ke Dashboard 🏠"
-                    : "Pelajari Ulang 📚",
-                confirmButtonColor: tuntas ? "#2ecc71" : "#65676b",
+                    ? "Lanjut ke Petunjuk Evaluasi 🚀"
+                    : "Ulangi Kuis 🔄",
+                cancelButtonText: "Pelajari Ulang 📚",
+                confirmButtonColor: "#2ecc71", 
+                cancelButtonColor: "#65676b",
                 allowOutsideClick: false,
                 backdrop: `rgba(0,0,123,0.4)`,
             }).then((result) => {
@@ -4666,8 +4665,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         window.location.href = urlLulus;
                     } else {
-                        window.location.href = urlGagal;
+                        window.location.reload();
                     }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = urlGagal;
                 }
             });
         }
