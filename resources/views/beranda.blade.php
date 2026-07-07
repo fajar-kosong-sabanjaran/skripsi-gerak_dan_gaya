@@ -470,7 +470,6 @@
                     Mulai Petualangan 🚀
                 </a>
             @endauth
-
         </div>
         
         <div class="hero-image" data-aos="fade-left" data-aos-duration="1200">
