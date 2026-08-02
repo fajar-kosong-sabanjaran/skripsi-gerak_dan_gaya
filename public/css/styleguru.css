@@ -1,7 +1,4 @@
-/* =======================================================================
-   ini css global (Reset & Body)
-   ======================================================================= */
-
+/* ini css global (Reset & Body) */
 * {
     margin: 0;
     padding: 0;
@@ -16,10 +13,7 @@ body {
     font-size: 15px;
 }
 
-/* =======================================================================
-   ini css guru.blade (Sidebar & Navbar)
-   ======================================================================= */
-
+/* ini css guru.blade (Sidebar & Navbar) */
 .sidebar {
     width: 260px;
     background: linear-gradient(160deg, #f95c50 0%, #e04a3f 100%);
@@ -309,9 +303,7 @@ body {
     color: #f95c50;
 }
 
-/* =======================================================================
-   Custom CSS untuk Semua Popup Informasi SweetAlert
-   ======================================================================= */
+/* Custom CSS untuk Semua Popup Informasi SweetAlert */
 .icon-info-halaman {
     cursor: pointer;
     color: #3b82f6;
@@ -416,9 +408,7 @@ body {
     }
 }
 
-/* =======================================================================
-   ini css datasiswa.blade (Card, Tabel, & Button)
-   ======================================================================= */
+/* ini css datasiswa.blade (Card, Tabel, & Button) */
 
 .card-guru {
     background: #fff;
@@ -668,10 +658,7 @@ body {
     box-shadow: 0 3px 6px rgba(16, 185, 129, 0.3);
 }
 
-/* =======================================================================
-   ini css datasiswa.blade (Modal Edit / Popup)
-   ======================================================================= */
-
+/* ini css datasiswa.blade (Modal Edit / Popup) */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -791,9 +778,7 @@ body {
     background: #2563eb;
 }
 
-/* =======================================================================
-   ini css responsive (Mobile & Tablet)
-   ======================================================================= */
+/* ini css responsive (Mobile & Tablet) */
 
 .mobile-menu-btn {
     display: none;
@@ -924,10 +909,7 @@ body {
     }
 }
 
-/* =======================================================================
-   ini css datakelas.blade
-   ======================================================================= */
-
+/* ini css datakelas.blade */
 .card-header-action {
     margin-bottom: 25px;
     display: flex;
@@ -967,9 +949,7 @@ body {
     gap: 6px;
 }
 
-/* =======================================================================
-   ini css progresbelajar.blade
-   ======================================================================= */
+/* ini css progresbelajar.blade */
 
 .page-header {
     margin-bottom: 15px;
@@ -1104,9 +1084,7 @@ body {
     }
 }
 
-/* =======================================================================
-   ini css data jawaban siswa / folder jawaban
-   ======================================================================= */
+/* ini css data jawaban siswa / folder jawaban */
 .kategori-materi-title {
     color: #475569;
     font-size: 18px;
@@ -1219,9 +1197,7 @@ body {
     gap: 5px;
 }
 
-/* =======================================================================
-   ini css datanilai.blade
-   ======================================================================= */
+/* ini css datanilai.blade */
 
 .text-success {
     color: #16a34a !important;
@@ -1478,9 +1454,7 @@ td.icon-salah,
     }
 }
 
-/* =======================================================================
-   ini css pengaturankkm.blade (Pengaturan KKM)
-   ======================================================================= */
+/* ini css pengaturankkm.blade (Pengaturan KKM) */
 
 .kkm-header-container {
     margin-bottom: 25px;

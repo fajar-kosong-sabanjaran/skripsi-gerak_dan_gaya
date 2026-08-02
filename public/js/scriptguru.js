@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // =======================================================================
     // ini js untuk Responsive Mobile Sidebar
-    // =======================================================================
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const sidebar = document.querySelector(".sidebar");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
@@ -18,9 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // =======================================================================
     // ini js guru.blade (Sidebar & Navbar)
-    // =======================================================================
 
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     const path = window.location.pathname;
@@ -82,9 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // =======================================================================
     // ini js untuk Table (Search, Filter Kelas, Pagination) - Dipakai di semua tabel
-    // =======================================================================
 
     const tableBody = document.getElementById("tableBody");
 
@@ -246,9 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateTable();
     }
 
-    // =======================================================================
     // ini js untuk Fitur Export Excel
-    // =======================================================================
 
     function updateTextTombolExport() {
         const btnExportExcel = document.getElementById("btnExportExcel");
@@ -297,9 +289,7 @@ window.konfirmasiKeluar = function () {
     });
 };
 
-// =======================================================================
 // ini js datasiswa.blade (Fungsi Hapus / Delete)
-// =======================================================================
 
 function confirmDelete(button, id) {
     Swal.fire({
@@ -350,9 +340,7 @@ function confirmDelete(button, id) {
     });
 }
 
-// =======================================================================
 // ini js datasiswa.blade (Fungsi Tambah / Create Modal)
-// =======================================================================
 
 const createSiswaModal = document.getElementById("createSiswaModal");
 const createNamaSiswa = document.getElementById("createNamaSiswa");
@@ -428,9 +416,7 @@ function storeSiswaData() {
         });
 }
 
-// =======================================================================
 // ini js datasiswa.blade (Fungsi Edit / Update Modal)
-// =======================================================================
 
 const editModal = document.getElementById("editModal");
 const editId = document.getElementById("editId");
@@ -508,9 +494,7 @@ function saveEditData() {
         });
 }
 
-// =======================================================================
 // ini js datasiswa.blade (Fungsi Info Halaman)
-// =======================================================================
 
 function showPageInfo() {
     Swal.fire({
@@ -585,9 +569,7 @@ function showPageInfo() {
     });
 }
 
-// =======================================================================
 // ini js datakelas.blade (CRUD KELAS)
-// =======================================================================
 
 const createKelasModal = document.getElementById("createKelasModal");
 const createNama = document.getElementById("createNama");
@@ -766,9 +748,7 @@ function confirmDeleteKelas(button, id) {
     });
 }
 
-// =======================================================================
 // ini js datakelas.blade (Fungsi Info Halaman)
-// =======================================================================
 
 function showPageInfoKelas() {
     Swal.fire({
@@ -819,9 +799,7 @@ function showPageInfoKelas() {
     });
 }
 
-// =======================================================================
 // ini js Progres Belajar
-// =======================================================================
 function updateTextTombolExportProgres() {
     const btnExportProgres = document.getElementById("btnExportProgres");
     const filterKelas = document.getElementById("filterKelas");
@@ -854,9 +832,7 @@ if (btnExportProgres) {
     });
 }
 
-// =======================================================================
 // ini js progresbelajar.blade (Fungsi Info Halaman)
-// =======================================================================
 
 function showPageInfoProgres() {
     Swal.fire({
@@ -907,9 +883,7 @@ function showPageInfoProgres() {
     });
 }
 
-// =======================================================================
 // ini js data jawaban siswa / folder jawaban
-// =======================================================================
 function showPageInfoJawaban() {
     Swal.fire({
         title: '<div class="swal-info-title blue"><i class="fas fa-info-circle"></i> Informasi Data Jawaban</div>',
@@ -940,9 +914,7 @@ function showPageInfoJawaban() {
     });
 }
 
-// =======================================================================
 // ini js datanilai.blade (Modal Riwayat AJAX & Detail Jawaban)
-// =======================================================================
 
 // --- 1. DATA MASTER SOAL ---
 const bankSoal = {
@@ -1575,9 +1547,7 @@ function renderTabelRiwayat(dataRiwayat, jenis_kuis) {
     });
 }
 
-// =======================================================================
 // ini js datanilai.blade (Fungsi Info Halaman)
-// =======================================================================
 
 function showPageInfoNilai() {
     Swal.fire({
@@ -1636,9 +1606,7 @@ function showPageInfoNilai() {
     });
 }
 
-// =======================================================================
 // Ini JS Pengaturan KKM
-// =======================================================================
 document.addEventListener("DOMContentLoaded", function () {
     const successMessageElement = document.getElementById(
         "kkm-success-message",
@@ -1656,9 +1624,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// =======================================================================
 // ini js pengaturankkm.blade (Fungsi Info Halaman)
-// =======================================================================
 
 function showPageInfoKkm() {
     Swal.fire({

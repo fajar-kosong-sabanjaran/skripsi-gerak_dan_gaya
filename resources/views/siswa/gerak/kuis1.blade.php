@@ -96,7 +96,7 @@
         window.PENGERTIAN_PAGE = "{{ url('siswa/gerak/pengertiangerak') }}";
         window.GAYA_PAGE = "{{ url('siswa/gaya/pengantargaya') }}";
 
-        // [TAMBAHAN] Menangkap nilai KKM dari database untuk Kuis 1
+        // Menangkap nilai KKM dari database untuk Kuis 1
         window.KKM_KUIS = {{ $kkm }};
 
         // Logika Toggle Sidebar Kuis di Mobile

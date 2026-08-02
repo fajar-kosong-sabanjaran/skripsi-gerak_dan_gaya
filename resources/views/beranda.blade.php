@@ -9,7 +9,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-    /* ================= RESET & VARIABLE ================= */
+    /* RESET & VARIABLE */
     :root {
         --primary: #f95c50;
         --primary-dark: #e44a3f;
@@ -35,7 +35,7 @@
 
     a { text-decoration: none; }
 
-    /* ================= NAVBAR ================= */
+    /* NAVBAR */
     .navbar {
         display: flex;
         justify-content: space-between;
@@ -176,7 +176,7 @@
     }
 
 
-    /* ================= TOMBOL LOGIN/REGISTER ================= */
+    /* TOMBOL LOGIN/REGISTER */
     .btn-daftar {
         background: white;
         color: var(--primary) !important;
@@ -206,7 +206,7 @@
     }
 
 
-    /* ================= HERO SECTION (ANIMASI ASLI) ================= */
+    /* HERO SECTION (ANIMASI ASLI) */
     .hero {
         height: 100vh;
         width: 100%;
@@ -267,8 +267,6 @@
     @media (max-width: 1024px) { .hero { padding: 0 40px; } .hero-text h1 { font-size: 42px; } }
     @media (max-width: 768px) { .navbar { padding: 15px 20px; } .nav-links { display: none; } .hero { flex-direction: column-reverse; justify-content: center; padding: 20px; text-align: center; } .hero-text h1 { font-size: 34px; margin-top: 30px; } .hero-text p { font-size: 16px; margin: 0 auto 30px auto; max-width: 100%; } .hero-image img { max-width: 85%; } .bg-icon { opacity: 0.1; } }
     
-    /* ================= TAMBAHAN REVISI RESPONSIVE (TANPA MENGUBAH YG ATAS) ================= */
-    
     .menu-toggle {
         display: none;
         flex-direction: column;
@@ -296,10 +294,10 @@
         }
         
         .nav-links {
-            display: flex !important; /* Timpa display: none dari css lama */
+            display: flex !important;
             position: absolute;
             top: 70px;
-            right: -100%; /* Sembunyikan ke luar layar kanan */
+            right: -100%;
             flex-direction: column;
             background: rgba(255, 255, 255, 0.98);
             width: 250px;
@@ -345,7 +343,7 @@
         .hero {
             flex-direction: column-reverse;
             justify-content: center;
-            padding: 120px 20px 60px; /* Padding atas ditambah agar tidak tertutup navbar */
+            padding: 120px 20px 60px; 
             text-align: center;
             height: auto; 
         }
@@ -506,7 +504,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const navLinks = document.getElementById('nav-links');
             
-            // Pastikan elemen ada, dan navLinks sedang terbuka (aktif)
+            // Elemen ada, dan navLinks sedang terbuka (aktif)
             if (mobileMenu && navLinks && navLinks.classList.contains('active')) {
                 // Jika klik bukan pada ikon burger dan bukan di dalam area menu itu sendiri
                 if (!mobileMenu.contains(event.target) && !navLinks.contains(event.target)) {
@@ -520,10 +518,10 @@
             Swal.fire({
                 title: 'Akses Dibatasi',
                 text: 'Mohon maaf, Kamu harus masuk ke akun Kamu terlebih dahulu untuk mengakses materi pembelajaran.',
-                icon: 'info', // Icon tetap 'info'
+                icon: 'info', 
                 showCancelButton: true,
                 confirmButtonColor: '#f95c50',
-                cancelButtonColor: '#6c757d', // Warna abu-abu (formal) untuk batal
+                cancelButtonColor: '#6c757d', 
                 confirmButtonText: 'Masuk Sekarang',
                 cancelButtonText: 'Tutup',
             }).then((result) => {
@@ -533,7 +531,7 @@
             });
         }
 
-        // 4. TAMBAHAN REVISI: FUNGSI HAMBURGER MENU (RESPONSIVE)
+        // FUNGSI HAMBURGER MENU (RESPONSIVE)
         const mobileMenu = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
 

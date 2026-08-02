@@ -19,9 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
 {
-    // =================================================================
     // MANAJEMEN DATA SISWA
-    // =================================================================
 
     public function index()
     {
@@ -139,9 +137,7 @@ class GuruController extends Controller
         return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
     }
 
-    // =================================================================
     // MANAJEMEN DATA KELAS
-    // =================================================================
 
     public function indexKelas()
     {
@@ -240,9 +236,7 @@ class GuruController extends Controller
         return response()->json(['success' => false, 'message' => 'Data kelas tidak ditemukan.'], 404);
     }
 
-    // =================================================================
     // MANAJEMEN PROGRES BELAJAR
-    // =================================================================
 
     public function progresBelajar()
     {
@@ -264,15 +258,11 @@ class GuruController extends Controller
         return Excel::download(new ProgresExport($kelasFilter), $fileName);
     }
 
-    // =================================================================
     // MANAJEMEN DATA NILAI
-    // =================================================================
 
     public function dataNilai()
     {
-        // =========================================================
         // SCRIPT AUTO-FIX: MEMPERBAIKI DATA MASA LALU SECARA OTOMATIS
-        // =========================================================
         $pengaturanKkm = PengaturanKkm::first();
         foreach (Nilai::all() as $rekap) {
             $kkmSaatIni = 70;
@@ -306,9 +296,7 @@ class GuruController extends Controller
                 }
             }
         }
-        // =========================================================
         // BATAS SCRIPT AUTO-FIX
-        // =========================================================
 
         $data_siswa = User::where('peran', 'siswa')
             ->with(['kelas', 'nilais'])
@@ -370,9 +358,7 @@ class GuruController extends Controller
         ]);
     }
 
-    // =================================================================
     // MANAJEMEN PENGATURAN KKM
-    // =================================================================
 
     public function pengaturanKkm()
     {
@@ -403,9 +389,7 @@ class GuruController extends Controller
         return redirect()->back()->with('success', 'Nilai KKM berhasil diperbarui!');
     }
 
-    // =================================================================
     // FITUR: MELIHAT DATA JAWABAN PDF SISWA
-    // =================================================================
     
     public function indexJawaban()
     {

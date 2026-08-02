@@ -305,7 +305,6 @@
                     <table class="quiz-table" style="text-align: center;">
                         <thead>
                             <tr>
-                                {{-- Menghilangkan bold (font-weight: normal) pada <th> --}}
                                 <th style="width: 25%; font-weight: normal;">Benda</th>
                                 <th style="width: 25%; font-weight: normal;">Jarak (\(s\))<br><small>dalam cm</small></th>
                                 <th style="width: 25%; font-weight: normal;">Waktu (\(t\))<br><small>dalam sekon</small>
@@ -316,10 +315,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                {{-- Menghapus <strong> --}}
                                 <td>Pensil</td>
                                 <td><input class="isian-ayo" id="prak-s-pensil" placeholder="..."></td>
-                                {{-- Mengosongkan isian waktu --}}
                                 <td><input class="isian-ayo" id="prak-t-pensil" placeholder="..."></td>
                                 <td><input class="isian-ayo" id="prak-v-pensil" placeholder="..."></td>
                             </tr>

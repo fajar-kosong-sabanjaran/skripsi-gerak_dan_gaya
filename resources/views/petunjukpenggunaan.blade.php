@@ -392,7 +392,7 @@
             text-decoration: underline;
         }
 
-        /* ================= TAMBAHAN RESPONSIVE ================= */
+        /* TAMBAHAN RESPONSIVE */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -467,7 +467,7 @@
             .step-img-placeholder { height: 200px; }
         }
 
-        /* ================= TAMBAHAN SWEETALERT RESPONSIVE KUSTOM ================= */
+        /* TAMBAHAN SWEETALERT RESPONSIVE KUSTOM */
         @media (max-width: 600px) {
             div:where(.swal2-container) div:where(.swal2-popup) {
                 width: 85% !important;
@@ -746,7 +746,7 @@
             });
         });
 
-        // TAMBAHAN REVISI: FUNGSI HAMBURGER MENU
+        // FUNGSI HAMBURGER MENU
         const mobileMenuBtn = document.getElementById('mobile-menu');
         const navLinksContainer = document.getElementById('nav-links');
 

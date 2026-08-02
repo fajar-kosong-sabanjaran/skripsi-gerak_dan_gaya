@@ -60,10 +60,10 @@
         /* --- BAGIAN KANAN (Formulir) --- */
         .auth-right { 
             flex: 1; 
-            padding: 60px 80px; /* Padding atas diperbesar agar lebih lega */
+            padding: 60px 80px;
             display: flex; 
             flex-direction: column; 
-            justify-content: flex-start; /* Diubah ke flex-start agar tidak mepet atas saat formulir panjang */
+            justify-content: flex-start;
             overflow-y: auto; 
             background-color: #fff;
         }
@@ -120,7 +120,7 @@
             font-size: 14px;
         }
         .back-home a {
-            color: #888; /* Warna awal abu-abu agar tidak terlalu mencolok */
+            color: #888;
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
@@ -129,8 +129,8 @@
             transition: all 0.3s ease;
         }
         .back-home a:hover {
-            color: var(--primary); /* Berubah jadi warna tema saat hover */
-            transform: translateX(-5px); /* Efek geser ke kiri */
+            color: var(--primary); 
+            transform: translateX(-5px); 
         }
 
         /* Input Password Group */

@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // ================= MENAMPILKAN HALAMAN =================
-    
+    // MENAMPILKAN HALAMAN 
+   
     public function showRegisterForm()
     {
         $data_kelas = Kelas::all(); 
@@ -24,7 +24,7 @@ class AuthController extends Controller
         return view('auth.login', compact('data_kelas'));
     }
 
-    // ================= PROSES REGISTER =================
+    // PROSES REGISTER 
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -66,9 +66,7 @@ class AuthController extends Controller
         return redirect('/'); 
     }
 
-    // =========================================================================
     // PROSES LOGIN (REVISI: MENGGUNAKAN NOMOR INDUK & PASSWORD)
-    // =========================================================================
     public function login(Request $request)
     {
         // 1. Validasi Input Dasar
@@ -109,7 +107,7 @@ class AuthController extends Controller
         return redirect()->intended('/'); 
     }
 
-    // ================= PROSES LOGOUT =================
+    // PROSES LOGOUT
     public function logout(Request $request)
     {
         Auth::logout();

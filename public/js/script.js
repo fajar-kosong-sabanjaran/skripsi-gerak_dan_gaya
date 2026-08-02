@@ -1,8 +1,6 @@
 // INI MERUPAKAN FILE JS GLOBAL (DIGUNAKAN DI SEMUA HALAMAN via siswa.blade.php)
 
-// =========================================================================
 // FUNGSI BARU: MENYIMPAN PROGRES KE DATABASE (DIBUAT JADI GLOBAL)
-// =========================================================================
 window.simpanProgresKeDatabase = function (kodeMateri) {
     const csrfToken = document
         .querySelector('meta[name="csrf-token"]')
@@ -32,9 +30,7 @@ window.simpanProgresKeDatabase = function (kodeMateri) {
         });
 };
 
-// =========================================================================
 // FUNGSI KONFIRMASI LOGOUT DENGAN SWEETALERT2
-// =========================================================================
 window.konfirmasiKeluar = function () {
     Swal.fire({
         title: "Apakah kamu yakin?",
@@ -71,15 +67,11 @@ window.unlockNextButtonIfPage = function (pageKeyword) {
     }
 };
 
-// =========================================================================
 // DOM CONTENT LOADED UTAMA
-// =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
     const path = window.location.pathname;
 
-    // =========================================================================
     // 1. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK (MENGGUNAKAN DATABASE)
-    // =========================================================================
 
     function isLulus(kodeMateri) {
         return window.progresSiswa && window.progresSiswa.includes(kodeMateri);
@@ -135,9 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     checkAllLocks();
 
-    // =========================================================================
     // 2. SIDEBAR TOGGLE LOGIC & LAIN-LAIN
-    // =========================================================================
 
     const toggleItems = document.querySelectorAll(".menu-item.has-toggle");
     toggleItems.forEach((item) => {
@@ -204,9 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // =========================================================================
     // 3. LOGIKA SPESIFIK: HALAMAN PENGERTIAN GERAK (DRAG & DROP)
-    // =========================================================================
 
     async function generatePDFPengertianGerak(action = "download") {
         const { jsPDF } = window.jspdf;
@@ -487,9 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // INI MERUPAKAN FILE JARAK TEMPUH DAN PERPINDAHAN
 document.addEventListener("DOMContentLoaded", () => {
-    // =========================================================================
     // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
-    // =========================================================================
     function checkAllLocks() {
         const path = window.location.pathname;
 
@@ -562,9 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     checkAllLocks();
 
-    // =========================================================================
     // 1. LOGIKA ANIMASI GERAK MOBIL
-    // =========================================================================
     const posA = 0;
     const posB = 4;
     const posC = 10;
@@ -704,9 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resetAnimation();
     }
 
-    // =========================================================================
     // 2. LOGIKA KUIS REFLEKSI (POP-UP)
-    // =========================================================================
     const quizModal = document.getElementById("quiz-modal");
     const quizQuestion = document.getElementById("quiz-question");
     const quizInput = document.getElementById("quiz-input");
@@ -830,9 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // =========================================================================
     // 3. LOGIKA LATIHAN SOAL (ADI DI SIRKUIT) DENGAN SWEETALERT2
-    // =========================================================================
     const btnCekAdi = document.getElementById("cek-adi");
     const btnResetAdi = document.getElementById("reset-adi");
     const btnUnduhAdi = document.getElementById("unduh-adi");
@@ -963,9 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnResetAdi) btnResetAdi.addEventListener("click", resetAllAdi);
 
-    // =========================================================================
     // 4. LOGIKA UNDUH PDF
-    // =========================================================================
     const getCompressedImage = (el) => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -1224,7 +1202,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (action === "upload") {
                 const pdfBlob = doc.output("blob");
                 const formData = new FormData();
-                formData.append("kode_materi", "jarak_tempuh"); // Kode materi sesuai di Controller
+                formData.append("kode_materi", "jarak_tempuh"); 
                 formData.append(
                     "file_pdf",
                     pdfBlob,
@@ -1275,19 +1253,19 @@ document.addEventListener("DOMContentLoaded", () => {
 const kunciLatihan = [
     { id: "s1", jawaban: "120" },
     { id: "s2", jawaban: "40" },
-    { id: "s-total", jawaban: "160" },
+    { id: "s-total", jawaban: "160", dependsOn: ["s1", "s2"] },
     { id: "t", jawaban: "20" },
-    { id: "v-atas", jawaban: "160" },
-    { id: "v-bawah", jawaban: "20" },
-    { id: "v-hasil", jawaban: "8" },
+    { id: "v-atas", jawaban: "160", dependsOn: ["s-total"] },
+    { id: "v-bawah", jawaban: "20", dependsOn: ["t"] },
+    { id: "v-hasil", jawaban: "8", dependsOn: ["v-atas", "v-bawah"] },
 
     { id: "x0", jawaban: "40" },
     { id: "xt", jawaban: "120" },
-    { id: "delta-s", jawaban: "80" },
+    { id: "delta-s", jawaban: "80", dependsOn: ["x0", "xt"] },
     { id: "t2", jawaban: "20" },
-    { id: "v2-atas", jawaban: "80" },
-    { id: "v2-bawah", jawaban: "20" },
-    { id: "v2-hasil", jawaban: "4" },
+    { id: "v2-atas", jawaban: "80", dependsOn: ["delta-s"] },
+    { id: "v2-bawah", jawaban: "20", dependsOn: ["t2"] },
+    { id: "v2-hasil", jawaban: "4", dependsOn: ["v2-atas", "v2-bawah"] },
 ];
 
 // Kunci Jawaban Praktik Video (Mendukung Multi-Jawaban)
@@ -1463,7 +1441,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (nilai === "") {
                         belumDiisi++;
                     } else if (item.jawaban.includes(nilai)) {
-                        // Metode pengecekan menggunakan array includes
                         benar++;
                         input.classList.add("benar");
                     } else {
@@ -1515,7 +1492,6 @@ document.addEventListener("DOMContentLoaded", function () {
             let salah = 0;
             let belumDiisi = 0;
 
-            // Validasi apakah ada isian rumus yang masih kosong
             kunciLatihan.forEach((item) => {
                 const input = document.getElementById(item.id);
                 if (input) {
@@ -1524,7 +1500,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Hentikan proses jika ada yang kosong
             if (belumDiisi > 0) {
                 Swal.fire({
                     title: "Belum Lengkap!",
@@ -1536,14 +1511,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Jika semua terisi, lanjutkan pengecekan benar/salah
+            // Evaluasi Tahap 1: Cek kebenaran nilai mentah (raw value)
+            let statusKebenaran = {};
             kunciLatihan.forEach((item) => {
                 const input = document.getElementById(item.id);
                 if (input) {
                     const nilai = input.value.trim();
-                    input.classList.remove("benar", "salah");
+                    statusKebenaran[item.id] = (nilai === item.jawaban);
+                }
+            });
 
-                    if (nilai === item.jawaban) {
+            // Evaluasi Tahap 2: Cek dependensi (ketergantungan langkah)
+            kunciLatihan.forEach((item) => {
+                const input = document.getElementById(item.id);
+                if (input) {
+                    let isCorrect = statusKebenaran[item.id];
+
+                    if (isCorrect && item.dependsOn) {
+                        const langkahSesuai = item.dependsOn.every(depId => statusKebenaran[depId] === true);
+                        if (!langkahSesuai) {
+                            isCorrect = false;
+                            statusKebenaran[item.id] = false;
+                        }
+                    }
+
+                    input.classList.remove("benar", "salah");
+                    if (isCorrect) {
                         benar++;
                         input.classList.add("benar");
                     } else {
@@ -1573,7 +1566,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 checkAllLocks();
 
-                // Munculkan tombol unduh & Generate PDF ke server
                 const btnUnduhLatihan =
                     document.getElementById("btn-unduh-latihan");
                 if (btnUnduhLatihan)
@@ -1714,14 +1706,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const drawAnswerBox = (id, x, y, w = 15, h = 7) => {
                 const inputEl = document.getElementById(id);
                 const val = inputEl ? inputEl.value.trim() : "";
-                const kunci = kunciLatihan.find((k) => k.id === id);
 
                 let bgColor = [245, 245, 245];
                 let textColor = [100, 100, 100];
                 let borderColor = [200, 200, 200];
 
                 if (val !== "") {
-                    if (val === kunci.jawaban) {
+                    if (inputEl && inputEl.classList.contains("benar")) {
                         bgColor = [209, 250, 229];
                         borderColor = [34, 197, 94];
                         textColor = [21, 128, 61];
@@ -2001,9 +1992,7 @@ const getCompressedImage = (el) => {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    // =========================================================================
     // 0. FUNGSI CEK MEMORI UNTUK MEMBUKA GEMBOK
-    // =========================================================================
     function checkAllLocks() {
         const path = window.location.pathname;
 
@@ -2045,9 +2034,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkAllLocks();
 
-    // =========================================================================
     // FUNGSI UTAMA: RENDER PDF (BISA UNTUK DOWNLOAD ATAU UPLOAD BACKGROUND)
-    // =========================================================================
     async function generatePDFPercepatan(action = "download") {
         const { jsPDF } = window.jspdf;
         if (!jsPDF) {
@@ -2126,14 +2113,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const drawBox = (id, x, y, w = 15, h = 7) => {
                 const inputEl = document.getElementById(id);
                 const val = inputEl ? inputEl.value.trim() : "";
-                const kunci = kunciPercepatan.find((k) => k.id === id);
 
                 let bg = [245, 245, 245],
                     txt = [100, 100, 100],
                     brd = [200, 200, 200];
 
                 if (val !== "") {
-                    if (val === kunci.jawaban) {
+                    if (inputEl && inputEl.classList.contains("benar")) {
                         bg = [209, 250, 229];
                         brd = [34, 197, 94];
                         txt = [21, 128, 61];
@@ -2240,9 +2226,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // =========================================================================
     // BAGIAN A: LOGIKA LATIHAN SOAL (INTERAKSI WEBSITE)
-    // =========================================================================
     const btnCek = document.getElementById("btn-cek-percepatan");
     const btnReset = document.getElementById("btn-reset-percepatan");
 
@@ -2250,9 +2234,9 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "v1", jawaban: "10" },
         { id: "v2", jawaban: "50" },
         { id: "t", jawaban: "20" },
-        { id: "a-atas", jawaban: "40" },
-        { id: "a-bawah", jawaban: "20" },
-        { id: "a-hasil", jawaban: "2" },
+        { id: "a-atas", jawaban: "40", dependsOn: ["v1", "v2"] },
+        { id: "a-bawah", jawaban: "20", dependsOn: ["t"] },
+        { id: "a-hasil", jawaban: "2", dependsOn: ["a-atas", "a-bawah"] },
     ];
 
     function resetPercepatan() {
@@ -2292,14 +2276,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Jika semua terisi, lanjutkan pengecekan benar/salah
+            // Evaluasi Tahap 1: Cek kebenaran nilai mentah (raw value)
+            let statusKebenaran = {};
             kunciPercepatan.forEach((item) => {
                 const input = document.getElementById(item.id);
                 if (input) {
                     const nilai = input.value.trim();
-                    input.classList.remove("benar", "salah");
+                    statusKebenaran[item.id] = (nilai === item.jawaban);
+                }
+            });
 
-                    if (nilai === item.jawaban) {
+            // Evaluasi Tahap 2: Cek dependensi (ketergantungan langkah)
+            kunciPercepatan.forEach((item) => {
+                const input = document.getElementById(item.id);
+                if (input) {
+                    let isCorrect = statusKebenaran[item.id];
+
+                    if (isCorrect && item.dependsOn) {
+                        const langkahSesuai = item.dependsOn.every(depId => statusKebenaran[depId] === true);
+                        if (!langkahSesuai) {
+                            isCorrect = false;
+                            statusKebenaran[item.id] = false;
+                        }
+                    }
+
+                    input.classList.remove("benar", "salah");
+                    if (isCorrect) {
                         benar++;
                         input.classList.add("benar");
                     } else {
@@ -2366,9 +2368,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnReset) btnReset.addEventListener("click", resetPercepatan);
 
-    // =========================================================================
     // BAGIAN B: LOGIKA KLIK MANUAL UNDUH PDF OLEH SISWA
-    // =========================================================================
     const btnUnduhPercepatan = document.getElementById("btn-unduh-percepatan");
     if (btnUnduhPercepatan) {
         btnUnduhPercepatan.addEventListener("click", async () => {

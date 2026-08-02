@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            // Mengganti 'name' menjadi 'nama_lengkap' sesuai ERD
+            // Menambahkan kolom nama lengkap
             $table->string('nama_lengkap'); 
             
             $table->string('email')->unique();

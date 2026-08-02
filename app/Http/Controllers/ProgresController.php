@@ -38,9 +38,7 @@ class ProgresController extends Controller
         return response()->json(['success' => false, 'message' => 'User belum login'], 401);
     }
 
-    // =========================================================================
     // FUNGSI MENYIMPAN NILAI DAN RIWAYAT (DENGAN LOGIKA REMEDIAL)
-    // =========================================================================
     public function simpanNilai(Request $request)
     {
         $user = Auth::user();
@@ -49,7 +47,7 @@ class ProgresController extends Controller
             'jenis_kuis'      => 'required|string',
             'nilai_percobaan' => 'required|integer',
             'detail_jawaban'  => 'required|array',
-            // Waktu mulai dan selesai diset otomatis dari controller jika tidak dikirim JS
+            // Waktu mulai dan selesai diset otomatis dari controller
         ]);
 
         // Ambil KKM dari database sesuai jenis kuis
@@ -93,12 +91,10 @@ class ProgresController extends Controller
         $riwayat->waktu_selesai = now(); 
         $riwayat->nilai_percobaan = $skor;
         $riwayat->status = $status_percobaan;
-        $riwayat->detail_jawaban = $request->detail_jawaban; // Disimpan otomatis sebagai JSON oleh model
+        $riwayat->detail_jawaban = $request->detail_jawaban; 
         $riwayat->save();
 
-        // ============================================================
         // HITUNG ULANG NILAI AKHIR MENGGUNAKAN LOGIKA REMEDIAL
-        // ============================================================
         $semuaRiwayat = RiwayatNilai::where('nilai_id', $rekapNilai->id)
             ->orderBy('percobaan_ke', 'asc')
             ->get();
@@ -156,9 +152,7 @@ class ProgresController extends Controller
         ]);
     }
 
-    // =========================================================================
     // TAMPILAN KUIS (MENYISIPKAN DATA KKM)
-    // =========================================================================
     
     public function tampilKuis1()
     {

@@ -15,7 +15,6 @@ class DummyRiwayatNilaiSeeder extends Seeder
         foreach ($semuaNilai as $nilai) {
             // 1. PROTEKSI DATA ASLI (Fadhil, Guru, Andi, dkk)
             // Siswa asli memiliki user_id <= 14. 
-            // Kita skip data ini agar riwayat manual Anda tidak terhapus atau berubah.
             if ($nilai->user_id <= 14) {
                 continue; 
             }

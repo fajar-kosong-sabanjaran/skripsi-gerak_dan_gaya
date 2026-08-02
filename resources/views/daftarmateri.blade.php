@@ -321,7 +321,7 @@
             }
         }
 
-        /* ================= TAMBAHAN REVISI RESPONSIVE ================= */
+        /* REVISI RESPONSIVE */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -409,7 +409,7 @@
             }
         }
 
-        /* ================= TAMBAHAN SWEETALERT RESPONSIVE KUSTOM ================= */
+        /* SWEETALERT RESPONSIVE KUSTOM */
         @media (max-width: 600px) {
             div:where(.swal2-container) div:where(.swal2-popup) {
                 width: 85% !important;
@@ -447,9 +447,7 @@
 <body>
 
     @php
-        // ------------------------------------------------------------------
         // LOGIKA PENGECEKAN AKSES MATERI BERDASARKAN DATABASE (NILAI & KKM)
-        // ------------------------------------------------------------------
         $aksesGaya = false;
         $aksesEvaluasi = false;
 

@@ -98,7 +98,7 @@
         // Jika LULUS, lanjut ke Petunjuk Evaluasi
         window.NEXT_PAGE = "{{ url('siswa/evaluasi/petunjukpengerjaan') }}";
 
-        // [TAMBAHAN] Menangkap nilai KKM dari database untuk Kuis 2
+        // Menangkap nilai KKM dari database untuk Kuis 2
         window.KKM_KUIS = {{ $kkm }};
 
         // Logika Toggle Sidebar Kuis di Mobile
