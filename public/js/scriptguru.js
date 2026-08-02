@@ -346,14 +346,12 @@ const createSiswaModal = document.getElementById("createSiswaModal");
 const createNamaSiswa = document.getElementById("createNamaSiswa");
 const createNisSiswa = document.getElementById("createNisSiswa");
 const createKelasSiswa = document.getElementById("createKelasSiswa");
-const createEmailSiswa = document.getElementById("createEmailSiswa");
 const createPasswordSiswa = document.getElementById("createPasswordSiswa");
 
 function openCreateSiswaModal() {
     if (createNamaSiswa) createNamaSiswa.value = "";
     if (createNisSiswa) createNisSiswa.value = "";
     if (createKelasSiswa) createKelasSiswa.value = "";
-    if (createEmailSiswa) createEmailSiswa.value = "";
     if (createPasswordSiswa) createPasswordSiswa.value = "";
 
     if (createSiswaModal) createSiswaModal.classList.add("show");
@@ -367,7 +365,7 @@ function storeSiswaData() {
     const tokenElement = document.querySelector('meta[name="csrf-token"]');
     const token = tokenElement ? tokenElement.getAttribute("content") : "";
 
-    if (!createNamaSiswa.value || !createNisSiswa.value || !createKelasSiswa.value || !createEmailSiswa.value || !createPasswordSiswa.value) {
+    if (!createNamaSiswa.value || !createNisSiswa.value || !createKelasSiswa.value || !createPasswordSiswa.value) {
         Swal.fire("Peringatan", "Harap isi semua kolom yang wajib diisi (*)", "warning");
         return;
     }
@@ -376,7 +374,6 @@ function storeSiswaData() {
         nama_lengkap: createNamaSiswa.value,
         nomor_induk: createNisSiswa.value,
         kelas_id: createKelasSiswa.value,
-        email: createEmailSiswa.value,
         password: createPasswordSiswa.value,
     };
 
@@ -423,20 +420,17 @@ const editId = document.getElementById("editId");
 const editNama = document.getElementById("editNama");
 const editNis = document.getElementById("editNis");
 const editKelas = document.getElementById("editKelas");
-const editEmail = document.getElementById("editEmail");
 const editPassword = document.getElementById("editPassword");
 
 function openEditModal(button) {
     const id = button.dataset.id;
     const nama = button.dataset.nama;
     const nis = button.dataset.nis;
-    const email = button.dataset.email;
     const kelas = button.dataset.kelas;
 
     if (editId) editId.value = id;
     if (editNama) editNama.value = nama;
     if (editNis) editNis.value = nis || "";
-    if (editEmail) editEmail.value = email;
     if (editKelas) editKelas.value = kelas || "";
     if (editPassword) editPassword.value = "";
 
@@ -456,7 +450,6 @@ function saveEditData() {
         nama_lengkap: editNama.value,
         nomor_induk: editNis.value,
         kelas_id: editKelas.value,
-        email: editEmail.value,
         password: editPassword.value,
     };
 
@@ -510,7 +503,7 @@ function showPageInfo() {
                 </div>
                 <ul class="swal-info-list">
                     <li>Gunakan tombol <b>Tambah Siswa</b> untuk memasukkan data siswa baru secara manual.</li>
-                    <li>Pastikan nama, NIS, pilihan kelas, email, dan password telah diisi.</li>
+                    <li>Pastikan nama, NIS, pilihan kelas, dan password telah diisi.</li>
                 </ul>
 
                 <div class="swal-info-divider"></div>
@@ -530,7 +523,7 @@ function showPageInfo() {
                     <i class="fas fa-table"></i> <b>Tabel Data Siswa</b>
                 </div>
                 <ul class="swal-info-list">
-                    <li>Menampilkan NIS, nama siswa, kelas, dan email.</li>
+                    <li>Menampilkan NIS, nama siswa, dan kelas.</li>
                     <li>Dilengkapi fitur pencarian, pagination, dan responsive.</li>
                     <li>Nomor baris akan menyesuaikan jumlah data yang tampil.</li>
                 </ul>

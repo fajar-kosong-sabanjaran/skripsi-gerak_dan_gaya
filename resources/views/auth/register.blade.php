@@ -197,11 +197,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="nama@email.com" value="{{ old('email') }}" required>
-                </div>
-
-                <div class="form-group">
                     <label>Kelas</label>
                     <select name="kelas_id" class="form-control" required>
                         <option value="">-- Pilih Kelas Kamu --</option>

@@ -65,7 +65,6 @@
                         <th>NIS</th>
                         <th>Nama Siswa</th>
                         <th>Kelas</th>
-                        <th>Email</th>
                         <th class="col-aksi">Aksi</th>
                     </tr>
                 </thead>
@@ -80,12 +79,11 @@
                                     {{ $siswa->kelas->nama ?? 'Belum Ada' }}
                                 </span>
                             </td>
-                            <td class="row-email">{{ $siswa->email }}</td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="btn-aksi btn-edit" onclick="openEditModal(this)"
                                         data-id="{{ $siswa->id }}" data-nama="{{ $siswa->nama_lengkap }}"
-                                        data-nis="{{ $siswa->nomor_induk }}" data-email="{{ $siswa->email }}"
+                                        data-nis="{{ $siswa->nomor_induk }}" 
                                         data-kelas="{{ $siswa->kelas_id ?? '' }}" title="Edit">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
@@ -147,11 +145,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="editEmail" class="form-input full-width">
-                </div>
-
-                <div class="form-group">
                     <label>Password (Opsional)</label>
                     <input type="password" id="editPassword" class="form-input full-width"
                         placeholder="Biarkan kosong jika tidak diubah">
@@ -192,11 +185,6 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Email <span class="text-danger">*</span></label>
-                    <input type="email" id="createEmailSiswa" class="form-input full-width" placeholder="contoh@gmail.com">
                 </div>
 
                 <div class="form-group">
